@@ -1,0 +1,8 @@
+.page {
+    --color-main: #457b9d;
+    --color-light: #a8dadc;
+    --color-dark: #1d3557;
+    --color-background: #f1faee;
+    --color-contrast: #e63946;
+    display: flex;
+}

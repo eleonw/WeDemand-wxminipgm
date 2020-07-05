@@ -7,8 +7,8 @@
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#007AFF",
-		"backgroundColor": "#FFFFFF"
+		"navigationBarTitleText": "微叮当",
+		"navigationBarBackgroundColor": "#457b9d",
+		"backgroundColor": "#f1faee"
 	}
 }

@@ -1,5 +1,13 @@
 <script>
+import {Helper as helper} from '@/common/helper.js';
+    
 export default {
+    methods: {
+        wx: helper.wx,
+    },
+    globalData: {
+        
+    },
 	onLaunch: function() {
 		console.log('App Launch');
 	},
@@ -14,10 +22,12 @@ export default {
 
 <style>
 /* 解决头条小程序组件内引入字体不生效的问题 */
-/* #ifdef MP-TOUTIAO */
-@font-face {
-	font-family: uniicons;
-	src: url('/static/uni.ttf');
-}
-/* #endif */
+    @import url("/common/style/common.css");
+
+    /* #ifdef MP-TOUTIAO */
+    @font-face {
+        font-family: uniicons;
+        src: url('/static/uni.ttf');
+    }
+    /* #endif */
 </style>

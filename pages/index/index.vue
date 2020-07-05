@@ -1,25 +1,49 @@
 <template>
-	<view class="container">
-		<view class="intro">本项目已包含uni ui组件，无需import和注册，可直接使用。在代码区键入字母u，即可通过代码助手列出所有可用组件。光标置于组件名称处按F1，即可查看组件文档。</view>
-		<text class="intro">详见：</text>
-		<uni-link :href="href" :text="href"></uni-link>
-	</view>
+	<view class="page">
+        <button type="default" plain="true" @click="login">使用微信登录</button>
+    </view>
 </template>
 
 <script>
+    let vue;
+    const app = getApp();
+    
 	export default {
 		data() {
 			return {
-				href: 'https://uniapp.dcloud.io/component/README?id=uniui'
 			}
 		},
 		methods: {
-
-		}
+            login: async function() {
+                console.log(app);
+                try {
+                    let res = await app.wx('login');
+                    console.log(res);
+                    res = await uniCloud.callFunction({
+                        name: 'login',
+                        data: res,
+                    });
+                    console.log(res);
+                } catch(e) {
+                    console.log(e)
+                }
+                
+            }
+		},
+        onLoad: () => {
+            vue = this;
+            
+        }
 	}
 </script>
 
 <style>
+    button {
+        width: 95vw;
+        position: absolute;
+        left: 2.5vw
+        
+    }
 	.container {
 		padding: 20px;
 		font-size: 14px;

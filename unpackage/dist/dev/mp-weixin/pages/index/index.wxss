@@ -1,0 +1,12 @@
+
+button {
+        width: 95vw;
+        position: absolute;
+        left: 2.5vw
+}
+.container {
+		padding: 20px;
+		font-size: 14px;
+		line-height: 24px;
+}
+

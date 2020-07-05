@@ -1,0 +1,41 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 解决头条小程序组件内引入字体不生效的问题 */
+.page {
+    --color-main: #457b9d;
+    --color-light: #a8dadc;
+    --color-dark: #1d3557;
+    --color-background: #f1faee;
+    --color-contrast: #e63946;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+
+
+
+
+
+
