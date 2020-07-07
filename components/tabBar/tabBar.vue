@@ -1,0 +1,109 @@
+<template>
+	<view class="tabBar" :style="{'background-color': backgroundColor}">
+		<view v-for="item in tabItems" class="tabItem" :class="{selected: index==item.index, touching: touching==item.index}" @touchstart.stop="touchstart(item.index)" @touchend.stop="touchend(item.index)">
+            <view >
+                <image class="icon" mode="aspectFit" :src="item.iconPath" v-if="index==item.index"></image>
+                <image class="icon" mode="aspectFit" :src="item.selectedIconPath" v-else></image>
+            </view>
+            <view>{{item.text}}</view>
+        </view>
+	</view>
+</template>
+
+<script>
+	export default {
+        name: 'tabBar',
+        props: {
+            value: {
+                type: [Number, String],
+                default: 0
+            },
+            backgroundColor: {
+                type: String,
+                default: 'white'
+            },
+            color: {
+                type: String,
+                default: 'grey'
+            },
+            activeColor: {
+                type: String,
+                default: 'black'
+            },
+            tabItems: {
+                type: Array,
+                value: []
+            }
+        },
+		data() {
+			return {
+				index: this.value,
+                touching: null,
+			};
+		},
+        methods: {
+            touchstart(index) {
+                this.touching = index;
+            },
+            touchend(index) {
+                this.index = index;
+                this.$emit('input', index)
+                this.$emit('tabchange', {index: index})
+                this.touching = null;
+            }
+        }
+	}
+</script>
+
+<style scoped>
+    @keyframes touchItem{
+        from{
+            background-color: white;
+        }
+        to{
+            background-color: grey;
+        }
+    }
+    
+    .tabBar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        width: 100vw;
+        height: 8vh;
+        display: flex;
+        flex-flow: row || nowrap;
+        justify-content: space-around;
+        align-items: center;
+        
+    }
+    
+    .icon {
+        width: 4vh;
+        height: 4vh;
+    }
+    
+    .tabItem {
+        flex-grow: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 2vh;
+        
+        color: grey;
+    }
+    
+    .selected {
+        color: black;
+        font-weight: 600;
+        font-size: 2.2vh;
+    }
+    
+    .touching {
+        animation: 1s touchItem forwards;
+    }
+</style>

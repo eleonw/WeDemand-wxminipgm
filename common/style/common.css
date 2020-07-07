@@ -5,4 +5,9 @@
     --color-background: #f1faee;
     --color-contrast: #e63946;
     display: flex;
+    
+}
+
+tabBar {
+        z-index: 999;
 }

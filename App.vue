@@ -4,6 +4,7 @@ import {Helper as helper} from '@/common/helper.js';
 export default {
     methods: {
         wx: helper.wx,
+        promisify: helper.promisify
     },
     globalData: {
         

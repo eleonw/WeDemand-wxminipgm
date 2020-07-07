@@ -1,7 +1,14 @@
 {
     "pages": [
-        "pages/index/index"
+        "pages/front/front",
+        "pages/index/index",
+        "pages/makeOrder/makeOrder"
     ],
+    "permission": {
+        "scope.userLocation": {
+          "desc": "你的位置信息将用于配置配送信息" 
+        }
+      },
     "subPackages": [],
     "window": {
         "navigationBarTextStyle": "white",
@@ -10,5 +17,5 @@
         "backgroundColor": "#f1faee"
     },
     "usingComponents": {},
-    "sitemapLocation": "sitemap16.json"
+    "sitemapLocation": "sitemap6.json"
 }

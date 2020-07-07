@@ -1,12 +1,24 @@
 {
-	"pages": [{
-		"path": "pages/index/index",
-		"style": {
-			"navigationBarTitleText": "uni-ui基础项目"
-		}
-	}],
+	"pages": [
+        {
+            "path": "pages/front/front",
+            "style": {
+                "navigationStyle":"custom"
+            }
+        }    
+        ,{
+            "path" : "pages/index/index",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/makeOrder/makeOrder",
+            "style" : {
+                "navigationStyle":"custom"
+            }
+        }
+    ],
 	"globalStyle": {
-		"navigationBarTextStyle": "white",
+		"navigationBarTextStyle": "#f1faee",
 		"navigationBarTitleText": "微叮当",
 		"navigationBarBackgroundColor": "#457b9d",
 		"backgroundColor": "#f1faee"
