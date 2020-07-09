@@ -1,0 +1,1 @@
+<view class="page"><button type="default" plain="true" data-event-opts="{{[['tap',[['login',['$event']]]]]}}" bindtap="__e">使用微信登录</button></view>

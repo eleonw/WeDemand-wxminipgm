@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "location-card": "/components/locationCard/locationCard"
+  }
+}

@@ -1,51 +1,67 @@
 <template>
-	<view>
+	<view class="page">
+        
+        
         <view v-if="selectedTabIndex==0">
-            <include src="../subpages/page1.html"></include>
-            page of index 0
-            <map id="map" longitude="116.34694203128674" latitude="39.980988001848075" scale="15" subkey="PQGBZ-DGOKX-2GC4U-T66D3-ZKKHQ-F5BXH" show-location="true" @regionchange="regionChange" @updated="mapUpdated"></map>
+            <newOrderPage></newOrderPage>
         </view>
         
-        
-        
-        <view v-if="selectedTabIndex==1">
+        <view v-else-if="selectedTabIndex==1">
             page of index 1
         </view>
-        
         
         
         <view v-if="selectedTabIndex==2">
             page of index 2
         </view>
         
-		<tabBar :tabItems="tabItems" v-model="selectedTabIndex" @tabchange="tabChange"></tabBar>
+        
+		<tabBar :tabs="mainTabs" v-model="selectedTabIndex" @tabchange="tabChange"></tabBar>
 	</view>
 </template>
 
 <script>
-    import tabBar from "@/components/tabBar/tabBar.vue"
-
-    const QQMapWX = require('@/libs/qqmap-wx-jssdk.js');
-    let qqmapsdk;
+    import tabBar from "@/components/tabBar/tabBar.vue";
+    import topTabBar from "@/components/topTabBar/topTabBar.vue";
+    import newOrderPage from "./subpages/newOrderPage.vue"
+    
     let mapContext;
     let page;
-    
     const app = getApp();
     
 	export default {
 
         components: {
-            tabBar, 
+            tabBar, topTabBar, newOrderPage
         },
 		data() {
 			return {
-                location: 
-                    {
+                newOrderPage: {
+                    location: {
                         latitude: "39.980988001848075",
                         longitude: "116.34694203128674",
                     },
+                    tabs: [
+                        {
+                            index: 0,
+                            text: "帮我取"
+                        },
+                        {
+                           index: 1,
+                           text: "帮我送"
+                        },
+                        {
+                            index: 2,
+                            text: "帮我买"
+                        },
+                        {
+                            index: 3,
+                            text: "其他服务"
+                        }
+                    ],
+                },
                 selectedTabIndex: 0,
-				tabItems: [
+				mainTabs: [
                     {
                         index: 0,
                         text: '首页',
@@ -64,7 +80,8 @@
                         iconPath: '/static/image/icon/me.png',
                         selectedIconPath: '/static/image/icon/me_sel.png'
                     }
-                ]
+                ],
+                
 			}
 		},
         methods: {
@@ -112,12 +129,13 @@
         onLoad: function(msg) {
             
             page = this;
-            qqmapsdk = new QQMapWX({
-                        key: 'PQGBZ-DGOKX-2GC4U-T66D3-ZKKHQ-F5BXH'
-                    });
+            console.log(this)
+            console.log(page);
+
             mapContext = wx.createMapContext('map', page);
         },
         onShow: function() {
+            
             page.setCurrentLocation();
         }
 	}
@@ -125,12 +143,22 @@
 
 <style>
     
-    map {
-        position: absolute;
-        z-index: 998;
+    /* map {
+        z-index: 0;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
     }
+
+    #newOrderTabBar {
+        z-index: 1;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }    */
+
+
+    
 </style>

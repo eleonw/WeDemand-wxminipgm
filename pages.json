@@ -13,6 +13,15 @@
         ,{
             "path" : "pages/makeOrder/makeOrder",
             "style" : {
+            }
+        }
+        ,{
+            "path" : "pages/componentTest/componentTest",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/makeOrder/addressForm/addressForm",
+            "style" : {
                 "navigationStyle":"custom"
             }
         }
@@ -21,6 +30,6 @@
 		"navigationBarTextStyle": "#f1faee",
 		"navigationBarTitleText": "微叮当",
 		"navigationBarBackgroundColor": "#457b9d",
-		"backgroundColor": "#f1faee"
+		"backgroundColor": "#F8F8F8"
 	}
 }

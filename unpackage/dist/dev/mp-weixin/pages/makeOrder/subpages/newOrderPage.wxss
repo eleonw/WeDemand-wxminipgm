@@ -1,0 +1,71 @@
+
+.page.data-v-c7de9e6e {
+    height: 92vh;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+            justify-content: flex-end;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+}
+.map.data-v-c7de9e6e {
+    position: absolute;
+    top: -20vh;
+    left: 0;
+    width: 100vw;
+    height: 120vh;
+    z-index: 0;
+}
+.topTabBar.data-v-c7de9e6e {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background-color: var(--color-main);
+    color: white;
+}
+.aboveMap.data-v-c7de9e6e {
+    
+    z-index: 1;
+    
+    display: -webkit-box;
+    
+    display: -webkit-flex;
+    
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+            justify-content: space-between;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+            align-items: flex-start;
+}
+.locateIconContainer.data-v-c7de9e6e {
+    background-color: white;
+    border-radius: 20%;
+    width: 8vw;
+    height: 8vw;
+    box-shadow: 0 0 .2em .1em #F8F8F8;
+}
+.locateIcon.data-v-c7de9e6e {
+    width: 8vw;
+    height: 8vw;
+}
+.locationCard.data-v-c7de9e6e {
+    box-shadow: 0 0 .2em .1em #F8F8F8;
+    z-index: 1;
+    font-size: 1em;
+    -webkit-align-self: center;
+            align-self: center;
+    margin-top: 2vw;
+    margin-bottom: 3vw;
+}
+
+
+
+

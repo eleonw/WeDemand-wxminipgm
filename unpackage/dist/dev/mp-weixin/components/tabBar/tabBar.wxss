@@ -1,0 +1,76 @@
+
+@-webkit-keyframes touchItem-data-v-2d6b284b{
+from{
+        background-color: white;
+}
+to{
+        background-color: grey;
+}
+}
+@keyframes touchItem-data-v-2d6b284b{
+from{
+        background-color: white;
+}
+to{
+        background-color: grey;
+}
+}
+.tabBar.data-v-2d6b284b {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    width: 100vw;
+    height: 8vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row || nowrap;
+            flex-flow: row || nowrap;
+    -webkit-justify-content: space-around;
+            justify-content: space-around;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    
+    box-shadow: 0 0 .5vw .1vw #F8F8F8;
+}
+.icon.data-v-2d6b284b {
+    width: 3.5vh;
+    height: 3.5vh;
+}
+.tabItem.data-v-2d6b284b {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+            flex-grow: 1;
+    height: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    text-align: center;
+    font-size: 2vh;
+    
+    color: grey;
+}
+.selected.data-v-2d6b284b {
+    color: black;
+    font-weight: 600;
+    font-size: 2.1vh;
+}
+.touching.data-v-2d6b284b {
+    -webkit-animation: 1s touchItem-data-v-2d6b284b forwards;
+            animation: 1s touchItem-data-v-2d6b284b forwards;
+}
+

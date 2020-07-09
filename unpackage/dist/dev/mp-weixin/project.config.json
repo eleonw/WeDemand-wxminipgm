@@ -5,7 +5,7 @@
 	},
 	"setting": {
 		"urlCheck": true,
-		"es6": true,
+		"es6": false,
 		"enhance": false,
 		"postcss": true,
 		"preloadBackgroundData": false,
@@ -60,6 +60,13 @@
 		"miniprogram": {
 			"current": -1,
 			"list": [
+				{
+					"id": -1,
+					"name": "pages/makeOrder/addressForm/addressForm",
+					"pathName": "pages/makeOrder/addressForm/addressForm",
+					"query": "",
+					"scene": null
+				},
 				{
 					"id": -1,
 					"name": "pages/makeOrder/makeOrder",

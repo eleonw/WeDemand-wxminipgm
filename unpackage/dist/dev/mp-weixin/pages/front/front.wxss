@@ -1,0 +1,9 @@
+
+button {
+    width: 95vw;
+    position: absolute;
+    left: 2.5vw;
+    bottom: 10vh;
+}
+
+

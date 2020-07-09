@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "tab-bar": "/components/tabBar/tabBar",
+    "top-tab-bar": "/components/topTabBar/topTabBar",
+    "new-order-page": "/pages/makeOrder/subpages/newOrderPage"
+  }
+}

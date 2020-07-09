@@ -7,7 +7,11 @@ export default {
         promisify: helper.promisify
     },
     globalData: {
-        
+        colorMain: '#457b9d',
+        colorLight: '#a8dadc',
+        colorDark: '#1d3557',
+        colorBackground: '#f1faee',
+        colorContrast: '#e63946',
     },
 	onLaunch: function() {
 		console.log('App Launch');
@@ -24,6 +28,8 @@ export default {
 <style>
 /* 解决头条小程序组件内引入字体不生效的问题 */
     @import url("/common/style/common.css");
+    
+    
 
     /* #ifdef MP-TOUTIAO */
     @font-face {

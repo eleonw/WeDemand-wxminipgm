@@ -2,10 +2,25 @@
     --color-main: #457b9d;
     --color-light: #a8dadc;
     --color-dark: #1d3557;
-    --color-background: #f1faee;
+    --color-background: #f8f8f8;
+/*    --color-background: #f1faee; */
     --color-contrast: #e63946;
-    display: flex;
+    --color-divided: #f8f8f8;
     
+    background-color: var(--color-background);
+    
+    display: flex;
+    flex-flow: column nowrap; 
+    
+    height: 100vh;
+    width: 100vw;
+    
+    position: fixed;
+    left: 0;
+    top: 0;
+    
+    font-size: 35rpx;
+    letter-spacing: .2em;
 }
 
 tabBar {

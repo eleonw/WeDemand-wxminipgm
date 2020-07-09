@@ -1,6 +1,6 @@
 <template>
 	<view class="tabBar" :style="{'background-color': backgroundColor}">
-		<view v-for="item in tabItems" class="tabItem" :class="{selected: index==item.index, touching: touching==item.index}" @touchstart.stop="touchstart(item.index)" @touchend.stop="touchend(item.index)">
+		<view v-for="item in tabs" class="tabItem" :class="{selected: index==item.index, touching: touching==item.index}" @touchstart.stop="touchstart(item.index)" @touchend.stop="touchend(item.index)">
             <view >
                 <image class="icon" mode="aspectFit" :src="item.iconPath" v-if="index==item.index"></image>
                 <image class="icon" mode="aspectFit" :src="item.selectedIconPath" v-else></image>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+    
 	export default {
         name: 'tabBar',
         props: {
@@ -30,7 +31,7 @@
                 type: String,
                 default: 'black'
             },
-            tabItems: {
+            tabs: {
                 type: Array,
                 value: []
             }
@@ -44,6 +45,7 @@
         methods: {
             touchstart(index) {
                 this.touching = index;
+                
             },
             touchend(index) {
                 this.index = index;
@@ -51,7 +53,8 @@
                 this.$emit('tabchange', {index: index})
                 this.touching = null;
             }
-        }
+        },
+
 	}
 </script>
 
@@ -77,11 +80,13 @@
         justify-content: space-around;
         align-items: center;
         
+        box-shadow: 0 0 .5vw .1vw #F8F8F8;
+        
     }
     
     .icon {
-        width: 4vh;
-        height: 4vh;
+        width: 3.5vh;
+        height: 3.5vh;
     }
     
     .tabItem {
@@ -100,7 +105,7 @@
     .selected {
         color: black;
         font-weight: 600;
-        font-size: 2.2vh;
+        font-size: 2.1vh;
     }
     
     .touching {
