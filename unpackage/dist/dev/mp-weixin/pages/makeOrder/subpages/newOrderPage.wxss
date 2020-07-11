@@ -10,11 +10,21 @@
 }
 .map.data-v-c7de9e6e {
     position: absolute;
-    top: -20vh;
+    top: -10vh;
     left: 0;
     width: 100vw;
-    height: 120vh;
+    height: 110vh;
     z-index: 0;
+}
+.mapLocationIcon.data-v-c7de9e6e {
+    width: 10vw;
+    height: 10vw;
+    
+    position: absolute;
+    left: 45vw;
+    top: 45vh;
+    margin: auto;
+    z-index: 1;
 }
 .topTabBar.data-v-c7de9e6e {
     z-index: 1;

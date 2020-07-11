@@ -10,11 +10,11 @@ class Helper {
         })
     };
     static promisify(func, opt) {
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
             func({
                 ...opt,
-                success: res => resolve(res),
-                fail: err => reject(err),
+                success: function(res) {resolve(res)},
+                fail: function(err) {reject(err)},
             })
         })
     }

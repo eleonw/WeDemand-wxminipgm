@@ -1,0 +1,1 @@
+<view class="textIcon" style="{{$root.s0}}"><view class="text" style="{{$root.s1}}">{{text}}</view></view>

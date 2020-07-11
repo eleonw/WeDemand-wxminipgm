@@ -1,9 +1,9 @@
 {
     "pages": [
+        "pages/makeOrder/makeOrder",
         "pages/front/front",
         "pages/index/index",
-        "pages/makeOrder/makeOrder",
-        "pages/componentTest/componentTest",
+        "pages/test/test",
         "pages/makeOrder/addressForm/addressForm"
     ],
     "subPackages": [],
@@ -14,5 +14,5 @@
         "backgroundColor": "#F8F8F8"
     },
     "usingComponents": {},
-    "sitemapLocation": "sitemap79.json"
+    "sitemapLocation": "sitemap83.json"
 }

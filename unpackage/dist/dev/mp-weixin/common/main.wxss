@@ -36,6 +36,8 @@
     --color-contrast: #e63946;
     --color-divided: #f8f8f8;
     
+    --color-border: var(--color-background);
+    
     background-color: var(--color-background);
     
     display: -webkit-box;
@@ -60,6 +62,12 @@
 }
 tabBar {
         z-index: 999;
+}
+.borderTop {
+    border-top: .1em var(--color-border) solid;
+}
+.borderRight {
+    border-right: .1em var(--color-border) solid;
 }
 
 

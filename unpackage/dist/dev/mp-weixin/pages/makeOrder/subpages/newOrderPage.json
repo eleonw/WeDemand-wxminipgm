@@ -2,6 +2,6 @@
   "component": true,
   "usingComponents": {
     "top-tab-bar": "/components/topTabBar/topTabBar",
-    "location-card": "/components/locationCard/locationCard"
+    "address-card": "/components/addressCard/addressCard"
   }
 }
