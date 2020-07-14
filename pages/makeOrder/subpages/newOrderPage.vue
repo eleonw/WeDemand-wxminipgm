@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
         <topTabBar class="topTabBar" :tabs="tabs" v-model="tabIndex"></topTabBar>
-		<map class="map" :longitude="address1.location.longitude" :latitude="address1.location.latitude" scale="15" subkey="PQGBZ-DGOKX-2GC4U-T66D3-ZKKHQ-F5BXH" @regionchange="regionChange">
+		<map id="map" class="map" longitude="113" latitude="39" scale="15" subkey="PQGBZ-DGOKX-2GC4U-T66D3-ZKKHQ-F5BXH" @touchend="mapMove">
             <image src="../../../static/image/icon/location.png" class="mapLocationIcon" mode=""></image>
         </map>
         
@@ -9,7 +9,7 @@
             <view class="locateIconContainer" @click="locate">
                 <image class="locateIcon" src="@/static/image/icon/locate.png"></image>
             </view>
-            <addressCard class="locationCard" :single="addressCardStyle[tabIndex].single" :static="addressCardStyle[tabIndex].static" :address1="address1" :address2="address2" @address1Click="addressCardClick('address1')" @address2Click="addressCardClick('address2')" @list1Click="addressCardClick('list1')" @list2Click="addressCardClick('list2')"></addressCard>
+            <addressCard class="locationCard" :single="addressCardStyle[tabIndex].single" :static="addressCardStyle[tabIndex].static" :address1="address1" :address2="address2" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>
         </view>
         
 	</view>
@@ -18,21 +18,124 @@
 <script>
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
     import addressCard from "@/components/addressCard/addressCard.vue";
+    import addressBus from "@/common/bus/addressBus.js";
+    
+    import Location from '@/common/classes/Location.js';
+    import Address from '@/common/classes/Address.js'
     
     const app = getApp();
     let page;
-    const QQMapWX = require('@/libs/qqmap-wx-jssdk.js');
-    let qqmapsdk;
+
     let mapContext;
+    let mapLocation;
     
 	export default {
         name: 'newOrderPage',
         components: {
             topTabBar, addressCard
         },
-		data() {
-			return {
-				tabIndex: 0,
+		methods: {
+            
+			mapMove: async function() {
+                let res = await app.promisify(mapContext.getCenterLocation, null, mapContext);
+                // console.log(res);
+                page.setMapLocation(res.longitude, res.latitude);
+            },
+            
+            setMapLocation: async function(longitude, latitude) {
+                mapContext.moveToLocation({
+                    longitude: longitude,
+                    latitude: latitude
+                });
+                mapLocation.longitude = longitude;
+                mapLocation.latitude = latitude;
+                mapLocation.reverseGeocoder();
+            },
+            
+            locate: async function() {
+                let res;
+                try {
+                    res = await uni.getLocation();
+                } catch(e) {
+                    console.log(e)
+                    uni.showToast({
+                        title: '定位失败，请手动定位',
+                        icon: 'none'
+                    });
+                    return;
+                };
+                mapContext.moveToLocation({
+                    longitude: res[1].longitude,
+                    latitude: res[1].latitude,
+                });
+                page.setMapLocation(res[1].longitude, res[1].latitude);
+            },
+            
+            addressCardClick: function(msg) {
+                console.log(msg);
+                
+                addressBus.$on('sendAddress', res => {
+                    if (res.completed) {
+                        page['address' + msg.index] = res.address;
+                    }
+                    addressBus.$off('sendAddress');
+                })
+                
+                if (msg.list) {
+                    console.log('list');
+                    uni.navigateTo({
+                        url: './addressBook/addressBook',
+                    })
+                } else {
+                    console.log('not list')
+                    let title;
+                    let location = 'null'
+                    
+                    if (msg.index == 1) {
+                        location = JSON.stringify(page.address1.location);
+                    }
+
+                    switch (page.tabIndex) {
+                        case 0:
+                            title = msg.index==1?'发件地址':'送件地址';
+                            break;
+                        case 1:
+                            title = msg.index==1?'取件地址':'派件地址';
+                            break;
+                        case 2:
+                            title = '派送地址';
+                            break;
+                        case 3:
+                            title = "服务地址";
+                            break;
+                         default:
+                            null;
+                    }
+                    uni.navigateTo({
+                        url: './addressForm/addressForm?title=' + title + '&location=' + location,
+                        fail: e => {
+                            console.log(e)
+                        }
+                    })
+                }
+                
+                
+            },
+            
+		},
+        created: function(e) {
+            page = this;
+            mapContext = wx.createMapContext('map', page);
+            mapLocation = page.address1.location;
+        },
+        beforeMount: async function(e) {
+            page.locate();
+        },
+        data() {
+        	return {
+                longitude: 113,
+                latitude: 40,
+        		tabIndex: 0,
                 tabs: [
                     {
                         index: 0,
@@ -106,104 +209,10 @@
                         
                     }
                 ],
-                address1: {
-                    location: {
-                        address: '',
-                        name: '',
-                        longitude: 113,
-                        latitude: 40,
-                        extra: '',
-                    },
-                    name: '',
-                    tel: '',
-                },
-                address2: {
-                    location: {
-                        address: '',
-                        name: '',
-                        longitude: 0,
-                        latitude: 0,
-                        extra: '',
-                    },
-                    name: '',
-                    tel: '',
-                }
-			}
-		},
-		methods: {
-			regionChange: function() {
-                
-            },
-            locate: async function() {
-                let newLocation = {};
-                
-                let res = await uni.getLocation();
-                console.log(res);
-                
-                page.address1.location.longitude = res[1].longitude;
-                page.address1.location.latitude = res[1].latitude;
-                
-                res = await new Promise((resolve, reject) => {
-                    qqmapsdk.reverseGeocoder({
-                        locatition: {
-                            longitude: page.address1.location.longitude, 
-                            latitude: page.address1.location.latitude,
-                        },
-                        success: (res, data) => resolve(data),
-                        fail: err => reject(err),
-                    })
-                })
-                
-                page.address1.location.address = res.reverseGeocoderSimplify.city + res.reverseGeocoderSimplify.district + res.reverseGeocoderSimplify.street_number;
-                page.address1.location.name =res.reverseGeocoderSimplify.recommend;
-                
-                console.log(page.address1);
-                
-                // page.address1.address = 
-                // uni.getLocation().then(res => {
-                //     newLocation = {
-                //         longitude: res[1].longitude,
-                //         latitude: res[1].latitude
-                //     }
-                    
-                //     console.log(newLocation);
-                //     console.log(qqmapsdk);
-                    
-                    
-                //    qqmapsdk.reverseGeocoder({
-                //         location: {
-                //             longitude: newLocation.longitude,
-                //             latitude: newLocation.latitude,
-                //         },
-                        
-                //         success: res => {
-                //             console.log(res)
-                //         },
-                //         fail: err => {
-                //             console.log(err)
-                //         },
-                        
-                //     })
-  
-
-                    
-                    // console.log(res)
-          
-            },
-            addressCardClick: function(msg) {
-                console.log(msg);
+                address1: new Address(),
+                address2: new Address(),	
             }
-		},
-        created: function(e) {
-            page = this;
-            qqmapsdk = new QQMapWX({
-                key: "PQGBZ-DGOKX-2GC4U-T66D3-ZKKHQ-F5BXH"
-            });
-            mapContext = uni.createMapContext('map', this);
         },
-        beforeMount: function(e) {
-            page.locate();
-        }
 	}
 </script>
 

@@ -91,24 +91,7 @@
                 }
             },
             setCurrentLocation() {
-                uni.getLocation({type: 'gcj02'}).then(res => {
-                    console.log('getLocation');
-                    page.location.longitude = res[1].longitude;
-                    page.location.latitude = res[1].latitude;
-
-                    console.log(page.location)
-                    console.log(res)
-                }).then(() => {
-                    mapContext.moveToLocation({
-                        longitude: page.location.longitude,
-                        latitude: page.location.latitude
-                    });
-                }).catch(e => {
-                    uni.showToast({
-                        title: '定位失败，请手动定位',
-                        icon: 'none',
-                    })
-                }) 
+                
             },
             mapUpdated: function() {
                 console.log(page.location);

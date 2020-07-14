@@ -26,6 +26,10 @@
                 "navigationStyle":"custom"
             }
         }
+        ,{
+            "path" : "pages/makeOrder/addressBook/addressBook",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#f1faee",

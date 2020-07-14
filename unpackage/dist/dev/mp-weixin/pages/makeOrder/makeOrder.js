@@ -102,7 +102,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   tabBar: function() {
-    return __webpack_require__.e(/*! import() | components/tabBar/tabBar */ "components/tabBar/tabBar").then(__webpack_require__.bind(null, /*! @/components/tabBar/tabBar.vue */ 53))
+    return __webpack_require__.e(/*! import() | components/tabBar/tabBar */ "components/tabBar/tabBar").then(__webpack_require__.bind(null, /*! @/components/tabBar/tabBar.vue */ 63))
   }
 }
 var render = function() {
@@ -140,7 +140,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar/tabBar */ "components/tabBar/tabBar").then((function () {return resolve(__webpack_require__(/*! @/components/tabBar/tabBar.vue */ 53));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var topTabBar = function topTabBar() {__webpack_require__.e(/*! require.ensure | components/topTabBar/topTabBar */ "components/topTabBar/topTabBar").then((function () {return resolve(__webpack_require__(/*! @/components/topTabBar/topTabBar.vue */ 60));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var newOrderPage = function newOrderPage() {Promise.all(/*! require.ensure | pages/makeOrder/subpages/newOrderPage */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/makeOrder/subpages/newOrderPage")]).then((function () {return resolve(__webpack_require__(/*! ./subpages/newOrderPage.vue */ 67));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar/tabBar */ "components/tabBar/tabBar").then((function () {return resolve(__webpack_require__(/*! @/components/tabBar/tabBar.vue */ 63));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var topTabBar = function topTabBar() {__webpack_require__.e(/*! require.ensure | components/topTabBar/topTabBar */ "components/topTabBar/topTabBar").then((function () {return resolve(__webpack_require__(/*! @/components/topTabBar/topTabBar.vue */ 70));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var newOrderPage = function newOrderPage() {Promise.all(/*! require.ensure | pages/makeOrder/subpages/newOrderPage */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/makeOrder/subpages/newOrderPage")]).then((function () {return resolve(__webpack_require__(/*! ./subpages/newOrderPage.vue */ 77));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
@@ -233,24 +233,7 @@ var app = getApp();var _default =
       }
     },
     setCurrentLocation: function setCurrentLocation() {
-      uni.getLocation({ type: 'gcj02' }).then(function (res) {
-        console.log('getLocation');
-        page.location.longitude = res[1].longitude;
-        page.location.latitude = res[1].latitude;
 
-        console.log(page.location);
-        console.log(res);
-      }).then(function () {
-        mapContext.moveToLocation({
-          longitude: page.location.longitude,
-          latitude: page.location.latitude });
-
-      }).catch(function (e) {
-        uni.showToast({
-          title: '定位失败，请手动定位',
-          icon: 'none' });
-
-      });
     },
     mapUpdated: function mapUpdated() {
       console.log(page.location);
@@ -280,7 +263,6 @@ var app = getApp();var _default =
 
     page.setCurrentLocation();
   } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 18 */

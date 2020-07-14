@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<uni-nav-bar class="navBar" left-icon="back" :title="title" shadow="true" fixed="true" statusBar="true"></uni-nav-bar>
+		<uni-nav-bar class="navBar" left-icon="back" :title="title" shadow="true" fixed="true" statusBar="true" @clickLeft="clickBack"></uni-nav-bar>
         <view class="form">
             
             <view class="item" @click="chooseLocation">
@@ -8,7 +8,7 @@
                 
             
                 <view class="itemMain">
-                    <textarea class="chooseLocation" disabled="true" :value="location.name==''?location.address:location.name" placeholder="点击选择地址" auto-height="true"></textarea>
+                    <textarea class="chooseLocation" disabled="true" :value="address.location.name==''?address.location.address:address.location.name" placeholder="点击选择地址" auto-height="true"></textarea>
                     <uni-icons type="forward"></uni-icons>
                 </view>
             </view>
@@ -19,7 +19,7 @@
 
 
                 <view class="itemMain">
-                    <input placeholder="楼层门牌号" maxlength="20" type="text" v-model="loacationDetail"></input>
+                    <input placeholder="楼层门牌号" maxlength="20" type="text" v-model="address.location.extra"></input>
                 </view>
             </view>
             
@@ -28,13 +28,13 @@
                 <uni-icons class="itemIcon" type="person"></uni-icons>
             
                 <view class="itemMain">
-                    <input class="name" placeholder="姓名或昵称" maxlength="10" type="text" v-model="name"></input>
+                    <input class="name" placeholder="姓名或昵称" maxlength="10" type="text" v-model="address.name"></input>
                     <radio-group>
                         <label class="radio">
-                            <radio class="radio" value="0" :checked="gender==0" :color="colorMain"></radio><text>男士</text>
+                            <radio class="radio" value="0" :checked="address.gender==0" :color="colorMain"></radio><text>男士</text>
                         </label>
                         <label class="radio">
-                            <radio class="radio" value="1" :checked="gender==1" :color="colorMain"></radio><text>女士</text>
+                            <radio class="radio" value="1" :checked="address.gender==1" :color="colorMain"></radio><text>女士</text>
                         </label>
                     </radio-group>
                 </view>
@@ -45,7 +45,7 @@
                 <uni-icons class="itemIcon" type="phone"></uni-icons>
             
                 <view class="itemMain">
-                    <input placeholder="联系电话" type="number" maxlength="11" v-model="tel"></input>
+                    <input placeholder="联系电话" type="number" maxlength="11" v-model="address.tel"></input>
                 </view>
             </view>
             
@@ -62,6 +62,8 @@
 <script>
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
+    import Location from '@/common/classes/Location.js';
+    import Address from '@/common/classes/Address.js';
     
     let page;
     const app = getApp();
@@ -74,26 +76,39 @@
 			return {
                 title: '地址信息',
                 colorMain: '',
-                location: {},
-                locationDetail: '',
-				name: '',
-                gender: 0,
-                tel: '',
+                address: null,
 			}
 		},
 		methods: {
+            clickBack: function() {
+                uni.showModal({
+                    title: '提示',
+                    content: '是否放弃此次编辑？',
+                    confirmText: '确认',
+                    cancelText: '取消',
+                    complete: (res) => {
+                        if (res.confirm) {
+                            uni.navigateBack();
+                        }
+                    }
+                    
+                })  
+            },
 			chooseLocation: async function() {
                 try {
-                    let res = await uni.chooseLocation();
-                    page.location = {
-                        latitude: res[1].latitude,
-                        longitude: res[1].longitude,
-                        name: res[1].name,
-                        address: res[1].address
-                    }
-                    console.log(res)
-                    console.log([page.location])
+                    const argument = {
+                        latitude: undefined,
+                        longitude: undefined,
+                    };
+                    // if (page.address.location.longitude) {
+                    //     argument.longitude = page.address.location.longitude;
+                    //     argument.latitude = page.address.location.latitude;
+                    // }
+                    let res = await uni.chooseLocation(argument);
+                    page.location = new Location(res[1].longitude, res[1].latitude, res[1].address, res[1].name)
+                    console.log(res);
                 } catch(e) {
+                    console.log(e)
                     uni.showToast({
                         title: '地址选择失败，请重新尝试',
                         icon: 'none'
@@ -124,6 +139,17 @@
 
             page.title = opt.title;
             page.colorMain = app.globalData.colorMain;
+            
+            const location = JSON.parse(opt.location)
+            
+ 
+            if (location) {
+                Object.setPrototypeOf(location, Location)
+                page.address = new Address(location);
+            } else {
+                page.address = new Address();
+            }
+            
         }
 	}
 </script>

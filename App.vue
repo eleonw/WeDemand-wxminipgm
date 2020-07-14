@@ -1,10 +1,9 @@
 <script>
-import {Helper as helper} from '@/common/helper.js';
+import * as Helper from '@/common/helper.js';
     
 export default {
     methods: {
-        wx: helper.wx,
-        promisify: helper.promisify
+        promisify: Helper.promisify
     },
     globalData: {
         colorMain: '#457b9d',
@@ -12,6 +11,8 @@ export default {
         colorDark: '#1d3557',
         colorBackground: '#f1faee',
         colorContrast: '#e63946',
+        
+        
     },
 	onLaunch: function() {
 		console.log('App Launch');
