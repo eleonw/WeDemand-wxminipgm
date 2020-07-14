@@ -201,6 +201,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+var _addressBus = _interopRequireDefault(__webpack_require__(/*! @/common/bus/addressBus.js */ 82));
+
 var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 51));
 var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 54));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 90));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
@@ -215,7 +218,8 @@ var app = getApp();var _default =
     return {
       title: '地址信息',
       colorMain: '',
-      address: null };
+      address: null,
+      save: false };
 
   },
   methods: {
@@ -244,33 +248,53 @@ var app = getApp();var _default =
                 //     argument.latitude = page.address.location.latitude;
                 // }
                 _context.next = 4;return uni.chooseLocation(argument);case 4:res = _context.sent;
-                page.location = new _Location.default(res[1].longitude, res[1].latitude, res[1].address, res[1].name);
-                console.log(res);_context.next = 13;break;case 9:_context.prev = 9;_context.t0 = _context["catch"](0);
+                page.address.location = new _Location.default(res[1].longitude, res[1].latitude, res[1].address, res[1].name);_context.next = 12;break;case 8:_context.prev = 8;_context.t0 = _context["catch"](0);
 
                 console.log(_context.t0);
                 uni.showToast({
                   title: '地址选择失败，请重新尝试',
-                  icon: 'none' });case 13:
+                  icon: 'none' });case 12:
 
 
 
-                console.log(location);case 14:case "end":return _context.stop();}}}, _callee, null, [[0, 9]]);}));function chooseLocation() {return _chooseLocation.apply(this, arguments);}return chooseLocation;}(),
+                console.log(location);case 13:case "end":return _context.stop();}}}, _callee, null, [[0, 8]]);}));function chooseLocation() {return _chooseLocation.apply(this, arguments);}return chooseLocation;}(),
+
+
+    sexChange: function sexChange(e) {
+      page.address.sex = e.detail.value;
+    },
 
     confirm: function confirm() {
-      uni.showModal({
-        content: '是否保存地址到地址簿',
-        confirmText: '是',
-        cancelText: '否',
-        success: function () {var _success = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
-                      uni.showToast({
-                        title: '保存了' }));case 2:_context2.next = 4;return (
 
-                      uni.showToast({
-                        title: '假装回去了' }));case 4:case "end":return _context2.stop();}}}, _callee2);}));function success() {return _success.apply(this, arguments);}return success;}() });
+      var notice;
+      if (!page.address.location.isValid()) {
+        notice = '请选择地址';
+      } else if (!page.address.location.hasDetail()) {
+        notice = '请填写地址详情';
+      } else if (!page.address.hasName()) {
+        notice = '请填写联系人姓名或昵称';
+      } else if (!page.address.hasSex()) {
+        notice = '请选择联系人性别（用于称呼）';
+      } else if (!page.address.hasValidTel()) {
+        notice = '请填写正确联系方式';
+      }
 
+      if (notice) {
+        uni.showToast({
+          icon: 'none',
+          title: notice });
 
+      } else {
+        console.log('emit sendAddress');
+        _addressBus.default.$emit('sendAddress', {
+          formCompleted: true,
+          address: page.address });
 
-
+        if (page.save) {
+          page.saveToAddressBook();
+        }
+        uni.navigateBack();
+      }
     } },
 
   onLoad: function onLoad(opt) {
@@ -283,7 +307,7 @@ var app = getApp();var _default =
 
 
     if (location) {
-      Object.setPrototypeOf(location, _Location.default);
+      Object.setPrototypeOf(location, _Location.default.prototype);
       page.address = new _Address.default(location);
     } else {
       page.address = new _Address.default();

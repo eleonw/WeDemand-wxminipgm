@@ -141,6 +141,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _addressBus = _interopRequireDefault(__webpack_require__(/*! @/common/bus/addressBus.js */ 82));
 
 var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 51));
@@ -198,7 +199,9 @@ var mapLocation;var _default =
       console.log(msg);
 
       _addressBus.default.$on('sendAddress', function (res) {
-        if (res.completed) {
+        console.log('receive sendAddress');
+        console.log(res);
+        if (res.formCompleted) {
           page['address' + msg.index] = res.address;
         }
         _addressBus.default.$off('sendAddress');
@@ -248,7 +251,7 @@ var mapLocation;var _default =
 
   created: function created(e) {
     page = this;
-    mapContext = wx.createMapContext('map', page);
+    mapContext = uni.createMapContext('map', page);
     mapLocation = page.address1.location;
   },
   beforeMount: function () {var _beforeMount = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(e) {return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:

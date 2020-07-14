@@ -19,7 +19,7 @@
 
 
                 <view class="itemMain">
-                    <input placeholder="楼层门牌号" maxlength="20" type="text" v-model="address.location.extra"></input>
+                    <input placeholder="楼层门牌号" maxlength="20" type="text" v-model="address.location.detail"></input>
                 </view>
             </view>
             
@@ -29,12 +29,12 @@
             
                 <view class="itemMain">
                     <input class="name" placeholder="姓名或昵称" maxlength="10" type="text" v-model="address.name"></input>
-                    <radio-group>
+                    <radio-group @change="sexChange">
                         <label class="radio">
-                            <radio class="radio" value="0" :checked="address.gender==0" :color="colorMain"></radio><text>男士</text>
+                            <radio class="radio" value="0" :checked="address.sex==0" :color="colorMain"></radio><text>男士</text>
                         </label>
                         <label class="radio">
-                            <radio class="radio" value="1" :checked="address.gender==1" :color="colorMain"></radio><text>女士</text>
+                            <radio class="radio" value="1" :checked="address.sex==1" :color="colorMain"></radio><text>女士</text>
                         </label>
                     </radio-group>
                 </view>
@@ -62,6 +62,9 @@
 <script>
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
+    
+    import addressBus from "@/common/bus/addressBus.js";
+    
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';
     
@@ -77,6 +80,7 @@
                 title: '地址信息',
                 colorMain: '',
                 address: null,
+                save: false,
 			}
 		},
 		methods: {
@@ -105,8 +109,7 @@
                     //     argument.latitude = page.address.location.latitude;
                     // }
                     let res = await uni.chooseLocation(argument);
-                    page.location = new Location(res[1].longitude, res[1].latitude, res[1].address, res[1].name)
-                    console.log(res);
+                    page.address.location = new Location(res[1].longitude, res[1].latitude, res[1].address, res[1].name)
                 } catch(e) {
                     console.log(e)
                     uni.showToast({
@@ -117,21 +120,42 @@
                 
                 console.log(location)
             },
+            
+            sexChange: function(e) {
+                page.address.sex = e.detail.value;
+            },
+            
             confirm: function() {
-                uni.showModal({
-                    content: '是否保存地址到地址簿',
-                    confirmText: '是',
-                    cancelText: '否',
-                    success: async function() {
-                        await uni.showToast({
-                            title: '保存了',
-                        })
-                        await uni.showToast({
-                            title: '假装回去了'
-                        })
-                    },
-   
-                })
+                
+                let notice;
+                if (!page.address.location.isValid()) {
+                    notice = '请选择地址';
+                } else if (!page.address.location.hasDetail()) {
+                    notice = '请填写地址详情';
+                } else if (!page.address.hasName()) {
+                    notice = '请填写联系人姓名或昵称';
+                } else if (!page.address.hasSex()) {
+                    notice = '请选择联系人性别（用于称呼）';
+                } else if (!page.address.hasValidTel()) {
+                    notice = '请填写正确联系方式';
+                }
+                
+                if (notice) {
+                    uni.showToast({
+                        icon: 'none',
+                        title: notice,
+                    })
+                } else {
+                    console.log('emit sendAddress')
+                    addressBus.$emit('sendAddress', {
+                        formCompleted: true,
+                        address: page.address
+                    })
+                    if (page.save) {
+                        page.saveToAddressBook()
+                    }
+                    uni.navigateBack();
+                }
             }
 		},
         onLoad: function(opt) {
@@ -144,7 +168,7 @@
             
  
             if (location) {
-                Object.setPrototypeOf(location, Location)
+                Object.setPrototypeOf(location, Location.prototype)
                 page.address = new Address(location);
             } else {
                 page.address = new Address();

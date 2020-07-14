@@ -757,7 +757,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7367,7 +7367,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7388,14 +7388,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7471,7 +7471,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8741,12 +8741,12 @@ var qqmapsdk = new QQMapWX({
 
 
 Location =
-function Location() {var longitude = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;var latitude = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;var address = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';var name = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';var extra = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';var parse = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;_classCallCheck(this, Location);
+function Location() {var longitude = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;var latitude = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;var address = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';var name = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';var detail = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';var parse = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;_classCallCheck(this, Location);
   this.longitude = longitude;
   this.latitude = latitude;
   this.address = address;
   this.name = name;
-  this.extra = extra;
+  this.detail = detail;
 
   if (parse) {
     this.reverseGeocoder();
@@ -8765,7 +8765,7 @@ Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__
 
           this.name = '地址解析失败，请重试';
           this.address = '';
-          this.extra = '';
+          this.detail = '';
           console.log('reverseGeocoder fail:');
           console.log(_context.t0);return _context.abrupt("return");case 16:
 
@@ -8775,8 +8775,16 @@ Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__
 
           this.address = component.city + component.district + component.street_number;
           this.name = res.result.formatted_addresses.recommend;
-          this.extra = '';case 20:case "end":return _context.stop();}}}, _callee, this, [[1, 8]]);}));
+          this.detail = '';case 20:case "end":return _context.stop();}}}, _callee, this, [[1, 8]]);}));
 
+
+Location.prototype.isValid = function () {
+  return this.longitude && this.latitude;
+};
+
+Location.prototype.hasDetail = function () {
+  return this.detail && this.detail != '';
+};
 
 Location.defaultLocation = new Location(116.347468, 39.981617, '北京市海淀区学院路37号', '北京航空航天大学');var _default =
 
@@ -9939,27 +9947,28 @@ module.exports = QQMapWX;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 51));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 51));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
 
-Address = /*#__PURE__*/function () {
-  function Address() {var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _Location.default();var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';var sex = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;var tel = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';_classCallCheck(this, Address);
-    this.location = location;
-    this.name = name;
-    this.sex = sex;
-    this.tel = tel;
-  }_createClass(Address, [{ key: "hasLocation", value: function hasLocation()
+Address =
+function Address() {var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _Location.default();var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';var sex = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;var tel = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';_classCallCheck(this, Address);
+  this.location = location;
+  this.name = name;
+  this.sex = sex;
+  this.tel = tel;
+};exports.default = Address;
+;
 
-    {
-      return this.location != null;
-    } }, { key: "hasName", value: function hasName()
+Address.prototype.hasName = function () {
+  return this.name && this.name != '';
+};
 
-    {
-      return this.name != '';
-    } }, { key: "hasTel", value: function hasTel()
+Address.prototype.hasSex = function () {
+  return this.sex == 0 || this.sex == 1;
+};
 
-    {
-      return this.tel != '';
-    } }]);return Address;}();exports.default = Address;
+Address.prototype.hasValidTel = function () {
+  return this.tel && this.tel != '' && this.tel.length == 11 && !isNaN(Number(this.tel));
+};
 
 /***/ }),
 

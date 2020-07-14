@@ -7,16 +7,16 @@ export default class Address {
         this.sex = sex;
         this.tel = tel;
     }
-    
-    hasLocation() {
-        return this.location != null;
-    }
-    
-    hasName() {
-        return this.name != '';
-    }
-    
-    hasTel() {
-        return this.tel != '';
-    }
-}
+};
+
+Address.prototype.hasName = function() {
+    return this.name && (this.name != '');
+};
+
+Address.prototype.hasSex = function() {
+    return this.sex == 0 || this.sex == 1;
+};
+
+Address.prototype.hasValidTel =  function() {
+    return this.tel && (this.tel != '') && (this.tel.length) == 11 && !isNaN(Number(this.tel));
+};

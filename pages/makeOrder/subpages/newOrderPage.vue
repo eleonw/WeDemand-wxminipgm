@@ -18,6 +18,7 @@
 <script>
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
     import addressCard from "@/components/addressCard/addressCard.vue";
+    
     import addressBus from "@/common/bus/addressBus.js";
     
     import Location from '@/common/classes/Location.js';
@@ -75,7 +76,9 @@
                 console.log(msg);
                 
                 addressBus.$on('sendAddress', res => {
-                    if (res.completed) {
+                    console.log('receive sendAddress')
+                    console.log(res);
+                    if (res.formCompleted) {
                         page['address' + msg.index] = res.address;
                     }
                     addressBus.$off('sendAddress');
@@ -125,7 +128,7 @@
 		},
         created: function(e) {
             page = this;
-            mapContext = wx.createMapContext('map', page);
+            mapContext = uni.createMapContext('map', page);
             mapLocation = page.address1.location;
         },
         beforeMount: async function(e) {

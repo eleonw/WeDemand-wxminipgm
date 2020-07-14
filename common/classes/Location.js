@@ -8,12 +8,12 @@ const qqmapsdk = new QQMapWX({
     });
 
 class Location {
-    constructor(longitude=undefined, latitude=undefined, address='', name='', extra='', parse=false) {
+    constructor(longitude=undefined, latitude=undefined, address='', name='', detail='', parse=false) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
         this.name = name;
-        this.extra = extra;
+        this.detail = detail;
         
         if (parse) {
             this.reverseGeocoder();
@@ -32,7 +32,7 @@ Location.prototype.reverseGeocoder = async function() {
     } catch(e) {
         this.name = '地址解析失败，请重试';
         this.address = '';
-        this.extra = '';
+        this.detail = '';
         console.log('reverseGeocoder fail:');
         console.log(e);
         return;
@@ -42,7 +42,15 @@ Location.prototype.reverseGeocoder = async function() {
     
     this.address = component.city + component.district + component.street_number;
     this.name = res.result.formatted_addresses.recommend;
-    this.extra = '';
+    this.detail = '';
+}
+
+Location.prototype.isValid = function() {
+    return this.longitude && this.latitude;
+}
+
+Location.prototype.hasDetail = function() {
+    return this.detail && (this.detail != '');
 }
 
 Location.defaultLocation = new Location(116.347468, 39.981617, '北京市海淀区学院路37号', '北京航空航天大学');

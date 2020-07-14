@@ -4,7 +4,7 @@
             <textIcon class="itemIcon" :text="static.from.text" :backgroundColor="static.from.color" color="white" diameter="1.2em"></textIcon>
             <view class="itemMain">
                 <view class="itemMainDtl borderRight" @click="this.$emit('address1Click')">
-                    <textarea :value="address1.location.name==''?address1.location.address:address1.location.name + address1.location.extra" class="itemMainDtlLocation" disabled="true" :placeholder="static.from.placeholder"  auto-height="true"></textarea>
+                    <textarea :value="address1.location.name==''?address1.location.address:address1.location.name + address1.location.detail" class="itemMainDtlLocation" disabled="true" :placeholder="static.from.placeholder"  auto-height="true"></textarea>
                     <view class="itemMainDtlContact" v-if="address1.name!=''">
                         {{address1.name}} {{address1.tel}}
                     </view>
@@ -18,7 +18,7 @@
             <textIcon class="itemIcon" :text="static.to.text" :backgroundColor="static.to.color" color="white" diameter="1.2em"></textIcon>
             <view class="itemMain borderTop">
                 <view class="itemMainDtl borderRight" @click="this.$emit('address2Click')">
-                    <textarea :value="address2.location.name==''?address2.location.address:address2.location.name + address2.location.extra" class="itemMainDtlLocation" disabled="true" :placeholder="static.to.placeholder" auto-height="true"></textarea>
+                    <textarea :value="address2.location.name==''?address2.location.address:address2.location.name + address2.location.detail" class="itemMainDtlLocation" disabled="true" :placeholder="static.to.placeholder" auto-height="true"></textarea>
                     <view class="itemMainDtlContact" v-if="address2.name!=''">
                         {{address2.name}} {{address2.tel}}
                     </view>
