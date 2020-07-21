@@ -99,9 +99,9 @@ var Helper = _interopRequireWildcard(__webpack_require__(/*! @/common/helper.js 
     colorLight: '#a8dadc',
     colorDark: '#1d3557',
     colorBackground: '#f1faee',
-    colorContrast: '#e63946' },
+    colorContrast: '#e63946',
 
-
+    dev: true },
 
   onLaunch: function onLaunch() {
     console.log('App Launch');

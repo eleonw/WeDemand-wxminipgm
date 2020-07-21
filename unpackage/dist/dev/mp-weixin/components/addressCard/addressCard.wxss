@@ -14,10 +14,10 @@
         -webkit-box-align: center;
         -webkit-align-items: center;
                 align-items: center;
-
         width: 90vw;
 
         border-radius: 5vw;
+        box-shadow: 0 0 .2em .1em #F8F8F8;
 
         line-height: 3em;
 }

@@ -6,12 +6,12 @@
         </map>
         
         <view class="aboveMap">
-            <view class="locateIconContainer" @click="locate">
+            <view class="locateIconContainer shadow" @click="locate">
                 <image class="locateIcon" src="@/static/image/icon/locate.png"></image>
             </view>
             <addressCard class="locationCard" :single="addressCardStyle[tabIndex].single" :static="addressCardStyle[tabIndex].static" :address1="address1" :address2="address2" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>
         </view>
-        
+        </movable-area>
 	</view>
 </template>
 
@@ -80,6 +80,7 @@
                     console.log(res);
                     if (res.formCompleted) {
                         page['address' + msg.index] = res.address;
+                        page['address' + msg.index + 'Completed'] = true;
                     }
                     addressBus.$off('sendAddress');
                 })
@@ -129,11 +130,19 @@
         created: function(e) {
             page = this;
             mapContext = uni.createMapContext('map', page);
-            mapLocation = page.address1.location;
         },
+        
         beforeMount: async function(e) {
+    
+            page.address1Completed = false;
+            page.address2Completed = false;
+            page.address1 = new Address();
+            page.address2 = new Address();
+            mapLocation = page.address1.location;
+            
             page.locate();
         },
+        
         data() {
         	return {
                 longitude: 113,
@@ -212,8 +221,10 @@
                         
                     }
                 ],
-                address1: new Address(),
-                address2: new Address(),	
+                address1: null,
+                address2: null,
+                address1Completed: false,
+                address2Completed: false,
             }
         },
 	}
@@ -223,8 +234,7 @@
     
     .page {
         height: 92vh;
-        justify-content: flex-end;
-        align-items: center;
+        
     }
     
     .map {
@@ -242,7 +252,7 @@
         
         position: absolute;
         left: 45vw;
-        top: 45vh;
+        bottom: 55vh;
         margin: auto;
         z-index: 1;
     }
@@ -258,22 +268,27 @@
     }
     
     .aboveMap {
-        
         z-index: 1;
+        width: 100%;
         
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
         
+        position: absolute;
+        left: 0;
+        bottom: 0vh;
+        
     }
     
     .locateIconContainer {
+        margin-left: 5vw;
+        
         background-color: white;
         border-radius: 20%;
         width: 8vw;
         height: 8vw;
-        box-shadow: 0 0 .2em .1em #F8F8F8;
     }
  
     .locateIcon {
@@ -282,13 +297,13 @@
     }
     
     .locationCard {
-        box-shadow: 0 0 .2em .1em #F8F8F8;
         z-index: 1;
         font-size: 1em;
         align-self: center;
         margin-top: 2vw;
         margin-bottom: 3vw;
     }
+    
     
     
     

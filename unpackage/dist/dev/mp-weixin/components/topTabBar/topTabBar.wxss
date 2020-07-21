@@ -1,7 +1,7 @@
 
 .tabBar.data-v-cf05321a {
      z-index: 998;
-     height: 2em;
+     height: 6vh;
      background-color: transparent;
      display: -webkit-box;
      display: -webkit-flex;

@@ -80,6 +80,9 @@ var components = {
   textIcon: function() {
     return __webpack_require__.e(/*! import() | components/textIcon/textIcon */ "components/textIcon/textIcon").then(__webpack_require__.bind(null, /*! @/components/textIcon/textIcon.vue */ 85))
   },
+  withPlaceholder: function() {
+    return __webpack_require__.e(/*! import() | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then(__webpack_require__.bind(null, /*! @/components/withPlaceholder/withPlaceholder.vue */ 130))
+  },
   uniIcons: function() {
     return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 97))
   }
@@ -138,7 +141,10 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var textIcon = function textIcon() {__webpack_require__.e(/*! require.ensure | components/textIcon/textIcon */ "components/textIcon/textIcon").then((function () {return resolve(__webpack_require__(/*! @/components/textIcon/textIcon.vue */ 85));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var textIcon = function textIcon() {__webpack_require__.e(/*! require.ensure | components/textIcon/textIcon */ "components/textIcon/textIcon").then((function () {return resolve(__webpack_require__(/*! @/components/textIcon/textIcon.vue */ 85));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 130));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
 
 
 
@@ -178,7 +184,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 {
   name: 'addressCard',
   components: {
-    textIcon: textIcon, uniIcons: uniIcons },
+    textIcon: textIcon, uniIcons: uniIcons, withPlaceholder: withPlaceholder },
 
   props: {
     single: {

@@ -2,6 +2,7 @@
   "component": true,
   "usingComponents": {
     "text-icon": "/components/textIcon/textIcon",
+    "with-placeholder": "/components/withPlaceholder/withPlaceholder",
     "uni-icons": "/components/uni-icons/uni-icons"
   }
 }

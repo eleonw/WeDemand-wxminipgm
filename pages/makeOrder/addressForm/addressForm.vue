@@ -8,7 +8,8 @@
                 
             
                 <view class="itemMain">
-                    <textarea class="chooseLocation" disabled="true" :value="address.location.name==''?address.location.address:address.location.name" placeholder="点击选择地址" auto-height="true"></textarea>
+                    <withPlaceholder class="chooseLocation" :value="address.location.name==''?address.location.address:address.location.name" placeholder="点击选择地址"></withPlaceholder> 
+                    <!-- <textarea class="chooseLocation" disabled="true" :value="address.location.name==''?address.location.address:address.location.name" placeholder="点击选择地址" auto-height="true"></textarea> -->
                     <uni-icons type="forward"></uni-icons>
                 </view>
             </view>
@@ -62,6 +63,7 @@
 <script>
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
+    import withPlaceholder from '@/components/withPlaceholder/withPlaceholder.vue';
     
     import addressBus from "@/common/bus/addressBus.js";
     
@@ -73,7 +75,7 @@
     
 	export default {
         components: {
-            uniNavBar, uniIcons
+            uniNavBar, uniIcons, withPlaceholder
         },
 		data() {
 			return {
@@ -128,16 +130,19 @@
             confirm: function() {
                 
                 let notice;
-                if (!page.address.location.isValid()) {
-                    notice = '请选择地址';
-                } else if (!page.address.location.hasDetail()) {
-                    notice = '请填写地址详情';
-                } else if (!page.address.hasName()) {
-                    notice = '请填写联系人姓名或昵称';
-                } else if (!page.address.hasSex()) {
-                    notice = '请选择联系人性别（用于称呼）';
-                } else if (!page.address.hasValidTel()) {
-                    notice = '请填写正确联系方式';
+                
+                if (!app.globalData.dev) {
+                   if (!page.address.location.isValid()) {
+                       notice = '请选择地址';
+                   } else if (!page.address.location.hasDetail()) {
+                       notice = '请填写地址详情';
+                   } else if (!page.address.hasName()) {
+                       notice = '请填写联系人姓名或昵称';
+                   } else if (!page.address.hasSex()) {
+                       notice = '请选择联系人性别（用于称呼）';
+                   } else if (!page.address.hasValidTel()) {
+                       notice = '请填写正确联系方式';
+                   } 
                 }
                 
                 if (notice) {

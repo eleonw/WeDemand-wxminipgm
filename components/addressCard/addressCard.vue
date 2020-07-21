@@ -4,7 +4,8 @@
             <textIcon class="itemIcon" :text="static.from.text" :backgroundColor="static.from.color" color="white" diameter="1.2em"></textIcon>
             <view class="itemMain">
                 <view class="itemMainDtl borderRight" @click="this.$emit('address1Click')">
-                    <textarea :value="address1.location.name==''?address1.location.address:address1.location.name + address1.location.detail" class="itemMainDtlLocation" disabled="true" :placeholder="static.from.placeholder"  auto-height="true"></textarea>
+                    <withPlaceholder :value="address1.location.name==''?address1.location.address:address1.location.name + address1.location.detail" class="itemMainDtlLocation" :placeholder="static.from.placeholder"></withPlaceholder>
+                    <!-- <textarea :value="address1.location.name==''?address1.location.address:address1.location.name + address1.location.detail" class="itemMainDtlLocation" disabled="true" :placeholder="static.from.placeholder"  auto-height="true"></textarea> -->
                     <view class="itemMainDtlContact" v-if="address1.name!=''">
                         {{address1.name}} {{address1.tel}}
                     </view>
@@ -18,7 +19,8 @@
             <textIcon class="itemIcon" :text="static.to.text" :backgroundColor="static.to.color" color="white" diameter="1.2em"></textIcon>
             <view class="itemMain borderTop">
                 <view class="itemMainDtl borderRight" @click="this.$emit('address2Click')">
-                    <textarea :value="address2.location.name==''?address2.location.address:address2.location.name + address2.location.detail" class="itemMainDtlLocation" disabled="true" :placeholder="static.to.placeholder" auto-height="true"></textarea>
+                    <withPlaceholder :value="address2.location.name==''?address2.location.address:address2.location.name + address2.location.detail" class="itemMainDtlLocation" :placeholder="static.to.placeholder"></withPlaceholder>
+                    <!-- <textarea :value="address2.location.name==''?address2.location.address:address2.location.name + address2.location.detail" class="itemMainDtlLocation" disabled="true" :placeholder="static.to.placeholder" auto-height="true"></textarea> -->
                     <view class="itemMainDtlContact" v-if="address2.name!=''">
                         {{address2.name}} {{address2.tel}}
                     </view>
@@ -34,11 +36,12 @@
 <script>
     import textIcon from "@/components/textIcon/textIcon.vue";
     import uniIcons from "@/components/uni-icons/uni-icons.vue";
+    import withPlaceholder from "@/components/withPlaceholder/withPlaceholder.vue";
     
 	export default {
         name: 'addressCard',
         components: {
-            textIcon, uniIcons
+            textIcon, uniIcons, withPlaceholder
         },
         props: {
             single: {
@@ -106,10 +109,10 @@
         flex-flow: column nowrap;
         justify-content: flex-start;
         align-items: center;
-
         width: 90vw;
 
         border-radius: 5vw;
+        box-shadow: 0 0 .2em .1em #F8F8F8;
 
         line-height: 3em;
         

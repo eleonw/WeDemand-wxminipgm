@@ -51,7 +51,7 @@
 
    .tabBar {
         z-index: 998;
-        height: 2em;
+        height: 6vh;
         background-color: transparent;
         display: flex;
         flex-flow: row nowrap;

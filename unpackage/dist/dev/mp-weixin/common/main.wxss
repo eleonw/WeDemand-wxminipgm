@@ -70,6 +70,9 @@ tabBar {
 .borderRight {
     border-right: .1em var(--color-border) solid;
 }
+.shadow {
+    box-shadow: 0 0 .2em .1em #F8F8F8;
+}
 
 
 

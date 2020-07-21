@@ -12,7 +12,7 @@ export default {
         colorBackground: '#f1faee',
         colorContrast: '#e63946',
         
-        
+        dev: true,
     },
 	onLaunch: function() {
 		console.log('App Launch');
