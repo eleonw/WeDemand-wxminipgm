@@ -12,17 +12,16 @@
     background-color: var(--color-background);
     
     display: flex;
-    flex-flow: column nowrap; 
+    flex-flow: column nowrap;
     
-    height: 100vh;
     width: 100vw;
-    
-    position: fixed;
-    left: 0;
-    top: 0;
     
     font-size: 35rpx;
     letter-spacing: .2em;
+}
+
+.withTabBar {
+    padding-bottom: 8vh;
 }
 
 tabBar {

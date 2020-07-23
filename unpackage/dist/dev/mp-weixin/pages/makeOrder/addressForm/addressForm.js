@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniNavBar: function() {
-    return __webpack_require__.e(/*! import() | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then(__webpack_require__.bind(null, /*! @/components/uni-nav-bar/uni-nav-bar.vue */ 90))
+    return __webpack_require__.e(/*! import() | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then(__webpack_require__.bind(null, /*! @/components/uni-nav-bar/uni-nav-bar.vue */ 108))
   },
   uniIcons: function() {
-    return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 97))
+    return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 115))
   },
   withPlaceholder: function() {
-    return __webpack_require__.e(/*! import() | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then(__webpack_require__.bind(null, /*! @/components/withPlaceholder/withPlaceholder.vue */ 130))
+    return __webpack_require__.e(/*! import() | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then(__webpack_require__.bind(null, /*! @/components/withPlaceholder/withPlaceholder.vue */ 123))
   }
 }
 var render = function() {
@@ -207,10 +207,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _addressBus = _interopRequireDefault(__webpack_require__(/*! @/common/bus/addressBus.js */ 51));
+var _address = __webpack_require__(/*! @/common/address.js */ 51);
 
-var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 52));
-var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 55));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 90));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 130));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 53));
+var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 108));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 123));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var page;
 var app = getApp();var _default =
@@ -224,7 +224,8 @@ var app = getApp();var _default =
       title: '地址信息',
       colorMain: '',
       address: null,
-      save: false };
+      save: false,
+      isFinal: null };
 
   },
   methods: {
@@ -242,27 +243,33 @@ var app = getApp();var _default =
 
 
     },
-    chooseLocation: function () {var _chooseLocation = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var argument, res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.prev = 0;
+    chooseLocation: function () {var _chooseLocation = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var argument, res, _location;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.prev = 0;
 
                 argument = {
                   latitude: undefined,
                   longitude: undefined };
 
-                // if (page.address.location.longitude) {
-                //     argument.longitude = page.address.location.longitude;
-                //     argument.latitude = page.address.location.latitude;
-                // }
-                _context.next = 4;return uni.chooseLocation(argument);case 4:res = _context.sent;
-                page.address.location = new _Location.default(res[1].longitude, res[1].latitude, res[1].address, res[1].name);_context.next = 12;break;case 8:_context.prev = 8;_context.t0 = _context["catch"](0);
+                if (page.address.location.longitude) {
+                  argument.longitude = page.address.location.longitude;
+                  argument.latitude = page.address.location.latitude;
+                }_context.next = 5;return (
+                  uni.chooseLocation(argument));case 5:res = _context.sent;
+
+                _location = page.address.location;
+                _location.longitude = res[1].longitude;
+                _location.latitude = res[1].latitude;
+                _location.address = res[1].address;
+                _location.name = res[1].name;_context.next = 17;break;case 13:_context.prev = 13;_context.t0 = _context["catch"](0);
+
 
                 console.log(_context.t0);
                 uni.showToast({
                   title: '地址选择失败，请重新尝试',
-                  icon: 'none' });case 12:
+                  icon: 'none' });case 17:
 
 
 
-                console.log(location);case 13:case "end":return _context.stop();}}}, _callee, null, [[0, 8]]);}));function chooseLocation() {return _chooseLocation.apply(this, arguments);}return chooseLocation;}(),
+                console.log(location);case 18:case "end":return _context.stop();}}}, _callee, null, [[0, 13]]);}));function chooseLocation() {return _chooseLocation.apply(this, arguments);}return chooseLocation;}(),
 
 
     sexChange: function sexChange(e) {
@@ -294,14 +301,22 @@ var app = getApp();var _default =
 
       } else {
         console.log('emit sendAddress');
-        _addressBus.default.$emit('sendAddress', {
-          formCompleted: true,
-          address: page.address });
-
+        // addressBus.$emit('sendAddress', {
+        //     formCompleted: true,
+        //     address: page.address
+        // })
         if (page.save) {
           page.saveToAddressBook();
         }
-        uni.navigateBack();
+        _address.address['address' + _address.address.current].copy(page.address);
+        _address.address['address' + _address.address.current + 'Completed'] = true;
+
+        if (!isFinal) {
+          uni.navigateBack();
+        } else {
+
+        }
+
       }
     } },
 
@@ -309,17 +324,11 @@ var app = getApp();var _default =
     page = this;
 
     page.title = opt.title;
+    page.isFinal = opt.isFinal;
     page.colorMain = app.globalData.colorMain;
 
-    var location = JSON.parse(opt.location);
-
-
-    if (location) {
-      Object.setPrototypeOf(location, _Location.default.prototype);
-      page.address = new _Address.default(location);
-    } else {
-      page.address = new _Address.default();
-    }
+    page.address = new _Address.default();
+    page.address.copy(_address.address['address' + _address.address.current]);
 
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

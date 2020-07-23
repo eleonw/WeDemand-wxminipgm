@@ -11,7 +11,6 @@
             </view>
             <addressCard class="locationCard" :single="addressCardStyle[tabIndex].single" :static="addressCardStyle[tabIndex].static" :address1="address1" :address2="address2" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>
         </view>
-        </movable-area>
 	</view>
 </template>
 
@@ -19,7 +18,7 @@
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
     import addressCard from "@/components/addressCard/addressCard.vue";
     
-    import addressBus from "@/common/bus/addressBus.js";
+    import {address} from "@/common/address.js";
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js'
@@ -75,16 +74,6 @@
             addressCardClick: function(msg) {
                 console.log(msg);
                 
-                addressBus.$on('sendAddress', res => {
-                    console.log('receive sendAddress')
-                    console.log(res);
-                    if (res.formCompleted) {
-                        page['address' + msg.index] = res.address;
-                        page['address' + msg.index + 'Completed'] = true;
-                    }
-                    addressBus.$off('sendAddress');
-                })
-                
                 if (msg.list) {
                     console.log('list');
                     uni.navigateTo({
@@ -93,54 +82,55 @@
                 } else {
                     console.log('not list')
                     let title;
+                    let isFinal = true;
                     let location = 'null'
                     
-                    if (msg.index == 1) {
-                        location = JSON.stringify(page.address1.location);
-                    }
+                    address.current = msg.index;
 
                     switch (page.tabIndex) {
                         case 0:
-                            title = msg.index==1?'发件地址':'送件地址';
+                            title = msg.index==1?'取件地址':'送件地址';
+                            if (msg.index == 1) {
+                                isFinal = false;
+                            }
                             break;
                         case 1:
-                            title = msg.index==1?'取件地址':'派件地址';
-                            break;
-                        case 2:
                             title = '派送地址';
                             break;
-                        case 3:
+                        case 2:
                             title = "服务地址";
                             break;
                          default:
                             null;
                     }
                     uni.navigateTo({
-                        url: './addressForm/addressForm?title=' + title + '&location=' + location,
+                        url: './addressForm/addressForm?title=' + title + '&isFinal' + isFinal,
                         fail: e => {
                             console.log(e)
                         }
                     })
                 }
-                
-                
             },
             
+            initialAddress: function() {
+                address.clear();
+                page.locate();
+            }
 		},
         created: function(e) {
             page = this;
             mapContext = uni.createMapContext('map', page);
+            
+            page.address1Completed = address.address1Completed;
+            page.address2Completed = address.address2Completed;
+            page.address1 = address.address1;
+            page.address2 = address.address2;
+            mapLocation = page.address1.location;
         },
         
         beforeMount: async function(e) {
-    
-            page.address1Completed = false;
-            page.address2Completed = false;
-            page.address1 = new Address();
-            page.address2 = new Address();
-            mapLocation = page.address1.location;
-            
-            page.locate();
+            console.log('mount')
+            page.initialAddress();
         },
         
         data() {
@@ -151,38 +141,18 @@
                 tabs: [
                     {
                         index: 0,
-                        text: '帮我送'
+                        text: '校园取送'
                     },
                     {
                         index: 1,
-                        text: '帮我取',
+                        text: '校园帮买',
                     },
                     {
                         index: 2,
-                        text: '帮我买'
-                    },
-                    {
-                        index: 3.,
                         text: '其他跑腿'
-                    }
+                    },
                 ],
                 addressCardStyle: [
-                    {
-                        single: false,
-                        static: {
-                            from: {
-                                color: 'green',
-                                text: '收',
-                                placeholder: '请选择收件地址'
-                            },
-                            to: {
-                                color: 'red',
-                                text: '送',
-                                placeholder: '请选择送件地址'
-                            }
-                        }
-                        
-                    },
                     {
                         single: false,
                         static: {
@@ -194,7 +164,7 @@
                             to: {
                                 color: 'red',
                                 text: '送',
-                                placeholder: '请选择派送地址'
+                                placeholder: '请选择送件地址'
                             }
                         }
                         
@@ -233,16 +203,19 @@
 <style scoped>
     
     .page {
+        position: fixed;
+        top: 0;
+        left: 0;
+
         height: 92vh;
-        
     }
     
     .map {
         position: absolute;
-        top: -10vh;
+        top: -20vh;
         left: 0;
         width: 100vw;
-        height: 110vh;
+        height: 120vh;
         z-index: 0;
     }
     
@@ -252,7 +225,7 @@
         
         position: absolute;
         left: 45vw;
-        bottom: 55vh;
+        bottom: 60vh;
         margin: auto;
         z-index: 1;
     }

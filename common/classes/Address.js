@@ -20,3 +20,11 @@ Address.prototype.hasSex = function() {
 Address.prototype.hasValidTel =  function() {
     return this.tel && (this.tel != '') && (this.tel.length) == 11 && !isNaN(Number(this.tel));
 };
+
+Address.prototype.copy = function(address) {
+    for (let item in this) {
+        this[item] = address[item];
+        this.location = new Location();
+        this.location.copy(address.location);
+    }
+}

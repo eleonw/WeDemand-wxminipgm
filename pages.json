@@ -30,6 +30,18 @@
             "path" : "pages/makeOrder/addressBook/addressBook",
             "style" : {}
         }
+        ,{
+            "path" : "pages/makeOrder/detailForms/helpDeliver",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/makeOrder/detailForms/helpBuy",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/makeOrder/detailForms/otherService",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#f1faee",

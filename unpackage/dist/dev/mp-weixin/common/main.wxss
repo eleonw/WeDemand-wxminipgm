@@ -49,17 +49,15 @@
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-flow: column nowrap;
-            flex-flow: column nowrap; 
+            flex-flow: column nowrap;
     
-    height: 100vh;
     width: 100vw;
-    
-    position: fixed;
-    left: 0;
-    top: 0;
     
     font-size: 35rpx;
     letter-spacing: .2em;
+}
+.withTabBar {
+    padding-bottom: 8vh;
 }
 tabBar {
         z-index: 999;

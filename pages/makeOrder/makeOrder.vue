@@ -11,7 +11,7 @@
         </view>
         
         
-        <view v-if="selectedTabIndex==2">
+        <view v-else-if="selectedTabIndex==2">
             page of index 2
         </view>
         

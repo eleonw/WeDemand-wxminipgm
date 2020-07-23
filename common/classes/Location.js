@@ -53,6 +53,12 @@ Location.prototype.hasDetail = function() {
     return this.detail && (this.detail != '');
 }
 
+Location.prototype.copy = function(location) {
+    for (let item in this) {
+        this[item] = location[item];
+    }
+}
+
 Location.defaultLocation = new Location(116.347468, 39.981617, '北京市海淀区学院路37号', '北京航空航天大学');
 
 export default Location;

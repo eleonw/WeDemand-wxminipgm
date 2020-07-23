@@ -65,7 +65,7 @@
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
     import withPlaceholder from '@/components/withPlaceholder/withPlaceholder.vue';
     
-    import addressBus from "@/common/bus/addressBus.js";
+    import {address} from "@/common/address.js";
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';
@@ -83,6 +83,7 @@
                 colorMain: '',
                 address: null,
                 save: false,
+                isFinal: null,
 			}
 		},
 		methods: {
@@ -106,12 +107,18 @@
                         latitude: undefined,
                         longitude: undefined,
                     };
-                    // if (page.address.location.longitude) {
-                    //     argument.longitude = page.address.location.longitude;
-                    //     argument.latitude = page.address.location.latitude;
-                    // }
+                    if (page.address.location.longitude) {
+                        argument.longitude = page.address.location.longitude;
+                        argument.latitude = page.address.location.latitude;
+                    }
                     let res = await uni.chooseLocation(argument);
-                    page.address.location = new Location(res[1].longitude, res[1].latitude, res[1].address, res[1].name)
+                    
+                    const location = page.address.location;
+                    location.longitude = res[1].longitude;
+                    location.latitude = res[1].latitude;
+                    location.address = res[1].address;
+                    location.name = res[1].name;
+                    
                 } catch(e) {
                     console.log(e)
                     uni.showToast({
@@ -152,14 +159,22 @@
                     })
                 } else {
                     console.log('emit sendAddress')
-                    addressBus.$emit('sendAddress', {
-                        formCompleted: true,
-                        address: page.address
-                    })
+                    // addressBus.$emit('sendAddress', {
+                    //     formCompleted: true,
+                    //     address: page.address
+                    // })
                     if (page.save) {
                         page.saveToAddressBook()
                     }
-                    uni.navigateBack();
+                    address['address' + address.current].copy(page.address);
+                    address['address' + address.current + 'Completed'] = true;
+                    
+                    if (!isFinal) {
+                        uni.navigateBack();
+                    } else {
+                        
+                    }
+                    
                 }
             }
 		},
@@ -167,17 +182,11 @@
             page = this;
 
             page.title = opt.title;
+            page.isFinal = opt.isFinal;
             page.colorMain = app.globalData.colorMain;
             
-            const location = JSON.parse(opt.location)
-            
- 
-            if (location) {
-                Object.setPrototypeOf(location, Location.prototype)
-                page.address = new Address(location);
-            } else {
-                page.address = new Address();
-            }
+            page.address = new Address();
+            page.address.copy(address['address' + address.current]);
             
         }
 	}

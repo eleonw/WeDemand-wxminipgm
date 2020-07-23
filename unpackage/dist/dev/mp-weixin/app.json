@@ -5,7 +5,10 @@
         "pages/index/index",
         "pages/test/test",
         "pages/makeOrder/addressForm/addressForm",
-        "pages/makeOrder/addressBook/addressBook"
+        "pages/makeOrder/addressBook/addressBook",
+        "pages/makeOrder/detailForms/helpDeliver",
+        "pages/makeOrder/detailForms/helpBuy",
+        "pages/makeOrder/detailForms/otherService"
     ],
     "subPackages": [],
     "window": {
@@ -15,5 +18,5 @@
         "backgroundColor": "#F8F8F8"
     },
     "usingComponents": {},
-    "sitemapLocation": "sitemap81.json"
+    "sitemapLocation": "sitemap53.json"
 }
