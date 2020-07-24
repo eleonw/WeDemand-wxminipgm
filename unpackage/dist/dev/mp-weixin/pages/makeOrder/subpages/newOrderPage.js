@@ -28,16 +28,17 @@
 
 
 
-var _address = __webpack_require__(/*! @/common/address.js */ 51);
+var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 54);
+var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 157));
+var _globalData = __webpack_require__(/*! @/common/globalData.js */ 156);
 
 var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 53));
-var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var topTabBar = function topTabBar() {__webpack_require__.e(/*! require.ensure | components/topTabBar/topTabBar */ "components/topTabBar/topTabBar").then((function () {return resolve(__webpack_require__(/*! @/components/topTabBar/topTabBar.vue */ 89));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | components/addressCard/addressCard */ "components/addressCard/addressCard").then((function () {return resolve(__webpack_require__(/*! @/components/addressCard/addressCard.vue */ 130));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var topTabBar = function topTabBar() {__webpack_require__.e(/*! require.ensure | components/topTabBar/topTabBar */ "components/topTabBar/topTabBar").then((function () {return resolve(__webpack_require__(/*! @/components/topTabBar/topTabBar.vue */ 89));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | components/addressCard/addressCard */ "components/addressCard/addressCard").then((function () {return resolve(__webpack_require__(/*! @/components/addressCard/addressCard.vue */ 130));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var app = getApp();
 var page;
 
-var mapContext;
-var mapLocation;var _default =
+var mapContext;var _default =
 
 {
   name: 'newOrderPage',
@@ -49,36 +50,25 @@ var mapLocation;var _default =
     mapMove: function () {var _mapMove = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                   app.promisify(mapContext.getCenterLocation, null, mapContext));case 2:res = _context.sent;
                 // console.log(res);
-                page.setMapLocation(res.longitude, res.latitude);case 4:case "end":return _context.stop();}}}, _callee);}));function mapMove() {return _mapMove.apply(this, arguments);}return mapMove;}(),
+                _shareData.default.setCurrentLocation(res.longitude, res.latitude);
+                console.log(_shareData.default.address[0].location);
+                console.log(page.address1.location);
+                console.log(page.address2.location);case 7:case "end":return _context.stop();}}}, _callee);}));function mapMove() {return _mapMove.apply(this, arguments);}return mapMove;}(),
 
 
-    setMapLocation: function () {var _setMapLocation = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(longitude, latitude) {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-                mapContext.moveToLocation({
-                  longitude: longitude,
-                  latitude: latitude });
-
-                mapLocation.longitude = longitude;
-                mapLocation.latitude = latitude;
-                mapLocation.reverseGeocoder();case 4:case "end":return _context2.stop();}}}, _callee2);}));function setMapLocation(_x, _x2) {return _setMapLocation.apply(this, arguments);}return setMapLocation;}(),
+    locate: function () {var _locate = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.prev = 0;_context2.next = 3;return (
 
 
-    locate: function () {var _locate = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var res;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.prev = 0;_context3.next = 3;return (
+                  uni.getLocation());case 3:res = _context2.sent;_context2.next = 11;break;case 6:_context2.prev = 6;_context2.t0 = _context2["catch"](0);
 
-
-                  uni.getLocation());case 3:res = _context3.sent;_context3.next = 11;break;case 6:_context3.prev = 6;_context3.t0 = _context3["catch"](0);
-
-                console.log(_context3.t0);
+                console.log(_context2.t0);
                 uni.showToast({
                   title: '定位失败，请手动定位',
-                  icon: 'none' });return _context3.abrupt("return");case 11:
+                  icon: 'none' });return _context2.abrupt("return");case 11:
 
 
                 ;
-                mapContext.moveToLocation({
-                  longitude: res[1].longitude,
-                  latitude: res[1].latitude });
-
-                page.setMapLocation(res[1].longitude, res[1].latitude);case 14:case "end":return _context3.stop();}}}, _callee3, null, [[0, 6]]);}));function locate() {return _locate.apply(this, arguments);}return locate;}(),
+                _shareData.default.setCurrentLocation(res[1].longitude, res[1].latitude);case 13:case "end":return _context2.stop();}}}, _callee2, null, [[0, 6]]);}));function locate() {return _locate.apply(this, arguments);}return locate;}(),
 
 
     addressCardClick: function addressCardClick(msg) {
@@ -90,31 +80,8 @@ var mapLocation;var _default =
           url: './addressBook/addressBook' });
 
       } else {
-        console.log('not list');
-        var title;
-        var isFinal = true;
-        var location = 'null';
-
-        _address.address.current = msg.index;
-
-        switch (page.tabIndex) {
-          case 0:
-            title = msg.index == 1 ? '取件地址' : '送件地址';
-            if (msg.index == 1) {
-              isFinal = false;
-            }
-            break;
-          case 1:
-            title = '派送地址';
-            break;
-          case 2:
-            title = "服务地址";
-            break;
-          default:
-            null;}
-
         uni.navigateTo({
-          url: './addressForm/addressForm?title=' + title + '&isFinal' + isFinal,
+          url: './addressForm/addressForm',
           fail: function fail(e) {
             console.log(e);
           } });
@@ -122,48 +89,48 @@ var mapLocation;var _default =
       }
     },
 
-    initialAddress: function initialAddress() {
-      _address.address.clear();
+    clearShareData: function clearShareData() {
+      _shareData.default.clear();
       page.locate();
     } },
 
   created: function created(e) {
     page = this;
+    page.QQ_MAP_KEY = _sensitiveData.QQ_MAP_KEY;
+    page.shareData = _shareData.default;
     mapContext = uni.createMapContext('map', page);
+    _shareData.default.setMapContext(mapContext);
 
-    page.address1Completed = _address.address.address1Completed;
-    page.address2Completed = _address.address.address2Completed;
-    page.address1 = _address.address.address1;
-    page.address2 = _address.address.address2;
-    mapLocation = page.address1.location;
+    page.address1 = _shareData.default.address[0];
+    page.address2 = _shareData.default.address[1];
   },
 
-  beforeMount: function () {var _beforeMount = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(e) {return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
+  beforeMount: function () {var _beforeMount = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(e) {return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
               console.log('mount');
-              page.initialAddress();case 2:case "end":return _context4.stop();}}}, _callee4);}));function beforeMount(_x3) {return _beforeMount.apply(this, arguments);}return beforeMount;}(),
+              page.clearShareData();case 2:case "end":return _context3.stop();}}}, _callee3);}));function beforeMount(_x) {return _beforeMount.apply(this, arguments);}return beforeMount;}(),
 
 
-  data: function data() {
+  data: function data() {var _addressCardStyle;
     return {
       longitude: 113,
       latitude: 40,
       tabIndex: 0,
       tabs: [
       {
-        index: 0,
+        index: _globalData.serviceType.HELP_DELIVER,
         text: '校园取送' },
 
       {
-        index: 1,
+        index: _globalData.serviceType.HELP_BUY,
         text: '校园帮买' },
 
       {
-        index: 2,
+        index: _globalData.serviceType.OTHERS,
         text: '其他跑腿' }],
 
 
-      addressCardStyle: [
-      {
+      addressCardStyle: (_addressCardStyle = {}, _defineProperty(_addressCardStyle,
+      _globalData.serviceType.HELP_DELIVER, {
         single: false,
         static: {
           from: {
@@ -174,37 +141,35 @@ var mapLocation;var _default =
           to: {
             color: 'red',
             text: '送',
-            placeholder: '请选择送件地址' } } },
+            placeholder: '请选择送件地址' } } }), _defineProperty(_addressCardStyle,
 
 
 
-
-      {
+      _globalData.serviceType.HELP_BUY, {
         single: true,
         static: {
           from: {
             color: 'red',
             text: '送',
-            placeholder: '请选择派送地址' } } },
+            placeholder: '请选择派送地址' } } }), _defineProperty(_addressCardStyle,
 
 
 
-      {
+      _globalData.serviceType.OTHERS, {
         single: true,
         static: {
           from: {
             color: 'red',
             text: '至',
-            placeholder: '请选择服务地址' } } }],
+            placeholder: '请选择服务地址' } } }), _addressCardStyle),
 
 
 
 
-
+      shareData: null,
+      QQ_MAP_KEY: null,
       address1: null,
-      address2: null,
-      address1Completed: false,
-      address2Completed: false };
+      address2: null };
 
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

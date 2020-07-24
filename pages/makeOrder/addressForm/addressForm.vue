@@ -65,7 +65,8 @@
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
     import withPlaceholder from '@/components/withPlaceholder/withPlaceholder.vue';
     
-    import {address} from "@/common/address.js";
+    import shareData from "./../shareData.js";
+    import { serviceType } from "@/common/globalData.js";
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';

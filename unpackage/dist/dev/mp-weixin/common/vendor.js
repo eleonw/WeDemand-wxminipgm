@@ -1835,6 +1835,96 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 
+/***/ 156:
+/*!**********************************************************!*\
+  !*** F:/code/tinyJingle/tinyJingle/common/globalData.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.serviceType = exports.color = void 0;var color = {
+  MAIN: '#457b9d',
+  LIGHT: '#a8dadc',
+  DARK: '#1d3557',
+  BACKGROUND: '#f1faee',
+  CONTRAST: '#e63946' };exports.color = color;
+
+
+var serviceType = {
+  NONE: -1,
+  HELP_DELIVER: 0,
+  HELP_BUY: 1,
+  OTHERS: 2 };exports.serviceType = serviceType;
+
+/***/ }),
+
+/***/ 157:
+/*!******************************************************************!*\
+  !*** F:/code/tinyJingle/tinyJingle/pages/makeOrder/shareData.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 28));var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));
+var _globalData = __webpack_require__(/*! @/common/globalData.js */ 156);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+
+var mapContext;
+
+var shareData = {
+  /**
+                   * serviceType用于标识当前地址信息对应的服务，与newOrderPage的tabIndex相对应，为globalData.js中定义的枚举类型
+                   */
+  serviceType: _globalData.serviceType.HELP_DELIVER,
+  address: [new _Address.default(), new _Address.default()],
+  completed: [false, false],
+  currentAddressIdx: 0,
+
+  setMapContext: function setMapContext(context) {
+    mapContext = context;
+  },
+
+  setCurrentLocation: function () {var _setCurrentLocation = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(longitude, latitude) {var currentLocation;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              mapContext.moveToLocation({
+                longitude: longitude,
+                latitude: latitude });
+
+              currentLocation = this.address[this.currentAddressIdx].location;
+              currentLocation.longitude = longitude;
+              currentLocation.latitude = latitude;_context.next = 6;return (
+                currentLocation.reverseGeocoder());case 6:case "end":return _context.stop();}}}, _callee, this);}));function setCurrentLocation(_x, _x2) {return _setCurrentLocation.apply(this, arguments);}return setCurrentLocation;}(),
+
+
+  clear: function clear() {
+    this.serviceType = _globalData.serviceType.HELP_DELIVER;
+    this.address[0] = new _Address.default();
+    this.address[1] = new _Address.default();
+    this.completed[0] = false;
+    this.completed[1] = false;
+    this.currentAddress = 0;
+  },
+
+  addressCompleted: function addressCompleted() {
+
+    switch (this.serviceType) {
+      case _globalData.serviceType.HELP_DELIVER:
+        return this.completed[0] && this.completed[1];
+      case _globalData.serviceType.HELP_BUY:
+        return this.completed[0];
+      case _globalData.serviceType.OTHERS:
+        return this.completed[0];
+      default:
+        console.log();
+        throw new Error('undefined serviceType!');}
+
+  } };var _default =
+
+
+shareData;exports.default = _default;
+
+/***/ }),
+
 /***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
@@ -8720,32 +8810,6 @@ module.exports = g;
 /***/ (function(module, exports) {
 
 
-
-/***/ }),
-
-/***/ 51:
-/*!*******************************************************!*\
-  !*** F:/code/tinyJingle/tinyJingle/common/address.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.address = void 0;var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-var address = {
-  address1: new _Address.default(),
-  address2: new _Address.default(),
-  address1Completed: false,
-  address2Completed: false,
-  current: null,
-
-  clear: function clear() {
-    this.address1 = new _Address.default();
-    this.address2 = new _Address.default();
-    address1Completed = true;
-    address2Completed = true;
-  } };exports.address = address;
 
 /***/ }),
 

@@ -207,7 +207,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _address = __webpack_require__(/*! @/common/address.js */ 51);
+var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 157));
+var _globalData = __webpack_require__(/*! @/common/globalData.js */ 156);
 
 var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 53));
 var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 108));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 123));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
@@ -308,8 +309,8 @@ var app = getApp();var _default =
         if (page.save) {
           page.saveToAddressBook();
         }
-        _address.address['address' + _address.address.current].copy(page.address);
-        _address.address['address' + _address.address.current + 'Completed'] = true;
+        address['address' + address.current].copy(page.address);
+        address['address' + address.current + 'Completed'] = true;
 
         if (!isFinal) {
           uni.navigateBack();
@@ -328,7 +329,7 @@ var app = getApp();var _default =
     page.colorMain = app.globalData.colorMain;
 
     page.address = new _Address.default();
-    page.address.copy(_address.address['address' + _address.address.current]);
+    page.address.copy(address['address' + address.current]);
 
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
-        <topTabBar class="topTabBar" :tabs="tabs" v-model="tabIndex"></topTabBar>
-		<map id="map" class="map" longitude="113" latitude="39" scale="15" subkey="PQGBZ-DGOKX-2GC4U-T66D3-ZKKHQ-F5BXH" @touchend="mapMove">
+        <topTabBar class="topTabBar" :tabs="tabs" v-model="shareData.serviceType"></topTabBar>
+		<map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" @touchend="mapMove">
             <image src="../../../static/image/icon/location.png" class="mapLocationIcon" mode=""></image>
         </map>
         
@@ -9,7 +9,7 @@
             <view class="locateIconContainer shadow" @click="locate">
                 <image class="locateIcon" src="@/static/image/icon/locate.png"></image>
             </view>
-            <addressCard class="locationCard" :single="addressCardStyle[tabIndex].single" :static="addressCardStyle[tabIndex].static" :address1="address1" :address2="address2" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>
+            <addressCard class="locationCard" :single="addressCardStyle[shareData.serviceType].single" :static="addressCardStyle[shareData.serviceType].static" :address1="shareData.address[0]" :address2="address2" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>
         </view>
 	</view>
 </template>
@@ -18,7 +18,9 @@
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
     import addressCard from "@/components/addressCard/addressCard.vue";
     
-    import {address} from "@/common/address.js";
+    import { QQ_MAP_KEY } from "@/common/sensitiveData.js";
+    import shareData from "./../shareData.js";
+    import { serviceType } from "@/common/globalData.js";
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js'
@@ -27,7 +29,6 @@
     let page;
 
     let mapContext;
-    let mapLocation;
     
 	export default {
         name: 'newOrderPage',
@@ -39,17 +40,10 @@
 			mapMove: async function() {
                 let res = await app.promisify(mapContext.getCenterLocation, null, mapContext);
                 // console.log(res);
-                page.setMapLocation(res.longitude, res.latitude);
-            },
-            
-            setMapLocation: async function(longitude, latitude) {
-                mapContext.moveToLocation({
-                    longitude: longitude,
-                    latitude: latitude
-                });
-                mapLocation.longitude = longitude;
-                mapLocation.latitude = latitude;
-                mapLocation.reverseGeocoder();
+                shareData.setCurrentLocation(res.longitude, res.latitude);
+                console.log(shareData.address[0].location)
+                console.log(page.address1.location);
+                console.log(page.address2.location)
             },
             
             locate: async function() {
@@ -64,11 +58,7 @@
                     });
                     return;
                 };
-                mapContext.moveToLocation({
-                    longitude: res[1].longitude,
-                    latitude: res[1].latitude,
-                });
-                page.setMapLocation(res[1].longitude, res[1].latitude);
+                shareData.setCurrentLocation(res[1].longitude, res[1].latitude);
             },
             
             addressCardClick: function(msg) {
@@ -80,31 +70,8 @@
                         url: './addressBook/addressBook',
                     })
                 } else {
-                    console.log('not list')
-                    let title;
-                    let isFinal = true;
-                    let location = 'null'
-                    
-                    address.current = msg.index;
-
-                    switch (page.tabIndex) {
-                        case 0:
-                            title = msg.index==1?'取件地址':'送件地址';
-                            if (msg.index == 1) {
-                                isFinal = false;
-                            }
-                            break;
-                        case 1:
-                            title = '派送地址';
-                            break;
-                        case 2:
-                            title = "服务地址";
-                            break;
-                         default:
-                            null;
-                    }
                     uni.navigateTo({
-                        url: './addressForm/addressForm?title=' + title + '&isFinal' + isFinal,
+                        url: './addressForm/addressForm',
                         fail: e => {
                             console.log(e)
                         }
@@ -112,25 +79,25 @@
                 }
             },
             
-            initialAddress: function() {
-                address.clear();
+            clearShareData: function() {
+                shareData.clear();
                 page.locate();
             }
 		},
         created: function(e) {
             page = this;
+            page.QQ_MAP_KEY = QQ_MAP_KEY;
+            page.shareData = shareData;
             mapContext = uni.createMapContext('map', page);
-            
-            page.address1Completed = address.address1Completed;
-            page.address2Completed = address.address2Completed;
-            page.address1 = address.address1;
-            page.address2 = address.address2;
-            mapLocation = page.address1.location;
+            shareData.setMapContext(mapContext);
+
+            page.address1 = shareData.address[0];
+            page.address2 = shareData.address[1];
         },
         
         beforeMount: async function(e) {
             console.log('mount')
-            page.initialAddress();
+            page.clearShareData();
         },
         
         data() {
@@ -140,20 +107,20 @@
         		tabIndex: 0,
                 tabs: [
                     {
-                        index: 0,
-                        text: '校园取送'
+                        index: serviceType.HELP_DELIVER,
+                        text: '校园取送',
                     },
                     {
-                        index: 1,
+                        index: serviceType.HELP_BUY,
                         text: '校园帮买',
                     },
                     {
-                        index: 2,
-                        text: '其他跑腿'
+                        index: serviceType.OTHERS,
+                        text: '其他跑腿',
                     },
                 ],
-                addressCardStyle: [
-                    {
+                addressCardStyle: {
+                    [serviceType.HELP_DELIVER]: {
                         single: false,
                         static: {
                             from: {
@@ -167,9 +134,8 @@
                                 placeholder: '请选择送件地址'
                             }
                         }
-                        
                     },
-                    {
+                    [serviceType.HELP_BUY]: {
                         single: true,
                         static: {
                             from: {
@@ -179,7 +145,7 @@
                             }
                         }
                     },
-                    {
+                    [serviceType.OTHERS]: {
                         single: true,
                         static: {
                             from: {
@@ -188,13 +154,12 @@
                                 placeholder: '请选择服务地址'
                             }
                         }
-                        
-                    }
-                ],
+                    },
+                },
+                shareData: null,
+                QQ_MAP_KEY: null,
                 address1: null,
                 address2: null,
-                address1Completed: false,
-                address2Completed: false,
             }
         },
 	}
@@ -276,8 +241,5 @@
         margin-top: 2vw;
         margin-bottom: 3vw;
     }
-    
-    
-    
     
 </style>
