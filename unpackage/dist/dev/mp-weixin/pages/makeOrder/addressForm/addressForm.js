@@ -211,10 +211,23 @@ var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.j
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 156);
 
 var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 53));
-var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 108));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 123));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));var _titles, _detailFormUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 108));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 123));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var page;
-var app = getApp();var _default =
+var app = getApp();
+
+var titles = (_titles = {}, _defineProperty(_titles,
+_globalData.serviceType.HELP_DELIVER, ['取件地址', '送件地址']), _defineProperty(_titles,
+_globalData.serviceType.HELP_BUY, ['送件地址']), _defineProperty(_titles,
+_globalData.serviceType.OTHERS, ['服务地址']), _titles);
+
+
+var detailFormUrls = (_detailFormUrls = {}, _defineProperty(_detailFormUrls,
+_globalData.serviceType.HELP_DELIVER, './../detailForms/helpDeliver'), _defineProperty(_detailFormUrls,
+_globalData.serviceType.HELP_BUY, './../detailForms/helpBuy'), _defineProperty(_detailFormUrls,
+_globalData.serviceType.OTHERS, './../detailForms/others'), _detailFormUrls);var _default =
+
 
 {
   components: {
@@ -225,8 +238,7 @@ var app = getApp();var _default =
       title: '地址信息',
       colorMain: '',
       address: null,
-      save: false,
-      isFinal: null };
+      save: false };
 
   },
   methods: {
@@ -301,35 +313,36 @@ var app = getApp();var _default =
           title: notice });
 
       } else {
-        console.log('emit sendAddress');
-        // addressBus.$emit('sendAddress', {
-        //     formCompleted: true,
-        //     address: page.address
-        // })
+
         if (page.save) {
           page.saveToAddressBook();
         }
-        address['address' + address.current].copy(page.address);
-        address['address' + address.current + 'Completed'] = true;
 
-        if (!isFinal) {
-          uni.navigateBack();
+        _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, page.address);
+        _vue.default.set(_shareData.default.completed, _shareData.default.currentAddressIdx, true);
+
+        if (_shareData.default.addressCompleted()) {
+          console.log('completed');
+          console.log(detailFormUrls[_shareData.default.serviceType]);
+          uni.redirectTo({
+            url: detailFormUrls[_shareData.default.serviceType] });
+
         } else {
-
+          _shareData.default.currentAddressIdx++;
+          uni.navigateBack();
         }
-
       }
     } },
 
   onLoad: function onLoad(opt) {
     page = this;
 
-    page.title = opt.title;
-    page.isFinal = opt.isFinal;
+    page.title = titles[_shareData.default.serviceType][_shareData.default.currentAddressIdx];
+
     page.colorMain = app.globalData.colorMain;
 
     page.address = new _Address.default();
-    page.address.copy(address['address' + address.current]);
+    page.address.copy(_shareData.default.address[_shareData.default.currentAddressIdx]);
 
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

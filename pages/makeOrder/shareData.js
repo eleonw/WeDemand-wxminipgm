@@ -10,6 +10,9 @@ const shareData = {
     serviceType: serviceType.HELP_DELIVER,
     address: [new Address(), new Address()],
     completed: [false, false],
+    /**
+     * @param currentAddressIdx 是目前待确定的地址的编号，对应了填写地址的序号，也对应了当前地图改变时对应改变的地址项
+     */
     currentAddressIdx: 0,
 
     setMapContext: function(context) {
@@ -24,15 +27,13 @@ const shareData = {
         let currentLocation = this.address[this.currentAddressIdx].location;
         currentLocation.longitude = longitude;
         currentLocation.latitude = latitude;
-        await currentLocation.reverseGeocoder();
+        await currentLocation.reverseGeocoder(true);
     },
     
     clear: function() {
         this.serviceType = serviceType.HELP_DELIVER;
-        this.address[0] = new Address();
-        this.address[1] = new Address();
-        this.completed[0] = false;
-        this.completed[1] = false;
+        this.address = [new Address(), new Address()];
+        this.complete = [false, false];
         this.currentAddress = 0;
     },
     

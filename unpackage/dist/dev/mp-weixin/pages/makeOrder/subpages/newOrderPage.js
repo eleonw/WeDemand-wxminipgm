@@ -50,10 +50,7 @@ var mapContext;var _default =
     mapMove: function () {var _mapMove = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                   app.promisify(mapContext.getCenterLocation, null, mapContext));case 2:res = _context.sent;
                 // console.log(res);
-                _shareData.default.setCurrentLocation(res.longitude, res.latitude);
-                console.log(_shareData.default.address[0].location);
-                console.log(page.address1.location);
-                console.log(page.address2.location);case 7:case "end":return _context.stop();}}}, _callee);}));function mapMove() {return _mapMove.apply(this, arguments);}return mapMove;}(),
+                _shareData.default.setCurrentLocation(res.longitude, res.latitude);case 4:case "end":return _context.stop();}}}, _callee);}));function mapMove() {return _mapMove.apply(this, arguments);}return mapMove;}(),
 
 
     locate: function () {var _locate = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.prev = 0;_context2.next = 3;return (
@@ -100,9 +97,6 @@ var mapContext;var _default =
     page.shareData = _shareData.default;
     mapContext = uni.createMapContext('map', page);
     _shareData.default.setMapContext(mapContext);
-
-    page.address1 = _shareData.default.address[0];
-    page.address2 = _shareData.default.address[1];
   },
 
   beforeMount: function () {var _beforeMount = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(e) {return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
@@ -167,9 +161,7 @@ var mapContext;var _default =
 
 
       shareData: null,
-      QQ_MAP_KEY: null,
-      address1: null,
-      address2: null };
+      QQ_MAP_KEY: null };
 
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

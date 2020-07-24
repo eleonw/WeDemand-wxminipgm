@@ -21,13 +21,17 @@ class Location {
     }
 }
 
-Location.prototype.reverseGeocoder = async function() {
+Location.prototype.reverseGeocoder = async function(delay=true) {
     let res;
     
-    this.name = '地址解析中...';
     try {
+        if (delay) {
+            this.name = '地址解析中...';
+            await new Promise((resolve, reject) => {
+                setTimeout(resolve, 800);
+            });
+        }
         res = await promisify(qqmapsdk.reverseGeocoder, {location: {longitude: this.longitude, latitude: this.latitude}}, qqmapsdk);
-        
         console.log('reverseGeocoder success');
     } catch(e) {
         this.name = '地址解析失败，请重试';

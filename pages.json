@@ -39,7 +39,7 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/makeOrder/detailForms/otherService",
+            "path" : "pages/makeOrder/detailForms/others",
             "style" : {}
         }
     ],

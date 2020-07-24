@@ -9,7 +9,7 @@
             <view class="locateIconContainer shadow" @click="locate">
                 <image class="locateIcon" src="@/static/image/icon/locate.png"></image>
             </view>
-            <addressCard class="locationCard" :single="addressCardStyle[shareData.serviceType].single" :static="addressCardStyle[shareData.serviceType].static" :address1="shareData.address[0]" :address2="address2" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>
+            <addressCard class="locationCard" :single="addressCardStyle[shareData.serviceType].single" :static="addressCardStyle[shareData.serviceType].static" :address1="shareData.address[0]" :address2="shareData.address[1]" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>
         </view>
 	</view>
 </template>
@@ -41,9 +41,6 @@
                 let res = await app.promisify(mapContext.getCenterLocation, null, mapContext);
                 // console.log(res);
                 shareData.setCurrentLocation(res.longitude, res.latitude);
-                console.log(shareData.address[0].location)
-                console.log(page.address1.location);
-                console.log(page.address2.location)
             },
             
             locate: async function() {
@@ -90,9 +87,6 @@
             page.shareData = shareData;
             mapContext = uni.createMapContext('map', page);
             shareData.setMapContext(mapContext);
-
-            page.address1 = shareData.address[0];
-            page.address2 = shareData.address[1];
         },
         
         beforeMount: async function(e) {
@@ -158,8 +152,6 @@
                 },
                 shareData: null,
                 QQ_MAP_KEY: null,
-                address1: null,
-                address2: null,
             }
         },
 	}

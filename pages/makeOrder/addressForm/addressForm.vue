@@ -70,9 +70,22 @@
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';
+    import Vue from 'vue';
     
     let page;
     const app = getApp();
+    
+    const titles = {
+        [serviceType.HELP_DELIVER]: ['取件地址', '送件地址'],
+        [serviceType.HELP_BUY]: ['送件地址'],
+        [serviceType.OTHERS]: ['服务地址'],
+    }
+    
+    const detailFormUrls = {
+        [serviceType.HELP_DELIVER]: './../detailForms/helpDeliver',
+        [serviceType.HELP_BUY]: './../detailForms/helpBuy',
+        [serviceType.OTHERS]: './../detailForms/others',
+    }
     
 	export default {
         components: {
@@ -84,7 +97,6 @@
                 colorMain: '',
                 address: null,
                 save: false,
-                isFinal: null,
 			}
 		},
 		methods: {
@@ -159,35 +171,36 @@
                         title: notice,
                     })
                 } else {
-                    console.log('emit sendAddress')
-                    // addressBus.$emit('sendAddress', {
-                    //     formCompleted: true,
-                    //     address: page.address
-                    // })
+
                     if (page.save) {
                         page.saveToAddressBook()
                     }
-                    address['address' + address.current].copy(page.address);
-                    address['address' + address.current + 'Completed'] = true;
                     
-                    if (!isFinal) {
-                        uni.navigateBack();
+                    Vue.set(shareData.address, shareData.currentAddressIdx, page.address);
+                    Vue.set(shareData.completed, shareData.currentAddressIdx, true);
+                    
+                    if (shareData.addressCompleted()) {
+                        console.log('completed');
+                        console.log(detailFormUrls[shareData.serviceType])
+                        uni.redirectTo({
+                            url: detailFormUrls[shareData.serviceType],
+                        })
                     } else {
-                        
+                        shareData.currentAddressIdx++;
+                        uni.navigateBack();
                     }
-                    
                 }
             }
 		},
         onLoad: function(opt) {
             page = this;
+ 
+            page.title = titles[shareData.serviceType][shareData.currentAddressIdx];
 
-            page.title = opt.title;
-            page.isFinal = opt.isFinal;
             page.colorMain = app.globalData.colorMain;
             
             page.address = new Address();
-            page.address.copy(address['address' + address.current]);
+            page.address.copy(shareData.address[shareData.currentAddressIdx]);
             
         }
 	}

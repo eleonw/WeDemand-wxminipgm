@@ -1,22 +1,21 @@
 {
-    "pages": [
-        "pages/makeOrder/makeOrder",
-        "pages/front/front",
-        "pages/index/index",
-        "pages/test/test",
-        "pages/makeOrder/addressForm/addressForm",
-        "pages/makeOrder/addressBook/addressBook",
-        "pages/makeOrder/detailForms/helpDeliver",
-        "pages/makeOrder/detailForms/helpBuy",
-        "pages/makeOrder/detailForms/otherService"
-    ],
-    "subPackages": [],
-    "window": {
-        "navigationBarTextStyle": "white",
-        "navigationBarTitleText": "微叮当",
-        "navigationBarBackgroundColor": "#457b9d",
-        "backgroundColor": "#F8F8F8"
-    },
-    "usingComponents": {},
-    "sitemapLocation": "sitemap25.json"
+  "pages": [
+    "pages/makeOrder/makeOrder",
+    "pages/front/front",
+    "pages/index/index",
+    "pages/test/test",
+    "pages/makeOrder/addressForm/addressForm",
+    "pages/makeOrder/addressBook/addressBook",
+    "pages/makeOrder/detailForms/helpDeliver",
+    "pages/makeOrder/detailForms/helpBuy",
+    "pages/makeOrder/detailForms/others"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "微叮当",
+    "navigationBarBackgroundColor": "#457b9d",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
 }

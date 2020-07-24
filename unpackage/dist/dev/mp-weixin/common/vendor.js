@@ -1879,6 +1879,9 @@ var shareData = {
   serviceType: _globalData.serviceType.HELP_DELIVER,
   address: [new _Address.default(), new _Address.default()],
   completed: [false, false],
+  /**
+                              * @param currentAddressIdx 是目前待确定的地址的编号，对应了填写地址的序号，也对应了当前地图改变时对应改变的地址项
+                              */
   currentAddressIdx: 0,
 
   setMapContext: function setMapContext(context) {
@@ -1893,15 +1896,13 @@ var shareData = {
               currentLocation = this.address[this.currentAddressIdx].location;
               currentLocation.longitude = longitude;
               currentLocation.latitude = latitude;_context.next = 6;return (
-                currentLocation.reverseGeocoder());case 6:case "end":return _context.stop();}}}, _callee, this);}));function setCurrentLocation(_x, _x2) {return _setCurrentLocation.apply(this, arguments);}return setCurrentLocation;}(),
+                currentLocation.reverseGeocoder(true));case 6:case "end":return _context.stop();}}}, _callee, this);}));function setCurrentLocation(_x, _x2) {return _setCurrentLocation.apply(this, arguments);}return setCurrentLocation;}(),
 
 
   clear: function clear() {
     this.serviceType = _globalData.serviceType.HELP_DELIVER;
-    this.address[0] = new _Address.default();
-    this.address[1] = new _Address.default();
-    this.completed[0] = false;
-    this.completed[1] = false;
+    this.address = [new _Address.default(), new _Address.default()];
+    this.complete = [false, false];
     this.currentAddress = 0;
   },
 
@@ -8885,20 +8886,24 @@ function Location() {var longitude = arguments.length > 0 && arguments[0] !== un
 };
 
 
-Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res, component;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var delay,res,component,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:delay = _args.length > 0 && _args[0] !== undefined ? _args[0] : true;_context.prev = 1;if (!
 
 
-          this.name = '地址解析中...';_context.prev = 1;_context.next = 4;return (
 
-            (0, _helper.promisify)(qqmapsdk.reverseGeocoder, { location: { longitude: this.longitude, latitude: this.latitude } }, qqmapsdk));case 4:res = _context.sent;
+          delay) {_context.next = 6;break;}
+          this.name = '地址解析中...';_context.next = 6;return (
+            new Promise(function (resolve, reject) {
+              setTimeout(resolve, 800);
+            }));case 6:_context.next = 8;return (
 
-          console.log('reverseGeocoder success');_context.next = 16;break;case 8:_context.prev = 8;_context.t0 = _context["catch"](1);
+            (0, _helper.promisify)(qqmapsdk.reverseGeocoder, { location: { longitude: this.longitude, latitude: this.latitude } }, qqmapsdk));case 8:res = _context.sent;
+          console.log('reverseGeocoder success');_context.next = 20;break;case 12:_context.prev = 12;_context.t0 = _context["catch"](1);
 
           this.name = '地址解析失败，请重试';
           this.address = '';
           this.detail = '';
           console.log('reverseGeocoder fail:');
-          console.log(_context.t0);return _context.abrupt("return");case 16:
+          console.log(_context.t0);return _context.abrupt("return");case 20:
 
 
 
@@ -8906,7 +8911,7 @@ Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__
 
           this.address = component.city + component.district + component.street_number;
           this.name = res.result.formatted_addresses.recommend;
-          this.detail = '';case 20:case "end":return _context.stop();}}}, _callee, this, [[1, 8]]);}));
+          this.detail = '';case 24:case "end":return _context.stop();}}}, _callee, this, [[1, 12]]);}));
 
 
 Location.prototype.isValid = function () {
