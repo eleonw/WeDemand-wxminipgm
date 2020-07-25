@@ -757,7 +757,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1693,7 +1693,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 120:
+/***/ 112:
 /*!*******************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/components/uni-icons/icons.js ***!
   \*******************************************************************/
@@ -1832,97 +1832,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   "cloud-download-filled": "\uE8E9",
   "headphones": "\uE8BF",
   "shop": "\uE609" };exports.default = _default;
-
-/***/ }),
-
-/***/ 156:
-/*!**********************************************************!*\
-  !*** F:/code/tinyJingle/tinyJingle/common/globalData.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.serviceType = exports.color = void 0;var color = {
-  MAIN: '#457b9d',
-  LIGHT: '#a8dadc',
-  DARK: '#1d3557',
-  BACKGROUND: '#f1faee',
-  CONTRAST: '#e63946' };exports.color = color;
-
-
-var serviceType = {
-  NONE: -1,
-  HELP_DELIVER: 0,
-  HELP_BUY: 1,
-  OTHERS: 2 };exports.serviceType = serviceType;
-
-/***/ }),
-
-/***/ 157:
-/*!******************************************************************!*\
-  !*** F:/code/tinyJingle/tinyJingle/pages/makeOrder/shareData.js ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 28));var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 52));
-var _globalData = __webpack_require__(/*! @/common/globalData.js */ 156);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
-
-var mapContext;
-
-var shareData = {
-  /**
-                   * serviceType用于标识当前地址信息对应的服务，与newOrderPage的tabIndex相对应，为globalData.js中定义的枚举类型
-                   */
-  serviceType: _globalData.serviceType.HELP_DELIVER,
-  address: [new _Address.default(), new _Address.default()],
-  completed: [false, false],
-  /**
-                              * @param currentAddressIdx 是目前待确定的地址的编号，对应了填写地址的序号，也对应了当前地图改变时对应改变的地址项
-                              */
-  currentAddressIdx: 0,
-
-  setMapContext: function setMapContext(context) {
-    mapContext = context;
-  },
-
-  setCurrentLocation: function () {var _setCurrentLocation = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(longitude, latitude) {var currentLocation;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-              mapContext.moveToLocation({
-                longitude: longitude,
-                latitude: latitude });
-
-              currentLocation = this.address[this.currentAddressIdx].location;
-              currentLocation.longitude = longitude;
-              currentLocation.latitude = latitude;_context.next = 6;return (
-                currentLocation.reverseGeocoder(true));case 6:case "end":return _context.stop();}}}, _callee, this);}));function setCurrentLocation(_x, _x2) {return _setCurrentLocation.apply(this, arguments);}return setCurrentLocation;}(),
-
-
-  clear: function clear() {
-    this.serviceType = _globalData.serviceType.HELP_DELIVER;
-    this.address = [new _Address.default(), new _Address.default()];
-    this.complete = [false, false];
-    this.currentAddress = 0;
-  },
-
-  addressCompleted: function addressCompleted() {
-
-    switch (this.serviceType) {
-      case _globalData.serviceType.HELP_DELIVER:
-        return this.completed[0] && this.completed[1];
-      case _globalData.serviceType.HELP_BUY:
-        return this.completed[0];
-      case _globalData.serviceType.OTHERS:
-        return this.completed[0];
-      default:
-        console.log();
-        throw new Error('undefined serviceType!');}
-
-  } };var _default =
-
-
-shareData;exports.default = _default;
 
 /***/ }),
 
@@ -7458,7 +7367,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7479,14 +7388,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7562,7 +7471,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8814,7 +8723,74 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 52:
+/***/ 45:
+/*!******************************************************************!*\
+  !*** F:/code/tinyJingle/tinyJingle/pages/makeOrder/shareData.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 28));var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 46));
+var _globalData = __webpack_require__(/*! @/common/globalData.js */ 50);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+
+var mapContext;
+
+var shareData = {
+  /**
+                   * serviceType用于标识当前地址信息对应的服务，与newOrderPage的tabIndex相对应，为globalData.js中定义的枚举类型
+                   */
+  serviceType: _globalData.serviceType.HELP_DELIVER,
+  address: [new _Address.default(), new _Address.default()],
+  completed: [false, false],
+  /**
+                              * @param currentAddressIdx 是目前待确定的地址的编号，对应了填写地址的序号，也对应了当前地图改变时对应改变的地址项
+                              */
+  currentAddressIdx: 0,
+
+  setMapContext: function setMapContext(context) {
+    mapContext = context;
+  },
+
+  setCurrentLocation: function () {var _setCurrentLocation = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(longitude, latitude) {var currentLocation;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              mapContext.moveToLocation({
+                longitude: longitude,
+                latitude: latitude });
+
+              currentLocation = this.address[this.currentAddressIdx].location;
+              currentLocation.longitude = longitude;
+              currentLocation.latitude = latitude;_context.next = 6;return (
+                currentLocation.reverseGeocoder(true));case 6:case "end":return _context.stop();}}}, _callee, this);}));function setCurrentLocation(_x, _x2) {return _setCurrentLocation.apply(this, arguments);}return setCurrentLocation;}(),
+
+
+  clear: function clear() {
+    this.serviceType = _globalData.serviceType.HELP_DELIVER;
+    this.address = [new _Address.default(), new _Address.default()];
+    this.complete = [false, false];
+    this.currentAddress = 0;
+  },
+
+  addressCompleted: function addressCompleted() {
+
+    switch (this.serviceType) {
+      case _globalData.serviceType.HELP_DELIVER:
+        return this.completed[0] && this.completed[1];
+      case _globalData.serviceType.HELP_BUY:
+        return this.completed[0];
+      case _globalData.serviceType.OTHERS:
+        return this.completed[0];
+      default:
+        console.log();
+        throw new Error('undefined serviceType!');}
+
+  } };var _default =
+
+
+shareData;exports.default = _default;
+
+/***/ }),
+
+/***/ 46:
 /*!***************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/common/classes/Address.js ***!
   \***************************************************************/
@@ -8822,7 +8798,7 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 53));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 47));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
 
 Address =
 function Address() {var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _Location.default();var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';var sex = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;var tel = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';_classCallCheck(this, Address);
@@ -8855,7 +8831,7 @@ Address.prototype.copy = function (address) {
 
 /***/ }),
 
-/***/ 53:
+/***/ 47:
 /*!****************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/common/classes/Location.js ***!
   \****************************************************************/
@@ -8863,10 +8839,10 @@ Address.prototype.copy = function (address) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 28));var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 54);
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 28));var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 48);
 var _helper = __webpack_require__(/*! @/common/helper.js */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
 
-var QQMapWX = __webpack_require__(/*! @/libs/qqmap-wx-jssdk.js */ 55);
+var QQMapWX = __webpack_require__(/*! @/libs/qqmap-wx-jssdk.js */ 49);
 
 var qqmapsdk = new QQMapWX({
   key: _sensitiveData.QQ_MAP_KEY });var
@@ -8886,7 +8862,7 @@ function Location() {var longitude = arguments.length > 0 && arguments[0] !== un
 };
 
 
-Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var delay,res,component,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:delay = _args.length > 0 && _args[0] !== undefined ? _args[0] : true;_context.prev = 1;if (!
+Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var delay,res,component,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:delay = _args.length > 0 && _args[0] !== undefined ? _args[0] : false;_context.prev = 1;if (!
 
 
 
@@ -8934,7 +8910,7 @@ Location;exports.default = _default;
 
 /***/ }),
 
-/***/ 54:
+/***/ 48:
 /*!*************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/common/sensitiveData.js ***!
   \*************************************************************/
@@ -8948,7 +8924,7 @@ var APPSECRET = "e99cbe2b47ba8ff484f453e6a0c488b4";exports.APPSECRET = APPSECRET
 
 /***/ }),
 
-/***/ 55:
+/***/ 49:
 /*!************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/libs/qqmap-wx-jssdk.js ***!
   \************************************************************/
@@ -10078,6 +10054,30 @@ QQMapWX = /*#__PURE__*/function () {"use strict";
 ;
 
 module.exports = QQMapWX;
+
+/***/ }),
+
+/***/ 50:
+/*!**********************************************************!*\
+  !*** F:/code/tinyJingle/tinyJingle/common/globalData.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.serviceType = exports.color = void 0;var color = {
+  MAIN: '#457b9d',
+  LIGHT: '#a8dadc',
+  DARK: '#1d3557',
+  BACKGROUND: '#f1faee',
+  CONTRAST: '#e63946' };exports.color = color;
+
+
+var serviceType = {
+  NONE: -1,
+  HELP_DELIVER: 0,
+  HELP_BUY: 1,
+  OTHERS: 2 };exports.serviceType = serviceType;
 
 /***/ }),
 

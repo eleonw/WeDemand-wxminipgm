@@ -7,6 +7,7 @@
         
         <view class="aboveMap">
             <view class="locateIconContainer shadow" @click="locate">
+            ffrgrgf
                 <image class="locateIcon" src="@/static/image/icon/locate.png"></image>
             </view>
             <addressCard class="locationCard" :single="addressCardStyle[shareData.serviceType].single" :static="addressCardStyle[shareData.serviceType].static" :address1="shareData.address[0]" :address2="shareData.address[1]" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>

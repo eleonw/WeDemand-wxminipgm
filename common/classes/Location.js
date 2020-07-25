@@ -21,7 +21,7 @@ class Location {
     }
 }
 
-Location.prototype.reverseGeocoder = async function(delay=true) {
+Location.prototype.reverseGeocoder = async function(delay=false) {
     let res;
     
     try {

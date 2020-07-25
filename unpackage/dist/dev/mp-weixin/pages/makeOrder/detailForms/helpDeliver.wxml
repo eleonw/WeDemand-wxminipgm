@@ -1,1 +1,1 @@
-<view>helpDeliver</view>
+<view><map class="map" id="map" longitude="113" latitude="39" scale="15" subkey="{{QQ_MAP_KEY}}" markers="{{mapMarkers}}"></map></view>
