@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniNavBar: function() {
-    return __webpack_require__.e(/*! import() | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then(__webpack_require__.bind(null, /*! @/components/uni-nav-bar/uni-nav-bar.vue */ 100))
+    return __webpack_require__.e(/*! import() | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then(__webpack_require__.bind(null, /*! @/components/uni-nav-bar/uni-nav-bar.vue */ 118))
   },
   uniIcons: function() {
-    return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 107))
+    return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 125))
   },
   withPlaceholder: function() {
-    return __webpack_require__.e(/*! import() | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then(__webpack_require__.bind(null, /*! @/components/withPlaceholder/withPlaceholder.vue */ 115))
+    return __webpack_require__.e(/*! import() | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then(__webpack_require__.bind(null, /*! @/components/withPlaceholder/withPlaceholder.vue */ 133))
   }
 }
 var render = function() {
@@ -192,27 +192,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 45));
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 50);
 
 var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 47));
 var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 46));
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));var _titles, _detailFormUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 100));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 107));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));var _titles, _detailFormUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 118));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 125));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 133));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var page;
 var app = getApp();
@@ -321,9 +306,10 @@ _globalData.serviceType.OTHERS, './../detailForms/others'), _detailFormUrls);var
         _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, page.address);
         _vue.default.set(_shareData.default.completed, _shareData.default.currentAddressIdx, true);
 
-        if (_shareData.default.addressCompleted()) {
-          console.log('completed');
-          console.log(detailFormUrls[_shareData.default.serviceType]);
+        if (_shareData.default.status != 0) {
+          uni.navigateBack();
+        } else if (_shareData.default.addressCompleted()) {
+          _shareData.default.status = 1;
           uni.redirectTo({
             url: detailFormUrls[_shareData.default.serviceType] });
 

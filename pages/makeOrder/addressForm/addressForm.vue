@@ -1,56 +1,41 @@
 <template>
-	<view class="page">
+	<view class="body">
 		<uni-nav-bar class="navBar" left-icon="back" :title="title" shadow="true" fixed="true" statusBar="true" @clickLeft="clickBack"></uni-nav-bar>
         <view class="form">
             
-            <view class="item" @click="chooseLocation">
-                <uni-icons class="itemIcon" type="location"></uni-icons>
-                
-            
-                <view class="itemMain">
-                    <withPlaceholder class="chooseLocation" :value="address.location.name==''?address.location.address:address.location.name" placeholder="点击选择地址"></withPlaceholder> 
+            <view class="formItem" @click="chooseLocation">
+                <uni-icons class="formItemIcon" type="location"></uni-icons>
+                <withPlaceholder class="chooseLocation" :content="address.location.name==''?address.location.address:address.location.name" placeholder="请选择地址"></withPlaceholder>
                     <!-- <textarea class="chooseLocation" disabled="true" :value="address.location.name==''?address.location.address:address.location.name" placeholder="点击选择地址" auto-height="true"></textarea> -->
-                    <uni-icons type="forward"></uni-icons>
-                </view>
+                <uni-icons type="forward" class="formItemRight"></uni-icons>
             </view>
             
-            <view class="item">
-
-                <uni-icons class="itemIcon" type="home"></uni-icons>
-
-
-                <view class="itemMain">
-                    <input placeholder="楼层门牌号" maxlength="20" type="text" v-model="address.location.detail"></input>
-                </view>
+            <view class="formItem">
+                <uni-icons class="formItemIcon" type="home"></uni-icons>
+                <input placeholder="地址详情(如楼层门牌号)" maxlength="20" type="text" v-model="address.location.detail" class="locationDetail"></input>
+                <view class="formItemBlank"></view>
             </view>
             
-            <view class="item">
-            
-                <uni-icons class="itemIcon" type="person"></uni-icons>
-            
-                <view class="itemMain">
-                    <input class="name" placeholder="姓名或昵称" maxlength="10" type="text" v-model="address.name"></input>
-                    <radio-group @change="sexChange">
-                        <label class="radio">
-                            <radio class="radio" value="0" :checked="address.sex==0" :color="colorMain"></radio><text>男士</text>
-                        </label>
-                        <label class="radio">
-                            <radio class="radio" value="1" :checked="address.sex==1" :color="colorMain"></radio><text>女士</text>
-                        </label>
-                    </radio-group>
-                </view>
+            <view class="formItem">
+                <uni-icons class="formItemIcon" type="person"></uni-icons>
+                <input class="name" placeholder="姓名或昵称" maxlength="10" type="text" v-model="address.name"></input>
+                <radio-group @change="sexChange" class="formItemRight">
+                    <label class="radio">
+                        <radio class="radio" value="0" :checked="address.sex==0" :color="colorMain"></radio><text>男士</text>
+                    </label>
+                    <label class="radio">
+                        <radio class="radio" value="1" :checked="address.sex==1" :color="colorMain"></radio><text>女士</text>
+                    </label>
+                </radio-group>
             </view>
             
-            <view class="item">
-            
-                <uni-icons class="itemIcon" type="phone"></uni-icons>
-            
-                <view class="itemMain">
-                    <input placeholder="联系电话" type="number" maxlength="11" v-model="address.tel"></input>
-                </view>
+            <view class="formItem">
+                <uni-icons class="formItemIcon" type="phone"></uni-icons>
+                <input placeholder="联系电话" type="number" maxlength="11" v-model="address.tel" class="tel"></input>
+                <view class="formItemBlank"></view>
             </view>
             
-            <view class="item" style="justify-content: center">
+            <view class="formItem" style="justify-content: center">
                 <view class="confirmButton" @click="confirm">
                     <view class="buttonText">确&nbsp&nbsp定</view>
                 </view>
@@ -179,9 +164,10 @@
                     Vue.set(shareData.address, shareData.currentAddressIdx, page.address);
                     Vue.set(shareData.completed, shareData.currentAddressIdx, true);
                     
-                    if (shareData.addressCompleted()) {
-                        console.log('completed');
-                        console.log(detailFormUrls[shareData.serviceType])
+                    if (shareData.status != 0) {
+                        uni.navigateBack();
+                    } else if (shareData.addressCompleted()) {
+                        shareData.status = 1;
                         uni.redirectTo({
                             url: detailFormUrls[shareData.serviceType],
                         })
@@ -206,68 +192,40 @@
 	}
 </script>
 
-<style>    
+<style>
+    @import url("@/common/style/form.css");
     .navBar {
         font-size: 2em;
     }
     
-    .form {
-
-        width: 100%;
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: center;
-        justify-content: flex-start;
-        
-        background-color: white;
+    .formItemIcon {
+        position: relative;
+        bottom: .2em;
     }
     
-    .item {
-
-        
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        justify-content: space-between;
-        
-        width: 100%;
-    }
-    
-    .itemIcon {
-
-        
-        text-align: center;
-        width: 1.5em;
-        height: 1.5em;
-        margin: .5em;
-    }
-    
-    .itemMain { 
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        align-items: center;
-        
-        min-height: 3em;
-        width: 85%;
-        height: 100%;
-        margin-right: .5em;
-        
-        border-bottom: .1em solid var(--color-divided);
-
-    }
+   
     
     .chooseLocation {
         width: 75vw;
     }
     
+    .locationDetail {
+        width: 80vw;
+    }
+    
+    .tel {
+        width: 80vw;
+    }
+    
     .name {
-        width: 10em;
+        width: 8em;
     }
     
     .radio {
         transform: scale(0.7);
     }
+    
+    
     
     .confirmButton {
         background-color: var(--color-main);

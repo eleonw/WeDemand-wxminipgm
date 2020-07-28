@@ -27,21 +27,43 @@
         }
         ,{
             "path" : "pages/makeOrder/detailForms/helpDeliver",
-            "style" : {}
+            "style" : {
+                "navigationStyle":"custom"
+            }
         }
         ,{
             "path" : "pages/makeOrder/detailForms/helpBuy",
-            "style" : {}
+            "style" : {
+                "navigationStyle":"custom"
+            }
         }
         ,{
             "path" : "pages/makeOrder/detailForms/others",
-            "style" : {}
+            "style" : {
+                "navigationStyle":"custom"
+            }
         }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#f1faee",
 		"navigationBarTitleText": "微叮当",
 		"navigationBarBackgroundColor": "#457b9d",
-		"backgroundColor": "#F8F8F8"
-	}
+		"backgroundColor": "#ffaa00"
+	},
+    
+    "condition" : { //模式配置，仅开发期间生效
+        "current": 2, //当前激活的模式(list 的索引项)
+        "list": [
+            {
+                "name": "helpDeliver", //模式名称
+                "path": "pages/makeOrder/detailForms/helpDeliver", //启动页面，必选
+                "query": "" //启动参数，在页面的onLoad函数里面得到
+            },
+            {
+                "name": "addressForm", //模式名称
+                "path": "pages/makeOrder/addressForm/addressForm", //启动页面，必选
+                "query": "" //启动参数，在页面的onLoad函数里面得到
+            }
+        ]
+    }
 }

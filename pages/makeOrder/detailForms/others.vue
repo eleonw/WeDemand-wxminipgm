@@ -18,5 +18,5 @@
 </script>
 
 <style>
-    @import url("shareStyle");
+    @import url("./detailForms.css");
 </style>

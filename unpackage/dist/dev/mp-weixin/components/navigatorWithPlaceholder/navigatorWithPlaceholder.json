@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "with-placeholder": "/components/withPlaceholder/withPlaceholder",
+    "uni-icons": "/components/uni-icons/uni-icons"
+  }
+}

@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "navigator-with-placeholder": "/components/navigatorWithPlaceholder/navigatorWithPlaceholder",
+    "address-card": "/pages/makeOrder/components/addressCard"
+  }
 }

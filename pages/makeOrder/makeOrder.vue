@@ -16,7 +16,7 @@
         </view>
         
         
-		<tabBar :tabs="mainTabs" v-model="selectedTabIndex" @tabchange="tabChange"></tabBar>
+<!-- 		<tabBar :tabs="mainTabs" v-model="selectedTabIndex" @tabchange="tabChange"></tabBar> -->
 	</view>
 </template>
 

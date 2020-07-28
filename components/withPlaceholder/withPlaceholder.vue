@@ -1,7 +1,7 @@
 <template>
 	<view class="viewWithPlaceholder">
-        <view class="text" v-if="value!=''">
-            {{ value }}
+        <view class="text" v-if="content.trim()!=''">
+            {{ content + appendix }}
         </view>
 		<view class="placeholder" v-else>
             {{ placeholder }}
@@ -17,7 +17,7 @@
                 type: String,
                 default: '',
             },
-            value: {
+            content: {
                 type: String,
                 default: '',
             },
@@ -28,6 +28,11 @@
             placeholderStyle: {
                 type: Object,
                 default: {},
+            },
+            appendix: {
+                type: String,
+                default: '',
+                required: false
             }
         },
 		data() {

@@ -39,7 +39,7 @@
         methods: {
             switchTab(index) {
                 this.activeIndex = index;
-                this.$emit('tabChange', index);
+                this.$emit('switchTab', {index: index});
                 this.$emit('input', index);
                 console.log('tab change to: ' + index)
             }

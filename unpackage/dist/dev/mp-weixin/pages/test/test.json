@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "navigator-with-placeholder": "/components/navigatorWithPlaceholder/navigatorWithPlaceholder"
+  }
+}

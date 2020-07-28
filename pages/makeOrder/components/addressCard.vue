@@ -1,0 +1,118 @@
+<template>
+    
+    <view class="body form card">
+        
+        <view class="formItem" v-for="(item,index) in shareData.address">
+            <textIcon class="formItemIcon" :text="static[shareData.serviceType][index].text" :backgroundColor="static[shareData.serviceType][index].color" color="white" diameter="1.2em"></textIcon>
+            <view class="formItemBlock" @click="addressClick(index)">
+                <withPlaceholder :content="(item.location.name==''?item.location.address:item.location.name) + item.location.detail" :placeholder="static[shareData.serviceType][index].placeholder" class="addressMain"></withPlaceholder>
+                <view v-if="item.location.name!=''|| item.location.address!=''">
+                    <withPlaceholder :content="item.name + ' ' + item.tel" placeholder="请填写详细信息" class="addressDtl"></withPlaceholder>
+                </view>
+            </view>
+            <uni-icons type="list" @click="listClick(index)" class="formItemRight"></uni-icons>
+        </view>
+
+        
+    </view>
+
+</template>
+
+<script>
+    import textIcon from "@/components/textIcon/textIcon.vue";
+    import uniIcons from "@/components/uni-icons/uni-icons.vue";
+    import withPlaceholder from "@/components/withPlaceholder/withPlaceholder.vue";
+    
+    import shareData from "./../shareData.js";
+    import { serviceType, color } from "@/common/globalData.js";
+    
+    import Address from "@/common/classes/Address.js";
+
+    
+	export default {
+        name: 'addressCard',
+        components: {
+            textIcon, uniIcons, withPlaceholder
+        },
+        props: {
+        },
+        methods: {
+            addressClick: function(index) {
+                console.log('addressClick');
+                shareData.currentAddressIdx = index;
+                uni.navigateTo({
+                    url: '/pages/makeOrder/addressForm/addressForm',
+                    complete: function(e) {
+                        console.log(e)
+                    }
+                })
+            },
+            listClick: function(index) {
+                console.log('list click')
+                shareData.currentAddressIdx = index;
+                uni.navigateTo({
+                    url: '/pages/makeOrder/addressBook/addressBook'
+                })
+            }
+        },
+		data() {
+			return {
+                shareData: null,
+                static: {
+                    [serviceType.HELP_DELIVER]: [
+                        {
+                            color: color.DARK,
+                            text: '取',
+                            placeholder: '请选择取货地址'
+                        },
+                        {
+                            color: color.LIGHT,
+                            text: '送',
+                            placeholder: '请选择送货地址'
+                        }
+                    ],
+                    [serviceType.HELP_BUY]: [
+                        {
+                            color: color.LIGHT,
+                            text: '送',
+                            placeholder: '请选择派送地址'
+                        }
+                    ],
+                    [serviceType.OTHERS]: [
+                        {
+                            color: color.LIGHT,
+                            text: '至',
+                            placeholder: '请选择服务地址'
+                        }
+                    ]
+                }
+			};
+		},
+        created: function() {
+            this.shareData = shareData;
+        }
+	}
+</script>
+
+<style>
+    @import url("@/common/style/form.css");
+    
+    .formItemBlock {
+        width: 80%;
+    }
+    
+    
+    .addressMain {
+        font-weight: 600;
+    }
+    
+    .addressDtl {
+        font-size: .8em;
+        font-weight: 300;
+    }
+    
+    .icon {
+        
+    }
+    
+</style>

@@ -1,20 +1,13 @@
-.page {
+.body {
     --color-main: #457b9d;
     --color-light: #a8dadc;
     --color-dark: #1d3557;
     --color-background: #f8f8f8;
-/*    --color-background: #f1faee; */
     --color-contrast: #e63946;
     --color-divided: #f8f8f8;
     
     --color-border: var(--color-background);
-    
-    background-color: var(--color-background);
-    
-    display: flex;
-    flex-flow: column nowrap;
-    
-    width: 100vw;
+    --color-shadow: #F8F8F8;
     
     font-size: 35rpx;
     letter-spacing: .2em;
@@ -38,4 +31,12 @@ tabBar {
 
 .shadow {
     box-shadow: 0 0 .2em .1em #F8F8F8;
+}
+
+.card {
+    width: 92vw;
+    border-radius: .3em;
+    box-shadow: 0 0 .2em .1em var(--color-shadow);
+    
+    margin: 1em 4vw 1em 4vw;
 }

@@ -1,23 +1,22 @@
 <template>
-	<view class="page">
-        <topTabBar class="topTabBar" :tabs="tabs" v-model="shareData.serviceType"></topTabBar>
+	<view class="body">
+        <topTabBar class="topTabBar" :tabs="tabs" @switchTab="switchTab"></topTabBar>
 		<map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" @touchend="mapMove">
             <image src="../../../static/image/icon/location.png" class="mapLocationIcon" mode=""></image>
         </map>
         
         <view class="aboveMap">
             <view class="locateIconContainer shadow" @click="locate">
-            ffrgrgf
                 <image class="locateIcon" src="@/static/image/icon/locate.png"></image>
             </view>
-            <addressCard class="locationCard" :single="addressCardStyle[shareData.serviceType].single" :static="addressCardStyle[shareData.serviceType].static" :address1="shareData.address[0]" :address2="shareData.address[1]" @address1Click="addressCardClick({list:false, index:1})" @address2Click="addressCardClick({list:false, index:2})" @list1Click="addressCardClick({list:true, index:1})" @list2Click="addressCardClick({list:true, index:2})"></addressCard>
+            <addressCard class="locationCard"></addressCard>
         </view>
 	</view>
 </template>
 
 <script>
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
-    import addressCard from "@/components/addressCard/addressCard.vue";
+    import addressCard from './../components/addressCard.vue';
     
     import { QQ_MAP_KEY } from "@/common/sensitiveData.js";
     import shareData from "./../shareData.js";
@@ -37,6 +36,10 @@
             topTabBar, addressCard
         },
 		methods: {
+            switchTab: function(e) {
+                console.log(e)
+                shareData.setServiceType(e.index);
+            },
             
 			mapMove: async function() {
                 let res = await app.promisify(mapContext.getCenterLocation, null, mapContext);
@@ -59,23 +62,6 @@
                 shareData.setCurrentLocation(res[1].longitude, res[1].latitude);
             },
             
-            addressCardClick: function(msg) {
-                console.log(msg);
-                
-                if (msg.list) {
-                    console.log('list');
-                    uni.navigateTo({
-                        url: './addressBook/addressBook',
-                    })
-                } else {
-                    uni.navigateTo({
-                        url: './addressForm/addressForm',
-                        fail: e => {
-                            console.log(e)
-                        }
-                    })
-                }
-            },
             
             clearShareData: function() {
                 shareData.clear();
@@ -117,18 +103,18 @@
                 addressCardStyle: {
                     [serviceType.HELP_DELIVER]: {
                         single: false,
-                        static: {
-                            from: {
+                        static: [
+                            {
                                 color: 'green',
                                 text: '取',
                                 placeholder: '请选择取件地址'
                             },
-                            to: {
+                            {
                                 color: 'red',
                                 text: '送',
                                 placeholder: '请选择送件地址'
                             }
-                        }
+                        ],
                     },
                     [serviceType.HELP_BUY]: {
                         single: true,

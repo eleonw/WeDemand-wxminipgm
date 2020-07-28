@@ -1,10 +1,5 @@
-
-.navBar {
-    font-size: 2em;
-}
 .form {
-
-    width: 100%;
+    background-color: white;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -12,73 +7,89 @@
     -webkit-box-direction: normal;
     -webkit-flex-flow: column nowrap;
             flex-flow: column nowrap;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-            align-items: center;
     -webkit-box-pack: start;
     -webkit-justify-content: flex-start;
             justify-content: flex-start;
-    
-    background-color: white;
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+            align-items: stretch;
+    line-height: 2em;
 }
-.item {
+.formItem {
 
-    
     display: -webkit-box;
 
-    
     display: -webkit-flex;
 
-    
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     -webkit-flex-flow: row nowrap;
             flex-flow: row nowrap;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+            justify-content: flex-start;
     -webkit-box-align: center;
     -webkit-align-items: center;
             align-items: center;
+    
+    -webkit-box-flex: 1;
+    
+    -webkit-flex-grow: 1;
+    
+            flex-grow: 1;
+    
+    margin: 0 .5em 0 .5em;
+    padding: .5em 0 .5em 0;
+    border-bottom: .1em solid var(--color-border);
+}
+.formItemBlock {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: column nowrap;
+            flex-flow: column nowrap;
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
             justify-content: space-between;
-    
-    width: 100%;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+            align-items: flex-start;
 }
-.itemIcon {
-
-    
+.formItemIcon {
     text-align: center;
     width: 1.5em;
     height: 1.5em;
-    margin: .5em;
-}
-.itemMain { 
-    display: -webkit-box; 
-    display: -webkit-flex; 
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
-            flex-flow: row nowrap;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-            justify-content: space-between;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-            align-items: center;
-    
-    min-height: 3em;
-    width: 85%;
-    height: 100%;
     margin-right: .5em;
+}
+.formItemRight {
+    margin-left: auto;
+}
     
-    border-bottom: .1em solid var(--color-divided);
+/* 
+.formItemBottom {
+    border-bottom: 0 solid transparent;
+} */
+.navBar {
+    font-size: 2em;
+}
+.formItemIcon {
+    position: relative;
+    bottom: .2em;
 }
 .chooseLocation {
     width: 75vw;
 }
+.locationDetail {
+    width: 80vw;
+}
+.tel {
+    width: 80vw;
+}
 .name {
-    width: 10em;
+    width: 8em;
 }
 .radio {
     -webkit-transform: scale(0.7);

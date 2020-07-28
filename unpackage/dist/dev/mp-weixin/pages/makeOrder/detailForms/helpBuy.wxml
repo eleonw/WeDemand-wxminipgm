@@ -1,1 +1,1 @@
-<view>helpBuy</view>
+<view class="page">help buy<map class="map" id="map" longitude="113" latitude="39" scale="15" subkey="{{QQ_MAP_KEY}}" data-event-opts="{{[['touchend',[['mapMove',['$event']]]]]}}" bindtouchend="__e"><image class="mapLocationIcon" src="../../../static/image/icon/location.png" mode></image></map></view>
