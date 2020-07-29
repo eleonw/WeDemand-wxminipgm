@@ -3,6 +3,7 @@
         {
             "path" : "pages/makeOrder/makeOrder",
             "style" : {
+                "navigationStyle":"custom"
             }
         },
         {
@@ -45,10 +46,10 @@
         }
     ],
 	"globalStyle": {
-		"navigationBarTextStyle": "#f1faee",
-		"navigationBarTitleText": "微叮当",
-		"navigationBarBackgroundColor": "#457b9d",
-		"backgroundColor": "#ffaa00"
+		"navigationBarTextStyle": "#FFFFFF",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
 	},
     
     "condition" : { //模式配置，仅开发期间生效

@@ -1,24 +1,69 @@
-.body {
+.root {
     --color-main: #457b9d;
     --color-light: #a8dadc;
     --color-dark: #1d3557;
     --color-background: #f8f8f8;
     --color-contrast: #e63946;
     --color-divided: #f8f8f8;
-    
     --color-border: var(--color-background);
     --color-shadow: #F8F8F8;
+    
+    --height-tabbar: 100rpx;
+    --height-toptabbar: 75rpx;
+    --height-navigationbar: 64px;
+    --height-statusbar: 20px;
+    
     
     font-size: 35rpx;
     letter-spacing: .2em;
 }
 
-.withTabBar {
-    padding-bottom: 8vh;
+.page {
+    background-color: var(--color-background);
+    width: 100vw;
+    min-height: 100vh;
+   /* margin-top: var(--height-statusbar); */
+    
+    display: flex;
+    
+    
+  
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
 }
 
-tabBar {
-        z-index: 999;
+.pageWithTabBar {
+    padding-bottom: var(--height-tabbar);
+}
+
+.pageWithNavigationBar {
+    padding-top: var(--height-navigationbar);
+}
+
+.pageNoSlide {
+    height: 100vh;
+}
+
+.tabBar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+.navigationBar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+}
+
+.statusBar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
 }
 
 .borderTop {
@@ -34,9 +79,8 @@ tabBar {
 }
 
 .card {
-    width: 92vw;
+    width: 700rpx;
     border-radius: .3em;
     box-shadow: 0 0 .2em .1em var(--color-shadow);
     
-    margin: 1em 4vw 1em 4vw;
 }

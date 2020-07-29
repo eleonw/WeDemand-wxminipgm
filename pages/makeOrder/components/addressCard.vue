@@ -1,21 +1,21 @@
 <template>
     
-    <view class="body form card">
+    <view class="root">
+    <view class="form card">
         
         <view class="formItem" v-for="(item,index) in shareData.address">
             <textIcon class="formItemIcon" :text="static[shareData.serviceType][index].text" :backgroundColor="static[shareData.serviceType][index].color" color="white" diameter="1.2em"></textIcon>
             <view class="formItemBlock" @click="addressClick(index)">
-                <withPlaceholder :content="(item.location.name==''?item.location.address:item.location.name) + item.location.detail" :placeholder="static[shareData.serviceType][index].placeholder" class="addressMain"></withPlaceholder>
+                <withPlaceholder :content="(item.location.name==''?item.location.address:item.location.name) + ' ' + item.location.detail" :placeholder="static[shareData.serviceType][index].placeholder" class="addressMain"></withPlaceholder>
                 <view v-if="item.location.name!=''|| item.location.address!=''">
                     <withPlaceholder :content="item.name + ' ' + item.tel" placeholder="请填写详细信息" class="addressDtl"></withPlaceholder>
                 </view>
             </view>
             <uni-icons type="list" @click="listClick(index)" class="formItemRight"></uni-icons>
         </view>
-
         
     </view>
-
+    </view>
 </template>
 
 <script>
@@ -39,6 +39,10 @@
         methods: {
             addressClick: function(index) {
                 console.log('addressClick');
+                if (shareData.addressCardLock) {
+                    console.log('location parsing');
+                    return null;
+                }
                 shareData.currentAddressIdx = index;
                 uni.navigateTo({
                     url: '/pages/makeOrder/addressForm/addressForm',
@@ -48,7 +52,11 @@
                 })
             },
             listClick: function(index) {
-                console.log('list click')
+                console.log('list click');
+                if (shareData.addressCardLock) {
+                    console.log('location parsing');
+                    return null;
+                }
                 shareData.currentAddressIdx = index;
                 uni.navigateTo({
                     url: '/pages/makeOrder/addressBook/addressBook'

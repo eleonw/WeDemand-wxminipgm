@@ -1,3 +1,5 @@
+import Location from "@/common/classes/Location.js";
+
 export const color = {
     MAIN: '#457b9d',
     LIGHT: '#a8dadc',
@@ -12,3 +14,5 @@ export const serviceType = {
     HELP_BUY: 1,
     OTHERS: 2,
 }
+
+export const defaultLocation = new Location(116.347236349 ,39.981800698, "北京航空航天大学", "北京市海淀区学院路37号")

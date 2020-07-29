@@ -1,12 +1,31 @@
 @import url("@/common/style/form.css");
 
 .map {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
-    z-index: -1;
+    z-index: 1;
     
     width: 100vw;
-    height: 40vh;
+    height: 550rpx;
+
+}
+
+.detailForm {
+    margin-top: 400rpx;
+    margin-bottom: 500rpx;
+    background: linear-gradient(transparent, var(--color-background) 60rpx, var(--color-background));
+    
+    width: 100vw;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 2;
+}
+
+.card {
+    margin: 10rpx 0;
 }
 

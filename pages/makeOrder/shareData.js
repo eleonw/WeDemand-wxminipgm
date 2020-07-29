@@ -22,6 +22,7 @@ const shareData = {
      * @param currentAddressIdx 是目前待确定的地址的编号，对应了填写地址的序号，也对应了当前地图改变时对应改变的地址项
      */
     currentAddressIdx: 0,
+    addressCardLock: false,
     
     setServiceType: function(type, newAddress=false) {
         let originAddress;
@@ -58,15 +59,20 @@ const shareData = {
         mapContext = context;
     },
     
-    setCurrentLocation: async function(longitude, latitude) {
-        mapContext.moveToLocation({
-            longitude: longitude,
-            latitude: latitude
-        });
+    setCurrentLocation: async function(longitude, latitude, move=true) {
+        if (move) {
+            mapContext.moveToLocation({
+                longitude: longitude,
+                latitude: latitude
+            });
+        }
+        
         let currentLocation = this.address[this.currentAddressIdx].location;
         currentLocation.longitude = longitude;
         currentLocation.latitude = latitude;
+        
         await currentLocation.reverseGeocoder(true);
+        
     },
     
     clear: function() {

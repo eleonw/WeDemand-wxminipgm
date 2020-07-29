@@ -27,7 +27,7 @@
 			"outputPath": ""
 		},
 		"useIsolateContext": true,
-		"useCompilerModule": true,
+		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
@@ -74,8 +74,8 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/test/test",
-					"pathName": "pages/test/test",
+					"name": "pages/makeOrder/addressBook/addressBook",
+					"pathName": "pages/makeOrder/addressBook/addressBook",
 					"scene": null
 				}
 			]

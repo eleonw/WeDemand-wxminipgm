@@ -1,4 +1,5 @@
 <template>
+    <view class="root">
 	<view class="uni-navbar">
 		<view :class="{ 'uni-navbar--fixed': fixed, 'uni-navbar--shadow': shadow, 'uni-navbar--border': border }" :style="{ 'background-color': backgroundColor }" class="uni-navbar__content">
 			<uni-status-bar v-if="statusBar" />
@@ -36,6 +37,7 @@
 			<view class="uni-navbar__placeholder-view" />
 		</view>
 	</view>
+    </view>
 </template>
 
 <script>
@@ -88,19 +90,19 @@
 			},
 			fixed: {
 				type: [Boolean, String],
-				default: false
+				default: true
 			},
 			color: {
 				type: String,
-				default: "#000000"
+				default: "#FFFFFF"
 			},
 			backgroundColor: {
 				type: String,
-				default: "#FFFFFF"
+				default: "#000000"
 			},
 			statusBar: {
 				type: [Boolean, String],
-				default: false
+				default: true
 			},
 			shadow: {
 				type: [Boolean, String],
@@ -108,7 +110,7 @@
 			},
 			border: {
 				type: [Boolean, String],
-				default: true
+				default: false
 			}
 		},
 		mounted() {
@@ -162,8 +164,8 @@
 		display: flex;
 		/* #endif */
 		flex-direction: row;
-		height: 44px;
-		line-height: 44px;
+		height: calc(var(--height-navigationbar) - var(--height-statusbar));
+		line-height: calc(var(--height-navigationbar) - var(--height-statusbar));
 		font-size: 16px;
 		/* background-color: #ffffff;
  */

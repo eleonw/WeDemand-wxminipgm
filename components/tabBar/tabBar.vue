@@ -1,5 +1,6 @@
 <template>
-	<view class="tabBar" :style="{'background-color': backgroundColor}">
+    <view class="root">
+	<view class="component" :style="{'background-color': backgroundColor}">
 		<view v-for="item in tabs" class="tabItem" :class="{selected: index==item.index, touching: touching==item.index}" @touchstart.stop="touchstart(item.index)" @touchend.stop="touchend(item.index)">
             <view >
                 <image class="icon" mode="aspectFit" :src="item.iconPath" v-if="index==item.index"></image>
@@ -8,6 +9,7 @@
             <view>{{item.text}}</view>
         </view>
 	</view>
+    </view>
 </template>
 
 <script>
@@ -68,19 +70,15 @@
         }
     }
     
-    .tabBar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        z-index: 999;
+    .component {
         width: 100vw;
-        height: 8vh;
+        height: var(--height-tabbar);
         display: flex;
-        flex-flow: row || nowrap;
+        flex-flow: row nowrap;
         justify-content: space-around;
         align-items: center;
         
-        box-shadow: 0 0 .5vw .1vw #F8F8F8;
+        box-shadow: 0 0 3rpx 1rpx #F8F8F8;
         
     }
     

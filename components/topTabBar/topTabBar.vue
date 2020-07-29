@@ -1,9 +1,11 @@
 <template>
-    <view class="tabBar">
+    <view class="root">
+    <view class="component">
         <view :class="['tabItem', {selected: activeIndex == item.index}]" v-for="item in tabs" @click.stop="switchTab(item.index)">
             <view>{{ item.text }}</view>
             <view class="bottomLine" :style="[{backgroundColor: bottomLineColor}, {visibility: activeIndex==item.index?'visible':'hidden'}]"></view>
         </view>
+    </view>
 	</view>
 </template>
 
@@ -49,9 +51,9 @@
 
 <style scoped>
 
-   .tabBar {
+   .component {
         z-index: 998;
-        height: 6vh;
+        height: var(--height-toptabbar);
         background-color: transparent;
         display: flex;
         flex-flow: row nowrap;

@@ -1,7 +1,9 @@
 <template>
-	<view class="body">
+	<view class="root">
+    <view class="page">
+        <uni-nav-bar class="navigationBar" left-icon="back" title=" " @clickLeft="uni.navigateBack()" :backgroundColor="color.MAIN" ></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" @switchTab="switchTab"></topTabBar>
-		<map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" @touchend="mapMove">
+		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @regionchange="mapMove">
             <image src="../../../static/image/icon/location.png" class="mapLocationIcon" mode=""></image>
         </map>
         
@@ -9,21 +11,25 @@
             <view class="locateIconContainer shadow" @click="locate">
                 <image class="locateIcon" src="@/static/image/icon/locate.png"></image>
             </view>
-            <addressCard class="locationCard"></addressCard>
+            <addressCard></addressCard>
         </view>
 	</view>
+    </view>
 </template>
 
 <script>
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
     import addressCard from './../components/addressCard.vue';
+    import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     
     import { QQ_MAP_KEY } from "@/common/sensitiveData.js";
     import shareData from "./../shareData.js";
-    import { serviceType } from "@/common/globalData.js";
+    import { serviceType, color, defaultLocation } from "@/common/globalData.js";
     
     import Location from '@/common/classes/Location.js';
-    import Address from '@/common/classes/Address.js'
+    import Address from '@/common/classes/Address.js';
+    
+    import { promisify } from '@/common/helper.js';
     
     const app = getApp();
     let page;
@@ -33,7 +39,7 @@
 	export default {
         name: 'newOrderPage',
         components: {
-            topTabBar, addressCard
+            topTabBar, addressCard, uniNavBar
         },
 		methods: {
             switchTab: function(e) {
@@ -42,24 +48,31 @@
             },
             
 			mapMove: async function() {
-                let res = await app.promisify(mapContext.getCenterLocation, null, mapContext);
-                // console.log(res);
-                shareData.setCurrentLocation(res.longitude, res.latitude);
+                shareData.addressCardLock = true;
+                let res = await promisify(mapContext.getCenterLocation, null, mapContext);
+                await shareData.setCurrentLocation(res.longitude, res.latitude, false);
+                shareData.addressCardLock = false;
             },
             
             locate: async function() {
-                let res;
                 try {
-                    res = await uni.getLocation();
+                    const res = await uni.getLocation();
+                    shareData.setCurrentLocation(res[1].longitude, res[1].latitude);
                 } catch(e) {
                     console.log(e)
                     uni.showToast({
                         title: '定位失败，请手动定位',
-                        icon: 'none'
+                        icon: 'none',
+                        success: function() {
+                            setTimeout(function() {
+                                shareData.setCurrentLocation(defaultLocation.longitude, defaultLocation.latitude);
+                            }, 1000)
+                            
+                        }
                     });
-                    return;
-                };
-                shareData.setCurrentLocation(res[1].longitude, res[1].latitude);
+                    
+                }
+                
             },
             
             
@@ -74,6 +87,8 @@
             page.shareData = shareData;
             mapContext = uni.createMapContext('map', page);
             shareData.setMapContext(mapContext);
+            page.color = color;
+            page.defaultLocation = defaultLocation;
         },
         
         beforeMount: async function(e) {
@@ -139,6 +154,9 @@
                 },
                 shareData: null,
                 QQ_MAP_KEY: null,
+                color: null,
+                defaultLocation: null,
+                lock: false,
             }
         },
 	}
@@ -146,14 +164,12 @@
 
 <style scoped>
     
-    .page {
+   .page {
         position: fixed;
         top: 0;
         left: 0;
-
-        height: 92vh;
     }
-    
+
     .map {
         position: absolute;
         top: -20vh;
@@ -177,7 +193,7 @@
     .topTabBar {
         z-index: 1;
         position: absolute;
-        top: 0;
+        top: var(--height-navigationbar);
         left: 0;
         width: 100vw;
         background-color: var(--color-main);
@@ -186,39 +202,31 @@
     
     .aboveMap {
         z-index: 1;
-        width: 100%;
+        width: 700rpx;
+        
+        margin-top: auto;
+        margin-bottom: calc(var(--height-tabbar) + 20rpx);
+       
         
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
-        
-        position: absolute;
-        left: 0;
-        bottom: 0vh;
-        
     }
     
     .locateIconContainer {
-        margin-left: 5vw;
-        
         background-color: white;
         border-radius: 20%;
-        width: 8vw;
-        height: 8vw;
+        width: 60rpx;
+        height:60rpx;
+        
+        margin-bottom: 10rpx;
     }
  
     .locateIcon {
-        width: 8vw;
-        height: 8vw;
+        width: 60rpx;
+        height: 60rpx;
     }
     
-    .locationCard {
-        z-index: 1;
-        font-size: 1em;
-        align-self: center;
-        margin-top: 2vw;
-        margin-bottom: 3vw;
-    }
     
 </style>

@@ -1,7 +1,7 @@
 
-.tabBar.data-v-cf05321a {
+.component.data-v-cf05321a {
      z-index: 998;
-     height: 6vh;
+     height: var(--height-toptabbar);
      background-color: transparent;
      display: -webkit-box;
      display: -webkit-flex;

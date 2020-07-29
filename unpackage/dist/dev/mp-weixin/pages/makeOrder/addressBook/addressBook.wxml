@@ -1,1 +1,1 @@
-<view>this is address book</view>
+<view class="root"><view class="page"><view class="form"><block wx:for="{{address}}" wx:for-item="item" wx:for-index="__i0__"><view class="formItem"><view class="formItemBlock"><view class="addressMain">{{''+((item.location.name==''?item.location.name:item.location.address)+' '+item.location.detail)+''}}</view><view class="addressSub">{{''+(item.name+' '+item.tel)+''}}</view></view></view></block></view>this is address book</view></view>

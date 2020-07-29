@@ -1,6 +1,6 @@
 <template>
-	<view class="page">
-        
+	<view class="root">
+    <view class="page">
         
         <view v-if="selectedTabIndex==0">
             <newOrderPage></newOrderPage>
@@ -16,7 +16,8 @@
         </view>
         
         
-<!-- 		<tabBar :tabs="mainTabs" v-model="selectedTabIndex" @tabchange="tabChange"></tabBar> -->
+		<tabBar class="tabBar" :tabs="mainTabs" v-model="selectedTabIndex" @tabchange="tabChange"></tabBar>
+    </view>
 	</view>
 </template>
 

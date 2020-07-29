@@ -1693,7 +1693,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 130:
+/***/ 116:
 /*!*******************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/components/uni-icons/icons.js ***!
   \*******************************************************************/
@@ -8755,6 +8755,7 @@ var shareData = {
               * @param currentAddressIdx 是目前待确定的地址的编号，对应了填写地址的序号，也对应了当前地图改变时对应改变的地址项
               */
   currentAddressIdx: 0,
+  addressCardLock: false,
 
   setServiceType: function setServiceType(type) {var newAddress = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     var originAddress;
@@ -8791,15 +8792,20 @@ var shareData = {
     mapContext = context;
   },
 
-  setCurrentLocation: function () {var _setCurrentLocation = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(longitude, latitude) {var currentLocation;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-              mapContext.moveToLocation({
-                longitude: longitude,
-                latitude: latitude });
+  setCurrentLocation: function () {var _setCurrentLocation = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(longitude, latitude) {var move,currentLocation,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:move = _args.length > 2 && _args[2] !== undefined ? _args[2] : true;
+              if (move) {
+                mapContext.moveToLocation({
+                  longitude: longitude,
+                  latitude: latitude });
+
+              }
 
               currentLocation = this.address[this.currentAddressIdx].location;
               currentLocation.longitude = longitude;
-              currentLocation.latitude = latitude;_context.next = 6;return (
-                currentLocation.reverseGeocoder(true));case 6:case "end":return _context.stop();}}}, _callee, this);}));function setCurrentLocation(_x, _x2) {return _setCurrentLocation.apply(this, arguments);}return setCurrentLocation;}(),
+              currentLocation.latitude = latitude;_context.next = 7;return (
+
+                currentLocation.reverseGeocoder(true));case 7:case "end":return _context.stop();}}}, _callee, this);}));function setCurrentLocation(_x, _x2) {return _setCurrentLocation.apply(this, arguments);}return setCurrentLocation;}(),
+
 
 
   clear: function clear() {
@@ -8903,19 +8909,18 @@ Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__
 
 
           delay) {_context.next = 6;break;}
-          this.name = '地址解析中...';_context.next = 6;return (
+          this.name = '获取定位中...';_context.next = 6;return (
             new Promise(function (resolve, reject) {
               setTimeout(resolve, 800);
             }));case 6:_context.next = 8;return (
 
-            (0, _helper.promisify)(qqmapsdk.reverseGeocoder, { location: { longitude: this.longitude, latitude: this.latitude } }, qqmapsdk));case 8:res = _context.sent;
-          console.log('reverseGeocoder success');_context.next = 20;break;case 12:_context.prev = 12;_context.t0 = _context["catch"](1);
+            (0, _helper.promisify)(qqmapsdk.reverseGeocoder, { location: { longitude: this.longitude, latitude: this.latitude } }, qqmapsdk));case 8:res = _context.sent;_context.next = 19;break;case 11:_context.prev = 11;_context.t0 = _context["catch"](1);
 
           this.name = '地址解析失败，请重试';
           this.address = '';
           this.detail = '';
           console.log('reverseGeocoder fail:');
-          console.log(_context.t0);return _context.abrupt("return");case 20:
+          console.log(_context.t0);return _context.abrupt("return");case 19:
 
 
 
@@ -8923,7 +8928,7 @@ Location.prototype.reverseGeocoder = /*#__PURE__*/_asyncToGenerator( /*#__PURE__
 
           this.address = component.city + component.district + component.street_number;
           this.name = res.result.formatted_addresses.recommend;
-          this.detail = '';case 24:case "end":return _context.stop();}}}, _callee, this, [[1, 12]]);}));
+          this.detail = '';case 23:case "end":return _context.stop();}}}, _callee, this, [[1, 11]]);}));
 
 
 Location.prototype.isValid = function () {
@@ -10101,7 +10106,9 @@ module.exports = QQMapWX;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.serviceType = exports.color = void 0;var color = {
+Object.defineProperty(exports, "__esModule", { value: true });exports.defaultLocation = exports.serviceType = exports.color = void 0;var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 47));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var color = {
   MAIN: '#457b9d',
   LIGHT: '#a8dadc',
   DARK: '#1d3557',
@@ -10114,6 +10121,9 @@ var serviceType = {
   HELP_DELIVER: 0,
   HELP_BUY: 1,
   OTHERS: 2 };exports.serviceType = serviceType;
+
+
+var defaultLocation = new _Location.default(116.347236349, 39.981800698, "北京航空航天大学", "北京市海淀区学院路37号");exports.defaultLocation = defaultLocation;
 
 /***/ }),
 

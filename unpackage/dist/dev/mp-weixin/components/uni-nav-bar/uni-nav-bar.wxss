@@ -40,8 +40,8 @@
 		-webkit-box-direction: normal;
 		-webkit-flex-direction: row;
 		        flex-direction: row;
-		height: 44px;
-		line-height: 44px;
+		height: calc(var(--height-navigationbar) - var(--height-statusbar));
+		line-height: calc(var(--height-navigationbar) - var(--height-statusbar));
 		font-size: 16px;
 		/* background-color: #ffffff;
  */

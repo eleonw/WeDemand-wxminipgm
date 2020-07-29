@@ -100,7 +100,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  tabBar: function() {
+    return __webpack_require__.e(/*! import() | components/tabBar/tabBar */ "components/tabBar/tabBar").then(__webpack_require__.bind(null, /*! @/components/tabBar/tabBar.vue */ 83))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -136,7 +140,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar/tabBar */ "components/tabBar/tabBar").then((function () {return resolve(__webpack_require__(/*! @/components/tabBar/tabBar.vue */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var topTabBar = function topTabBar() {__webpack_require__.e(/*! require.ensure | components/topTabBar/topTabBar */ "components/topTabBar/topTabBar").then((function () {return resolve(__webpack_require__(/*! @/components/topTabBar/topTabBar.vue */ 104));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var newOrderPage = function newOrderPage() {Promise.all(/*! require.ensure | pages/makeOrder/subpages/newOrderPage */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/makeOrder/subpages/newOrderPage")]).then((function () {return resolve(__webpack_require__(/*! ./subpages/newOrderPage.vue */ 111));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar/tabBar */ "components/tabBar/tabBar").then((function () {return resolve(__webpack_require__(/*! @/components/tabBar/tabBar.vue */ 83));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var topTabBar = function topTabBar() {__webpack_require__.e(/*! require.ensure | components/topTabBar/topTabBar */ "components/topTabBar/topTabBar").then((function () {return resolve(__webpack_require__(/*! @/components/topTabBar/topTabBar.vue */ 90));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var newOrderPage = function newOrderPage() {Promise.all(/*! require.ensure | pages/makeOrder/subpages/newOrderPage */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/makeOrder/subpages/newOrderPage")]).then((function () {return resolve(__webpack_require__(/*! ./subpages/newOrderPage.vue */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+
 
 
 

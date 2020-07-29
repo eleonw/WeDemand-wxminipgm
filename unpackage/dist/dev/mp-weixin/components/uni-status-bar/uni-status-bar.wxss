@@ -1,8 +1,8 @@
 
 .uni-status-bar.data-v-98d79b2a {
 		width: 750rpx;
-		height: 20px;
-		/* height: var(--status-bar-height);
- */
+/* 		height: 20px; */
+		height: var(--height-statusbar);
+        background-color: rgba(0, 0, 0, 0.3);
 }
 

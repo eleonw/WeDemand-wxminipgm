@@ -1,20 +1,21 @@
 {
-  "pages": [
-    "pages/makeOrder/makeOrder",
-    "pages/front/front",
-    "pages/index/index",
-    "pages/makeOrder/addressForm/addressForm",
-    "pages/makeOrder/addressBook/addressBook",
-    "pages/makeOrder/detailForms/helpDeliver",
-    "pages/makeOrder/detailForms/helpBuy",
-    "pages/makeOrder/detailForms/others"
-  ],
-  "subPackages": [],
-  "window": {
-    "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "微叮当",
-    "navigationBarBackgroundColor": "#457b9d",
-    "backgroundColor": "#ffaa00"
-  },
-  "usingComponents": {}
+    "pages": [
+        "pages/makeOrder/makeOrder",
+        "pages/front/front",
+        "pages/index/index",
+        "pages/makeOrder/addressForm/addressForm",
+        "pages/makeOrder/addressBook/addressBook",
+        "pages/makeOrder/detailForms/helpDeliver",
+        "pages/makeOrder/detailForms/helpBuy",
+        "pages/makeOrder/detailForms/others"
+    ],
+    "subPackages": [],
+    "window": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#FFFFFF",
+        "backgroundColor": "#FFFFFF"
+    },
+    "usingComponents": {},
+    "sitemapLocation": "sitemap43.json"
 }

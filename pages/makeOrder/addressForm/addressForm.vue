@@ -1,5 +1,6 @@
 <template>
-	<view class="body">
+	<view class="root">
+    <view class="page">
 		<uni-nav-bar class="navBar" left-icon="back" :title="title" shadow="true" fixed="true" statusBar="true" @clickLeft="clickBack"></uni-nav-bar>
         <view class="form">
             
@@ -21,7 +22,7 @@
                 <input class="name" placeholder="姓名或昵称" maxlength="10" type="text" v-model="address.name"></input>
                 <radio-group @change="sexChange" class="formItemRight">
                     <label class="radio">
-                        <radio class="radio" value="0" :checked="address.sex==0" :color="colorMain"></radio><text>男士</text>
+                        <radio class="radio" value="0" :checked="address.sex==0" :color="colorMain"></radio><text>先生</text>
                     </label>
                     <label class="radio">
                         <radio class="radio" value="1" :checked="address.sex==1" :color="colorMain"></radio><text>女士</text>
@@ -42,6 +43,7 @@
             </view>
             
         </view>
+    </view>
 	</view>
 </template>
 
@@ -110,6 +112,7 @@
                         argument.latitude = page.address.location.latitude;
                     }
                     let res = await uni.chooseLocation(argument);
+                    console.log(res)
                     
                     const location = page.address.location;
                     location.longitude = res[1].longitude;
@@ -224,8 +227,6 @@
     .radio {
         transform: scale(0.7);
     }
-    
-    
     
     .confirmButton {
         background-color: var(--color-main);
