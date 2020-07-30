@@ -1,27 +1,44 @@
 <template>
 	<view class="page">
-        <button type="default" plain="true" @click="login">使用微信登录</button>
+        使用手机号码登录/注册
+        <input v-model="tel"></input>
+        <view> {{tel}} </view>
+        <button type="default" plain="true" @click="loginWithTel">使用手机登录</button>
+        <button type="default" plain="true" @click="loginWithWechat">使用微信登录</button>
     </view>
 </template>
 
 <script>
-    let vue;
-    const app = getApp();
+    
+    import { promisify } from '@/common/helper.js';
+    
+    let page;
     
 	export default {
 		data() {
 			return {
+                tel: '',
 			}
 		},
 		methods: {
-            login: async function() {
-                console.log(app);
+            loginWithTel: async function() {
+                console.log(page);
+                const res = await uniCloud.callFunction({
+                    name: 'login',
+                    data: {
+                        tel: page.tel,
+                    },
+                });
+            },
+            loginWithWechat: async function() {
                 try {
-                    let res = await app.wx('login');
+                    let res = await promisify(wx.login);
                     console.log(res);
                     res = await uniCloud.callFunction({
                         name: 'login',
-                        data: res,
+                        data: {
+                            wxCode: res.code,
+                        },
                     });
                     console.log(res);
                     wx.getSetting({
@@ -45,9 +62,8 @@
                 
             }
 		},
-        onLoad: () => {
-            vue = this;
-            
+        onLoad: function() {
+            page = this;
         }
 	}
 </script>
@@ -55,9 +71,8 @@
 <style>
     button {
         width: 95vw;
-        position: absolute;
-        left: 2.5vw;
-        bottom: 10vh;
+        margin-left: 2.5vw;
+
     }
 
 </style>

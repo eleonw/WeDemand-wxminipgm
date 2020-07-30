@@ -7,15 +7,17 @@
         "pages/makeOrder/addressBook/addressBook",
         "pages/makeOrder/detailForms/helpDeliver",
         "pages/makeOrder/detailForms/helpBuy",
-        "pages/makeOrder/detailForms/others"
+        "pages/makeOrder/detailForms/others",
+        "pages/makeOrder/addressBook/modifyAddress"
     ],
     "subPackages": [],
     "window": {
         "navigationBarTextStyle": "white",
         "navigationBarTitleText": "",
         "navigationBarBackgroundColor": "#FFFFFF",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFFFFF",
+        "navigationStyle": "custom"
     },
     "usingComponents": {},
-    "sitemapLocation": "sitemap43.json"
+    "sitemapLocation": "sitemap51.json"
 }

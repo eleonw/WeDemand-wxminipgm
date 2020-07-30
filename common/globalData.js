@@ -15,4 +15,10 @@ export const serviceType = {
     OTHERS: 2,
 }
 
-export const defaultLocation = new Location(116.347236349 ,39.981800698, "北京航空航天大学", "北京市海淀区学院路37号")
+export const defaultLocation = new Location({
+    longitude: 116.347236349,
+    latitdue: 39.981800698,
+    name: "北京航空航天大学",
+    address: "北京市海淀区学院路37号"
+})
+

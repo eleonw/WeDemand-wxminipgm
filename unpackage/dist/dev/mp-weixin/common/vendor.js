@@ -1693,7 +1693,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 116:
+/***/ 126:
 /*!*******************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/components/uni-icons/icons.js ***!
   \*******************************************************************/
@@ -8843,11 +8843,21 @@ shareData;exports.default = _default;
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 47));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}var
 
 Address =
-function Address() {var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _Location.default();var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';var sex = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;var tel = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';_classCallCheck(this, Address);
-  this.location = location;
-  this.name = name;
-  this.sex = sex;
-  this.tel = tel;
+function Address()
+
+
+
+
+{var arg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { location: new _Location.default(), name: '', sex: undefined, tel: '' };_classCallCheck(this, Address);
+  if (arg.location instanceof _Location.default) {
+    this.location = arg.location;
+  } else {
+    this.location = new _Location.default(arg.location);
+  }
+
+  this.name = arg.name ? arg.name : '';
+  this.sex = arg.sex ? arg.sex : undefined;
+  this.tel = arg.tel ? arg.tel : '';
 };exports.default = Address;
 ;
 
@@ -8861,14 +8871,6 @@ Address.prototype.hasSex = function () {
 
 Address.prototype.hasValidTel = function () {
   return this.tel && this.tel != '' && this.tel.length == 11 && !isNaN(Number(this.tel));
-};
-
-Address.prototype.copy = function (address) {
-  for (var item in this) {
-    this[item] = address[item];
-    this.location = new _Location.default();
-    this.location.copy(address.location);
-  }
 };
 
 /***/ }),
@@ -8891,14 +8893,21 @@ var qqmapsdk = new QQMapWX({
 
 
 Location =
-function Location() {var longitude = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;var latitude = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;var address = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';var name = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';var detail = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';var parse = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;_classCallCheck(this, Location);
-  this.longitude = longitude;
-  this.latitude = latitude;
-  this.address = address;
-  this.name = name;
-  this.detail = detail;
+function Location()
 
-  if (parse) {
+
+
+
+
+
+{var arg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { longitude: undefined, latitude: undefined, address: '', name: '', detail: '', parse: false };_classCallCheck(this, Location);
+  this.longitude = arg.longitude;
+  this.latitude = arg.latitude;
+  this.address = arg.address ? arg.address : '';
+  this.name = arg.name ? arg.name : '';
+  this.detail = arg.detail ? arg.detail : '';
+
+  if (arg.parse) {
     this.reverseGeocoder();
   }
 };
@@ -8937,12 +8946,6 @@ Location.prototype.isValid = function () {
 
 Location.prototype.hasDetail = function () {
   return this.detail && this.detail != '';
-};
-
-Location.prototype.copy = function (location) {
-  for (var item in this) {
-    this[item] = location[item];
-  }
 };
 
 Location.defaultLocation = new Location(116.347468, 39.981617, '北京市海淀区学院路37号', '北京航空航天大学');var _default =
@@ -10123,7 +10126,11 @@ var serviceType = {
   OTHERS: 2 };exports.serviceType = serviceType;
 
 
-var defaultLocation = new _Location.default(116.347236349, 39.981800698, "北京航空航天大学", "北京市海淀区学院路37号");exports.defaultLocation = defaultLocation;
+var defaultLocation = new _Location.default({
+  longitude: 116.347236349,
+  latitdue: 39.981800698,
+  name: "北京航空航天大学",
+  address: "北京市海淀区学院路37号" });exports.defaultLocation = defaultLocation;
 
 /***/ }),
 
@@ -10135,7 +10142,7 @@ var defaultLocation = new _Location.default(116.347236349, 39.981800698, "北京
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.promisify = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var promisify = function promisify(func, opt) {var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+Object.defineProperty(exports, "__esModule", { value: true });exports.clone = exports.promisify = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var promisify = function promisify(func, opt) {var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
   return new Promise(function (resolve, reject) {
     func.call(context, _objectSpread({},
     opt, {
@@ -10144,6 +10151,18 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.promisify 
 
   });
 };exports.promisify = promisify;
+
+var clone = function clone(obj) {
+  if (obj instanceof Object) {
+    var dup = Object.create(Object.getPrototypeOf(obj));
+    for (var item in obj) {
+      dup[item] = clone(obj[item]);
+    }
+    return dup;
+  } else {
+    return obj;
+  }
+};exports.clone = clone;
 
 /***/ })
 

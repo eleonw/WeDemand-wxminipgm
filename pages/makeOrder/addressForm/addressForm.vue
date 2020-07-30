@@ -7,7 +7,6 @@
             <view class="formItem" @click="chooseLocation">
                 <uni-icons class="formItemIcon" type="location"></uni-icons>
                 <withPlaceholder class="chooseLocation" :content="address.location.name==''?address.location.address:address.location.name" placeholder="请选择地址"></withPlaceholder>
-                    <!-- <textarea class="chooseLocation" disabled="true" :value="address.location.name==''?address.location.address:address.location.name" placeholder="点击选择地址" auto-height="true"></textarea> -->
                 <uni-icons type="forward" class="formItemRight"></uni-icons>
             </view>
             
@@ -51,13 +50,16 @@
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
     import withPlaceholder from '@/components/withPlaceholder/withPlaceholder.vue';
-    
     import shareData from "./../shareData.js";
     import { serviceType } from "@/common/globalData.js";
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';
+    
+    import { clone } from '@/common/helper.js';
+    
     import Vue from 'vue';
+
     
     let page;
     const app = getApp();
@@ -87,6 +89,7 @@
 			}
 		},
 		methods: {
+            
             clickBack: function() {
                 uni.showModal({
                     title: '提示',
@@ -132,7 +135,7 @@
             },
             
             sexChange: function(e) {
-                page.address.sex = e.detail.value;
+                this.value.sex = e.detail.value;
             },
             
             confirm: function() {
@@ -181,16 +184,16 @@
                 }
             }
 		},
-        onLoad: function(opt) {
+        created: function(opt) {
             page = this;
+            
+            
  
             page.title = titles[shareData.serviceType][shareData.currentAddressIdx];
 
             page.colorMain = app.globalData.colorMain;
             
-            page.address = new Address();
-            page.address.copy(shareData.address[shareData.currentAddressIdx]);
-            
+            page.address = clone(shareData.address[shareData.currentAddressIdx]);
         }
 	}
 </script>

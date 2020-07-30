@@ -44,12 +44,17 @@
                 "navigationStyle":"custom"
             }
         }
+        ,{
+            "path" : "pages/makeOrder/addressBook/modifyAddress",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#FFFFFF",
 		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#FFFFFF"
+		"backgroundColor": "#FFFFFF",
+        "navigationStyle": "custom"
 	},
     
     "condition" : { //模式配置，仅开发期间生效

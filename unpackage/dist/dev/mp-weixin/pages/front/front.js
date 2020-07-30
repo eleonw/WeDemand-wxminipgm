@@ -130,30 +130,47 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uniCloud, uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 28));var _this = void 0;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
-//
-//
-//
-//
-//
+/* WEBPACK VAR INJECTION */(function(uniCloud, uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 28));
 
-var vue;
-var app = getApp();var _default =
+
+
+
+
+
+
+
+
+
+
+var _helper = __webpack_require__(/*! @/common/helper.js */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+
+var page;var _default =
 
 {
   data: function data() {
-    return {};
+    return {
+      tel: '' };
 
   },
   methods: {
-    login: function () {var _login = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-                console.log(app);_context.prev = 1;_context.next = 4;return (
-
-                  app.wx('login'));case 4:res = _context.sent;
-                console.log(res);_context.next = 8;return (
+    loginWithTel: function () {var _loginWithTel = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                console.log(page);_context.next = 3;return (
                   uniCloud.callFunction({
                     name: 'login',
-                    data: res }));case 8:res = _context.sent;
+                    data: {
+                      tel: page.tel } }));case 3:res = _context.sent;case 4:case "end":return _context.stop();}}}, _callee);}));function loginWithTel() {return _loginWithTel.apply(this, arguments);}return loginWithTel;}(),
+
+
+
+    loginWithWechat: function () {var _loginWithWechat = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.prev = 0;_context2.next = 3;return (
+
+                  (0, _helper.promisify)(wx.login));case 3:res = _context2.sent;
+                console.log(res);_context2.next = 7;return (
+                  uniCloud.callFunction({
+                    name: 'login',
+                    data: {
+                      wxCode: res.code } }));case 7:res = _context2.sent;
+
 
                 console.log(res);
                 wx.getSetting({
@@ -168,18 +185,17 @@ var app = getApp();var _default =
                         } });
 
                     }
-                  } });_context.next = 16;break;case 13:_context.prev = 13;_context.t0 = _context["catch"](1);
+                  } });_context2.next = 15;break;case 12:_context2.prev = 12;_context2.t0 = _context2["catch"](0);
 
 
 
-                console.log(_context.t0);case 16:case "end":return _context.stop();}}}, _callee, null, [[1, 13]]);}));function login() {return _login.apply(this, arguments);}return login;}() },
+                console.log(_context2.t0);case 15:case "end":return _context2.stop();}}}, _callee2, null, [[0, 12]]);}));function loginWithWechat() {return _loginWithWechat.apply(this, arguments);}return loginWithWechat;}() },
 
 
 
 
   onLoad: function onLoad() {
-    vue = _this;
-
+    page = this;
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 26)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

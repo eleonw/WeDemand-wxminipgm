@@ -104,6 +104,17 @@ var Helper = _interopRequireWildcard(__webpack_require__(/*! @/common/helper.js 
     dev: true },
 
   onLaunch: function onLaunch() {
+    // Object.prototype.clone = function() {
+    //     const obj = Object.create(Object.getPrototypeOf(this));
+    //     for (let item in this) {
+    //         if (item instanceof Object) {
+    //             obj[item] = item.clone();
+    //         } else {
+    //             obj[item] = item;
+    //         }
+    //     }
+    //     return obj;
+    // };
     console.log('App Launch');
   },
   onShow: function onShow() {

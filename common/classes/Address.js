@@ -1,11 +1,21 @@
 import Location from '@/common/classes/Location.js';
 
 export default class Address {
-    constructor(location=new Location(), name='', sex=undefined, tel='') {
-        this.location = location;
-        this.name = name;
-        this.sex = sex;
-        this.tel = tel;
+    constructor(arg={
+        location: new Location(),
+        name: '',
+        sex: undefined,
+        tel: '',
+    }) {
+        if (arg.location instanceof Location) {
+            this.location = arg.location;
+        } else {
+            this.location = new Location(arg.location);
+        }
+        
+        this.name = arg.name?arg.name:'';
+        this.sex = arg.sex?arg.sex:undefined;
+        this.tel = arg.tel?arg.tel:'';
     }
 };
 
@@ -20,11 +30,3 @@ Address.prototype.hasSex = function() {
 Address.prototype.hasValidTel =  function() {
     return this.tel && (this.tel != '') && (this.tel.length) == 11 && !isNaN(Number(this.tel));
 };
-
-Address.prototype.copy = function(address) {
-    for (let item in this) {
-        this[item] = address[item];
-        this.location = new Location();
-        this.location.copy(address.location);
-    }
-}
