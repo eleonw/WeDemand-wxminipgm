@@ -3,15 +3,10 @@ import * as Helper from '@/common/helper.js';
     
 export default {
     methods: {
-        promisify: Helper.promisify
+
     },
     globalData: {
-        colorMain: '#457b9d',
-        colorLight: '#a8dadc',
-        colorDark: '#1d3557',
-        colorBackground: '#f1faee',
-        colorContrast: '#e63946',
-        
+        userInfo: null,
         dev: true,
     },
 	onLaunch: function() {

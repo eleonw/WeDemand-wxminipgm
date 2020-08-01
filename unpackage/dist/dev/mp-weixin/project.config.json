@@ -74,8 +74,8 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/front/front",
-					"pathName": "pages/front/front",
+					"name": "pages/makeOrder/makeOrder",
+					"pathName": "pages/makeOrder/makeOrder",
 					"scene": null
 				}
 			]

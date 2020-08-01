@@ -1,17 +1,18 @@
 {
 	"pages": [
         {
-            "path" : "pages/makeOrder/makeOrder",
-            "style" : {
-                "navigationStyle":"custom"
-            }
-        },
-        {
             "path": "pages/front/front",
             "style": {
                 "navigationStyle":"custom"
             }
-        }    
+        }  
+        ,{
+            "path" : "pages/makeOrder/makeOrder",
+            "style" : {
+                "navigationStyle":"custom"
+            }
+        }
+          
         ,{
             "path" : "pages/index/index",
             "style" : {}

@@ -19,3 +19,15 @@ export const clone = function(obj) {
         return obj;
     }
 }
+
+export const addAll = function(src) {
+    for (let item in src) {
+        if (src[item] instanceof Object) {
+            let obj = {};
+            addAll.call(obj, src[item]);
+            this[item] = obj;
+        } else {
+            this[item] = src[item];
+        }
+    }
+}

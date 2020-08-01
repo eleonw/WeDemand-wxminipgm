@@ -1,7 +1,9 @@
 <template>
 	<view class="root">
         <view class="page">
-            <status-bar class="statusBar"></status-bar>
+            
+            <statusBar gradient:"false" class="statusBar"></statusBar>
+            <!-- <gradientStatusBar class="statusBar"></gradientStatusBar> -->
             
             <map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" :markers="mapMarkers"></map>
             
@@ -59,7 +61,9 @@
 
 <script>
     import addressCard from './../components/addressCard.vue';
-    import statusBar from '@/components/uni-status-bar/uni-status-bar.vue';
+    import statusBar from '@/components/statusBar/statusBar.vue';
+
+
     import navigatorWithPlaceholder from '@/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue';
     
     import shareData from './../shareData.js';

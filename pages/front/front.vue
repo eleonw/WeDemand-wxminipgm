@@ -1,16 +1,19 @@
 <template>
+    <view class="root">
 	<view class="page">
         使用手机号码登录/注册
         <input v-model="tel"></input>
         <view> {{tel}} </view>
-        <button type="default" plain="true" @click="loginWithTel">使用手机登录</button>
-        <button type="default" plain="true" @click="loginWithWechat">使用微信登录</button>
+        <button type="default" plain="true" @click="login(0)">使用手机登录</button>
+        <button type="default" plain="true" @click="login(1)">使用微信登录</button>
+    </view>
     </view>
 </template>
 
 <script>
     
-    import { promisify } from '@/common/helper.js';
+    import { promisify, addAll } from '@/common/helper.js';
+    import { userInfo } from '@/common/globalData.js';
     
     let page;
     
@@ -21,45 +24,56 @@
 			}
 		},
 		methods: {
-            loginWithTel: async function() {
-                console.log(page);
-                const res = await uniCloud.callFunction({
-                    name: 'login',
-                    data: {
-                        tel: page.tel,
-                    },
-                });
-            },
-            loginWithWechat: async function() {
+            login: async function(type) {
+                
                 try {
-                    let res = await promisify(wx.login);
-                    console.log(res);
-                    res = await uniCloud.callFunction({
+                    let wxCode;
+                    
+                    const loginData = {};
+                    switch (type) {
+                        case 0: // login with tel
+                            loginData.tel = page.tel;
+                            break;
+                        case 1:
+                            wxCode = (await promisify(wx.login)).code;
+                            loginData.wxCode = wxCode;
+                            break;
+                        default:
+                            throw new Error('invalid login type');
+                    }
+                
+                    let res = await uniCloud.callFunction({
                         name: 'login',
-                        data: {
-                            wxCode: res.code,
-                        },
+                        data: loginData
                     });
-                    console.log(res);
-                    wx.getSetting({
-                      success(res) {
-                        if (!res.authSetting['scope.userLocation']) {
-                          wx.authorize({
-                            scope: 'scope.userLocation',
-                            complete() {
-                                uni.redirectTo({
-                                    url: '/pages/makeOrder/makeOrder'
-                                })
-                            }
-                          })
-                        }
-                      }
-                    })
+                    addAll.call(userInfo, res.result);
                     
                 } catch(e) {
-                    console.log(e)
+                    console.log(e);
+                    uni.showToast({
+                        icon: 'none',
+                        title: '登录异常，请重试'
+                    })
                 }
+                console.log('login success: ')
+                console.log(userInfo)
                 
+                await page.authorizeLocation();
+                uni.redirectTo({
+                    url: '/pages/index/index',
+                })
+            },
+            
+            authorizeLocation: async function() {
+                const res = await promisify(wx.getSetting);
+                if (!res.authSetting['scope.userLocation']) {
+                    try {
+                        await promisify(wx.authorize, {scope: 'scope.userLocation'})
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+                return;
             }
 		},
         onLoad: function() {

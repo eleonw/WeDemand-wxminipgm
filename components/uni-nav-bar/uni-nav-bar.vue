@@ -43,6 +43,8 @@
 <script>
 	import uniStatusBar from "../uni-status-bar/uni-status-bar.vue";
 	import uniIcons from "../uni-icons/uni-icons.vue";
+    
+    import { color } from '@/common/globalData.js';
 
 	/**
 	 * NavBar 自定义导航栏
@@ -82,7 +84,7 @@
 			},
 			leftIcon: {
 				type: String,
-				default: ""
+				default: "back"
 			},
 			rightIcon: {
 				type: String,
@@ -90,7 +92,7 @@
 			},
 			fixed: {
 				type: [Boolean, String],
-				default: true
+				default: false
 			},
 			color: {
 				type: String,
@@ -98,7 +100,7 @@
 			},
 			backgroundColor: {
 				type: String,
-				default: "#000000"
+				default: color.MAIN
 			},
 			statusBar: {
 				type: [Boolean, String],
@@ -135,12 +137,12 @@
 		font-size: 34rpx;
 		/* #endif */
 		/* #ifndef APP-PLUS */
-		font-size: 32rpx;
+		font-size: 16;
 		/* #endif */
 	}
 
 	.uni-nav-bar-right-text {
-		font-size: 28rpx;
+		font-size: 14px;
 	}
 
 	.uni-navbar__content {
@@ -164,8 +166,8 @@
 		display: flex;
 		/* #endif */
 		flex-direction: row;
-		height: calc(var(--height-navigationbar) - var(--height-statusbar));
-		line-height: calc(var(--height-navigationbar) - var(--height-statusbar));
+		height: calc(var(--height-navbar) - var(--height-statusbar));
+		line-height: calc(var(--height-navbar) - var(--height-statusbar));
 		font-size: 16px;
 		/* background-color: #ffffff;
  */
@@ -210,7 +212,7 @@
 		flex: 1;
 		align-items: center;
 		justify-content: center;
-		font-size: 28rpx;
+		font-size: 14px;
 	}
 
 

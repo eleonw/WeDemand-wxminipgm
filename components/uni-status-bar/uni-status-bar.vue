@@ -7,12 +7,11 @@
 </template>
 
 <script>
-	// var statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px'
 	export default {
 		name: 'UniStatusBar',
 		data() {
 			return {
-				// statusBarHeight: statusBarHeight
+				
 			}
 		}
 	}
@@ -21,8 +20,9 @@
 <style scoped>
 	.uni-status-bar {
 		width: 750rpx;
-/* 		height: 20px; */
+		height: 20px;
 		height: var(--height-statusbar);
-        background-color: rgba(0, 0, 0, 0.3);
+        
+        background-color: rgba(0, 0, 0, 0.15);
 	}
 </style>

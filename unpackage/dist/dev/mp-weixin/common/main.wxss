@@ -33,11 +33,6 @@
 
 
 
-
-
-
-
-
 /* 解决头条小程序组件内引入字体不生效的问题 */
 .root {
     --color-main: #457b9d;
@@ -51,7 +46,7 @@
     
     --height-tabbar: 100rpx;
     --height-toptabbar: 75rpx;
-    --height-navigationbar: 64px;
+    --height-navbar: 64px;
     --height-statusbar: 20px;
     
     
@@ -96,7 +91,7 @@
     padding-bottom: var(--height-tabbar);
 }
 .pageWithNavigationBar {
-    padding-top: var(--height-navigationbar);
+    padding-top: var(--height-navbar);
 }
 .pageNoSlide {
     height: 100vh;

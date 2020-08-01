@@ -3,6 +3,6 @@
   "usingComponents": {
     "navigator-with-placeholder": "/components/navigatorWithPlaceholder/navigatorWithPlaceholder",
     "address-card": "/pages/makeOrder/components/addressCard",
-    "status-bar": "/components/uni-status-bar/uni-status-bar"
+    "status-bar": "/components/statusBar/statusBar"
   }
 }

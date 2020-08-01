@@ -1,7 +1,7 @@
 {
     "pages": [
-        "pages/makeOrder/makeOrder",
         "pages/front/front",
+        "pages/makeOrder/makeOrder",
         "pages/index/index",
         "pages/makeOrder/addressForm/addressForm",
         "pages/makeOrder/addressBook/addressBook",
@@ -19,5 +19,5 @@
         "navigationStyle": "custom"
     },
     "usingComponents": {},
-    "sitemapLocation": "sitemap51.json"
+    "sitemapLocation": "sitemap4.json"
 }

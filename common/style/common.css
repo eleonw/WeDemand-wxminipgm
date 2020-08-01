@@ -10,7 +10,7 @@
     
     --height-tabbar: 100rpx;
     --height-toptabbar: 75rpx;
-    --height-navigationbar: 64px;
+    --height-navbar: 64px;
     --height-statusbar: 20px;
     
     
@@ -38,7 +38,7 @@
 }
 
 .pageWithNavigationBar {
-    padding-top: var(--height-navigationbar);
+    padding-top: var(--height-navbar);
 }
 
 .pageNoSlide {

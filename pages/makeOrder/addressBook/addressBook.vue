@@ -1,8 +1,9 @@
 <template>
 	<view class="root">
     <view class="page">
+        <uni-nav-bar class="navBar" title="Â∏∏Áî®Âú∞ÂùÄ" @clickLeft="cancel"></uni-nav-bar>
         <view class="form">
-            <view v-for="(item,idx) in address" class="formItem">
+            <view v-for="(item,idx) in address" @click="selectAddress(item)" class="formItem">
                 <view class="formItemBlock">
                     <view class="addressMain">
                         {{ (item.location.name==''?item.location.name:item.location.address) + ' ' + item.location.detail }}
@@ -11,7 +12,7 @@
                         {{ item.name + ' ' + item.tel }}
                     </view>
                 </view>
-                <uni-icons type="compose" class="formItemRight" @click="modifyAddress(idx)"></uni-icons>
+                <uni-icons type="compose" class="formItemRight" @click.native.stop="modifyAddress(idx)"></uni-icons>
             </view>
         </view>
         
@@ -21,6 +22,7 @@
 
 <script>
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
+    import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     
     import { defaultLocation } from '@/common/globalData.js';
     import shareData from './../shareData.js';
@@ -35,13 +37,13 @@
     
 	export default {
         components: {
-            uniIcons,
+            uniIcons, uniNavBar
         },
 		data() {
 			return {
 				address: [new Address({
                     location: defaultLocation,
-                    name: '‰∏',
+                    name: 'ÔøΩÔøΩ',
                     tel: '11111111111'
                 }),
                 new Address({
@@ -55,6 +57,16 @@
             page = this;
         },
 		methods: {
+            cancel: function() {
+                uni.navigateBack();
+            },
+            
+            selectAddress: function(address) {
+                Vue.set(shareData.address, shareData.currentAddressIdx, address);
+                shareData.currentAddressIdx++;
+                uni.navigateBack()
+            },
+            
 			modifyAddress: function(index) {
                 const address = JSON.stringify(page.address[index]);
                 uni.navigateTo({
@@ -77,7 +89,7 @@
                         case -1:
                             uni.showToast({
                                 icon: 'none',
-                                title: 'µÿ÷∑–ﬁ∏ƒ ß∞‹£¨«Î÷ÿ ‘'
+                                title: 'Âú∞ÂùÄ‰øÆÊîπÂ§±Ë¥•ÔºåËØ∑ÈáçËØï'
                             });
                             break;
                         default:

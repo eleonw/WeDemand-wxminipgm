@@ -198,8 +198,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 45));
-var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 48);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 143));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/uni-status-bar/uni-status-bar */ "components/uni-status-bar/uni-status-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-status-bar/uni-status-bar.vue */ 150));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 136));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+
+
+
+
+var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 49));
+var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 25);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 143));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 150));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 136));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 var page;
 var mapContext;var _default =
 

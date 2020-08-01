@@ -66,7 +66,7 @@ async function loginWithWxCode(code) {
         return res.data[0];
     } else {
         return await signup({
-            wx_openid: wechatInfo.openid,
+            wx_openid: openid
         })
     }
 

@@ -58,7 +58,6 @@
     
     import { clone } from '@/common/helper.js';
     
-    import Vue from 'vue';
     
     let page;
     const app = getApp();
@@ -82,6 +81,9 @@
                     cancelText: '取消',
                     complete: (res) => {
                         if (res.confirm) {
+                            uni.$emit('addressModify', {
+                                status: 0
+                            });
                             uni.navigateBack();
                         }
                     }
@@ -147,20 +149,10 @@
                     })
                 } else {
                     
-                    Vue.set(shareData.address, shareData.currentAddressIdx, page.address);
-                    Vue.set(shareData.completed, shareData.currentAddressIdx, true);
                     
-                    if (shareData.status != 0) {
-                        uni.navigateBack();
-                    } else if (shareData.addressCompleted()) {
-                        shareData.status = 1;
-                        uni.redirectTo({
-                            url: detailFormUrls[shareData.serviceType],
-                        })
-                    } else {
-                        shareData.currentAddressIdx++;
-                        uni.navigateBack();
-                    }
+                    
+                    
+                   
                 }
             }
 		},

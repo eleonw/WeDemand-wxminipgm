@@ -6,7 +6,7 @@
 }
 .map.data-v-c7de9e6e {
      position: absolute;
-     top: -20vh;
+     top: -15vh;
      left: 0;
      width: 100vw;
      height: 120vh;
@@ -25,7 +25,7 @@
 .topTabBar.data-v-c7de9e6e {
      z-index: 1;
      position: absolute;
-     top: var(--height-navigationbar);
+     top: var(--height-navbar);
      left: 0;
      width: 100vw;
      background-color: var(--color-main);

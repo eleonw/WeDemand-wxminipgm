@@ -1,0 +1,14 @@
+
+.component {
+		width: 750rpx;
+/* 		height: 20px; */
+		height: var(--height-statusbar);
+        background-color: rgba(0, 0, 0, 0.15);
+}
+.componentGradient {
+        width: 750rpx;
+        height: calc(var(--height-statusbar) * 1.2);
+        background: -webkit-linear-gradient(rgba(0, 0, 0, 1), transparent);
+        background: linear-gradient(rgba(0, 0, 0, 1), transparent);
+}
+

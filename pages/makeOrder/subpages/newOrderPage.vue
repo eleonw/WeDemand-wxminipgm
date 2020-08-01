@@ -1,9 +1,9 @@
 <template>
 	<view class="root">
     <view class="page">
-        <uni-nav-bar class="navigationBar" left-icon="back" title=" " @clickLeft="uni.navigateBack()" :backgroundColor="color.MAIN" ></uni-nav-bar>
+        <uni-nav-bar class="navigationBar" @clickLeft="uni.navigateBack()"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" @switchTab="switchTab"></topTabBar>
-		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @regionchange="mapMove">
+		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @touchend="mapMove">
             <image src="../../../static/image/icon/location.png" class="mapLocationIcon" mode=""></image>
         </map>
         
@@ -172,7 +172,7 @@
 
     .map {
         position: absolute;
-        top: -20vh;
+        top: -15vh;
         left: 0;
         width: 100vw;
         height: 120vh;
@@ -193,7 +193,7 @@
     .topTabBar {
         z-index: 1;
         position: absolute;
-        top: var(--height-navigationbar);
+        top: var(--height-navbar);
         left: 0;
         width: 100vw;
         background-color: var(--color-main);

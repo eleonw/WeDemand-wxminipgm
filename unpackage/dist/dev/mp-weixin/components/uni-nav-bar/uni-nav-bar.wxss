@@ -4,10 +4,10 @@
 
 
 
-		font-size: 32rpx;
+		font-size: 16;
 }
 .uni-nav-bar-right-text.data-v-0231f2a5 {
-		font-size: 28rpx;
+		font-size: 14px;
 }
 .uni-navbar__content.data-v-0231f2a5 {
 		position: relative;
@@ -40,8 +40,8 @@
 		-webkit-box-direction: normal;
 		-webkit-flex-direction: row;
 		        flex-direction: row;
-		height: calc(var(--height-navigationbar) - var(--height-statusbar));
-		line-height: calc(var(--height-navigationbar) - var(--height-statusbar));
+		height: calc(var(--height-navbar) - var(--height-statusbar));
+		line-height: calc(var(--height-navbar) - var(--height-statusbar));
 		font-size: 16px;
 		/* background-color: #ffffff;
  */
@@ -106,7 +106,7 @@
 		-webkit-box-pack: center;
 		-webkit-justify-content: center;
 		        justify-content: center;
-		font-size: 28rpx;
+		font-size: 14px;
 }
 .uni-navbar__placeholder-view.data-v-0231f2a5 {
 		height: 44px;

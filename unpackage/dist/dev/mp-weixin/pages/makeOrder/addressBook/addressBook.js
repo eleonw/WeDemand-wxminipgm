@@ -93,6 +93,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
+  uniNavBar: function() {
+    return __webpack_require__.e(/*! import() | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then(__webpack_require__.bind(null, /*! @/components/uni-nav-bar/uni-nav-bar.vue */ 114))
+  },
   uniIcons: function() {
     return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 121))
   }
@@ -158,26 +161,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _globalData = __webpack_require__(/*! @/common/globalData.js */ 50);
-var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 45));
+
+
+var _globalData = __webpack_require__(/*! @/common/globalData.js */ 23);
+var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 49));
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 
 
 
-var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 46));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 121));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 50));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 121));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 114));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var page;var _default =
 
 
 {
   components: {
-    uniIcons: uniIcons },
+    uniIcons: uniIcons, uniNavBar: uniNavBar },
 
   data: function data() {
     return {
       address: [new _Address.default({
         location: _globalData.defaultLocation,
-        name: '�',
+        name: '��',
         tel: '11111111111' }),
 
       new _Address.default({
@@ -191,6 +196,16 @@ var page;var _default =
     page = this;
   },
   methods: {
+    cancel: function cancel() {
+      uni.navigateBack();
+    },
+
+    selectAddress: function selectAddress(address) {
+      _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, address);
+      _shareData.default.currentAddressIdx++;
+      uni.navigateBack();
+    },
+
     modifyAddress: function modifyAddress(index) {
       var address = JSON.stringify(page.address[index]);
       uni.navigateTo({
@@ -213,7 +228,7 @@ var page;var _default =
           case -1:
             uni.showToast({
               icon: 'none',
-              title: '��ַ�޸�ʧ�ܣ�������' });
+              title: '地址修改失败，请重试' });
 
             break;
           default:
