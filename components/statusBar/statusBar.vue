@@ -1,41 +1,44 @@
 <template>
     <view class="root">
-	<view class="component" :class="[gradient?'componentGradient':'component']">
-		<slot />
+	<view class="navBar" :class="[gradient==true?'gradient':'noGradient']">
+
 	</view>
     </view>
 </template>
 
 <script>
-	// var statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px'
 	export default {
 		name: 'statusBar',
         props: {
             gradient: {
-                type: Boolean,
-                defualt: false,
-                required: false
-            }
+            	type: [Boolean, String],
+            	default: true
+            },
         },
 		data() {
 			return {
-				// statusBarHeight: statusBarHeight
+				
 			}
-		}
+		},
+        created: function() {
+            console.log(this.gradient)
+        }
 	}
 </script>
 
-<style>
-	.component {
-		width: 750rpx;
-/* 		height: 20px; */
-		height: var(--height-statusbar);
-        background-color: rgba(0, 0, 0, 0.15);
+<style scoped>
+    .navBar {
+        width: 750rpx;
+        height: 20px;
+    }
+    
+	.noGradient {
+        height: var(--height-statusbar);
+		background-color: rgba(0, 0, 0, 0.15);
 	}
     
-    .componentGradient {
-        width: 750rpx;
-        height: calc(var(--height-statusbar) * 1.2);
-        background: linear-gradient(rgba(0, 0, 0, 1), transparent);
+    .gradient {
+        height: calc(1.3 * var(--height-statusbar));
+        background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
     }
 </style>

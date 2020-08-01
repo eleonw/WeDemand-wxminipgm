@@ -8,7 +8,13 @@
     
     width: 100vw;
     height: 550rpx;
+}
 
+.backNavigator {
+    z-index: 999;
+    position: fixed;
+    top: 40px;
+    left: 20px;
 }
 
 .detailForm {

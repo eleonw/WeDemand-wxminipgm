@@ -1,1 +1,1 @@
-<view class="root"><view class="{{['component',gradient?'componentGradient':'component']}}"><slot></slot></view></view>
+<view class="root data-v-6f93ede2"><view class="{{['navBar data-v-6f93ede2',gradient==true?'gradient':'noGradient']}}"></view></view>

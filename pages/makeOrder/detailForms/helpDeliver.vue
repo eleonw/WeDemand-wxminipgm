@@ -2,13 +2,11 @@
 	<view class="root">
         <view class="page">
             
-            <statusBar gradient:"false" class="statusBar"></statusBar>
-            <!-- <gradientStatusBar class="statusBar"></gradientStatusBar> -->
+            <statusBar class="statusBar"></statusBar>
             
             <map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" :markers="mapMarkers"></map>
+            <backgroundIcon type="back" size="25" shadow="true" class="backNavigator" @click="back"></backgroundIcon>
             
-            
-<!--            <view class="blankForMap"></view> -->
             <view class="detailForm">
                 <addressCard></addressCard>
                 <view class="form card">
@@ -62,10 +60,11 @@
 <script>
     import addressCard from './../components/addressCard.vue';
     import statusBar from '@/components/statusBar/statusBar.vue';
-
+    import backgroundIcon from '@/components/backgroundIcon/backgroundIcon.vue'
 
     import navigatorWithPlaceholder from '@/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue';
     
+    import { color }from '@/common/globalData.js';
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     let page;
@@ -73,7 +72,7 @@
     
 	export default {
         components: {
-            addressCard, navigatorWithPlaceholder, statusBar
+            addressCard, navigatorWithPlaceholder, statusBar, backgroundIcon
         },
 		data() {
 			return {
@@ -91,6 +90,22 @@
 			}
 		},
 		methods: {
+            back: function() {
+
+                uni.showModal({
+                    content: '放弃订单？',
+                    cancelColor: color.MAIN,
+                    confirmColor: "#8f8f8f",
+                    
+                    success: res => {
+                        if (res.confirm) {
+                            shareData.clear();
+                            uni.navigateBack();
+                        }
+                    },
+                })
+            },
+            
 			chooseRetriveTime: function() {
                 console.log('aaa')
             }
@@ -126,13 +141,7 @@
             
             mapContext.includePoints({
                 points: page.mapMarkers,
-                padding: [80, 30, 100, 30],
-                success: res => {
-                    console.log(res);
-                },
-                fail: e => {
-                    console.log(e);
-                }
+                padding: [80, 30, 120, 30],
             });
         }
 	}

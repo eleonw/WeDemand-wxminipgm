@@ -1,8 +1,8 @@
 {
+  "component": true,
   "usingComponents": {
     "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
     "top-tab-bar": "/components/topTabBar/topTabBar",
     "address-card": "/pages/makeOrder/components/addressCard"
-  },
-  "component": true
+  }
 }

@@ -1,7 +1,7 @@
 <template>
 	<view class="root">
     <view class="page">
-		<uni-nav-bar class="navBar" left-icon="back" :title="title" shadow="true" fixed="true" statusBar="true" @clickLeft="clickBack"></uni-nav-bar>
+		<uni-nav-bar class="navBar" :title="title" @clickLeft="clickBack"></uni-nav-bar>
         <view class="form">
             
             <view class="formItem" @click="chooseLocation">
@@ -51,7 +51,7 @@
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
     import withPlaceholder from '@/components/withPlaceholder/withPlaceholder.vue';
     import shareData from "./../shareData.js";
-    import { serviceType } from "@/common/globalData.js";
+    import { serviceType, color } from "@/common/globalData.js";
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';
@@ -135,7 +135,7 @@
             },
             
             sexChange: function(e) {
-                this.value.sex = e.detail.value;
+                this.address.sex = e.detail.value;
             },
             
             confirm: function() {
@@ -191,7 +191,7 @@
  
             page.title = titles[shareData.serviceType][shareData.currentAddressIdx];
 
-            page.colorMain = app.globalData.colorMain;
+            page.colorMain = color.MAIN;
             
             page.address = clone(shareData.address[shareData.currentAddressIdx]);
         }

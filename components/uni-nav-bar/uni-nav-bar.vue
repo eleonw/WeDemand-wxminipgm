@@ -2,7 +2,7 @@
     <view class="root">
 	<view class="uni-navbar">
 		<view :class="{ 'uni-navbar--fixed': fixed, 'uni-navbar--shadow': shadow, 'uni-navbar--border': border }" :style="{ 'background-color': backgroundColor }" class="uni-navbar__content">
-			<uni-status-bar v-if="statusBar" />
+			<statusBar v-if="statusBar" gradient="false"/>
 			<view :style="{ color: color,backgroundColor: backgroundColor }" class="uni-navbar__header uni-navbar__content_view">
 				<view @tap="onClickLeft" class="uni-navbar__header-btns uni-navbar__header-btns-left uni-navbar__content_view">
 					<view class="uni-navbar__content_view" v-if="leftIcon.length">
@@ -33,7 +33,7 @@
 			</view>
 		</view>
 		<view class="uni-navbar__placeholder" v-if="fixed">
-			<uni-status-bar v-if="statusBar" />
+			<uni-status-bar v-if="statusBar" gradient="true"></uni-status-bar>
 			<view class="uni-navbar__placeholder-view" />
 		</view>
 	</view>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-	import uniStatusBar from "../uni-status-bar/uni-status-bar.vue";
+	import statusBar from "../statusBar/statusBar.vue";
 	import uniIcons from "../uni-icons/uni-icons.vue";
     
     import { color } from '@/common/globalData.js';
@@ -66,7 +66,7 @@
 	export default {
 		name: "UniNavBar",
 		components: {
-			uniStatusBar,
+			statusBar,
 			uniIcons
 		},
 		props: {

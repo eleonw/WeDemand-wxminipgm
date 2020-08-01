@@ -50,7 +50,7 @@
 			mapMove: async function() {
                 shareData.addressCardLock = true;
                 let res = await promisify(mapContext.getCenterLocation, null, mapContext);
-                await shareData.setCurrentLocation(res.longitude, res.latitude, false);
+                await shareData.setCurrentLocation(res.longitude, res.latitude);
                 shareData.addressCardLock = false;
             },
             

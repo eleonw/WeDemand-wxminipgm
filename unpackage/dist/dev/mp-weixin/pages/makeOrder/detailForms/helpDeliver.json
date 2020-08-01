@@ -1,8 +1,9 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
+    "status-bar": "/components/statusBar/statusBar",
+    "background-icon": "/components/backgroundIcon/backgroundIcon",
     "navigator-with-placeholder": "/components/navigatorWithPlaceholder/navigatorWithPlaceholder",
-    "address-card": "/pages/makeOrder/components/addressCard",
-    "status-bar": "/components/statusBar/statusBar"
+    "address-card": "/pages/makeOrder/components/addressCard"
   }
 }

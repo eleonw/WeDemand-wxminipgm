@@ -14,6 +14,7 @@
     
     import { promisify, addAll } from '@/common/helper.js';
     import { userInfo } from '@/common/globalData.js';
+    import { login } from '@/common/server.js';
     
     let page;
     
@@ -42,11 +43,8 @@
                             throw new Error('invalid login type');
                     }
                 
-                    let res = await uniCloud.callFunction({
-                        name: 'login',
-                        data: loginData
-                    });
-                    addAll.call(userInfo, res.result);
+                    let res = await login(loginData);
+                    addAll.call(userInfo, res);
                     
                 } catch(e) {
                     console.log(e);

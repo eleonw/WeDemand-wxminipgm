@@ -1,0 +1,1 @@
+<view class="root data-v-68642c2b"><view class="component data-v-68642c2b" style="{{$root.s0}}"><uni-icons vue-id="8de4e5bc-1" type="{{type}}" size="{{size}}" color="{{color}}" data-event-opts="{{[['^click',[['click']]]]}}" bind:click="__e" class="data-v-68642c2b" bind:__l="__l"></uni-icons></view></view>
