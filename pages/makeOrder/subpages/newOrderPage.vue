@@ -2,7 +2,7 @@
 	<view class="root">
     <view class="page">
         <uni-nav-bar class="navigationBar" @clickLeft="uni.navigateBack()"></uni-nav-bar>
-        <topTabBar class="topTabBar" :tabs="tabs" @switchTab="switchTab"></topTabBar>
+        <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
 		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @touchend="mapMove">
             <image src="../../../static/image/icon/location.png" class="mapLocationIcon" mode=""></image>
         </map>

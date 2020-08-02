@@ -81,6 +81,25 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.tabs, function(item, __i0__) {
+    var s0 = _vm.__get_style([
+      _vm.activeIndex == item.index ? _vm.activeStyle : _vm.inactiveStyle
+    ])
+
+    return {
+      $orig: _vm.__get_orig(item),
+      s0: s0
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -114,43 +133,57 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  name: 'topTabBar',
-  props: {
-    value: {
-      type: [Number, String],
-      default: 0 },
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-    tabs: {
-      type: Array,
+
+
+
+
+
+
+
+
+
+
+var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { name: 'topTabBar', props: { value: { type: [Number, String], default: 0 }, tabs: { type: Array,
       default: [] },
 
-    bottomLineColor: {
+    size: {
       type: String,
-      default: 'black' } },
+      default: '1em' },
+
+    color: {
+      type: String,
+      default: 'white' },
+
+    backgroundColor: {
+      type: String,
+      default: _globalData.color.MAIN } },
 
 
   data: function data() {
     return {
       activeIndex: this.value,
-      bottomLineStyle: {
-        'background-color': this.bottomLineColor },
+      activeStyle: {
+        fontSize: '1.1em',
+        fontWeight: '600',
+        color: this.backgroundColor,
+        backgroundColor: this.color },
 
-      tabBarStyle: {
-        width: this.width,
-        'background-color': this.backgroundColor } };
+      inactiveStyle: {
+        color: this.color,
+        backgroundColor: this.backgroundColor } };
+
 
 
   },
@@ -160,7 +193,11 @@ var _default =
       this.$emit('switchTab', { index: index });
       this.$emit('input', index);
       console.log('tab change to: ' + index);
-    } } };exports.default = _default;
+    } },
+
+  created: function created() {
+    console.log(this.fontSize);
+  } };exports.default = _default;
 
 /***/ }),
 

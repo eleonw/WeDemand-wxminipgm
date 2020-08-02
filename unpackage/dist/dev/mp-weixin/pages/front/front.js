@@ -163,40 +163,41 @@ var page;var _default =
 
   },
   methods: {
-    login: function () {var _login2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(type) {var wxCode, loginData, res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.prev = 0;
+    login: function () {var _login2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(type) {var wxCode, loginData, res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                uni.showLoading({
+                  title: '登录中' });_context.prev = 1;
 
 
 
 
                 loginData = { type: type };_context.t0 =
                 type;_context.next = _context.t0 ===
-                0 ? 5 : _context.t0 ===
+                0 ? 6 : _context.t0 ===
 
 
-                1 ? 7 : 12;break;case 5: // login with tel
-                loginData.tel = page.tel;return _context.abrupt("break", 13);case 7:_context.next = 9;return (0, _helper.promisify)(wx.login);case 9:wxCode = _context.sent.code;
-                loginData.wxCode = wxCode;return _context.abrupt("break", 13);case 12:throw (
+                1 ? 8 : 13;break;case 6: // login with tel
+                loginData.tel = page.tel;return _context.abrupt("break", 14);case 8:_context.next = 10;return (0, _helper.promisify)(wx.login);case 10:wxCode = _context.sent.code;
+                loginData.wxCode = wxCode;return _context.abrupt("break", 14);case 13:throw (
 
 
-                  new Error('invalid login type'));case 13:_context.next = 15;return (
+                  new Error('invalid login type'));case 14:_context.next = 16;return (
 
 
-                  (0, _server.login)(loginData));case 15:res = _context.sent;
-                _helper.addAll.call(_globalData.userInfo, res);_context.next = 23;break;case 19:_context.prev = 19;_context.t1 = _context["catch"](0);
-
+                  (0, _server.login)(loginData));case 16:res = _context.sent;
+                _helper.addAll.call(_globalData.userInfo, res);
+                uni.hideLoading();_context.next = 26;break;case 21:_context.prev = 21;_context.t1 = _context["catch"](1);
 
                 console.log(_context.t1);
+                uni.hideLoading();
                 uni.showToast({
                   icon: 'none',
-                  title: '登录异常，请重试' });case 23:
+                  title: '登录异常，请重试' });case 26:_context.next = 28;return (
 
 
-                console.log('login success: ');
-                console.log(_globalData.userInfo);_context.next = 27;return (
 
-                  page.authorizeLocation());case 27:
+                  page.authorizeLocation());case 28:
                 uni.redirectTo({
-                  url: '/pages/index/index' });case 28:case "end":return _context.stop();}}}, _callee, null, [[0, 19]]);}));function login(_x) {return _login2.apply(this, arguments);}return login;}(),
+                  url: '/pages/index/index' });case 29:case "end":return _context.stop();}}}, _callee, null, [[1, 21]]);}));function login(_x) {return _login2.apply(this, arguments);}return login;}(),
 
 
 

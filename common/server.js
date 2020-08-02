@@ -13,7 +13,7 @@ export async function login(loginData) {
     userInfo.id = userInfo._id;
     delete userInfo._id;
     delete userInfo.wx_openid;
-    
+    console.log('login success:')
     console.log(userInfo);
     
     return res.result;
@@ -32,7 +32,6 @@ export const addressBookHelper = {
         for (let addressRec of res.result) {
             addressBook.push(addressRec);
         }
-        console.log(addressBook)
         return addressBook;
     },
     

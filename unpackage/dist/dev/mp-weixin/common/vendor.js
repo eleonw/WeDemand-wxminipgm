@@ -9946,10 +9946,10 @@ login(_x) {return _login.apply(this, arguments);}function _login() {_login = _as
             userInfo.id = userInfo._id;
             delete userInfo._id;
             delete userInfo.wx_openid;
-
+            console.log('login success:');
             console.log(userInfo);return _context5.abrupt("return",
 
-            res.result);case 11:case "end":return _context5.stop();}}}, _callee5);}));return _login.apply(this, arguments);}
+            res.result);case 12:case "end":return _context5.stop();}}}, _callee5);}));return _login.apply(this, arguments);}
 
 
 var addressBookHelper = {
@@ -9964,9 +9964,8 @@ var addressBookHelper = {
 
               res.result);try {for (_iterator.s(); !(_step = _iterator.n()).done;) {addressRec = _step.value;
                   addressBook.push(addressRec);
-                }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
-              console.log(addressBook);return _context.abrupt("return",
-              addressBook);case 8:case "end":return _context.stop();}}}, _callee);}));function getAddressBook(_x2) {return _getAddressBook.apply(this, arguments);}return getAddressBook;}(),
+                }} catch (err) {_iterator.e(err);} finally {_iterator.f();}return _context.abrupt("return",
+              addressBook);case 7:case "end":return _context.stop();}}}, _callee);}));function getAddressBook(_x2) {return _getAddressBook.apply(this, arguments);}return getAddressBook;}(),
 
 
   addToAddressBook: function () {var _addToAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(arg) {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (

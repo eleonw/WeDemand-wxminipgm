@@ -1,15 +1,17 @@
 <template>
     <view class="root">
-    <view class="component">
-        <view :class="['tabItem', {selected: activeIndex == item.index}]" v-for="item in tabs" @click.stop="switchTab(item.index)">
-            <view>{{ item.text }}</view>
-            <view class="bottomLine" :style="[{backgroundColor: bottomLineColor}, {visibility: activeIndex==item.index?'visible':'hidden'}]"></view>
+    <view class="component" :style="[{'font-size': size}]">
+        <view class="tabItem" :style="[activeIndex==item.index?activeStyle:inactiveStyle]" v-for="item in tabs" :key="item.index" @click.stop="switchTab(item.index)">
+            {{ item.text }}
         </view>
     </view>
 	</view>
 </template>
 
 <script>
+    
+    import { color } from '@/common/globalData.js';
+    
 	export default {
         name: 'topTabBar',
         props: {
@@ -21,21 +23,33 @@
                 type: Array,
                 default: []
             },
-            bottomLineColor: {
+            size: {
                 type: String,
-                default: 'black'
+                default: '1em',
+            },
+            color: {
+                type: String,
+                default: 'white'
+            },
+            backgroundColor: {
+                type: String,
+                default: color.MAIN,
             }
         },
 		data() {
 			return {
                 activeIndex: this.value,
-				bottomLineStyle: {
-                    'background-color': this.bottomLineColor,
+                activeStyle: {
+                    fontSize: '1.1em',
+                    fontWeight: '600',
+                    color: this.backgroundColor,
+                    backgroundColor: this.color,
                 },
-                tabBarStyle: {
-                    width: this.width,
-                    'background-color': this.backgroundColor,
+                inactiveStyle: {
+                    color: this.color,
+                    backgroundColor: this.backgroundColor,
                 }
+
 			};
 		},
         methods: {
@@ -45,6 +59,9 @@
                 this.$emit('input', index);
                 console.log('tab change to: ' + index)
             }
+        },
+        created: function() {
+            console.log(this.fontSize)
         }
 	}
 </script>
@@ -52,34 +69,24 @@
 <style scoped>
 
    .component {
-        z-index: 998;
         height: var(--height-toptabbar);
         background-color: transparent;
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        justify-content: space-evenly
+        justify-content: space-evenly;
     }
     
     .tabItem {
-        height: 100%;
-        background-color: transparent;
-        flex-grow: 1;
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: center;
-        justify-content: center;
+        padding: .2em;
+        
+        border-radius: 6rpx;
+        
+        text-align: center;
+        letter-spacing: .1em;
     }
     
-    .selected {
-        font-size: 1.1em;
-        font-weight: 700;
-    }
     
-    .bottomLine {
-        height: 0.2em;
-        width: 4em;
-    }
     
     
 </style>

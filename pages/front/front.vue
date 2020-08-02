@@ -26,7 +26,9 @@
 		},
 		methods: {
             login: async function(type) {
-                
+                uni.showLoading({
+                    title: '登录中'
+                })
                 try {
                     let wxCode;
                     
@@ -45,16 +47,15 @@
                 
                     let res = await login(loginData);
                     addAll.call(userInfo, res);
-                    
+                    uni.hideLoading();
                 } catch(e) {
                     console.log(e);
+                    uni.hideLoading();
                     uni.showToast({
                         icon: 'none',
                         title: '登录异常，请重试'
                     })
                 }
-                console.log('login success: ')
-                console.log(userInfo)
                 
                 await page.authorizeLocation();
                 uni.redirectTo({
