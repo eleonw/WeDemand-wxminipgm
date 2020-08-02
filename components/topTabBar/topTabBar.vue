@@ -78,7 +78,7 @@
     }
     
     .tabItem {
-        padding: .2em;
+        padding: .05em .2em;
         
         border-radius: 6rpx;
         

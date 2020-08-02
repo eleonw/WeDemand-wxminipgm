@@ -17,7 +17,7 @@
              justify-content: space-evenly;
 }
 .tabItem.data-v-cf05321a {
-     padding: .2em;
+     padding: .05em .2em;
      
      border-radius: 6rpx;
      

@@ -150,6 +150,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 36));
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
@@ -175,11 +176,17 @@ var mapContext;var _default =
       _shareData.default.setServiceType(e.index);
     },
 
-    mapMove: function () {var _mapMove = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-                _shareData.default.addressCardLock = true;_context.next = 3;return (
-                  (0, _helper.promisify)(mapContext.getCenterLocation, null, mapContext));case 3:res = _context.sent;_context.next = 6;return (
-                  _shareData.default.setCurrentLocation(res.longitude, res.latitude));case 6:
-                _shareData.default.addressCardLock = false;case 7:case "end":return _context.stop();}}}, _callee);}));function mapMove() {return _mapMove.apply(this, arguments);}return mapMove;}(),
+    mapTouchStart: function mapTouchStart() {
+      console.log('touch begin');
+      page.mapIconHover = true;
+    },
+
+    mapTouchEnd: function () {var _mapTouchEnd = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                page.mapIconHover = false;
+                _shareData.default.addressCardLock = true;_context.next = 4;return (
+                  (0, _helper.promisify)(mapContext.getCenterLocation, null, mapContext));case 4:res = _context.sent;_context.next = 7;return (
+                  _shareData.default.setCurrentLocation(res.longitude, res.latitude));case 7:
+                _shareData.default.addressCardLock = false;case 8:case "end":return _context.stop();}}}, _callee);}));function mapTouchEnd() {return _mapTouchEnd.apply(this, arguments);}return mapTouchEnd;}(),
 
 
     locate: function () {var _locate = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.prev = 0;_context2.next = 3;return (
@@ -284,7 +291,8 @@ var mapContext;var _default =
       QQ_MAP_KEY: null,
       color: null,
       defaultLocation: null,
-      lock: false };
+      lock: false,
+      mapIconHover: false };
 
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

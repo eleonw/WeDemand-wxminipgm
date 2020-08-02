@@ -3,8 +3,9 @@
     <view class="page">
         <uni-nav-bar class="navigationBar" @clickLeft="uni.navigateBack()"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
-		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @touchend="mapMove">
-            <image src="../../../static/image/icon/location.png" class="mapLocationIcon" mode=""></image>
+		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @touchstart="mapTouchStart" @touchend="mapTouchEnd">
+            <image src="../../../static/image/icon/location.png" class="mapIcon" :class="{'hoverMapIcon': mapIconHover}"></image>
+            <view class="mapIconShadow" :class="{'hoverIconShadow': mapIconHover}"></view>
         </map>
         
         <view class="aboveMap">
@@ -47,7 +48,13 @@
                 shareData.setServiceType(e.index);
             },
             
-			mapMove: async function() {
+            mapTouchStart: function() {
+                console.log('touch begin')
+                page.mapIconHover = true;
+            },
+            
+			mapTouchEnd: async function() {
+                page.mapIconHover = false;
                 shareData.addressCardLock = true;
                 let res = await promisify(mapContext.getCenterLocation, null, mapContext);
                 await shareData.setCurrentLocation(res.longitude, res.latitude);
@@ -157,6 +164,7 @@
                 color: null,
                 defaultLocation: null,
                 lock: false,
+                mapIconHover: false,
             }
         },
 	}
@@ -179,15 +187,37 @@
         z-index: 0;
     }
     
-    .mapLocationIcon {
-        width: 10vw;
-        height: 10vw;
+    .mapIcon {
+        width: 70rpx;
+        height: 70rpx;
         
         position: absolute;
-        left: 45vw;
+        left: 340rpx;
         bottom: 60vh;
         margin: auto;
         z-index: 1;
+    }
+    
+    .hoverMapIcon {
+        bottom: 62vh;
+    }
+    
+    .mapIconShadow {
+        position: absolute;
+        left: 360rpx;
+        top: calc(60vh - 10rpx);
+        
+        width: 25rpx;
+        height: 25rpx;
+        border-radius: 50%;
+        
+        background-color: rgba(0, 0, 0, 0.3);
+        transform: scaleY(0.2);
+        box-shadow: 0 0 10rpx 10rpx rgba(0, 0, 0, 0.3);
+    }
+    
+    .hoverIconShadow {
+        transform: scaleY(0.1) scaleX(0.5);
     }
     
     .topTabBar {
