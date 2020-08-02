@@ -202,7 +202,8 @@ var _helper = __webpack_require__(/*! @/common/helper.js */ 8);function _interop
 
 
 var page;
-var app = getApp();var _default =
+var app = getApp();
+var targetIndex;var _default =
 
 {
   components: {
@@ -211,7 +212,8 @@ var app = getApp();var _default =
   data: function data() {
     return {
       title: '修改地址信息',
-      address: null };
+      address: null,
+      colorMain: null };
 
   },
   methods: {
@@ -263,46 +265,66 @@ var app = getApp();var _default =
 
 
     sexChange: function sexChange(e) {
-      this.value.sex = e.detail.value;
+      this.address.sex = e.detail.value;
     },
 
-    confirm: function confirm() {
+    confirm: function () {var _confirm = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var notice;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
 
-      var notice;
 
-      if (!app.globalData.dev) {
-        if (!page.address.location.isValid()) {
-          notice = '请选择地址';
-        } else if (!page.address.location.hasDetail()) {
-          notice = '请填写地址详情';
-        } else if (!page.address.hasName()) {
-          notice = '请填写联系人姓名或昵称';
-        } else if (!page.address.hasSex()) {
-          notice = '请选择联系人性别（用于称呼）';
-        } else if (!page.address.hasValidTel()) {
-          notice = '请填写正确联系方式';
-        }
-      }
 
-      if (notice) {
-        uni.showToast({
-          icon: 'none',
-          title: notice });
+                if (!app.globalData.dev) {
+                  if (!page.address.location.isValid()) {
+                    notice = '请选择地址';
+                  } else if (!page.address.location.hasDetail()) {
+                    notice = '请填写地址详情';
+                  } else if (!page.address.hasName()) {
+                    notice = '请填写联系人姓名或昵称';
+                  } else if (!page.address.hasSex()) {
+                    notice = '请选择联系人性别（用于称呼）';
+                  } else if (!page.address.hasValidTel()) {
+                    notice = '请填写正确联系方式';
+                  }
+                }if (!
 
-      } else {
+                notice) {_context2.next = 5;break;}
+                uni.showToast({
+                  icon: 'none',
+                  title: notice });_context2.next = 18;break;case 5:_context2.prev = 5;
 
 
 
 
+                uni.showLoading();_context2.next = 9;return (
+                  _shareData.default.updateAddressBook({
+                    index: targetIndex,
+                    address: page.address }));case 9:
 
-      }
-    } },
+                uni.hideLoading();
+                uni.showToast({
+                  duration: 500,
+                  complete: function complete() {
+                    setTimeout(function () {
+                      uni.navigateBack();
+                    }, 500);
+                  } });_context2.next = 18;break;case 13:_context2.prev = 13;_context2.t0 = _context2["catch"](5);
+
+
+                console.log(_context2.t0);
+                uni.hideLoading();
+                uni.showToast({
+                  icon: 'none',
+                  title: '修改失败，请重试' });case 18:case "end":return _context2.stop();}}}, _callee2, null, [[5, 13]]);}));function confirm() {return _confirm.apply(this, arguments);}return confirm;}() },
+
+
+
+
+
 
   onLoad: function onLoad(opt) {
     page = this;
-
-    var address = JSON.parse(opt.address);
-    page.address = new _Address.default(address);
+    page.colorMain = _globalData.color.MAIN;
+    targetIndex = opt.index;
+    page.address = new _Address.default(_shareData.default.addressBook[targetIndex].address);
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

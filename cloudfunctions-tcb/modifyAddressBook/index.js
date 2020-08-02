@@ -7,27 +7,22 @@ const maxRecNum = 10;
 
 
 exports.main = async (event, context) => {
+    
+    console.log(event)
 
     switch (event.type) {
         case 0:
             return addRec(event.userId, event.address);
         case 1:
             return updateRec(event.recId, event.address);
-        case 3:
-            return deleteRec(event.recId);
+        case 2:
+            return removeRec(event.recId);
         default:
             throw new Error('invalide type');
     }
     
 };
 
-async function updateRec(recId, address) {
-
-    const res = await addressBookRec.doc(recId).update({
-        address: address
-    });
-    console.log(res);
-}
 
 async function addRec(userId, address) {
     
@@ -37,10 +32,8 @@ async function addRec(userId, address) {
     }
     
     const id = (await addressBookRec.add({
-        data: {
-            user_id: userId,
-            address: address,
-        }
+        user_id: userId,
+        address: address,
     })).id;
     
     return {
@@ -48,8 +41,20 @@ async function addRec(userId, address) {
     }
 }
 
-async function deleteRec(recId) {
+async function updateRec(recId, address) {
+
+    const res = await addressBookRec.doc(recId).update({
+        address: address
+    });
+    console.log(res);
+}
+
+
+async function removeRec(recId) {
     
-    await addressBookrec.doc(recId).remove();
+    const res = await addressBookRec.doc(recId).remove();
+    if (res.deleted < 1) {
+        throw new Error('addressBookRec remove failed');
+    }
 
 }

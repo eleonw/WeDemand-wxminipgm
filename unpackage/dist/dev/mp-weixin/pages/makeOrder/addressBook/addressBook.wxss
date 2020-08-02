@@ -72,8 +72,11 @@
 .formItemBottom {
     border-bottom: 0 solid transparent;
 } */
+.form {
+    margin-top: 25rpx;
+}
 .addressMain {
-    letter-spacing: .2em;
+    /* letter-spacing: .2em; */
 }
 .addressSub {
     font-size: .8em;

@@ -72,8 +72,11 @@
 .formItemBottom {
     border-bottom: 0 solid transparent;
 } */
-.navBar {
-    font-size: 2em;
+.form {
+    margin-top: 25rpx;
+}
+.formItem {
+    width: 700rpx;
 }
 .formItemIcon {
     position: relative;

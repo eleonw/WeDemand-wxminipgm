@@ -8690,7 +8690,10 @@ var defaultLocation = new _Location.default({
 
 var dev = true;exports.dev = dev;
 
-var userInfo = {};exports.userInfo = userInfo;
+var userInfo = {
+  id: "0d06a2fd5f23808900212dec5e0f10f0",
+  nickname: "Gvs01892",
+  wxOpenid: "ogjlP5YAbGPGuaTpblXIwWe8o07E" };exports.userInfo = userInfo;
 
 /***/ }),
 
@@ -9928,7 +9931,7 @@ module.exports = QQMapWX;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.login = login;exports.addressBookHelper = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function
+/* WEBPACK VAR INJECTION */(function(uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.login = login;exports.addressBookHelper = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _createForOfIteratorHelper(o) {if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) {var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var it,normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function
 
 login(_x) {return _login.apply(this, arguments);}function _login() {_login = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(loginData) {var res, userInfo;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:
 
@@ -9950,55 +9953,55 @@ login(_x) {return _login.apply(this, arguments);}function _login() {_login = _as
 
 
 var addressBookHelper = {
-  getAddressBook: function () {var _getAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(arg) {var res, addressBook, queryRes;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+  getAddressBook: function () {var _getAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(arg) {var res, addressBook, _iterator, _step, addressRec;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                 uniCloud.callFunction({
                   name: 'getAddressBook',
                   data: {
                     user_id: arg.userId } }));case 2:res = _context.sent;
 
 
-              addressBook = [];
-              console.log(res);
-              for (queryRes in res) {
-                addressBook.push(queryRes.result);
-              }return _context.abrupt("return",
-              addressBook);case 7:case "end":return _context.stop();}}}, _callee);}));function getAddressBook(_x2) {return _getAddressBook.apply(this, arguments);}return getAddressBook;}(),
+              addressBook = [];_iterator = _createForOfIteratorHelper(
+
+              res.result);try {for (_iterator.s(); !(_step = _iterator.n()).done;) {addressRec = _step.value;
+                  addressBook.push(addressRec);
+                }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
+              console.log(addressBook);return _context.abrupt("return",
+              addressBook);case 8:case "end":return _context.stop();}}}, _callee);}));function getAddressBook(_x2) {return _getAddressBook.apply(this, arguments);}return getAddressBook;}(),
 
 
   addToAddressBook: function () {var _addToAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(arg) {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
+
+
                 uniCloud.callFunction({
                   name: 'modifyAddressBook',
                   data: {
                     type: 0,
                     userId: _globalData.userInfo.id,
-                    address: arg.address } }));case 2:res = _context2.sent;
+                    address: arg.address } }));case 2:res = _context2.sent;return _context2.abrupt("return",
 
 
-              console.log(res);
-              // return res.result;
-            case 4:case "end":return _context2.stop();}}}, _callee2);}));function addToAddressBook(_x3) {return _addToAddressBook.apply(this, arguments);}return addToAddressBook;}(),
+
+              res.result);case 4:case "end":return _context2.stop();}}}, _callee2);}));function addToAddressBook(_x3) {return _addToAddressBook.apply(this, arguments);}return addToAddressBook;}(),
+
 
   updateAddressBook: function () {var _updateAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(arg) {var res;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (
                 uniCloud.callFunction({
                   name: 'modifyAddressBook',
                   data: {
                     type: 1,
-                    userId: arg.userId,
+                    recId: arg.recId,
                     address: arg.address } }));case 2:res = _context3.sent;
 
 
               console.log(res);case 4:case "end":return _context3.stop();}}}, _callee3);}));function updateAddressBook(_x4) {return _updateAddressBook.apply(this, arguments);}return updateAddressBook;}(),
 
 
-  removeFromAddressBook: function () {var _removeFromAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(arg) {var res;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:_context4.next = 2;return (
+  removeAddress: function () {var _removeAddress = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(arg) {return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:_context4.next = 2;return (
                 uniCloud.callFunction({
                   name: 'modifyAddressBook',
                   data: {
                     type: 2,
-                    recId: arg.recId } }));case 2:res = _context4.sent;
-
-
-              console.log(res);case 4:case "end":return _context4.stop();}}}, _callee4);}));function removeFromAddressBook(_x5) {return _removeFromAddressBook.apply(this, arguments);}return removeFromAddressBook;}() };exports.addressBookHelper = addressBookHelper;
+                    recId: arg.recId } }));case 2:case "end":return _context4.stop();}}}, _callee4);}));function removeAddress(_x5) {return _removeAddress.apply(this, arguments);}return removeAddress;}() };exports.addressBookHelper = addressBookHelper;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 26)["default"]))
 
 /***/ }),
@@ -10070,7 +10073,8 @@ module.exports = g;
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 37));
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _server = __webpack_require__(/*! @/common/server.js */ 25);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+var _server = __webpack_require__(/*! @/common/server.js */ 25);
+var _helper = __webpack_require__(/*! @/common/helper.js */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 
 var mapContext;
 
@@ -10182,24 +10186,28 @@ var shareData = {
 
 
 
-  addToAddressBook: function () {var _addToAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(arg) {var res;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:if (!(
+  addToAddressBook: function () {var _addToAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(address) {var res;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:if (!(
               this.addressBook.length >= 10)) {_context3.next = 4;break;}return _context3.abrupt("return",
               {
-                exceed: true });case 4:_context3.next = 6;return (
-
-
-                _server.addressBookHelper.addToAddressBook({ address: arg.address }));case 6:res = _context3.sent;
-              this.addressBook.push({ _id: res.id, address: arg.address });case 8:case "end":return _context3.stop();}}}, _callee3, this);}));function addToAddressBook(_x3) {return _addToAddressBook.apply(this, arguments);}return addToAddressBook;}(),
+                exceed: true });case 4:
 
 
 
-  updateAddressBook: function () {var _updateAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(arg) {return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:_context4.next = 2;return (
-                _server.addressBookHelper.updateAddressBook({ recId: arg.recId, address: arg.address }));case 2:
-              this.addressBook[arg.recordIndex].address = arg.address;case 3:case "end":return _context4.stop();}}}, _callee4, this);}));function updateAddressBook(_x4) {return _updateAddressBook.apply(this, arguments);}return updateAddressBook;}(),
+              address = (0, _helper.beanify)(address);_context3.next = 7;return (
+                _server.addressBookHelper.addToAddressBook({ address: address }));case 7:res = _context3.sent;
+              this.addressBook.push({ _id: res.id, address: address });case 9:case "end":return _context3.stop();}}}, _callee3, this);}));function addToAddressBook(_x3) {return _addToAddressBook.apply(this, arguments);}return addToAddressBook;}(),
 
 
-  removeFromAddressBook: function () {var _removeFromAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(arg) {return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:_context5.next = 2;return (
-                _server.addressBookHelper.removeFromAddressBook({ recId: arg.recId }));case 2:case "end":return _context5.stop();}}}, _callee5);}));function removeFromAddressBook(_x5) {return _removeFromAddressBook.apply(this, arguments);}return removeFromAddressBook;}() };var _default =
+
+  updateAddressBook: function () {var _updateAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(arg) {var address;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
+              address = (0, _helper.beanify)(arg.address);_context4.next = 3;return (
+                _server.addressBookHelper.updateAddressBook({ recId: this.addressBook[arg.index]['_id'], address: address }));case 3:
+              this.addressBook[arg.index].address = address;case 4:case "end":return _context4.stop();}}}, _callee4, this);}));function updateAddressBook(_x4) {return _updateAddressBook.apply(this, arguments);}return updateAddressBook;}(),
+
+
+  removeAddress: function () {var _removeAddress = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(arg) {return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:_context5.next = 2;return (
+                _server.addressBookHelper.removeAddress({ recId: this.addressBook[arg.index]['_id'] }));case 2:
+              this.addressBook.splice(arg.index, 1);case 3:case "end":return _context5.stop();}}}, _callee5, this);}));function removeAddress(_x5) {return _removeAddress.apply(this, arguments);}return removeAddress;}() };var _default =
 
 
 
@@ -10269,7 +10277,7 @@ Address.prototype.hasValidTel = function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.addAll = exports.clone = exports.promisify = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var promisify = function promisify(func, opt) {var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+Object.defineProperty(exports, "__esModule", { value: true });exports.beanify = exports.addAll = exports.clone = exports.promisify = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var promisify = function promisify(func, opt) {var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
   return new Promise(function (resolve, reject) {
     func.call(context, _objectSpread({},
     opt, {
@@ -10277,18 +10285,33 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.addAll = e
       fail: function fail(err) {reject(err);} }));
 
   });
-};exports.promisify = promisify;
+};
 
+// export const clone = function(obj) {
+//     if (obj instanceof Object) {
+//         const dup = Object.create(Object.getPrototypeOf(obj));
+//         for (let item in obj) {
+//             dup[item] = clone(obj[item]);
+//         }
+//         return dup;
+//     } else {
+//         return obj;
+//     }
+// }
+exports.promisify = promisify;
 var clone = function clone(obj) {
-  if (obj instanceof Object) {
-    var dup = Object.create(Object.getPrototypeOf(obj));
-    for (var item in obj) {
-      dup[item] = clone(obj[item]);
+  var dup = Object.create(Object.getPrototypeOf(obj));
+  for (var item in obj) {
+    if (obj[item] instanceof Object) {
+      if (!(obj[item] instanceof Function)) {
+        dup[item] = clone(obj[item]);
+      }
+    } else {
+      dup[item] = obj[item];
     }
-    return dup;
-  } else {
-    return obj;
   }
+
+  return dup;
 };exports.clone = clone;
 
 var addAll = function addAll(src) {
@@ -10302,6 +10325,10 @@ var addAll = function addAll(src) {
     }
   }
 };exports.addAll = addAll;
+
+var beanify = function beanify(obj) {
+  return JSON.parse(JSON.stringify(obj));
+};exports.beanify = beanify;
 
 /***/ })
 

@@ -1,7 +1,7 @@
 <template>
 	<view class="root">
     <view class="page">
-		<uni-nav-bar class="navBar" left-icon="back" :title="title" shadow="true" fixed="true" statusBar="true" @clickLeft="clickBack"></uni-nav-bar>
+		<uni-nav-bar class="navBar" :title="title" @clickLeft="clickBack"></uni-nav-bar>
         <view class="form">
             
             <view class="formItem" @click="chooseLocation">
@@ -51,16 +51,17 @@
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
     import withPlaceholder from '@/components/withPlaceholder/withPlaceholder.vue';
     import shareData from "./../shareData.js";
-    import { serviceType } from "@/common/globalData.js";
+    import { serviceType, color } from "@/common/globalData.js";
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';
     
     import { clone } from '@/common/helper.js';
-    
+
     
     let page;
     const app = getApp();
+    let targetIndex;
     
 	export default {
         components: {
@@ -70,6 +71,7 @@
 			return {
                 title: '修改地址信息',
                 address: null,
+                colorMain: null,
 			}
 		},
 		methods: {
@@ -121,10 +123,10 @@
             },
             
             sexChange: function(e) {
-                this.value.sex = e.detail.value;
+                this.address.sex = e.detail.value;
             },
             
-            confirm: function() {
+            confirm: async function() {
                 
                 let notice;
                 
@@ -149,18 +151,38 @@
                     })
                 } else {
                     
+                    try {
+                        uni.showLoading();
+                        await shareData.updateAddressBook({
+                            index: targetIndex,
+                            address: page.address,
+                        });
+                        uni.hideLoading();
+                        uni.showToast({
+                            duration: 500,
+                            complete: () => {
+                                setTimeout(() => {
+                                    uni.navigateBack();
+                                }, 500)
+                            }
+                        })
+                    } catch (e) {
+                        console.log(e);
+                        uni.hideLoading();
+                        uni.showToast({
+                            icon: 'none',
+                            title: '修改失败，请重试'
+                        })
+                    }
                     
-                    
-                    
-                   
                 }
             }
 		},
         onLoad: function(opt) {
             page = this;
-            
-            const address = JSON.parse(opt.address);
-            page.address = new Address(address);
+            page.colorMain = color.MAIN;
+            targetIndex = opt.index;
+            page.address = new Address(shareData.addressBook[targetIndex].address);
         }
 	}
 </script>

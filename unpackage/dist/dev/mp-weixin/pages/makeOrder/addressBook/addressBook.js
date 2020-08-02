@@ -104,22 +104,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.shareData.addressBook, function(item, idx) {
-    var m0 = _vm.clone(item.address)
-    return {
-      $orig: _vm.__get_orig(item),
-      m0: m0
-    }
-  })
-
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        l0: l0
-      }
-    }
-  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -153,7 +137,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));
 
 
 
@@ -185,7 +169,7 @@ var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.j
 var _helper = __webpack_require__(/*! @/common/helper.js */ 8);
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 122));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 122));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var page;var _default =
 
@@ -202,6 +186,7 @@ var page;var _default =
   created: function created() {
     page = this;
     page.shareData = _shareData.default;
+    console.log(_shareData.default.addressBook);
   },
   methods: {
     cancel: function cancel() {
@@ -209,44 +194,34 @@ var page;var _default =
     },
 
     selectAddress: function selectAddress(address) {
-      var addressClone =
-      _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, address);
+      _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, new _Address.default(address));
       _shareData.default.currentAddressIdx++;
       uni.navigateBack();
     },
 
     modifyAddress: function modifyAddress(index) {
-      var address = JSON.stringify(sha.addressBook[index]);
       uni.navigateTo({
-        url: './modifyAddress?address=' + address });
+        url: './modifyAddress?index=' + index });
 
-      uni.$on('addressModify', function (res) {
-        switch (res.status) {
-          case 0:
-            // not modified
-            break;
-          case 1:
-            // delete the address
-            page.address.splice(index, 1);
-            break;
-          case 2:
-            // modify the address
-            page.address.splice(index, 1);
-            page.address.unshift(res.newAddress);
-            break;
-          case -1:
-            uni.showToast({
-              icon: 'none',
-              title: '地址修改失败，请重试' });
+    },
 
-            break;
-          default:
-            console.log('invalid status');}
+    removeAddress: function () {var _removeAddress = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(index) {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+                  uni.showModal({
+                    title: '从常用地址中移除？',
+                    confirmColor: _globalData.color.MAIN }));case 2:res = _context.sent;if (!
 
-        uni.$off('addressModify');
 
-      });
-    } } };exports.default = _default;
+                res[1].confirm) {_context.next = 16;break;}
+                uni.showLoading();_context.prev = 5;_context.next = 8;return (
+
+                  _shareData.default.removeAddress({ index: index }));case 8:
+                uni.hideLoading();_context.next = 16;break;case 11:_context.prev = 11;_context.t0 = _context["catch"](5);
+
+                console.log(_context.t0);
+                uni.hideLoading();
+                uni.showToast({
+                  icon: 'none',
+                  title: '系统繁忙，请稍后重试' });case 16:case "end":return _context.stop();}}}, _callee, null, [[5, 11]]);}));function removeAddress(_x) {return _removeAddress.apply(this, arguments);}return removeAddress;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

@@ -193,6 +193,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 36));
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 
@@ -229,7 +243,8 @@ _globalData.serviceType.OTHERS, './../detailForms/others'), _detailFormUrls);var
       title: '地址信息',
       colorMain: '',
       address: null,
-      save: false };
+      save: false,
+      shareData: null };
 
   },
   methods: {
@@ -282,7 +297,7 @@ _globalData.serviceType.OTHERS, './../detailForms/others'), _detailFormUrls);var
       this.address.sex = e.detail.value;
     },
 
-    confirm: function () {var _confirm = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var notice, addressId;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+    confirm: function () {var _confirm = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var notice, addressId, res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
 
 
 
@@ -303,18 +318,19 @@ _globalData.serviceType.OTHERS, './../detailForms/others'), _detailFormUrls);var
                 notice) {_context2.next = 5;break;}
                 uni.showToast({
                   icon: 'none',
-                  title: notice });_context2.next = 19;break;case 5:_context2.prev = 5;_context2.next = 8;return (
+                  title: notice });_context2.next = 20;break;case 5:_context2.prev = 5;_context2.next = 8;return (
 
 
 
 
 
 
-                  _shareData.default.addToAddressBook({ address: page.address }));case 8:addressId = _context2.sent;_context2.next = 16;break;case 11:_context2.prev = 11;_context2.t0 = _context2["catch"](5);
+                  _shareData.default.addToAddressBook(page.address));case 8:res = _context2.sent;
+                console.log(res);_context2.next = 17;break;case 12:_context2.prev = 12;_context2.t0 = _context2["catch"](5);
 
                 console.log(_context2.t0);
                 uni.showToast({
-                  title: '地址保存异常，请重试' });return _context2.abrupt("return");case 16:
+                  title: '地址保存异常，请重试' });return _context2.abrupt("return");case 17:
 
 
 
@@ -333,20 +349,34 @@ _globalData.serviceType.OTHERS, './../detailForms/others'), _detailFormUrls);var
                 } else {
                   _shareData.default.currentAddressIdx++;
                   uni.navigateBack();
-                }case 19:case "end":return _context2.stop();}}}, _callee2, null, [[5, 11]]);}));function confirm() {return _confirm.apply(this, arguments);}return confirm;}() },
+                }case 20:case "end":return _context2.stop();}}}, _callee2, null, [[5, 12]]);}));function confirm() {return _confirm.apply(this, arguments);}return confirm;}(),
 
 
+
+    selectAddress: function selectAddress(address) {
+      _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, new _Address.default(address));
+      _shareData.default.currentAddressIdx++;
+      uni.navigateBack();
+    },
+
+    modifyAddress: function modifyAddress(index) {
+      uni.navigateTo({
+        url: './../addressBook/modifyAddress?index=' + index });
+
+    } },
 
   created: function created(opt) {
     page = this;
 
 
-
+    page.shareData = _shareData.default;
     page.title = titles[_shareData.default.serviceType][_shareData.default.currentAddressIdx];
 
     page.colorMain = _globalData.color.MAIN;
 
     page.address = (0, _helper.clone)(_shareData.default.address[_shareData.default.currentAddressIdx]);
+    console.log(page.address);
+    console.log(_shareData.default.address[_shareData.default.currentAddressIdx]);
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

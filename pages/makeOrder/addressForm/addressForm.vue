@@ -40,7 +40,21 @@
                     保存并使用
                 </view>
             </view>
-            
+        </view>
+        
+        <view class="form">
+            <view class="formItem">常用地址</view>
+            <view v-for="(item,idx) in shareData.addressBook" :key="item['_id']" @click="selectAddress(item.address)" class="formItem">
+                <view class="formItemBlock">
+                    <view class="addressMain">
+                        {{ (item.address.location.name==''?item.address.location.name:item.address.location.address) + ' ' + item.address.location.detail }}
+                    </view>
+                    <view class="addressSub">
+                        {{ item.address.name + ' ' + item.address.tel }}
+                    </view>
+                </view>
+                <uni-icons type="compose" class="formItemRight" @click.native.stop="modifyAddress(idx)"></uni-icons>
+            </view>
         </view>
     </view>
 	</view>
@@ -88,6 +102,7 @@
                 colorMain: '',
                 address: null,
                 save: false,
+                shareData: null,
 			}
 		},
 		methods: {
@@ -168,7 +183,8 @@
                     let addressId;
                     
                     try {
-                        addressId = await shareData.addToAddressBook({address: page.address});
+                        const res = await shareData.addToAddressBook(page.address);
+                        console.log(res);
                     } catch(e) {
                         console.log(e);
                         uni.showToast({
@@ -193,26 +209,45 @@
                         uni.navigateBack();
                     }
                 }
+            },
+            
+            selectAddress: function(address) {
+                Vue.set(shareData.address, shareData.currentAddressIdx, new Address(address));
+                shareData.currentAddressIdx++;
+                uni.navigateBack()
+            },
+            
+            modifyAddress: function(index) {
+                uni.navigateTo({
+                    url: './../addressBook/modifyAddress?index=' + index,
+                })
             }
 		},
         created: function(opt) {
             page = this;
             
             
- 
+            page.shareData = shareData;
             page.title = titles[shareData.serviceType][shareData.currentAddressIdx];
 
             page.colorMain = color.MAIN;
             
             page.address = clone(shareData.address[shareData.currentAddressIdx]);
+            console.log(page.address);
+            console.log(shareData.address[shareData.currentAddressIdx])
         }
 	}
 </script>
 
 <style>
     @import url("@/common/style/form.css");
-    .navBar {
-        font-size: 2em;
+
+    .form {
+        margin-top: 25rpx;
+    }
+    
+    .formItem {
+        width: 700rpx;
     }
     
     .formItemIcon {

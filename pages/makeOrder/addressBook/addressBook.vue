@@ -3,7 +3,7 @@
     <view class="page">
         <uni-nav-bar class="navBar" title="常用地址" @clickLeft="cancel"></uni-nav-bar>
         <view class="form">
-            <view v-for="(item,idx) in shareData.addressBook" @click="selectAddress(clone(item.address))" class="formItem">
+            <view v-for="(item,idx) in shareData.addressBook" :key="item['_id']" @click="selectAddress(item.address)" @longtap="removeAddress(idx)"  class="formItem">
                 <view class="formItemBlock">
                     <view class="addressMain">
                         {{ (item.address.location.name==''?item.address.location.name:item.address.location.address) + ' ' + item.address.location.detail }}
@@ -24,7 +24,7 @@
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     
-    import { defaultLocation } from '@/common/globalData.js';
+    import { defaultLocation, color } from '@/common/globalData.js';
     import shareData from './../shareData.js';
     
     import { clone } from '@/common/helper.js';
@@ -47,6 +47,7 @@
         created: function() {
             page = this;
             page.shareData = shareData;
+            console.log(shareData.addressBook)
         },
 		methods: {
             cancel: function() {
@@ -54,43 +55,40 @@
             },
             
             selectAddress: function(address) {
-                const addressClone = 
-                Vue.set(shareData.address, shareData.currentAddressIdx, address);
+                Vue.set(shareData.address, shareData.currentAddressIdx, new Address(address));
                 shareData.currentAddressIdx++;
                 uni.navigateBack()
             },
             
 			modifyAddress: function(index) {
-                const address = JSON.stringify(sha.addressBook[index]);
                 uni.navigateTo({
-                    url: './modifyAddress?address=' + address,
+                    url: './modifyAddress?index=' + index,
                 })
-                uni.$on('addressModify', res => {
-                    switch (res.status) {
-                        case 0:
-                            // not modified
-                            break;
-                        case 1:
-                            // delete the address
-                            page.address.splice(index, 1);
-                            break;
-                        case 2:
-                            // modify the address
-                            page.address.splice(index, 1);
-                            page.address.unshift(res.newAddress);
-                            break;
-                        case -1:
-                            uni.showToast({
-                                icon: 'none',
-                                title: '地址修改失败，请重试'
-                            });
-                            break;
-                        default:
-                            console.log('invalid status');
+            },
+            
+            removeAddress: async function(index) {
+                const res = await uni.showModal({
+                    title: '从常用地址中移除？',
+                    confirmColor: color.MAIN,
+                })
+                
+                if (res[1].confirm) {
+                    uni.showLoading();
+                    try {
+                        await shareData.removeAddress({index: index});
+                        uni.hideLoading();
+                    } catch(e) {
+                        console.log(e);
+                        uni.hideLoading();
+                        uni.showToast({
+                            icon: 'none',
+                            title: '系统繁忙，请稍后重试'
+                        });
                     }
-                    uni.$off('addressModify');
-                    
-                })
+                }
+ 
+                
+                
             }
 		}
 	}
@@ -99,8 +97,12 @@
 <style>
     @import url("@/common/style/form.css");
     
+    .form {
+        margin-top: 25rpx;
+    }
+    
     .addressMain {
-        letter-spacing: .2em;
+        /* letter-spacing: .2em; */
     }
     
     .addressSub {

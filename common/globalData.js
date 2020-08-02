@@ -24,4 +24,8 @@ export const defaultLocation = new Location({
 
 export const dev = true;
 
-export const userInfo = {};
+export const userInfo = {
+    id: "0d06a2fd5f23808900212dec5e0f10f0",
+    nickname: "Gvs01892",
+    wxOpenid: "ogjlP5YAbGPGuaTpblXIwWe8o07E"
+};

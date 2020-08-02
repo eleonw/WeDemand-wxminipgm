@@ -28,14 +28,17 @@ export const addressBookHelper = {
             }
         });
         const addressBook = [];
-        console.log(res);
-        for (let queryRes in res) {
-            addressBook.push(queryRes.result);
+ 
+        for (let addressRec of res.result) {
+            addressBook.push(addressRec);
         }
+        console.log(addressBook)
         return addressBook;
     },
     
     addToAddressBook: async function(arg) {
+        
+        
         const res = await uniCloud.callFunction({
             name: 'modifyAddressBook',
             data: {
@@ -44,8 +47,8 @@ export const addressBookHelper = {
                 address: arg.address,
             }
         });
-        console.log(res)
-        // return res.result;
+
+        return res.result;
     },
     
     updateAddressBook: async function(arg) {
@@ -53,22 +56,21 @@ export const addressBookHelper = {
             name: 'modifyAddressBook',
             data: {
                 type: 1,
-                userId: arg.userId,
+                recId: arg.recId,
                 address: arg.address,
             }
         })
         console.log(res);
     },
     
-    removeFromAddressBook: async function(arg) {
-        const res = await uniCloud.callFunction({
+    removeAddress: async function(arg) {
+        await uniCloud.callFunction({
             name: 'modifyAddressBook',
             data: {
                 type: 2,
                 recId: arg.recId
             }
         });
-        console.log(res);
     },
     
   
