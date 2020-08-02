@@ -37,7 +37,7 @@
             
             <view class="formItem" style="justify-content: center">
                 <view class="confirmButton" @click="confirm">
-                    <view class="buttonText">确&nbsp&nbsp定</view>
+                    保存并使用
                 </view>
             </view>
             
@@ -50,6 +50,7 @@
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
     import withPlaceholder from '@/components/withPlaceholder/withPlaceholder.vue';
+    
     import shareData from "./../shareData.js";
     import { serviceType, color } from "@/common/globalData.js";
     
@@ -57,6 +58,7 @@
     import Address from '@/common/classes/Address.js';
     
     import { clone } from '@/common/helper.js';
+    import { addToAddressBook } from '@/common/server.js';
     
     import Vue from 'vue';
 
@@ -138,7 +140,7 @@
                 this.address.sex = e.detail.value;
             },
             
-            confirm: function() {
+            confirm: async function() {
                 
                 let notice;
                 
@@ -162,13 +164,22 @@
                         title: notice,
                     })
                 } else {
-
-                    if (page.save) {
-                        page.saveToAddressBook()
+                    
+                    let addressId;
+                    
+                    try {
+                        addressId = await shareData.addToAddressBook({address: page.address});
+                    } catch(e) {
+                        console.log(e);
+                        uni.showToast({
+                            title: '地址保存异常，请重试'
+                        });
+                        return;
                     }
                     
                     Vue.set(shareData.address, shareData.currentAddressIdx, page.address);
                     Vue.set(shareData.completed, shareData.currentAddressIdx, true);
+                    
                     
                     if (shareData.status != 0) {
                         uni.navigateBack();
@@ -234,22 +245,19 @@
     .confirmButton {
         background-color: var(--color-main);
         margin: auto;
-        width: 80%;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         
         height: 2em;
+        line-height: 2em;
         font-size: 1.2em;
         font-weight: 600;
-        border-radius: 1.2em;
+        letter-spacing: .2em;
+        border-radius: .3em;
         color: white;
         margin: .5em
     }
-    
-    .buttonText {
-
-        text-align: center;
-        width: 70%
-    }
+   
 </style>

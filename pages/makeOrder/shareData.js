@@ -1,6 +1,7 @@
 import Address from "@/common/classes/Address.js";
-import {serviceType} from "@/common/globalData.js";
+import { serviceType, userInfo } from "@/common/globalData.js";
 import Vue from 'vue';
+import { addressBookHelper } from "@/common/server.js";
 
 let mapContext;
 
@@ -10,6 +11,8 @@ const shareData = {
      */
     serviceType: serviceType.HELP_DELIVER,
     address: [new Address(), new Address()],
+    addressBook: [],
+    addressBookFailure: false,
     completed: [false, false],
     
     /**
@@ -92,6 +95,42 @@ const shareData = {
                 console.log();
                 throw new Error('undefined serviceType!')
         }
+    },
+    
+    getAddressBook: async function() {
+        console.log('get address book')
+        try {
+            this.addressBook = await addressBookHelper.getAddressBook({
+                userId: userInfo.id
+            });
+            this.addressBookFailure = false;
+        } catch(e) {
+            console.log('fail to get addressbook: ');
+            console.log(e)
+            this.addressBook = [];
+            this.addressBookFailure = true;
+        }
+        
+    },
+    
+    addToAddressBook: async function(arg) {
+        if (this.addressBook.length >= 10) {
+            return {
+                exceed: true,
+            }
+        } else {
+            const res = await addressBookHelper.addToAddressBook({address: arg.address});
+            this.addressBook.push({_id: res.id, address: arg.address});
+        }
+    },
+    
+    updateAddressBook: async function(arg) {
+        await addressBookHelper.updateAddressBook({recId: arg.recId, address: arg.address});
+        this.addressBook[arg.recordIndex].address = arg.address;
+    },
+    
+    removeFromAddressBook: async function(arg) {
+        await addressBookHelper.removeFromAddressBook({recId: arg.recId});
     }
 }
 

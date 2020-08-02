@@ -135,9 +135,6 @@ var _default =
     return {};
 
 
-  },
-  created: function created() {
-    console.log(this.gradient);
   } };exports.default = _default;
 
 /***/ }),

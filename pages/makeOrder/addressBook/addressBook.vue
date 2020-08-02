@@ -3,13 +3,13 @@
     <view class="page">
         <uni-nav-bar class="navBar" title="常用地址" @clickLeft="cancel"></uni-nav-bar>
         <view class="form">
-            <view v-for="(item,idx) in address" @click="selectAddress(item)" class="formItem">
+            <view v-for="(item,idx) in shareData.addressBook" @click="selectAddress(clone(item.address))" class="formItem">
                 <view class="formItemBlock">
                     <view class="addressMain">
-                        {{ (item.location.name==''?item.location.name:item.location.address) + ' ' + item.location.detail }}
+                        {{ (item.address.location.name==''?item.address.location.name:item.address.location.address) + ' ' + item.address.location.detail }}
                     </view>
                     <view class="addressSub">
-                        {{ item.name + ' ' + item.tel }}
+                        {{ item.address.name + ' ' + item.address.tel }}
                     </view>
                 </view>
                 <uni-icons type="compose" class="formItemRight" @click.native.stop="modifyAddress(idx)"></uni-icons>
@@ -26,10 +26,10 @@
     
     import { defaultLocation } from '@/common/globalData.js';
     import shareData from './../shareData.js';
+    
+    import { clone } from '@/common/helper.js';
+    
     import Vue from 'vue';
-    
-    
-    
     import Address from '@/common/classes/Address.js';
     
     let page;
@@ -41,20 +41,12 @@
         },
 		data() {
 			return {
-				address: [new Address({
-                    location: defaultLocation,
-                    name: '��',
-                    tel: '11111111111'
-                }),
-                new Address({
-                    location: defaultLocation,
-                    name: 'yi',
-                    tel: '2222221'
-                })],
+                shareData: null,
 			}
 		},
         created: function() {
             page = this;
+            page.shareData = shareData;
         },
 		methods: {
             cancel: function() {
@@ -62,13 +54,14 @@
             },
             
             selectAddress: function(address) {
+                const addressClone = 
                 Vue.set(shareData.address, shareData.currentAddressIdx, address);
                 shareData.currentAddressIdx++;
                 uni.navigateBack()
             },
             
 			modifyAddress: function(index) {
-                const address = JSON.stringify(page.address[index]);
+                const address = JSON.stringify(sha.addressBook[index]);
                 uni.navigateTo({
                     url: './modifyAddress?address=' + address,
                 })

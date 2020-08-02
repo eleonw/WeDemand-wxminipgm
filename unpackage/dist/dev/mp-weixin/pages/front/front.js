@@ -168,7 +168,7 @@ var page;var _default =
 
 
 
-                loginData = {};_context.t0 =
+                loginData = { type: type };_context.t0 =
                 type;_context.next = _context.t0 ===
                 0 ? 5 : _context.t0 ===
 

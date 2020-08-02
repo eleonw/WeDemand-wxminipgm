@@ -27,21 +27,23 @@ function generateNickname() {
 }
 
 exports.main = async (event, context) => {
-    //event为客户端上传的参数
-    console.log('event : ' + event)
-    //返回数据给客户端
 
     let userInfo;
 
-    if (event.wxCode) {
-      userInfo = await loginWithWxCode(event.wxCode);
-    } else if (event.tel) {
-      userInfo = await loginWithTel(event.tel);
-    } else {
-      console.log('no valid login material');
-      throw new Error('no valid login material');
+    switch (event.type) {
+        case 0: // tel
+            userInfo = await loginWithTel(event.tel);
+        case 1: // wx
+            userInfo = await loginWithWxCode(event.wxCode);
+            break;
+        default: 
+            throw new Error('no valid login material');
+   
     }
-    return userInfo;
+    
+    return {
+        userInfo: userInfo
+    }
 };
 
 async function loginWithWxCode(code) {

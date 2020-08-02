@@ -104,6 +104,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.shareData.addressBook, function(item, idx) {
+    var m0 = _vm.clone(item.address)
+    return {
+      $orig: _vm.__get_orig(item),
+      m0: m0
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -164,12 +180,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
-var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 50));
+var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 36));
+
+var _helper = __webpack_require__(/*! @/common/helper.js */ 8);
+
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-
-
-
-var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 51));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 122));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 122));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var page;var _default =
 
@@ -180,20 +196,12 @@ var page;var _default =
 
   data: function data() {
     return {
-      address: [new _Address.default({
-        location: _globalData.defaultLocation,
-        name: '��',
-        tel: '11111111111' }),
-
-      new _Address.default({
-        location: _globalData.defaultLocation,
-        name: 'yi',
-        tel: '2222221' })] };
-
+      shareData: null };
 
   },
   created: function created() {
     page = this;
+    page.shareData = _shareData.default;
   },
   methods: {
     cancel: function cancel() {
@@ -201,13 +209,14 @@ var page;var _default =
     },
 
     selectAddress: function selectAddress(address) {
+      var addressClone =
       _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, address);
       _shareData.default.currentAddressIdx++;
       uni.navigateBack();
     },
 
     modifyAddress: function modifyAddress(index) {
-      var address = JSON.stringify(page.address[index]);
+      var address = JSON.stringify(sha.addressBook[index]);
       uni.navigateTo({
         url: './modifyAddress?address=' + address });
 

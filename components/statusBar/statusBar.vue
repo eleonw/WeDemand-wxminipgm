@@ -20,9 +20,6 @@
 				
 			}
 		},
-        created: function() {
-            console.log(this.gradient)
-        }
 	}
 </script>
 

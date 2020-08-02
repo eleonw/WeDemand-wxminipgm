@@ -9928,12 +9928,77 @@ module.exports = QQMapWX;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.login = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var login = /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(loginData) {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+/* WEBPACK VAR INJECTION */(function(uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.login = login;exports.addressBookHelper = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function
+
+login(_x) {return _login.apply(this, arguments);}function _login() {_login = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(loginData) {var res, userInfo;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:
+
+            console.log('login called');_context5.next = 3;return (
+
               uniCloud.callFunction({
                 name: 'login',
-                data: loginData }));case 2:res = _context.sent;return _context.abrupt("return",
+                data: loginData }));case 3:res = _context5.sent;
 
-            res.result);case 4:case "end":return _context.stop();}}}, _callee);}));return function login(_x) {return _ref.apply(this, arguments);};}();exports.login = login;
+            userInfo = res.result.userInfo;
+            userInfo.wxOpenid = userInfo.wx_openid;
+            userInfo.id = userInfo._id;
+            delete userInfo._id;
+            delete userInfo.wx_openid;
+
+            console.log(userInfo);return _context5.abrupt("return",
+
+            res.result);case 11:case "end":return _context5.stop();}}}, _callee5);}));return _login.apply(this, arguments);}
+
+
+var addressBookHelper = {
+  getAddressBook: function () {var _getAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(arg) {var res, addressBook, queryRes;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+                uniCloud.callFunction({
+                  name: 'getAddressBook',
+                  data: {
+                    user_id: arg.userId } }));case 2:res = _context.sent;
+
+
+              addressBook = [];
+              console.log(res);
+              for (queryRes in res) {
+                addressBook.push(queryRes.result);
+              }return _context.abrupt("return",
+              addressBook);case 7:case "end":return _context.stop();}}}, _callee);}));function getAddressBook(_x2) {return _getAddressBook.apply(this, arguments);}return getAddressBook;}(),
+
+
+  addToAddressBook: function () {var _addToAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(arg) {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
+                uniCloud.callFunction({
+                  name: 'modifyAddressBook',
+                  data: {
+                    type: 0,
+                    userId: _globalData.userInfo.id,
+                    address: arg.address } }));case 2:res = _context2.sent;
+
+
+              console.log(res);
+              // return res.result;
+            case 4:case "end":return _context2.stop();}}}, _callee2);}));function addToAddressBook(_x3) {return _addToAddressBook.apply(this, arguments);}return addToAddressBook;}(),
+
+  updateAddressBook: function () {var _updateAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(arg) {var res;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (
+                uniCloud.callFunction({
+                  name: 'modifyAddressBook',
+                  data: {
+                    type: 1,
+                    userId: arg.userId,
+                    address: arg.address } }));case 2:res = _context3.sent;
+
+
+              console.log(res);case 4:case "end":return _context3.stop();}}}, _callee3);}));function updateAddressBook(_x4) {return _updateAddressBook.apply(this, arguments);}return updateAddressBook;}(),
+
+
+  removeFromAddressBook: function () {var _removeFromAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(arg) {var res;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:_context4.next = 2;return (
+                uniCloud.callFunction({
+                  name: 'modifyAddressBook',
+                  data: {
+                    type: 2,
+                    recId: arg.recId } }));case 2:res = _context4.sent;
+
+
+              console.log(res);case 4:case "end":return _context4.stop();}}}, _callee4);}));function removeFromAddressBook(_x5) {return _removeFromAddressBook.apply(this, arguments);}return removeFromAddressBook;}() };exports.addressBookHelper = addressBookHelper;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 26)["default"]))
 
 /***/ }),
@@ -9994,18 +10059,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 4:
-/*!************************************************!*\
-  !*** F:/code/tinyJingle/tinyJingle/pages.json ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
-/***/ 50:
+/***/ 36:
 /*!******************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/pages/makeOrder/shareData.js ***!
   \******************************************************************/
@@ -10013,9 +10067,10 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 51));
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 37));
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _server = __webpack_require__(/*! @/common/server.js */ 25);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 
 var mapContext;
 
@@ -10025,6 +10080,8 @@ var shareData = {
                    */
   serviceType: _globalData.serviceType.HELP_DELIVER,
   address: [new _Address.default(), new _Address.default()],
+  addressBook: [],
+  addressBookFailure: false,
   completed: [false, false],
 
   /**
@@ -10107,14 +10164,50 @@ var shareData = {
         console.log();
         throw new Error('undefined serviceType!');}
 
-  } };var _default =
+  },
+
+  getAddressBook: function () {var _getAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+              console.log('get address book');_context2.prev = 1;_context2.next = 4;return (
+
+                _server.addressBookHelper.getAddressBook({
+                  userId: _globalData.userInfo.id }));case 4:this.addressBook = _context2.sent;
+
+              this.addressBookFailure = false;_context2.next = 14;break;case 8:_context2.prev = 8;_context2.t0 = _context2["catch"](1);
+
+              console.log('fail to get addressbook: ');
+              console.log(_context2.t0);
+              this.addressBook = [];
+              this.addressBookFailure = true;case 14:case "end":return _context2.stop();}}}, _callee2, this, [[1, 8]]);}));function getAddressBook() {return _getAddressBook.apply(this, arguments);}return getAddressBook;}(),
+
+
+
+
+  addToAddressBook: function () {var _addToAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(arg) {var res;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:if (!(
+              this.addressBook.length >= 10)) {_context3.next = 4;break;}return _context3.abrupt("return",
+              {
+                exceed: true });case 4:_context3.next = 6;return (
+
+
+                _server.addressBookHelper.addToAddressBook({ address: arg.address }));case 6:res = _context3.sent;
+              this.addressBook.push({ _id: res.id, address: arg.address });case 8:case "end":return _context3.stop();}}}, _callee3, this);}));function addToAddressBook(_x3) {return _addToAddressBook.apply(this, arguments);}return addToAddressBook;}(),
+
+
+
+  updateAddressBook: function () {var _updateAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(arg) {return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:_context4.next = 2;return (
+                _server.addressBookHelper.updateAddressBook({ recId: arg.recId, address: arg.address }));case 2:
+              this.addressBook[arg.recordIndex].address = arg.address;case 3:case "end":return _context4.stop();}}}, _callee4, this);}));function updateAddressBook(_x4) {return _updateAddressBook.apply(this, arguments);}return updateAddressBook;}(),
+
+
+  removeFromAddressBook: function () {var _removeFromAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(arg) {return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:_context5.next = 2;return (
+                _server.addressBookHelper.removeFromAddressBook({ recId: arg.recId }));case 2:case "end":return _context5.stop();}}}, _callee5);}));function removeFromAddressBook(_x5) {return _removeFromAddressBook.apply(this, arguments);}return removeFromAddressBook;}() };var _default =
+
 
 
 shareData;exports.default = _default;
 
 /***/ }),
 
-/***/ 51:
+/***/ 37:
 /*!***************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/common/classes/Address.js ***!
   \***************************************************************/
@@ -10154,6 +10247,17 @@ Address.prototype.hasSex = function () {
 Address.prototype.hasValidTel = function () {
   return this.tel && this.tel != '' && this.tel.length == 11 && !isNaN(Number(this.tel));
 };
+
+/***/ }),
+
+/***/ 4:
+/*!************************************************!*\
+  !*** F:/code/tinyJingle/tinyJingle/pages.json ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
 
 /***/ }),
 

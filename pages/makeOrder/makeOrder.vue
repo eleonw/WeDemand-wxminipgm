@@ -24,7 +24,9 @@
 <script>
     import tabBar from "@/components/tabBar/tabBar.vue";
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
-    import newOrderPage from "./subpages/newOrderPage.vue"
+    import newOrderPage from "./subpages/newOrderPage.vue";
+    
+    import shareData from "./shareData.js";
     
     let mapContext;
     let page;
@@ -110,14 +112,16 @@
                 })
             }
         },
+        
         onLoad: function(msg) {
             
             page = this;
-            console.log(this)
-            console.log(page);
 
             mapContext = wx.createMapContext('map', page);
+            shareData.getAddressBook();
+            
         },
+        
         onShow: function() {
             
             page.setCurrentLocation();

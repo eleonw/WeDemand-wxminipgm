@@ -30,7 +30,7 @@
                 try {
                     let wxCode;
                     
-                    const loginData = {};
+                    const loginData = {type: type};
                     switch (type) {
                         case 0: // login with tel
                             loginData.tel = page.tel;
