@@ -90,7 +90,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  timePicker: function() {
+    return __webpack_require__.e(/*! import() | components/timePicker/timePicker */ "components/timePicker/timePicker").then(__webpack_require__.bind(null, /*! @/components/timePicker/timePicker.vue */ 189))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -128,17 +132,23 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 189));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
 
 {
+  components: {
+    timePicker: timePicker },
+
   data: function data() {
     return {};
 

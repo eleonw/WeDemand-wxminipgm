@@ -1,1 +1,1 @@
-<view class="root"><view class="page"><view data-event-opts="{{[['tap',[['toMakeOrder',['$event']]]]]}}" bindtap="__e">校园跑腿</view></view></view>
+<view class="root"><view class="page"><time-picker vue-id="8dd740cc-1" bind:__l="__l"></time-picker></view></view>

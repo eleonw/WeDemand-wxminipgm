@@ -1,0 +1,12 @@
+
+picker-view.data-v-1b4173ab {
+    width: 750rpx;
+    height: 400rpx;
+}
+.item.data-v-1b4173ab {
+    padding: auto;
+    line-height: 80rpx;
+    text-align: center;
+}
+
+

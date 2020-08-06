@@ -4,7 +4,7 @@
         <uni-nav-bar class="navigationBar" @clickLeft="uni.navigateBack()"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
 		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @touchstart="mapTouchStart" @touchend="mapTouchEnd">
-            <image src="../../../static/image/icon/location.png" class="mapIcon" :class="{'hoverMapIcon': mapIconHover}"></image>
+            <image src="../../../static/image/icon/location.png" class="mapIcon" :class="{'hoverMapIcon': mapIconHover, bounce: false}"></image>
             <view class="mapIconShadow" :class="{'hoverIconShadow': mapIconHover}"></view>
         </map>
         
@@ -51,10 +51,12 @@
             mapTouchStart: function() {
                 console.log('touch begin')
                 page.mapIconHover = true;
+                page.iconBounce = false;
             },
             
 			mapTouchEnd: async function() {
                 page.mapIconHover = false;
+                page.iconBounce = true;
                 shareData.addressCardLock = true;
                 let res = await promisify(mapContext.getCenterLocation, null, mapContext);
                 await shareData.setCurrentLocation(res.longitude, res.latitude);
@@ -165,6 +167,7 @@
                 defaultLocation: null,
                 lock: false,
                 mapIconHover: false,
+                iconBounce: false,
             }
         },
 	}
@@ -187,6 +190,10 @@
         z-index: 0;
     }
     
+    .bounce {
+        animation: bounce .3s;
+    }
+    
     .mapIcon {
         width: 70rpx;
         height: 70rpx;
@@ -196,6 +203,8 @@
         bottom: 60vh;
         margin: auto;
         z-index: 1;
+        
+        
     }
     
     .hoverMapIcon {
@@ -242,6 +251,8 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
+        
+        
     }
     
     .locateIconContainer {

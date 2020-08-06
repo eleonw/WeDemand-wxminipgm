@@ -12,6 +12,10 @@
      height: 120vh;
      z-index: 0;
 }
+.bounce.data-v-c7de9e6e {
+     -webkit-animation: bounce .3s;
+             animation: bounce .3s;
+}
 .mapIcon.data-v-c7de9e6e {
      width: 70rpx;
      height: 70rpx;

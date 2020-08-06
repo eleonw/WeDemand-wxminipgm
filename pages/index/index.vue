@@ -1,14 +1,20 @@
 <template>
 	<view class="root">
     <view class="page">
-        <view @click="toMakeOrder">校园跑腿</view>
+        
+        <timePicker></timePicker>
 	</view>	
 	</view>
 </template>
 
 <script>
     
+    import timePicker from '@/components/timePicker/timePicker.vue';
+    
 	export default {
+        components: {
+            timePicker,
+        },
 		data() {
 			return {
 				

@@ -179,14 +179,16 @@ var mapContext;var _default =
     mapTouchStart: function mapTouchStart() {
       console.log('touch begin');
       page.mapIconHover = true;
+      page.iconBounce = false;
     },
 
     mapTouchEnd: function () {var _mapTouchEnd = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                 page.mapIconHover = false;
-                _shareData.default.addressCardLock = true;_context.next = 4;return (
-                  (0, _helper.promisify)(mapContext.getCenterLocation, null, mapContext));case 4:res = _context.sent;_context.next = 7;return (
-                  _shareData.default.setCurrentLocation(res.longitude, res.latitude));case 7:
-                _shareData.default.addressCardLock = false;case 8:case "end":return _context.stop();}}}, _callee);}));function mapTouchEnd() {return _mapTouchEnd.apply(this, arguments);}return mapTouchEnd;}(),
+                page.iconBounce = true;
+                _shareData.default.addressCardLock = true;_context.next = 5;return (
+                  (0, _helper.promisify)(mapContext.getCenterLocation, null, mapContext));case 5:res = _context.sent;_context.next = 8;return (
+                  _shareData.default.setCurrentLocation(res.longitude, res.latitude));case 8:
+                _shareData.default.addressCardLock = false;case 9:case "end":return _context.stop();}}}, _callee);}));function mapTouchEnd() {return _mapTouchEnd.apply(this, arguments);}return mapTouchEnd;}(),
 
 
     locate: function () {var _locate = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.prev = 0;_context2.next = 3;return (
@@ -292,7 +294,8 @@ var mapContext;var _default =
       color: null,
       defaultLocation: null,
       lock: false,
-      mapIconHover: false };
+      mapIconHover: false,
+      iconBounce: false };
 
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
