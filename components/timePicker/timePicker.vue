@@ -145,26 +145,32 @@
             },
             
             fadeOut: function() {
-                that.fadeOut = true;
+                that.outFlag = true;
                 setTimeout(function() {
-                    that.fadeOut = true;
-                }, 1000);
+                    that.outFlag = false;
+                }, 1500);
             },
             
             confirm: function() {
                 that.fadeOut();
                 let timestamp = that.getSelectedTimestamp();
-                that.$emit('exit', {
-                    choosed: true,
-                    timestamp: timestamp,
-                });
+                setTimeout(function() {
+                    that.$emit('exit', {
+                        choosed: true,
+                        timestamp: timestamp,
+                    });
+                }, 300)
+                
             },
             
             cancel: function() {
                 that.fadeOut();
-                that.$emit('exit', {
-                    choosed: false,
-                });
+                setTimeout(function() {
+                    that.$emit('exit', {
+                        choosed: true,
+                    });
+                }, 300)
+
             },
         }
 	}
@@ -195,8 +201,12 @@
         display: flex;
         flex-flow: column nowrap;
         
-        justify-content: ;
+        animation: fadeInUp .3s;
         
+    }
+    
+    .fadeOut {
+        animation: fadeOutDown .3s forwards;
     }
     
     .header {

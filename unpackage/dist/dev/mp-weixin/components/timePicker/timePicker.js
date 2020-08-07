@@ -261,25 +261,31 @@ var dayBaseTime;var _default =
     },
 
     fadeOut: function fadeOut() {
-      that.fadeOut = true;
+      that.outFlag = true;
       setTimeout(function () {
-        that.fadeOut = true;
-      }, 1000);
+        that.outFlag = false;
+      }, 1500);
     },
 
     confirm: function confirm() {
       that.fadeOut();
       var timestamp = that.getSelectedTimestamp();
-      that.$emit('exit', {
-        choosed: true,
-        timestamp: timestamp });
+      setTimeout(function () {
+        that.$emit('exit', {
+          choosed: true,
+          timestamp: timestamp });
+
+      }, 300);
 
     },
 
     cancel: function cancel() {
       that.fadeOut();
-      that.$emit('exit', {
-        choosed: false });
+      setTimeout(function () {
+        that.$emit('exit', {
+          choosed: true });
+
+      }, 300);
 
     } } };exports.default = _default;
 
