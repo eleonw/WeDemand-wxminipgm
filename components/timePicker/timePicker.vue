@@ -1,7 +1,11 @@
 <template>
 	<view class="root">
-		<view class="body">
-            <view class="header"></view>
+		<view class="body" :class="{fadeOut: outFlag}">
+            <view class="header">
+                <view class="cancel" @click="cancel">取消</view>
+                <view class="title">{{ title }}</view>
+                <view class="confirm" @click="confirm">确认</view>
+            </view>
             <picker-view indicator-style="height: 90rpx;" :value="value" @change="bindChange">
                 <picker-view-column>
                     <view class="item" v-for="(day,index) in days">{{day}}</view>
@@ -31,6 +35,10 @@
 	export default {
         name: 'timePicker',
         props: {
+            title: {
+                type: String,
+                default: '选择时间',
+            },
             rightNowString: {
                 type: String,
                 default: '马上取件',
@@ -52,6 +60,8 @@
                 dynamicHours: null,
                 staticMinutes: ['00', '10', '20', '30', '40', '50'],
                 dynamicMinutes: [],
+                
+                outFlag: false,
                 
 			};
 		},
@@ -88,8 +98,8 @@
         methods: {
             bindChange: function(e) {
                 const newValue = e.detail.value;
-                console.log(that.value);
-                console.log(newValue)
+                // console.log(that.value);
+                // console.log(newValue)
                 if (newValue[0] != that.value[0]) {
                     if (newValue[0] == 0) {
                         that.hours = that.dynamicHours;
@@ -115,23 +125,101 @@
                 } else {
                     that.value.splice(2, 1, newValue[2]);
                 }
-            }
+            },
+            
+            getSelectedTimestamp: function() {
+                let timestamp = dayBaseTime[that.value[0]];
+                if (that.value[0] == 0) {
+                    timestamp += (that.value[1]+currentTime.getHours()) * HOUR_TIME;
+                    if (that.value[1] == 0) {
+                        let minute = currentTime.getMinutes();
+                        timestamp += (minute - minute%10) * MINUTE_TIME;
+                    } else {
+                        timestamp += that.value[2]*10*MINUTE_TIME;
+                    }
+                } else {
+                    timestamp += that.value[1]*HOUR_TIME;
+                    timestamp += that.value[2]*10*MINUTE_TIME; 
+                }
+                return timestamp;
+            },
+            
+            fadeOut: function() {
+                that.fadeOut = true;
+                setTimeout(function() {
+                    that.fadeOut = true;
+                }, 1000);
+            },
+            
+            confirm: function() {
+                that.fadeOut();
+                let timestamp = that.getSelectedTimestamp();
+                that.$emit('exit', {
+                    choosed: true,
+                    timestamp: timestamp,
+                });
+            },
+            
+            cancel: function() {
+                that.fadeOut();
+                that.$emit('exit', {
+                    choosed: false,
+                });
+            },
         }
 	}
 </script>
 
 <style scoped>
     
+    .root {
+        width: 100vw;
+        height: 100vh;
+        
+        background-color: rgba(0, 0, 0, .25);
+        
+        text-align: center;
+        
+        display: flex;
+    }
+    
+    .body {
+        
+        margin-top: auto;
+        
+        width: 100%;
+        height: 480rpx;
+        
+        background-color: white;
+        
+        display: flex;
+        flex-flow: column nowrap;
+        
+        justify-content: ;
+        
+    }
+    
+    .header {
+        
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        
+        padding: 20rpx 40rpx;
+    }
+    
+    .title {
+        font-weight: 600;
+    }
     
     picker-view {
         width: 750rpx;
-        height: 400rpx;
+        height: 360rpx;
     }
     
     .item {
         padding: auto;
         line-height: 80rpx;
-        text-align: center;
     }
     
 </style>
