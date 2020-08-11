@@ -37,9 +37,7 @@
         },
         methods: {
             bindChange: function(e) {
-                // console.log(e)
                 that.value = e.detail.value;
-                console.log(that.value)
             },
             
             fadeOut: function() {

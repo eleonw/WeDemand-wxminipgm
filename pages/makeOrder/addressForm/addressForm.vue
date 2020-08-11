@@ -44,7 +44,7 @@
         
         <view class="form">
             <view class="formItem">常用地址</view>
-            <view v-for="(item,idx) in shareData.addressBook" :key="item['_id']" @click="selectAddress(item.address)" class="formItem">
+            <view v-for="(item,idx) in shareData.addressBook" :key="idx" @click="selectAddress(item.address)" class="formItem">
                 <view class="formItemBlock">
                     <view class="addressMain">
                         {{ (item.address.location.name==''?item.address.location.name:item.address.location.address) + ' ' + item.address.location.detail }}

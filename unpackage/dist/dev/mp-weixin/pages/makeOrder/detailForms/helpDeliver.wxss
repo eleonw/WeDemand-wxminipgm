@@ -43,6 +43,49 @@
     padding: .5em 0 .5em 0;
     border-bottom: .1em solid var(--color-border);
 }
+.textareaSet {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: column nowrap;
+            flex-flow: column nowrap;
+    
+    -webkit-box-align: start;
+    
+    -webkit-align-items: flex-start;
+    
+            align-items: flex-start;
+}
+.textareaTitle {
+    font-size: 1.1em;
+    font-weight: 500;
+    
+    margin-bottom: 10rpx;
+}
+.textareaBody {
+    width: 100%;
+    
+    min-height: 3em;
+    max-height: 5em;
+}
+    
+/* .textareaKeyWords: {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.textareaKeyWord {
+    background-color: var(--color-background);
+    border-radius: 50%;
+}
+ */
+.lastFormItem {
+    border-bottom: none;
+}
 .formItemBlock {
     display: -webkit-box;
     display: -webkit-flex;
@@ -123,7 +166,7 @@
     left: 0;
     bottom: 0;
     
-    z-index: 998;
+    z-index: 900;
 }
 
 

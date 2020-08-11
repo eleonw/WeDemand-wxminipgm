@@ -92,11 +92,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  statusBar: function() {
+    return __webpack_require__.e(/*! import() | components/statusBar/statusBar */ "components/statusBar/statusBar").then(__webpack_require__.bind(null, /*! @/components/statusBar/statusBar.vue */ 167))
+  },
+  backgroundIcon: function() {
+    return __webpack_require__.e(/*! import() | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then(__webpack_require__.bind(null, /*! @/components/backgroundIcon/backgroundIcon.vue */ 174))
+  },
+  navigatorWithPlaceholder: function() {
+    return __webpack_require__.e(/*! import() | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then(__webpack_require__.bind(null, /*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 181))
+  },
+  timePicker: function() {
+    return __webpack_require__.e(/*! import() | components/timePicker/timePicker */ "components/timePicker/timePicker").then(__webpack_require__.bind(null, /*! @/components/timePicker/timePicker.vue */ 124))
+  },
+  tipSelector: function() {
+    return Promise.all(/*! import() | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then(__webpack_require__.bind(null, /*! @/components/tipSelector/tipSelector.vue */ 138))
+  },
+  orderNav: function() {
+    return __webpack_require__.e(/*! import() | components/orderNav/orderNav */ "components/orderNav/orderNav").then(__webpack_require__.bind(null, /*! @/components/orderNav/orderNav.vue */ 188))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var m0 = _vm.getBasicCost()
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        m0: m0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -130,7 +158,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -140,16 +168,166 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23); //
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = { data: function data() {return {};}, methods: {} };exports.default = _default;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
+var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 36));
+var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 195));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 167));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var backgroundIcon = function backgroundIcon() {__webpack_require__.e(/*! require.ensure | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then((function () {return resolve(__webpack_require__(/*! @/components/backgroundIcon/backgroundIcon.vue */ 174));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 181));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var orderNav = function orderNav() {__webpack_require__.e(/*! require.ensure | components/orderNav/orderNav */ "components/orderNav/orderNav").then((function () {return resolve(__webpack_require__(/*! @/components/orderNav/orderNav.vue */ 188));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 124));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {Promise.all(/*! require.ensure | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+
+var page;var _default =
+
+{
+  components: {
+    addressCard: addressCard, navigatorWithPlaceholder: navigatorWithPlaceholder, statusBar: statusBar, backgroundIcon: backgroundIcon, orderNav: orderNav,
+    timePicker: timePicker, tipSelector: tipSelector },
+
+
+  data: function data() {
+    return {
+      colorMain: null,
+      buyingLocationType: 0,
+
+      deliverTime: null,
+      deliverTimeString: '',
+      tip: null,
+
+      showTimePicker: false,
+      showTipSelector: false };
+
+
+  },
+
+  onLoad: function onLoad() {
+    page = this;
+    page.colorMain = _globalData.color.MAIN;
+  },
+
+  methods: {
+    buyingLocationTypeChange: function buyingLocationTypeChange(e) {
+      page.buyingLocationType = e.detail.value;
+    },
+
+    chooseBuyingLocation: function chooseBuyingLocation() {
+      uni.chooseLocation({
+        complete: function complete(e) {return console.log(e);} });
+
+    },
+
+    chooseDeliverTime: function chooseDeliverTime() {
+      page.showTimePicker = true;
+    },
+
+    addTip: function addTip() {
+      page.showTipSelector = true;
+    },
+
+    completeDeliverTime: function completeDeliverTime(e) {
+      page.showTimePicker = false;
+      if (e.valid) {
+        page.deliverTime = e.value;
+        var date = new Date(e.value);
+      }
+    },
+
+    completeTip: function completeTip(e) {
+      page.showTipSelector = false;
+      if (e.valid) {
+        page.tip = e.value;
+      }
+    },
+
+    getBasicCost: function getBasicCost() {
+      return 2;
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

@@ -21,6 +21,43 @@
     border-bottom: .1em solid var(--color-border);
 }
 
+.textareaSet {
+    display: flex;
+    flex-flow: column nowrap;
+    
+    align-items: flex-start;
+}
+
+.textareaTitle {
+    font-size: 1.1em;
+    font-weight: 500;
+    
+    margin-bottom: 10rpx;
+}
+
+.textareaBody {
+    width: 100%;
+    
+    min-height: 3em;
+    max-height: 5em;
+}
+
+/* .textareaKeyWords: {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.textareaKeyWord {
+    background-color: var(--color-background);
+    border-radius: 50%;
+}
+ */
+.lastFormItem {
+    border-bottom: none;
+}
+
 .formItemBlock {
     display: flex;
     flex-flow: column nowrap;

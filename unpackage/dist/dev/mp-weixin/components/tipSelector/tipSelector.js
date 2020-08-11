@@ -153,9 +153,7 @@ var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21); //
 //
 //
 //
-var that;var _default = { name: 'tipSelector', data: function data() {return { outFlag: false, value: 0, activeColor: null };}, created: function created() {that = this;that.activeColor = _globalData.color.MAIN;}, methods: { bindChange: function bindChange(e) {// console.log(e)
-      that.value = e.detail.value;
-      console.log(that.value);
+var that;var _default = { name: 'tipSelector', data: function data() {return { outFlag: false, value: 0, activeColor: null };}, created: function created() {that = this;that.activeColor = _globalData.color.MAIN;}, methods: { bindChange: function bindChange(e) {that.value = e.detail.value;
     },
 
     fadeOut: function fadeOut() {

@@ -1,55 +1,54 @@
 <template>
-	<view class="root">
-        <view class="page">
-            
-            <statusBar class="statusBar"></statusBar>
-            
-            <map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" :markers="mapMarkers"></map>
-            <backgroundIcon type="back" size="25" shadow="true" class="backNavigator" @click="back"></backgroundIcon>
-            
-            <view class="detailForm">
-                <addressCard></addressCard>
-                <view class="form card">
-                    <view class="formItem">
-                        <view class="formItemTitle">取件时间</view>
-                        <view class="formItemRight">
-                            <navigatorWithPlaceholder :content="retriveTimeString" placeholder="选择取件时间" @click.native="chooseRetriveTime"></navigatorWithPlaceholder>
-                        </view>
+	<view class="root page">
+        
+        <statusBar class="statusBar"></statusBar>
+        
+        <map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" :markers="mapMarkers"></map>
+        <backgroundIcon type="back" size="25" shadow="true" class="backNavigator" @click="back"></backgroundIcon>
+        
+        <view class="detailForm">
+            <addressCard></addressCard>
+            <view class="form card">
+                <view class="formItem">
+                    <view class="formItemTitle">取件时间</view>
+                    <view class="formItemRight">
+                        <navigatorWithPlaceholder :content="retriveTimeString" placeholder="选择取件时间" @click.native="chooseRetriveTime"></navigatorWithPlaceholder>
                     </view>
-                    <view class="formItem">
-                        <view class="formItemTitle">物品信息</view>
-                        <view class="formItemRight">
-                            <navigatorWithPlaceholder :content="itemInfo" placeholder="物品类型、价值、重量" @click.native="chooseItemInfo"></navigatorWithPlaceholder>
-                        </view>
+                </view>
+                <view class="formItem">
+                    <view class="formItemTitle">物品信息</view>
+                    <view class="formItemRight">
+                        <navigatorWithPlaceholder :content="itemInfo" placeholder="物品类型、价值、重量" @click.native="chooseItemInfo"></navigatorWithPlaceholder>
                     </view>
-                    <view class="formItem">
-                        <view class="formItemTitle">备注</view>
-                        <view class="formItemRight">
-                            <navigatorWithPlaceholder :content="note" placeholder="送件要求、物品描述等" @click.native="addNote"></navigatorWithPlaceholder>
-                        </view>
+                </view>
+                <view class="formItem">
+                    <view class="formItemTitle">备注</view>
+                    <view class="formItemRight">
+                        <navigatorWithPlaceholder :content="note" placeholder="送件要求、物品描述等" @click.native="addNote"></navigatorWithPlaceholder>
                     </view>
+                </view>
 
-                </view>
-                
-                <view class="form card">
-                    <view class="formItem">
-                        <view class="formItemTitle">优惠券</view>
-                        <view class="formItemRight">
-                            <navigatorWithPlaceholder :value="coupon" placeholder="选择优惠券" @click.native="chooseCoupon"></navigatorWithPlaceholder>
-                        </view>
-                    </view>
-                    <view class="formItem">
-                        <view class="formItemTitle">小费</view>
-                        <view class="formItemRight">
-                            <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="addTip"></navigatorWithPlaceholder>
-                        </view>
-                    </view>
-                </view>
-                
-                
             </view>
             
+            <view class="form card">
+                <view class="formItem">
+                    <view class="formItemTitle">优惠券</view>
+                    <view class="formItemRight">
+                        <navigatorWithPlaceholder :value="coupon" placeholder="选择优惠券" @click.native="chooseCoupon"></navigatorWithPlaceholder>
+                    </view>
+                </view>
+                <view class="formItem">
+                    <view class="formItemTitle">小费</view>
+                    <view class="formItemRight">
+                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="addTip"></navigatorWithPlaceholder>
+                    </view>
+                </view>
+            </view>
+            
+            
         </view>
+            
+
         
         <timePicker v-if="showTimePicker" class="selectorComponent" @exit="completeRetriveTime"></timePicker>
         <itemInfoSelector v-else-if="showItemInfoSelector" class="selectorComponent" :value="itemInfo" @exit="completeItemInfo"></itemInfoSelector>
