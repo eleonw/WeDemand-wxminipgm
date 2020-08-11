@@ -4,7 +4,7 @@
         <view class="detail" v-if="showDetail" :class="{fadeOut: fadeOut}">
             <view class="detailHeader">费用明细</view>
             <view class="detailMain">
-                <view class="detailItem" v-for="(item,index) in items" :key="index">
+                <view class="detailItem" v-for="(item,index) in costItems" :key="index">
                     <view class="detailItemTitle">{{item.title}}</view>
                     <view class="detailItemSub">{{item.sub?item.sub:''}}</view>
                     <view class="detailItemCost">￥{{item.cost}}</view>
@@ -37,13 +37,13 @@
 	export default {
         name: 'orderNav',
         props: {
-            items: {
+            costItems: {
                 type: Array,
                 default: [
                     {
                         title: '基础费用',
                         cost: '10',
-                        colorPlaceholder: null,
+                        placeholder: undefined,
                     }
                 ],
             }
@@ -75,7 +75,7 @@
             },
             getTotalCost: function() {
                 let cost = 0;
-                for (let item of that.items) {
+                for (let item of that.costItems) {
                     cost += Number(item.cost);
                 }
                 return cost;
@@ -124,8 +124,9 @@
         padding: 0 20rpx 0 30rpx;
     }
     
-    .brief {
-        
+    .cost {
+        color: var(--color-contrast);
+        font-weight: 600;
     }
     
     .detailNav {
@@ -166,7 +167,7 @@
     
     .detailHeader {
         width: 95%;
-        padding: 20rpx;
+        padding: 30rpx;
         
         text-align: center;
         font-weight: 500;
@@ -193,7 +194,7 @@
         align-items: center;
         justify-content: flex-start;
         
-        padding: 20rpx;
+        padding: 30rpx;
     }
     
     .detailItemCost {

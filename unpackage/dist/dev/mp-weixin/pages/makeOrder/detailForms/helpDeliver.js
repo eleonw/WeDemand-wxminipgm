@@ -122,6 +122,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var m0 = _vm.getBasicCost()
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        m0: m0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -230,6 +239,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 36));
 var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 188));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 167));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var backgroundIcon = function backgroundIcon() {__webpack_require__.e(/*! require.ensure | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then((function () {return resolve(__webpack_require__(/*! @/components/backgroundIcon/backgroundIcon.vue */ 174));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 181));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var orderNav = function orderNav() {__webpack_require__.e(/*! require.ensure | components/orderNav/orderNav */ "components/orderNav/orderNav").then((function () {return resolve(__webpack_require__(/*! @/components/orderNav/orderNav.vue */ 206));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 124));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var itemInfoSelector = function itemInfoSelector() {Promise.all(/*! require.ensure | components/itemInfoSelector/itemInfoSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/itemInfoSelector/itemInfoSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/itemInfoSelector/itemInfoSelector.vue */ 117));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var seperateTextarea = function seperateTextarea() {__webpack_require__.e(/*! require.ensure | components/seperateTextarea/seperateTextarea */ "components/seperateTextarea/seperateTextarea").then((function () {return resolve(__webpack_require__(/*! @/components/seperateTextarea/seperateTextarea.vue */ 131));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {Promise.all(/*! require.ensure | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
@@ -258,7 +274,9 @@ var mapContext;var _default =
       showTimePicker: false,
       showItemInfoSelector: false,
       showNoteInput: false,
-      showTipSelector: false };
+      showTipSelector: false,
+
+      costItems: null };
 
 
   },
@@ -337,6 +355,10 @@ var mapContext;var _default =
         console.log(e);
         console.log(page.tip);
       }
+    },
+
+    getBasicCost: function getBasicCost() {
+      return 2;
     } },
 
 

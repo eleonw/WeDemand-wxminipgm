@@ -56,7 +56,14 @@
         <seperateTextarea v-else-if="showNoteInput" class="selectorComponent" @exit="completeNote"></seperateTextarea>
         <tipSelector v-else-if="showTipSelector" class="selectorComponent" @exit="completeTip"></tipSelector>
 
-        <orderNav class="orderNav"></orderNav>
+        <orderNav class="orderNav" :costItems="[{
+            title: '基础费用',
+            cost: getBasicCost(),
+        },
+        {
+            title: '小费',
+            cost: tip?tip:0,
+        }]"></orderNav>
         
 	</view>
 </template>
@@ -102,6 +109,8 @@
                 showItemInfoSelector: false,
                 showNoteInput: false,
                 showTipSelector: false,
+                
+                costItems: null,
                 
 			}
 		},
@@ -180,6 +189,10 @@
                     console.log(e);
                     console.log(page.tip)
                 }
+            },
+            
+            getBasicCost: function() {
+                return 2;
             }
             
 		},

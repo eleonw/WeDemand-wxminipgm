@@ -192,7 +192,7 @@ var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);function
 //
 //
 //
-var that;var _default = { name: 'orderNav', props: { items: { type: Array, default: [{ title: '基础费用', cost: '10', colorPlaceholder: null }] } }, data: function data() {return { showDetail: false, fadeOut: false };}, created: function created() {that = this;that.colorPlaceholder = _globalData.color.PLACEHOLDER;}, methods: { showDetailChange: function showDetailChange() {if (that.showDetail) {that.fadeOut = true;
+var that;var _default = { name: 'orderNav', props: { costItems: { type: Array, default: [{ title: '基础费用', cost: '10', placeholder: undefined }] } }, data: function data() {return { showDetail: false, fadeOut: false };}, created: function created() {that = this;that.colorPlaceholder = _globalData.color.PLACEHOLDER;}, methods: { showDetailChange: function showDetailChange() {if (that.showDetail) {that.fadeOut = true;
         setTimeout(function () {
           that.showDetail = false;
           that.fadeOut = false;
@@ -204,7 +204,7 @@ var that;var _default = { name: 'orderNav', props: { items: { type: Array, defau
     },
     getTotalCost: function getTotalCost() {
       var cost = 0;var _iterator = _createForOfIteratorHelper(
-      that.items),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var item = _step.value;
+      that.costItems),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var item = _step.value;
           cost += Number(item.cost);
         }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
       return cost;
