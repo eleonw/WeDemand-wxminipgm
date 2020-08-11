@@ -82,7 +82,7 @@
     height: 550rpx;
 }
 .backNavigator {
-    z-index: 999;
+    z-index: 3;
     position: fixed;
     top: 40px;
     left: 20px;
@@ -114,6 +114,16 @@
 }
 .card {
     margin: 10rpx 0;
+}
+.selectorComponent {
+    z-index: 999;
+}
+.orderNav {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    
+    z-index: 998;
 }
 
 

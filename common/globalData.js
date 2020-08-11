@@ -6,6 +6,7 @@ export const color = {
     DARK: '#1d3557',
     BACKGROUND: '#f1faee',
     CONTRAST: '#e63946',
+    PLACEHOLDER: '#8f8f8f'
 }
 
 export const serviceType = {

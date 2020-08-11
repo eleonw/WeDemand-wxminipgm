@@ -1,24 +1,21 @@
-
 .root.data-v-1b4173ab {
     width: 100vw;
     height: 100vh;
+    background-color: var(--color-mask);
     
-    background-color: rgba(0, 0, 0, .25);
+    position: fixed;
+    left: 0;
+    top: 0;
     
-    text-align: center;
-    
-    display: -webkit-box;
-    
-    display: -webkit-flex;
-    
-    display: flex;
+    z-index: 999;
 }
 .body.data-v-1b4173ab {
     
-    margin-top: auto;
+    position: fixed;
+    left: 0;
+    bottom: 0;
     
-    width: 100%;
-    height: 480rpx;
+    width: 100vw;
     
     background-color: white;
     
@@ -32,6 +29,12 @@
     -webkit-flex-flow: column nowrap;
             flex-flow: column nowrap;
     
+    -webkit-box-align: center;
+    
+    -webkit-align-items: center;
+    
+            align-items: center;
+    
     -webkit-animation: fadeInUp .3s;
     
             animation: fadeInUp .3s;
@@ -42,6 +45,8 @@
 }
 .header.data-v-1b4173ab {
     
+    width: 710rpx;
+    
     display: -webkit-box;
     
     display: -webkit-flex;
@@ -51,18 +56,57 @@
     -webkit-box-direction: normal;
     -webkit-flex-flow: row nowrap;
             flex-flow: row nowrap;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-            justify-content: space-between;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
     
-    padding: 20rpx 40rpx;
+    padding: 20rpx 0;
+    
+    border-bottom: 1px solid var(--color-border);
+    
+    text-align: center;
 }
 .title.data-v-1b4173ab {
     font-weight: 600;
+    
+    color: white;
+    background-color: var(--color-main);
+    border-radius: 2px;
+    
+    padding: 8rpx;
+    letter-spacing: .2em;
+}
+.back.data-v-1b4173ab {
+    position: absolute;
+    left: 20rpx;
+}
+.confirm.data-v-1b4173ab {
+    position: absolute;
+    right: 20rpx;
+}
+.main.data-v-1b4173ab {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+            flex-direction: column;
+    
+    -webkit-box-align: center;
+    
+    -webkit-align-items: center;
+    
+            align-items: center;
 }
 picker-view.data-v-1b4173ab {
     width: 750rpx;
     height: 360rpx;
+    
+    text-align: center;
 }
 .item.data-v-1b4173ab {
     padding: auto;

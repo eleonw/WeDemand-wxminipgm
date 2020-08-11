@@ -3760,9 +3760,11 @@ to {
     --color-dark: #1d3557;
     --color-background: #f8f8f8;
     --color-contrast: #e63946;
-    --color-divided: #f8f8f8;
-    --color-border: var(--color-background);
+    --color-divided: #f4f4f4;
+    --color-border: #f0f0f0;
     --color-shadow: #F8F8F8;
+    --color-mask: rgba(0, 0, 0, .5);
+    --color-placeholder:#8f8f8f;
     
     --height-tabbar: 100rpx;
     --height-toptabbar: 75rpx;
@@ -3826,14 +3828,11 @@ to {
     top: 0;
     z-index: 999;
 }
-.borderTop {
-    border-top: .1em var(--color-border) solid;
-}
-.borderRight {
-    border-right: .1em var(--color-border) solid;
-}
 .shadow {
     box-shadow: 0 0 .2em .1em #F8F8F8;
+}
+.borderBottom {
+    border-bottom: 1px solid var(--color-border) ;
 }
 .card {
     width: 700rpx;

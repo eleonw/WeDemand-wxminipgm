@@ -1,8 +1,8 @@
 <template>
-	<view class="root">
+	<view class="root mask">
 		<view class="body" :class="{fadeOut: outFlag}">
             <view class="header">
-                <view class="cancel" @click="cancel">取消</view>
+                <view class="back" @click="cancel">取消</view>
                 <view class="title">{{ title }}</view>
                 <view class="confirm" @click="confirm">确认</view>
             </view>
@@ -156,8 +156,8 @@
                 let timestamp = that.getSelectedTimestamp();
                 setTimeout(function() {
                     that.$emit('exit', {
-                        choosed: true,
-                        timestamp: timestamp,
+                        valid: true,
+                        value: timestamp,
                     });
                 }, 300)
                 
@@ -167,7 +167,7 @@
                 that.fadeOut();
                 setTimeout(function() {
                     that.$emit('exit', {
-                        choosed: true,
+                        valid: false,
                     });
                 }, 300)
 
@@ -178,53 +178,13 @@
 
 <style scoped>
     
-    .root {
-        width: 100vw;
-        height: 100vh;
-        
-        background-color: rgba(0, 0, 0, .25);
-        
-        text-align: center;
-        
-        display: flex;
-    }
-    
-    .body {
-        
-        margin-top: auto;
-        
-        width: 100%;
-        height: 480rpx;
-        
-        background-color: white;
-        
-        display: flex;
-        flex-flow: column nowrap;
-        
-        animation: fadeInUp .3s;
-        
-    }
-    
-    .fadeOut {
-        animation: fadeOutDown .3s forwards;
-    }
-    
-    .header {
-        
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        
-        padding: 20rpx 40rpx;
-    }
-    
-    .title {
-        font-weight: 600;
-    }
+    @import url("@/common/style/formInputComponent.css");
     
     picker-view {
         width: 750rpx;
         height: 360rpx;
+        
+        text-align: center;
     }
     
     .item {

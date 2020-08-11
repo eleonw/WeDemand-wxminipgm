@@ -1,0 +1,72 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*    .page {
+        padding: 10px;
+        
+        display: flex;
+        align-items: stretch;
+    }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        background-color: orange;
+        grid-gap: 10px 10px;
+        
+        height: 100vw;
+    }
+    
+    .item {
+        background-color: blue;
+    } */
+
