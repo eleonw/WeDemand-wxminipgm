@@ -1,9 +1,10 @@
 {
   "usingComponents": {
-    "price-input": "/components/priceInput/priceInput",
-    "time-picker": "/components/timePicker/timePicker",
     "item-info-selector": "/components/itemInfoSelector/itemInfoSelector",
+    "time-picker": "/components/timePicker/timePicker",
     "seperate-textarea": "/components/seperateTextarea/seperateTextarea",
-    "tip-selector": "/components/tipSelector/tipSelector"
+    "tip-selector": "/components/tipSelector/tipSelector",
+    "price-input": "/components/priceInput/priceInput",
+    "payment-method-selector": "/components/paymentMethodSelector/paymentMethodSelector"
   }
 }

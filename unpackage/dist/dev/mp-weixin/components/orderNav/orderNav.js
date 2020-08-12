@@ -208,6 +208,11 @@ var that;var _default = { name: 'orderNav', props: { costItems: { type: Array, d
           cost += Number(item.cost);
         }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
       return cost;
+    },
+    clickConfirm: function clickConfirm() {
+      this.$emit('confirm', {
+        totalCost: getTotalCost });
+
     } } };exports.default = _default;
 
 /***/ }),

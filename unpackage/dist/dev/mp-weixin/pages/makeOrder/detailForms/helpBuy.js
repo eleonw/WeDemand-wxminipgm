@@ -265,6 +265,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 22));
 
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 36));
@@ -286,6 +287,7 @@ var mapContext;var _default =
       colorMain: null,
       textareaKeyWords: ['需要小票', '赶时间'],
       buyingLocationType: 0,
+      buyingLocation: null,
 
       deliverTime: null,
       deliverTimeString: '',
@@ -353,11 +355,22 @@ var mapContext;var _default =
 
     buyingLocationTypeChange: function buyingLocationTypeChange(e) {
       page.buyingLocationType = e.detail.value;
+      if (page.buyingLocationType == 1) {
+        page.buyingLocation = new _Location.default();
+      } else {
+        page.buyingLocation = null;
+      }
     },
 
     chooseBuyingLocation: function chooseBuyingLocation() {
       uni.chooseLocation({
-        complete: function complete(e) {return console.log(e);} });
+        success: function success(e) {
+          var location = page.buyingLocation;
+          location.name = e.name;
+          location.address = e.address;
+          location.longitude = e.longitude;
+          location.latitude = e.latitude;
+        } });
 
     },
 

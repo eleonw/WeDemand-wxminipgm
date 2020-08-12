@@ -3,7 +3,7 @@
     <view class="root">
     <view class="form card">
         
-        <view class="formItem" v-for="(item,index) in shareData.address">
+        <view class="formItem" v-for="(item,index) in shareData.address" :class="{selectedItem: index==shareData.currentAddressIdx}">
             <textIcon class="formItemIcon" :text="static[shareData.serviceType][index].text" :backgroundColor="static[shareData.serviceType][index].color" color="white" diameter="1.2em"></textIcon>
             <view class="formItemBlock" @click="addressClick(index)">
                 <withPlaceholder :content="(item.location.name==''?item.location.address:item.location.name) + ' ' + item.location.detail" :placeholder="static[shareData.serviceType][index].placeholder" class="addressMain"></withPlaceholder>
@@ -117,10 +117,6 @@
     .addressDtl {
         font-size: .8em;
         font-weight: 300;
-    }
-    
-    .icon {
-        
     }
     
 </style>

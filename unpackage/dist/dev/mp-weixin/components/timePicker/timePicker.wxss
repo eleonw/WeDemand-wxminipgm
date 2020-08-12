@@ -88,19 +88,37 @@
     right: 20rpx;
 }
 .main.data-v-1b4173ab {
+    width: 95vw;
+    
     display: -webkit-box;
+    
     display: -webkit-flex;
+    
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-            flex-direction: column;
+    -webkit-flex-flow: column nowrap;
+            flex-flow: column nowrap;
     
+
+    padding: 10px 0;
     -webkit-box-align: center;
-    
     -webkit-align-items: center;
-    
             align-items: center;
+}
+.button.data-v-1b4173ab {
+    text-align: center;
+    background-color: var(--color-main);
+    width: 100%;
+
+    font-weight: 600;
+    font-size: 1.2em;
+    letter-spacing: .8em;
+    color: white;
+
+    height: 2em;
+    line-height: 2em;
+    border-radius: 2px;
 }
 picker-view.data-v-1b4173ab {
     width: 750rpx;

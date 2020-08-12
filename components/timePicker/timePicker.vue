@@ -2,9 +2,9 @@
 	<view class="root">
 		<view class="body" :class="{fadeOut: outFlag}">
             <view class="header">
-                <view class="back" @click="cancel">取消</view>
+                <uni-icons type="closeempty" size="24" class="back" @click="cancel"></uni-icons>
                 <view class="title">{{ title }}</view>
-                <view class="confirm" @click="confirm">确认</view>
+                <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
             <picker-view indicator-style="height: 90rpx;" :value="value" @change="bindChange">
                 <picker-view-column>

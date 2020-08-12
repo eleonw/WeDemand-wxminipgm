@@ -85,3 +85,7 @@
 .formItemBottom {
     border-bottom: 0 solid transparent;
 } */
+
+radio {
+    transform: scale(0.7);
+}

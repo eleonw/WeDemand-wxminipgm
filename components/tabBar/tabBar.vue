@@ -95,7 +95,7 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        font-size: 2vh;
+        font-size: 20rpx;
         
         color: grey;
     }
@@ -103,10 +103,10 @@
     .selected {
         color: black;
         font-weight: 600;
-        font-size: 2.1vh;
+        font-size: 22rpx;
     }
     
     .touching {
-        animation: 1s touchItem forwards;
+        animation: .5s touchItem forwards;
     }
 </style>

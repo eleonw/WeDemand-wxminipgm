@@ -2,9 +2,9 @@
 	<view class="root">
         <view class="body" :class="{fadeOut: outFlag}">
             <view class="header">
-                <view class="back" @click="back">取消</view>
+                <uni-icons type="closeempty" size="24" class="back" @click="cancel"></uni-icons>
                 <view class="title">小费</view>
-                <view class="confirm" @click="confirm">确认</view>
+                <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
             <view class="main">
                 <view class="value"> {{value}}￥ </view>

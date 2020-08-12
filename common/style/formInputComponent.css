@@ -71,8 +71,29 @@
 }
 
 .main {
-    display: flex;
-    flex-direction: column;
+    width: 95vw;
     
+    display: flex;
+    flex-flow: column nowrap;
+    
+
+    padding: 10px 0;
     align-items: center;
+}
+
+
+.button {
+    text-align: center;
+    background-color: var(--color-main);
+    width: 100%;
+
+    font-weight: 600;
+    font-size: 1.2em;
+    letter-spacing: .8em;
+    color: white;
+
+    height: 2em;
+    line-height: 2em;
+    border-radius: 2px;
+    
 }

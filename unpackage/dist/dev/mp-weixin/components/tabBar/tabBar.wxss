@@ -56,17 +56,17 @@ to{
     -webkit-align-items: center;
             align-items: center;
     text-align: center;
-    font-size: 2vh;
+    font-size: 20rpx;
     
     color: grey;
 }
 .selected.data-v-2d6b284b {
     color: black;
     font-weight: 600;
-    font-size: 2.1vh;
+    font-size: 22rpx;
 }
 .touching.data-v-2d6b284b {
-    -webkit-animation: 1s touchItem-data-v-2d6b284b forwards;
-            animation: 1s touchItem-data-v-2d6b284b forwards;
+    -webkit-animation: .5s touchItem-data-v-2d6b284b forwards;
+            animation: .5s touchItem-data-v-2d6b284b forwards;
 }
 

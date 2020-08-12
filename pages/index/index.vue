@@ -12,11 +12,12 @@
             <view class="item"></view>
             <view class="item"></view>
         </view> -->
-       <!-- <itemInfoSelector></itemInfoSelector> -->
-      <!-- <seperateTextarea></seperateTextarea>
-        <tipSelector></tipSelector> -->
+       <itemInfoSelector></itemInfoSelector>
+      <!-- <seperateTextarea></seperateTextarea> -->
+        <!-- <tipSelector></tipSelector> -->
    <!-- <timePicker></timePicker> -->
-        <priceInput></priceInput>
+        <!-- <priceInput></priceInput> -->
+        <!-- <paymentMethodSelector></paymentMethodSelector> -->
 	</view>	
 	</view>
 </template>
@@ -28,10 +29,11 @@
     import seperateTextarea from '@/components/seperateTextarea/seperateTextarea.vue';
     import tipSelector from '@/components/tipSelector/tipSelector.vue';
     import priceInput from '@/components/priceInput/priceInput.vue';
+    import paymentMethodSelector from '@/components/paymentMethodSelector/paymentMethodSelector.vue';
     
 	export default {
         components: {
-            timePicker, itemInfoSelector, seperateTextarea, tipSelector, priceInput
+            timePicker, itemInfoSelector, seperateTextarea, tipSelector, priceInput, paymentMethodSelector
         },
 		data() {
 			return {

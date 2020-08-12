@@ -358,6 +358,14 @@ var mapContext;var _default =
 
     getBasicCost: function getBasicCost() {
       return 2;
+    },
+
+    confirm: function confirm(e) {
+
+    },
+
+    pay: function pay() {
+
     } },
 
 

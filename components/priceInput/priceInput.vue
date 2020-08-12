@@ -2,9 +2,9 @@
 	<view class="root">
 		<view class="body" :class="{fadeOut: outFlag}">
             <view class="header">
-                <view class="back" @click="cancel">取消</view>
+                <uni-icons type="closeempty" size="24" class="back" @click="cancel"></uni-icons>
                 <view class="title">{{ title }}</view>
-                <view class="confirm" @click="confirm">确认</view>
+                <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
             <view class="main">
                 <view class="container"><text class="yuan">￥</text><input :value="value" type="digit" @blur="blur" class="input"></input></view>

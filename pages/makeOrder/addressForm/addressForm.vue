@@ -262,9 +262,7 @@
         width: 8em;
     }
     
-    .radio {
-        transform: scale(0.7);
-    }
+    
     
     .confirmButton {
         background-color: var(--color-main);

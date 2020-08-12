@@ -42,7 +42,7 @@
                             </label>
                         </radio-group>
                         <view v-if="buyingLocationType == 1">
-                            <navigatorWithPlaceholder placeholder="请选择购买地址" @click.native="chooseBuyingLocation"></navigatorWithPlaceholder>
+                            <navigatorWithPlaceholder :content="buyingLocation.name==''?buyingLocation.address:buyingLocation.name" placeholder="请选择购买地址"  @click.native="chooseBuyingLocation"></navigatorWithPlaceholder>
                         </view>
                     </view>
                 </view>
@@ -102,6 +102,7 @@
     import priceInput from '@/components/priceInput/priceInput.vue';
     import tipSelector from '@/components/tipSelector/tipSelector.vue';
     
+    import Location from '@/common/classes/Location.js';
     
     import { color }from '@/common/globalData.js';
     import shareData from './../shareData.js';
@@ -123,6 +124,7 @@
 				colorMain: null,
                 textareaKeyWords: ['需要小票', '赶时间'],
                 buyingLocationType: 0,
+                buyingLocation: null,
                 
                 deliverTime: null,
                 deliverTimeString: '',
@@ -190,11 +192,22 @@
             
 			buyingLocationTypeChange: function(e) {
                 page.buyingLocationType = e.detail.value;
+                if (page.buyingLocationType == 1) {
+                    page.buyingLocation = new Location();
+                } else {
+                    page.buyingLocation = null;
+                }
             },
             
             chooseBuyingLocation: function() {
                 uni.chooseLocation({
-                    complete: e => console.log(e)
+                    success: e => {
+                        const location = page.buyingLocation;
+                        location.name = e.name;
+                        location.address = e.address;
+                        location.longitude = e.longitude;
+                        location.latitude = e.latitude;
+                    }
                 })
             },
             

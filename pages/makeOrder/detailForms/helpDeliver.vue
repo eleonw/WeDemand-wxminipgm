@@ -62,7 +62,7 @@
         {
             title: '小费',
             cost: tip?tip:0,
-        }]"></orderNav>
+        }]" @clickConfirm="confirm"></orderNav>
         
 	</view>
 </template>
@@ -192,6 +192,14 @@
             
             getBasicCost: function() {
                 return 2;
+            },
+            
+            confirm: function(e) {
+                
+            },
+            
+            pay: function() {
+                
             }
             
 		},

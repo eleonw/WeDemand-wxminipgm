@@ -2,7 +2,7 @@
 	<view class="root mask">
         <view class="body" :class="{fadeOut: outFlag}">
             <view class="header">
-                <uni-icons type="back" class="back" size="24" @click="back"></uni-icons>
+                <uni-icons type="closeempty" size="24" class="back" @click="back"></uni-icons>
                 <view class="title">物品信息</view>
             </view>
             <view class="main">
@@ -183,15 +183,7 @@
     @import url("@/common/style/formInputComponent.css");
     
     
-    .main {
-        width: 95vw;
-        
-        display: flex;
-        flex-flow: column nowrap;
-        
-        justify-content: space-around;
-        padding: 10px 20px;
-    }
+
     
     .section {
         width: 100%;
@@ -254,19 +246,6 @@
         margin: 25px 20px;
     }
     
-    .button {
-        text-align: center;
-        background-color: var(--color-main);
-        width: 100%;
-        
-        font-weight: 600;
-        font-size: 1.2em;
-        letter-spacing: .8em;
-        color: white;
-        
-        height: 2em;
-        line-height: 2em;
-        border-radius: 2px;
-    }
+    
     
 </style>

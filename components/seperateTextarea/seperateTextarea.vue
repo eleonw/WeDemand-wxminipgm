@@ -2,9 +2,9 @@
 	<view class="root">
         <view class="body" :class="{fadeOut: outFlag}">
             <view class="header">
-                <view class="back" @click="back">取消</view>
+                <uni-icons type="closeempty" size="24" class="back" @click="cancel"></uni-icons>
                 <view class="title">{{ title }}</view>
-                <view class="confirm" @click="confirm">完成</view>
+                <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
             <view class="main">
                 <textarea :value="value" placeholder="可填写送货要求及物品描述等信息" class="textarea" maxlength="50" @input="input" />

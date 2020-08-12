@@ -21,7 +21,7 @@
                     <uni-icons size="12" :color="colorPlaceholder" :type="showDetail?'arrowdown':'arrowup'" class="navIcon"></uni-icons>
                 </view>
             </view>
-            <view class="confirmButton">
+            <view class="confirmButton" @click="clickConfirm">
                 提交订单
             </view>
         </view>
@@ -79,6 +79,11 @@
                     cost += Number(item.cost);
                 }
                 return cost;
+            },
+            clickConfirm: function() {
+                this.$emit('confirm', {
+                    totalCost: getTotalCost,
+                });
             }
         }
         
