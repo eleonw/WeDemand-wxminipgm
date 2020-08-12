@@ -93,11 +93,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
-  itemInfoSelector: function() {
-    return Promise.all(/*! import() | components/itemInfoSelector/itemInfoSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/itemInfoSelector/itemInfoSelector")]).then(__webpack_require__.bind(null, /*! @/components/itemInfoSelector/itemInfoSelector.vue */ 117))
-  },
-  timePicker: function() {
-    return __webpack_require__.e(/*! import() | components/timePicker/timePicker */ "components/timePicker/timePicker").then(__webpack_require__.bind(null, /*! @/components/timePicker/timePicker.vue */ 124))
+  priceInput: function() {
+    return Promise.all(/*! import() | components/priceInput/priceInput */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/priceInput/priceInput")]).then(__webpack_require__.bind(null, /*! @/components/priceInput/priceInput.vue */ 117))
   }
 }
 var render = function() {
@@ -137,7 +134,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 124));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var itemInfoSelector = function itemInfoSelector() {Promise.all(/*! require.ensure | components/itemInfoSelector/itemInfoSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/itemInfoSelector/itemInfoSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/itemInfoSelector/itemInfoSelector.vue */ 117));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var seperateTextarea = function seperateTextarea() {__webpack_require__.e(/*! require.ensure | components/seperateTextarea/seperateTextarea */ "components/seperateTextarea/seperateTextarea").then((function () {return resolve(__webpack_require__(/*! @/components/seperateTextarea/seperateTextarea.vue */ 131));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {Promise.all(/*! require.ensure | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 124));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var itemInfoSelector = function itemInfoSelector() {Promise.all(/*! require.ensure | components/itemInfoSelector/itemInfoSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/itemInfoSelector/itemInfoSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/itemInfoSelector/itemInfoSelector.vue */ 131));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var seperateTextarea = function seperateTextarea() {__webpack_require__.e(/*! require.ensure | components/seperateTextarea/seperateTextarea */ "components/seperateTextarea/seperateTextarea").then((function () {return resolve(__webpack_require__(/*! @/components/seperateTextarea/seperateTextarea.vue */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {Promise.all(/*! require.ensure | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 145));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var priceInput = function priceInput() {Promise.all(/*! require.ensure | components/priceInput/priceInput */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/priceInput/priceInput")]).then((function () {return resolve(__webpack_require__(/*! @/components/priceInput/priceInput.vue */ 117));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
 
 
 
@@ -168,7 +167,7 @@ __webpack_require__.r(__webpack_exports__);
 
 {
   components: {
-    timePicker: timePicker, itemInfoSelector: itemInfoSelector, seperateTextarea: seperateTextarea, tipSelector: tipSelector },
+    timePicker: timePicker, itemInfoSelector: itemInfoSelector, seperateTextarea: seperateTextarea, tipSelector: tipSelector, priceInput: priceInput },
 
   data: function data() {
     return {};

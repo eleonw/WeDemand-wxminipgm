@@ -1,0 +1,162 @@
+.root {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-mask);
+    
+    position: fixed;
+    left: 0;
+    top: 0;
+    
+    z-index: 999;
+}
+.body {
+    
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    
+    width: 100vw;
+    
+    background-color: white;
+    
+    display: -webkit-box;
+    
+    display: -webkit-flex;
+    
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: column nowrap;
+            flex-flow: column nowrap;
+    
+    -webkit-box-align: center;
+    
+    -webkit-align-items: center;
+    
+            align-items: center;
+    
+    -webkit-animation: fadeInUp .3s;
+    
+            animation: fadeInUp .3s;
+}
+.fadeOut {
+    -webkit-animation: fadeOutDown .3s forwards;
+            animation: fadeOutDown .3s forwards;
+}
+.header {
+    
+    width: 710rpx;
+    
+    display: -webkit-box;
+    
+    display: -webkit-flex;
+    
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    
+    padding: 20rpx 0;
+    
+    border-bottom: 1px solid var(--color-border);
+    
+    text-align: center;
+}
+.title {
+    font-weight: 600;
+    
+    color: white;
+    background-color: var(--color-main);
+    border-radius: 2px;
+    
+    padding: 8rpx;
+    letter-spacing: .2em;
+}
+.back {
+    position: absolute;
+    left: 20rpx;
+}
+.confirm {
+    position: absolute;
+    right: 20rpx;
+}
+.main {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+            flex-direction: column;
+    
+    -webkit-box-align: center;
+    
+    -webkit-align-items: center;
+    
+            align-items: center;
+}
+.main {
+    min-height: 20vh;
+    
+    -webkit-box-pack: center;
+    
+    -webkit-justify-content: center;
+    
+            justify-content: center;
+}
+.container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    
+    font-size: 60rpx;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+    
+    border: 6rpx solid var(--color-main);
+}
+.yuan {
+    height: 80rpx;
+    line-height: 80rpx;
+    
+    background-color: var(--color-main);
+    color: white;
+}
+.input {
+    width: 200rpx;
+    
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+}
+.notice {
+    opacity: 0;
+    color: var(--color-contrast);
+}
+.showNotice {
+    opacity: 1;
+    -webkit-animation: .5s shakeX;
+            animation: .5s shakeX;
+    
+    font-size: .8em;
+    
+    height: 50rpx;
+    line-height: 50rpx;
+}
+
+

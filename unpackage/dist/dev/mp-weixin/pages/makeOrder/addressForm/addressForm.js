@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniNavBar: function() {
-    return __webpack_require__.e(/*! import() | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then(__webpack_require__.bind(null, /*! @/components/uni-nav-bar/uni-nav-bar.vue */ 145))
+    return __webpack_require__.e(/*! import() | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then(__webpack_require__.bind(null, /*! @/components/uni-nav-bar/uni-nav-bar.vue */ 152))
   },
   uniIcons: function() {
-    return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 152))
+    return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 159))
   },
   withPlaceholder: function() {
-    return __webpack_require__.e(/*! import() | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then(__webpack_require__.bind(null, /*! @/components/withPlaceholder/withPlaceholder.vue */ 160))
+    return __webpack_require__.e(/*! import() | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then(__webpack_require__.bind(null, /*! @/components/withPlaceholder/withPlaceholder.vue */ 167))
   }
 }
 var render = function() {
@@ -216,7 +216,7 @@ var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/A
 var _helper = __webpack_require__(/*! @/common/helper.js */ 8);
 var _server = __webpack_require__(/*! @/common/server.js */ 25);
 
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));var _titles, _detailFormUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 145));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 152));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 160));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));var _titles, _detailFormUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniNavBar = function uniNavBar() {__webpack_require__.e(/*! require.ensure | components/uni-nav-bar/uni-nav-bar */ "components/uni-nav-bar/uni-nav-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-nav-bar/uni-nav-bar.vue */ 152));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 159));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var withPlaceholder = function withPlaceholder() {__webpack_require__.e(/*! require.ensure | components/withPlaceholder/withPlaceholder */ "components/withPlaceholder/withPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/withPlaceholder/withPlaceholder.vue */ 167));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 var page;
@@ -318,7 +318,7 @@ _globalData.serviceType.OTHERS, './../detailForms/others'), _detailFormUrls);var
                 notice) {_context2.next = 5;break;}
                 uni.showToast({
                   icon: 'none',
-                  title: notice });_context2.next = 20;break;case 5:_context2.prev = 5;_context2.next = 8;return (
+                  title: notice });_context2.next = 19;break;case 5:_context2.prev = 5;_context2.next = 8;return (
 
 
 
@@ -335,28 +335,17 @@ _globalData.serviceType.OTHERS, './../detailForms/others'), _detailFormUrls);var
 
 
 
-                _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, page.address);
-                _vue.default.set(_shareData.default.completed, _shareData.default.currentAddressIdx, true);
+                _shareData.default.setCurrentAddress(page.address);
+                _shareData.default.navigateAfterCompleteAddress();case 19:case "end":return _context2.stop();}}}, _callee2, null, [[5, 12]]);}));function confirm() {return _confirm.apply(this, arguments);}return confirm;}(),
 
-
-                if (_shareData.default.status != 0) {
-                  uni.navigateBack();
-                } else if (_shareData.default.addressCompleted()) {
-                  _shareData.default.status = 1;
-                  uni.redirectTo({
-                    url: detailFormUrls[_shareData.default.serviceType] });
-
-                } else {
-                  _shareData.default.currentAddressIdx++;
-                  uni.navigateBack();
-                }case 20:case "end":return _context2.stop();}}}, _callee2, null, [[5, 12]]);}));function confirm() {return _confirm.apply(this, arguments);}return confirm;}(),
 
 
 
     selectAddress: function selectAddress(address) {
-      _vue.default.set(_shareData.default.address, _shareData.default.currentAddressIdx, new _Address.default(address));
-      _shareData.default.currentAddressIdx++;
-      uni.navigateBack();
+
+      _shareData.default.setCurrentAddress(address);
+      console.log(_shareData.default.completed);
+      _shareData.default.navigateAfterCompleteAddress();
     },
 
     modifyAddress: function modifyAddress(index) {

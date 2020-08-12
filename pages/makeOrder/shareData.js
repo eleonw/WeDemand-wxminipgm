@@ -6,6 +6,12 @@ import { beanify } from "@/common/helper.js";
 
 let mapContext;
 
+const detailFormUrls = {
+    [serviceType.HELP_DELIVER]: '/pages/makeOrder/detailForms/helpDeliver',
+    [serviceType.HELP_BUY]: '/pages/makeOrder/detailForms/helpBuy',
+    [serviceType.OTHERS]: '/pages/makeOrder/detailForms/others'
+}
+
 const shareData = {
     /**
      * serviceType用于标识当前地址信息对应的服务，与newOrderPage的tabIndex相对应，为globalData.js中定义的枚举类型
@@ -39,18 +45,18 @@ const shareData = {
             case serviceType.HELP_DELIVER:
                 this.serviceType = serviceType.HELP_DELIVER;
                 this.address = [originAddress, new Address()];
-                this.complete = [false, false];
+                this.completed = [false, false];
                 
                 break;
             case serviceType.HELP_BUY:
                 this.serviceType = serviceType.HELP_BUY;
                 this.address = [originAddress];
-                this.complete = [false];
+                this.completed = [false];
                 break;
             case serviceType.OTHERS:
                 this.serviceType = serviceType.OTHERS;
                 this.address = [originAddress];
-                this.complete = [false];
+                this.completed = [false];
                 break;
             default:
                 throw new Error('invalid service type');
@@ -83,7 +89,7 @@ const shareData = {
         this.setServiceType(serviceType.HELP_DELIVER, true);
     },
     
-    addressCompleted: function() {
+    allAddressCompleted: function() {
         
         switch (this.serviceType) {
             case serviceType.HELP_DELIVER:
@@ -95,6 +101,23 @@ const shareData = {
             default:
                 console.log();
                 throw new Error('undefined serviceType!')
+        }
+    },
+    
+    setCurrentAddress: function(address) {
+        Vue.set(this.address, this.currentAddressIdx, address);
+        Vue.set(this.completed, this.currentAddressIdx, true);
+        this.currentAddressIdx++;
+    },
+    
+    navigateAfterCompleteAddress: function() {
+        if (this.allAddressCompleted() && this.status == 0) {
+            this.status = 1;
+            uni.redirectTo({
+                url: detailFormUrls[this.serviceType],
+            });
+        } else {
+            uni.navigateBack();
         }
     },
     

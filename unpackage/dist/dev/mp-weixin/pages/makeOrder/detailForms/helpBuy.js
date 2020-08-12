@@ -94,22 +94,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   statusBar: function() {
-    return __webpack_require__.e(/*! import() | components/statusBar/statusBar */ "components/statusBar/statusBar").then(__webpack_require__.bind(null, /*! @/components/statusBar/statusBar.vue */ 167))
+    return __webpack_require__.e(/*! import() | components/statusBar/statusBar */ "components/statusBar/statusBar").then(__webpack_require__.bind(null, /*! @/components/statusBar/statusBar.vue */ 174))
   },
   backgroundIcon: function() {
-    return __webpack_require__.e(/*! import() | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then(__webpack_require__.bind(null, /*! @/components/backgroundIcon/backgroundIcon.vue */ 174))
+    return __webpack_require__.e(/*! import() | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then(__webpack_require__.bind(null, /*! @/components/backgroundIcon/backgroundIcon.vue */ 181))
   },
   navigatorWithPlaceholder: function() {
-    return __webpack_require__.e(/*! import() | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then(__webpack_require__.bind(null, /*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 181))
+    return __webpack_require__.e(/*! import() | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then(__webpack_require__.bind(null, /*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 188))
   },
   timePicker: function() {
     return __webpack_require__.e(/*! import() | components/timePicker/timePicker */ "components/timePicker/timePicker").then(__webpack_require__.bind(null, /*! @/components/timePicker/timePicker.vue */ 124))
   },
+  priceInput: function() {
+    return Promise.all(/*! import() | components/priceInput/priceInput */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/priceInput/priceInput")]).then(__webpack_require__.bind(null, /*! @/components/priceInput/priceInput.vue */ 117))
+  },
   tipSelector: function() {
-    return Promise.all(/*! import() | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then(__webpack_require__.bind(null, /*! @/components/tipSelector/tipSelector.vue */ 138))
+    return Promise.all(/*! import() | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then(__webpack_require__.bind(null, /*! @/components/tipSelector/tipSelector.vue */ 145))
   },
   orderNav: function() {
-    return __webpack_require__.e(/*! import() | components/orderNav/orderNav */ "components/orderNav/orderNav").then(__webpack_require__.bind(null, /*! @/components/orderNav/orderNav.vue */ 188))
+    return __webpack_require__.e(/*! import() | components/orderNav/orderNav */ "components/orderNav/orderNav").then(__webpack_require__.bind(null, /*! @/components/orderNav/orderNav.vue */ 195))
   }
 }
 var render = function() {
@@ -258,28 +261,41 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 36));
-var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 195));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 167));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var backgroundIcon = function backgroundIcon() {__webpack_require__.e(/*! require.ensure | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then((function () {return resolve(__webpack_require__(/*! @/components/backgroundIcon/backgroundIcon.vue */ 174));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 181));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var orderNav = function orderNav() {__webpack_require__.e(/*! require.ensure | components/orderNav/orderNav */ "components/orderNav/orderNav").then((function () {return resolve(__webpack_require__(/*! @/components/orderNav/orderNav.vue */ 188));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 124));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {Promise.all(/*! require.ensure | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 202));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 174));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var backgroundIcon = function backgroundIcon() {__webpack_require__.e(/*! require.ensure | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then((function () {return resolve(__webpack_require__(/*! @/components/backgroundIcon/backgroundIcon.vue */ 181));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 188));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var orderNav = function orderNav() {__webpack_require__.e(/*! require.ensure | components/orderNav/orderNav */ "components/orderNav/orderNav").then((function () {return resolve(__webpack_require__(/*! @/components/orderNav/orderNav.vue */ 195));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 124));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var priceInput = function priceInput() {Promise.all(/*! require.ensure | components/priceInput/priceInput */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/priceInput/priceInput")]).then((function () {return resolve(__webpack_require__(/*! @/components/priceInput/priceInput.vue */ 117));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {Promise.all(/*! require.ensure | components/tipSelector/tipSelector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tipSelector/tipSelector")]).then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 145));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
-var page;var _default =
+var page;
+var mapContext;var _default =
 
 {
   components: {
     addressCard: addressCard, navigatorWithPlaceholder: navigatorWithPlaceholder, statusBar: statusBar, backgroundIcon: backgroundIcon, orderNav: orderNav,
-    timePicker: timePicker, tipSelector: tipSelector },
+    timePicker: timePicker, tipSelector: tipSelector, priceInput: priceInput },
 
 
   data: function data() {
     return {
+      mapMarkers: null,
+
       colorMain: null,
+      textareaKeyWords: ['需要小票', '赶时间'],
       buyingLocationType: 0,
 
       deliverTime: null,
       deliverTimeString: '',
+
+      commodityDesc: '',
+      commodityPrice: null,
       tip: null,
 
       showTimePicker: false,
+      showCommodityPriceInput: false,
       showTipSelector: false };
 
 
@@ -288,9 +304,53 @@ var page;var _default =
   onLoad: function onLoad() {
     page = this;
     page.colorMain = _globalData.color.MAIN;
+
+    mapContext = uni.createMapContext('map');
+  },
+
+  onShow: function onShow() {
+    page.mapMarkers = [
+    {
+      id: 0,
+      latitude: _shareData.default.address[0].location.latitude,
+      longitude: _shareData.default.address[0].location.longitude,
+      iconPath: '/static/image/icon/deliver.png',
+      width: 40,
+      height: 40 }];
+
+
+
+    mapContext.includePoints({
+      points: page.mapMarkers,
+      padding: [80, 30, 120, 30] });
+
   },
 
   methods: {
+    back: function back() {
+
+      uni.showModal({
+        content: '放弃订单？',
+        cancelColor: _globalData.color.MAIN,
+        confirmColor: "#8f8f8f",
+
+        success: function success(res) {
+          if (res.confirm) {
+            _shareData.default.clear();
+            uni.navigateBack();
+          }
+        } });
+
+    },
+
+    commodityDescChange: function commodityDescChange(e) {
+      page.commodityDesc = e.detail.value;
+    },
+
+    addKeyWord: function addKeyWord(keyWord) {
+      page.commodityDesc = page.commodityDesc + ' ' + keyWord + ' ';
+    },
+
     buyingLocationTypeChange: function buyingLocationTypeChange(e) {
       page.buyingLocationType = e.detail.value;
     },
@@ -303,6 +363,18 @@ var page;var _default =
 
     chooseDeliverTime: function chooseDeliverTime() {
       page.showTimePicker = true;
+    },
+
+    fillInCommidityPrice: function fillInCommidityPrice() {
+      page.showCommodityPriceInput = true;
+    },
+
+    completeCommodityPrice: function completeCommodityPrice(e) {
+      if (e.valid) {
+        page.commodityPrice = e.value;
+      }
+      page.showCommodityPriceInput = false;
+      console.log(page.commodityPrice);
     },
 
     addTip: function addTip() {

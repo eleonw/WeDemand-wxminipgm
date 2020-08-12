@@ -43,15 +43,23 @@
         },
         {
           "name": "index",
-          "query": "",
           "id": 2,
           "pathName": "pages/index/index"
         },
         {
           "name": "helpBuy",
-          "query": "",
           "id": 3,
           "pathName": "pages/makeOrder/detailForms/helpBuy"
+        },
+        {
+          "name": "makeOrder",
+          "id": 4,
+          "pathName": "pages/makeOrder/makeOrder"
+        },
+        {
+          "name": "others",
+          "id": 5,
+          "pathName": "pages/makeOrder/detailForms/others"
         }
       ]
     }

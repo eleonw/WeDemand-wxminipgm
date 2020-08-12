@@ -193,28 +193,17 @@
                         return;
                     }
                     
-                    Vue.set(shareData.address, shareData.currentAddressIdx, page.address);
-                    Vue.set(shareData.completed, shareData.currentAddressIdx, true);
+                    shareData.setCurrentAddress(page.address);
+                    shareData.navigateAfterCompleteAddress();
                     
-                    
-                    if (shareData.status != 0) {
-                        uni.navigateBack();
-                    } else if (shareData.addressCompleted()) {
-                        shareData.status = 1;
-                        uni.redirectTo({
-                            url: detailFormUrls[shareData.serviceType],
-                        })
-                    } else {
-                        shareData.currentAddressIdx++;
-                        uni.navigateBack();
-                    }
                 }
             },
             
             selectAddress: function(address) {
-                Vue.set(shareData.address, shareData.currentAddressIdx, new Address(address));
-                shareData.currentAddressIdx++;
-                uni.navigateBack()
+                
+                shareData.setCurrentAddress(address);
+                console.log(shareData.completed)
+                shareData.navigateAfterCompleteAddress();
             },
             
             modifyAddress: function(index) {

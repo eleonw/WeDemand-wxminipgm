@@ -1,5 +1,5 @@
 <template>
-	<view class="root mask">
+	<view class="root">
 		<view class="body" :class="{fadeOut: outFlag}">
             <view class="header">
                 <view class="back" @click="cancel">取消</view>

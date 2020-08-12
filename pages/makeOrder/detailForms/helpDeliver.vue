@@ -209,7 +209,7 @@
                 {
                     id: 0,
                     latitude: shareData.address[0].location.latitude,
-                    longitude: shareData.address[1].location.longitude,
+                    longitude: shareData.address[0].location.longitude,
                     iconPath: '/static/image/icon/retrive.png',
                     width: 40,
                     height: 40, 

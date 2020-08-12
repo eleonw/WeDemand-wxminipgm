@@ -1693,7 +1693,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 157:
+/***/ 164:
 /*!*******************************************************************!*\
   !*** F:/code/tinyJingle/tinyJingle/components/uni-icons/icons.js ***!
   \*******************************************************************/
@@ -10070,13 +10070,19 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 37));
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));var _Address = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Address.js */ 37));
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _server = __webpack_require__(/*! @/common/server.js */ 25);
-var _helper = __webpack_require__(/*! @/common/helper.js */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+var _helper = __webpack_require__(/*! @/common/helper.js */ 8);var _detailFormUrls;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 var mapContext;
+
+var detailFormUrls = (_detailFormUrls = {}, _defineProperty(_detailFormUrls,
+_globalData.serviceType.HELP_DELIVER, '/pages/makeOrder/detailForms/helpDeliver'), _defineProperty(_detailFormUrls,
+_globalData.serviceType.HELP_BUY, '/pages/makeOrder/detailForms/helpBuy'), _defineProperty(_detailFormUrls,
+_globalData.serviceType.OTHERS, '/pages/makeOrder/detailForms/others'), _detailFormUrls);
+
 
 var shareData = {
   /**
@@ -10111,18 +10117,18 @@ var shareData = {
       case _globalData.serviceType.HELP_DELIVER:
         this.serviceType = _globalData.serviceType.HELP_DELIVER;
         this.address = [originAddress, new _Address.default()];
-        this.complete = [false, false];
+        this.completed = [false, false];
 
         break;
       case _globalData.serviceType.HELP_BUY:
         this.serviceType = _globalData.serviceType.HELP_BUY;
         this.address = [originAddress];
-        this.complete = [false];
+        this.completed = [false];
         break;
       case _globalData.serviceType.OTHERS:
         this.serviceType = _globalData.serviceType.OTHERS;
         this.address = [originAddress];
-        this.complete = [false];
+        this.completed = [false];
         break;
       default:
         throw new Error('invalid service type');}
@@ -10155,7 +10161,7 @@ var shareData = {
     this.setServiceType(_globalData.serviceType.HELP_DELIVER, true);
   },
 
-  addressCompleted: function addressCompleted() {
+  allAddressCompleted: function allAddressCompleted() {
 
     switch (this.serviceType) {
       case _globalData.serviceType.HELP_DELIVER:
@@ -10168,6 +10174,23 @@ var shareData = {
         console.log();
         throw new Error('undefined serviceType!');}
 
+  },
+
+  setCurrentAddress: function setCurrentAddress(address) {
+    _vue.default.set(this.address, this.currentAddressIdx, address);
+    _vue.default.set(this.completed, this.currentAddressIdx, true);
+    this.currentAddressIdx++;
+  },
+
+  navigateAfterCompleteAddress: function navigateAfterCompleteAddress() {
+    if (this.allAddressCompleted() && this.status == 0) {
+      this.status = 1;
+      uni.redirectTo({
+        url: detailFormUrls[this.serviceType] });
+
+    } else {
+      uni.navigateBack();
+    }
   },
 
   getAddressBook: function () {var _getAddressBook = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
@@ -10212,6 +10235,7 @@ var shareData = {
 
 
 shareData;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

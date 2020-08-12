@@ -1,4 +1,12 @@
 {
   "navigationStyle": "custom",
-  "usingComponents": {}
+  "usingComponents": {
+    "status-bar": "/components/statusBar/statusBar",
+    "background-icon": "/components/backgroundIcon/backgroundIcon",
+    "navigator-with-placeholder": "/components/navigatorWithPlaceholder/navigatorWithPlaceholder",
+    "time-picker": "/components/timePicker/timePicker",
+    "tip-selector": "/components/tipSelector/tipSelector",
+    "order-nav": "/components/orderNav/orderNav",
+    "address-card": "/pages/makeOrder/components/addressCard"
+  }
 }

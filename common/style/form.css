@@ -42,18 +42,24 @@
     max-height: 5em;
 }
 
-/* .textareaKeyWords: {
+.textareaKeyWords {
+    width: 100%;
     display: flex;
-    flex-flow: row;
+    flex-direction: row;
+    
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .textareaKeyWord {
-    background-color: var(--color-background);
-    border-radius: 50%;
+    background-color: var(--color-border);
+    border-radius: .8em;
+    padding: 1rpx 8rpx;
+    
+    margin: 10px 20rpx 10rpx 0;
 }
- */
+
+
 .lastFormItem {
     border-bottom: none;
 }

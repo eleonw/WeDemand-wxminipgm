@@ -4,7 +4,7 @@
         <view class="detail" v-if="showDetail" :class="{fadeOut: fadeOut}">
             <view class="detailHeader">费用明细</view>
             <view class="detailMain">
-                <view class="detailItem" v-for="(item,index) in costItems" :key="index">
+                <view class="detailItem" v-for="(item,index) in costItems" :key="index" v-if="item.cost!=0">
                     <view class="detailItemTitle">{{item.title}}</view>
                     <view class="detailItemSub">{{item.sub?item.sub:''}}</view>
                     <view class="detailItemCost">￥{{item.cost}}</view>

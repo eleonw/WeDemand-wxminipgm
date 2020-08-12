@@ -55,9 +55,8 @@
             },
             
             selectAddress: function(address) {
-                Vue.set(shareData.address, shareData.currentAddressIdx, new Address(address));
-                shareData.currentAddressIdx++;
-                uni.navigateBack()
+                shareData.setCurrentAddress(address);
+                shareData.navigateAfterCompleteAddress();
             },
             
 			modifyAddress: function(index) {

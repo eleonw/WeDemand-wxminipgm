@@ -12,10 +12,11 @@
             <view class="item"></view>
             <view class="item"></view>
         </view> -->
-       <itemInfoSelector></itemInfoSelector>
+       <!-- <itemInfoSelector></itemInfoSelector> -->
       <!-- <seperateTextarea></seperateTextarea>
         <tipSelector></tipSelector> -->
-   <timePicker></timePicker>
+   <!-- <timePicker></timePicker> -->
+        <priceInput></priceInput>
 	</view>	
 	</view>
 </template>
@@ -26,10 +27,11 @@
     import itemInfoSelector from '@/components/itemInfoSelector/itemInfoSelector.vue';
     import seperateTextarea from '@/components/seperateTextarea/seperateTextarea.vue';
     import tipSelector from '@/components/tipSelector/tipSelector.vue';
+    import priceInput from '@/components/priceInput/priceInput.vue';
     
 	export default {
         components: {
-            timePicker, itemInfoSelector, seperateTextarea, tipSelector
+            timePicker, itemInfoSelector, seperateTextarea, tipSelector, priceInput
         },
 		data() {
 			return {
