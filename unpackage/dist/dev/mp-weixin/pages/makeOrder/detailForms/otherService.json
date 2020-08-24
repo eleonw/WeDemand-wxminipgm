@@ -5,6 +5,8 @@
     "background-icon": "/components/backgroundIcon/backgroundIcon",
     "navigator-with-placeholder": "/components/navigatorWithPlaceholder/navigatorWithPlaceholder",
     "time-picker": "/components/timePicker/timePicker",
+    "item-info-selector": "/components/itemInfoSelector/itemInfoSelector",
+    "seperate-textarea": "/components/seperateTextarea/seperateTextarea",
     "tip-selector": "/components/tipSelector/tipSelector",
     "order-nav": "/components/orderNav/orderNav",
     "address-card": "/pages/makeOrder/components/addressCard"

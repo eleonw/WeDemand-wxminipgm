@@ -1,0 +1,39 @@
+
+.notice {
+    margin: 30vh 0 40rpx 0;
+}
+.input {
+    color: transparent;
+    position: fixed;
+    top: -100px;
+    left: -100px;
+}
+.codeArea {
+    
+    
+    width: 70vw;
+    
+    display: -webkit-box;
+    
+    display: -webkit-flex;
+    
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    
+    text-align: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+            justify-content: space-between;
+}
+.code {
+    
+    height: 80rpx;
+    line-height: 80rpx;
+    width:60rpx;
+    border: 1px solid black;
+}
+
+

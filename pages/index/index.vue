@@ -1,6 +1,16 @@
 <template>
-	<view class="root">
-    <view class="page">
+	<view class="root page">
+        
+        <uni-nav-bar left-icon="none"  title="微叮当"></uni-nav-bar>
+        
+        <view class="grid">
+            <view class="gridItem" @click="navigateTo('makeOrder')">
+                下单入口
+            </view>
+            <view class="gridItem" @click="navigateTo('takeOrder')">
+                接单入口
+            </view>
+        </view>
         
        <!-- <view class="grid">
             <view class="item"></view>
@@ -12,18 +22,19 @@
             <view class="item"></view>
             <view class="item"></view>
         </view> -->
-       <itemInfoSelector></itemInfoSelector>
+       <!-- <itemInfoSelector></itemInfoSelector> -->
       <!-- <seperateTextarea></seperateTextarea> -->
         <!-- <tipSelector></tipSelector> -->
    <!-- <timePicker></timePicker> -->
         <!-- <priceInput></priceInput> -->
         <!-- <paymentMethodSelector></paymentMethodSelector> -->
 	</view>	
-	</view>
 </template>
 
 <script>
     
+    
+    import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import timePicker from '@/components/timePicker/timePicker.vue';
     import itemInfoSelector from '@/components/itemInfoSelector/itemInfoSelector.vue';
     import seperateTextarea from '@/components/seperateTextarea/seperateTextarea.vue';
@@ -31,8 +42,14 @@
     import priceInput from '@/components/priceInput/priceInput.vue';
     import paymentMethodSelector from '@/components/paymentMethodSelector/paymentMethodSelector.vue';
     
+    const pageUrls = {
+        makeOrder: '/pages/makeOrder/makeOrder',
+        takeOrder: '/pages/takeOrder/takeOrder',
+    }
+    
 	export default {
         components: {
+            uniNavBar,
             timePicker, itemInfoSelector, seperateTextarea, tipSelector, priceInput, paymentMethodSelector
         },
 		data() {
@@ -41,25 +58,28 @@
 			}
 		},
 		methods: {
-			toMakeOrder: function() {
+			navigateTo: function(page) {
+                console.log(page)
                 uni.navigateTo({
-                    url: '/pages/makeOrder/makeOrder',
+                    url: pageUrls[page],
+                    complete: e => {
+                        console.log(e)
+                    }
                 })
-            }
+            },
+            
 		},
-        created: function() {
+        
+        onLoad: function() {
+
 
         }
 	}
 </script>
 
 <style>
-/*    .page {
-        padding: 10px;
-        
-        display: flex;
-        align-items: stretch;
-    }
+
+    
     
     .grid {
         display: grid;
@@ -70,7 +90,7 @@
         height: 100vw;
     }
     
-    .item {
+    .gridItem {
         background-color: blue;
-    } */
+    }
 </style>

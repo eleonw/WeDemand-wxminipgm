@@ -1,4 +1,4 @@
-.root.data-v-0fd0036b {
+.root.data-v-bf4fd9b8 {
     width: 100vw;
     height: 100vh;
     background-color: var(--color-mask);
@@ -9,7 +9,7 @@
     
     z-index: 999;
 }
-.body.data-v-0fd0036b {
+.body.data-v-bf4fd9b8 {
     
     position: fixed;
     left: 0;
@@ -39,11 +39,11 @@
     
             animation: fadeInUp .3s;
 }
-.fadeOut.data-v-0fd0036b {
+.fadeOut.data-v-bf4fd9b8 {
     -webkit-animation: fadeOutDown .3s forwards;
             animation: fadeOutDown .3s forwards;
 }
-.header.data-v-0fd0036b {
+.header.data-v-bf4fd9b8 {
     
     width: 710rpx;
     
@@ -69,7 +69,7 @@
     
     text-align: center;
 }
-.title.data-v-0fd0036b {
+.title.data-v-bf4fd9b8 {
     font-weight: 600;
     
     color: white;
@@ -79,15 +79,15 @@
     padding: 8rpx;
     letter-spacing: .2em;
 }
-.back.data-v-0fd0036b {
+.back.data-v-bf4fd9b8 {
     position: absolute;
     left: 20rpx;
 }
-.confirm.data-v-0fd0036b {
+.confirm.data-v-bf4fd9b8 {
     position: absolute;
     right: 20rpx;
 }
-.main.data-v-0fd0036b {
+.main.data-v-bf4fd9b8 {
     width: 95vw;
     
     display: -webkit-box;
@@ -106,7 +106,7 @@
     -webkit-align-items: center;
             align-items: center;
 }
-.button.data-v-0fd0036b {
+.button.data-v-bf4fd9b8 {
     text-align: center;
     background-color: var(--color-main);
     width: 100%;
@@ -120,7 +120,7 @@
     line-height: 2em;
     border-radius: 2px;
 }
-.textarea.data-v-0fd0036b {
+.textarea.data-v-bf4fd9b8 {
     width: 85vw;
     height: 200rpx;
     
@@ -132,7 +132,7 @@
     
     background-color: var(--color-background);
 }
-.body.data-v-0fd0036b {
+.body.data-v-bf4fd9b8 {
     height: 85vh;
     width: 100vw;
     
@@ -149,7 +149,7 @@
     -webkit-align-items: center;
             align-items: center;
 }
-.main.data-v-0fd0036b {
+.main.data-v-bf4fd9b8 {
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -164,7 +164,7 @@
     
             align-items: center;
 }
-.words.data-v-0fd0036b {
+.words.data-v-bf4fd9b8 {
     -webkit-align-self: flex-end;
             align-self: flex-end;
     

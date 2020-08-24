@@ -1,5 +1,5 @@
 
-.root.data-v-eaeb482a {
+.root.data-v-4bb2fda4 {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -23,7 +23,7 @@
     -webkit-justify-content: flex-end;
             justify-content: flex-end;
 }
-.barArea.data-v-eaeb482a {
+.barArea.data-v-4bb2fda4 {
     
     background-color: white;
     
@@ -40,7 +40,7 @@
     -webkit-flex-flow: row nowrap;
             flex-flow: row nowrap;
 }
-.main.data-v-eaeb482a {
+.main.data-v-4bb2fda4 {
     width: 70%;
     height: 100%;
     display: -webkit-box;
@@ -62,11 +62,11 @@
     
     padding: 0 20rpx 0 30rpx;
 }
-.cost.data-v-eaeb482a {
+.cost.data-v-4bb2fda4 {
     color: var(--color-contrast);
     font-weight: 600;
 }
-.detailNav.data-v-eaeb482a {
+.detailNav.data-v-4bb2fda4 {
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -78,7 +78,7 @@
     color: var(--color-placeholder);
     font-size: .8em;
 }
-.confirmButton.data-v-eaeb482a {
+.confirmButton.data-v-4bb2fda4 {
     width: 30%;
     height: var(--height-tabbar);
     
@@ -90,7 +90,7 @@
     color: white;
     font-weight: 600;
 }
-.detail.data-v-eaeb482a {
+.detail.data-v-4bb2fda4 {
     width: 100%;
     
     padding-bottom: 10rpx;
@@ -114,7 +114,7 @@
     
             animation: fadeIn .4s;
 }
-.detailHeader.data-v-eaeb482a {
+.detailHeader.data-v-4bb2fda4 {
     width: 95%;
     padding: 30rpx;
     
@@ -124,7 +124,7 @@
     
     border-bottom: 1px solid var(--color-border);
 }
-.detailMain.data-v-eaeb482a {
+.detailMain.data-v-4bb2fda4 {
     width: 100%;
     
     display: -webkit-box;
@@ -137,7 +137,7 @@
     -webkit-flex-flow: column nowrap;
             flex-flow: column nowrap;
 }
-.detailItem.data-v-eaeb482a {
+.detailItem.data-v-4bb2fda4 {
 
     display: -webkit-box;
 
@@ -160,18 +160,18 @@
     
     padding: 30rpx;
 }
-.detailItemCost.data-v-eaeb482a {
+.detailItemCost.data-v-4bb2fda4 {
     margin-left: auto;
 }
-.mask.data-v-eaeb482a {
+.mask.data-v-4bb2fda4 {
     height: 100vh;
     background-color: var(--color-mask);
 }
-.fadeOut.data-v-eaeb482a {
+.fadeOut.data-v-4bb2fda4 {
     -webkit-animation: fadeOut .4s;
             animation: fadeOut .4s;
 }
-.navIcon.data-v-eaeb482a {
+.navIcon.data-v-4bb2fda4 {
     margin-left: 10rpx;
 }
 

@@ -137,6 +137,8 @@ radio {
 }
 .addressMain {
     font-weight: 600;
+    line-height: 80rpx;
+    letter-spacing: 5rpx;
 }
 .addressDtl {
     font-size: .8em;

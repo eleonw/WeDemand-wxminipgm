@@ -1,7 +1,8 @@
 {
   "usingComponents": {
-    "item-info-selector": "/components/itemInfoSelector/itemInfoSelector",
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
     "time-picker": "/components/timePicker/timePicker",
+    "item-info-selector": "/components/itemInfoSelector/itemInfoSelector",
     "seperate-textarea": "/components/seperateTextarea/seperateTextarea",
     "tip-selector": "/components/tipSelector/tipSelector",
     "price-input": "/components/priceInput/priceInput",

@@ -1,0 +1,43 @@
+{
+	"passwordSecret": "E2A2G1A0",
+	"tokenSecret": "cH6#nB5!gA3~aB4#",
+	"tokenExpiresIn": 7200,
+	"passwordErrorLimit": 5,
+	"bindTokenToDevice": true,
+	"passwordErrorRetryTime": 300,
+	"autoSetInviteCode": false,
+	"forceInviteCode": false,
+	"app-plus": {
+		"tokenExpiresIn": 2592000,
+		"oauth" : {
+			"weixin" : {
+				"appid" : "weixin appid",
+				"appsecret" : "weixin appsecret"
+			}
+		}
+	},
+	"mp-weixin": {
+		"oauth" : {
+			"weixin" : {
+				"appid" : "weixin appid",
+				"appsecret" : "weixin appsecret"
+			}
+		}
+	},
+	"mp-alipay": {
+		"oauth" : {
+			"alipay" : {
+				"appid" : "alipay appid",
+				"privateKey" : "alipay privateKey"
+			}
+		}
+	},
+	"service": {
+		"sms": {
+			"name": "微叮当",
+			"codeExpiresIn": 300,
+			"smsKey": "22736e835f44a6941ef9ae64e0668192",
+			"smsSecret": "7b32b2d4047832e7fba0c30aa4a00efa"
+		}
+	}
+}

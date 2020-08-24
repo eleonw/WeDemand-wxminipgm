@@ -2,9 +2,9 @@
     <view class="root">
 	<view class="page">
         使用手机号码登录/注册
-        <input v-model="tel"></input>
-        <view> {{tel}} </view>
-        <button type="default" plain="true" @click="login(0)">使用手机登录</button>
+        <input v-model="mobile" @change="mobileChange"></input>
+        <view> {{mobile}} </view>
+        <button type="default" plain="true" @click="loginWithSMS">使用手机登录</button>
         <button type="default" plain="true" @click="login(1)">使用微信登录</button>
     </view>
     </view>
@@ -12,19 +12,71 @@
 
 <script>
     
+    import uniPopup from '@/components/uni-popup/uni-popup.vue';
+    
     import { promisify, addAll } from '@/common/helper.js';
-    import { userInfo } from '@/common/globalData.js';
-    import { login } from '@/common/server.js';
+    import { userInfo, dev } from '@/common/globalData.js';
+    import { login, sendSMSCode } from '@/common/server.js';
     
     let page;
     
 	export default {
+        components: {
+            uniPopup,
+        },
+        
 		data() {
 			return {
-                tel: '',
+                mobile: '13728084958',
 			}
 		},
+        
 		methods: {
+            mobileChange: function(e) {
+                page.mobile = e.detail.value;
+            },
+            
+            loginWithSMS: async function() {
+                    
+                if (page.mobile.length != 11 || isNaN(Number(page.mobile)) || Number(page.mobile)<0) {
+                    uni.showToast({
+                        title: '手机号码无效，请重试',
+                        icon: 'none'
+                    })
+                    return;
+                }
+                
+                uni.showLoading();
+                
+                try {
+                    let res;
+                    if (dev) {
+                        res = {
+                            code: 0,
+                        }
+                    } else {
+                        res = (await sendSMSCode({
+                            mobile: page.mobile,
+                            type: 'login'
+                        })).result
+                    }
+                    
+                    console.log(res)
+                    if (res.code != 0) {
+                        throw new Error(res);
+                    }
+                    uni.navigateTo({
+                        url: './fillInSMSCode?mobile=' + this.mobile,
+                        complete: e=> {
+                            console.log(e)
+                        }
+                    });
+                } catch (e) {
+                    console.log(e)
+                    uni.hideLoading();
+                }
+            },
+            
             login: async function(type) {
                 uni.showLoading({
                     title: '登录中'

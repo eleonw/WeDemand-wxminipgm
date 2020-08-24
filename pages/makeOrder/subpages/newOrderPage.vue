@@ -1,7 +1,7 @@
 <template>
 	<view class="root">
     <view class="page">
-        <uni-nav-bar class="navigationBar" @clickLeft="uni.navigateBack()"></uni-nav-bar>
+        <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
 		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @touchstart="mapTouchStart" @touchend="mapTouchEnd">
             <image src="../../../static/image/icon/location.png" class="mapIcon" :class="{'hoverMapIcon': mapIconHover, bounce: false}"></image>
@@ -88,6 +88,10 @@
             clearShareData: function() {
                 shareData.clear();
                 page.locate();
+            },
+            
+            navigateBack: function() {
+                uni.navigateBack()
             }
 		},
         created: function(e) {
@@ -98,6 +102,7 @@
             shareData.setMapContext(mapContext);
             page.color = color;
             page.defaultLocation = defaultLocation;
+            
         },
         
         beforeMount: async function(e) {
@@ -120,47 +125,10 @@
                         text: '校园帮买',
                     },
                     {
-                        index: serviceType.OTHERS,
+                        index: serviceType.OTHER_SERVICE,
                         text: '其他跑腿',
                     },
                 ],
-                addressCardStyle: {
-                    [serviceType.HELP_DELIVER]: {
-                        single: false,
-                        static: [
-                            {
-                                color: 'green',
-                                text: '取',
-                                placeholder: '请选择取件地址'
-                            },
-                            {
-                                color: 'red',
-                                text: '送',
-                                placeholder: '请选择送件地址'
-                            }
-                        ],
-                    },
-                    [serviceType.HELP_BUY]: {
-                        single: true,
-                        static: {
-                            from: {
-                                color: 'red',
-                                text: '送',
-                                placeholder: '请选择派送地址'
-                            }
-                        }
-                    },
-                    [serviceType.OTHERS]: {
-                        single: true,
-                        static: {
-                            from: {
-                                color: 'red',
-                                text: '至',
-                                placeholder: '请选择服务地址'
-                            }
-                        }
-                    },
-                },
                 shareData: null,
                 QQ_MAP_KEY: null,
                 color: null,

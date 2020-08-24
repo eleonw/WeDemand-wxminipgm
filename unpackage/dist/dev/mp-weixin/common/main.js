@@ -60,7 +60,7 @@ var component = Object(_D_Program_Files_HBuilderX_plugins_uniapp_cli_node_module
   renderjs
 )
 
-component.options.__file = "F:/code/tinyJingle/tinyJingle/App.vue"
+component.options.__file = "App.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
@@ -94,9 +94,10 @@ var Helper = _interopRequireWildcard(__webpack_require__(/*! @/common/helper.js 
   methods: {},
 
 
-  globalData: {
-    userInfo: null,
-    dev: true },
+
+  globalData: {},
+
+
 
   onLaunch: function onLaunch() {
     // Object.prototype.clone = function() {

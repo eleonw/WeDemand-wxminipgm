@@ -1,7 +1,6 @@
 <template>
     
-    <view class="root">
-    <view class="form card">
+    <view class="root form card">
         
         <view class="formItem" v-for="(item,index) in shareData.address" :class="{selectedItem: index==shareData.currentAddressIdx}">
             <textIcon class="formItemIcon" :text="static[shareData.serviceType][index].text" :backgroundColor="static[shareData.serviceType][index].color" color="white" diameter="1.2em"></textIcon>
@@ -14,7 +13,6 @@
             <uni-icons type="list" @click="listClick(index)" class="formItemRight"></uni-icons>
         </view>
         
-    </view>
     </view>
 </template>
 
@@ -86,7 +84,7 @@
                             placeholder: '请选择派送地址'
                         }
                     ],
-                    [serviceType.OTHERS]: [
+                    [serviceType.OTHER_SERVICE]: [
                         {
                             color: color.LIGHT,
                             text: '至',
@@ -105,6 +103,7 @@
 <style>
     @import url("@/common/style/form.css");
     
+    
     .formItemBlock {
         width: 80%;
     }
@@ -112,6 +111,8 @@
     
     .addressMain {
         font-weight: 600;
+        line-height: 80rpx;
+        letter-spacing: 5rpx;
     }
     
     .addressDtl {

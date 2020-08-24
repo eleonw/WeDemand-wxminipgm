@@ -5,10 +5,11 @@ export default {
     methods: {
 
     },
+    
     globalData: {
-        userInfo: null,
-        dev: true,
+        
     },
+    
 	onLaunch: function() {
         // Object.prototype.clone = function() {
         //     const obj = Object.create(Object.getPrototypeOf(this));

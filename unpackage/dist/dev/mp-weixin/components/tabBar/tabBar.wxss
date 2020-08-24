@@ -1,5 +1,5 @@
 
-@-webkit-keyframes touchItem-data-v-2d6b284b{
+@-webkit-keyframes touchItem-data-v-3bd8e2f8{
 from{
         background-color: white;
 }
@@ -7,7 +7,7 @@ to{
         background-color: grey;
 }
 }
-@keyframes touchItem-data-v-2d6b284b{
+@keyframes touchItem-data-v-3bd8e2f8{
 from{
         background-color: white;
 }
@@ -15,7 +15,7 @@ to{
         background-color: grey;
 }
 }
-.component.data-v-2d6b284b {
+.component.data-v-3bd8e2f8 {
     width: 100vw;
     height: var(--height-tabbar);
     display: -webkit-box;
@@ -33,11 +33,11 @@ to{
     
     box-shadow: 0 0 3rpx 1rpx #F8F8F8;
 }
-.icon.data-v-2d6b284b {
+.icon.data-v-3bd8e2f8 {
     width: 3.5vh;
     height: 3.5vh;
 }
-.tabItem.data-v-2d6b284b {
+.tabItem.data-v-3bd8e2f8 {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
             flex-grow: 1;
@@ -60,13 +60,13 @@ to{
     
     color: grey;
 }
-.selected.data-v-2d6b284b {
+.selected.data-v-3bd8e2f8 {
     color: black;
     font-weight: 600;
     font-size: 22rpx;
 }
-.touching.data-v-2d6b284b {
-    -webkit-animation: .5s touchItem-data-v-2d6b284b forwards;
-            animation: .5s touchItem-data-v-2d6b284b forwards;
+.touching.data-v-3bd8e2f8 {
+    -webkit-animation: .5s touchItem-data-v-3bd8e2f8 forwards;
+            animation: .5s touchItem-data-v-3bd8e2f8 forwards;
 }
 

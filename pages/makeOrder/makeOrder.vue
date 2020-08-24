@@ -117,7 +117,7 @@
             
             page = this;
 
-            mapContext = wx.createMapContext('map', page);
+            mapContext = uni.createMapContext('map', page);
             shareData.getAddressBook();
             
         },

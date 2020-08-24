@@ -185,13 +185,5 @@ radio {
     
     z-index: 900;
 }
-#buyingLocationBlock {
-    -webkit-box-align: end;
-    -webkit-align-items: flex-end;
-            align-items: flex-end;
-}
-#buyingLocationBlock view {
-    margin: 5rpx 0;
-}
 
 

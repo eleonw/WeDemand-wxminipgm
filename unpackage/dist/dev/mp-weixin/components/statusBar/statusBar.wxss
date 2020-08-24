@@ -1,13 +1,13 @@
 
-.navBar.data-v-6f93ede2 {
+.navBar.data-v-3c85bef0 {
         width: 750rpx;
         height: 20px;
 }
-.noGradient.data-v-6f93ede2 {
+.noGradient.data-v-3c85bef0 {
         height: var(--height-statusbar);
 		background-color: rgba(0, 0, 0, 0.15);
 }
-.gradient.data-v-6f93ede2 {
+.gradient.data-v-3c85bef0 {
         height: calc(1.3 * var(--height-statusbar));
         background: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), transparent);
         background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);

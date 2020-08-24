@@ -66,7 +66,7 @@
     import withPlaceholder from '@/components/withPlaceholder/withPlaceholder.vue';
     
     import shareData from "./../shareData.js";
-    import { serviceType, color } from "@/common/globalData.js";
+    import { serviceType, color, dev } from "@/common/globalData.js";
     
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';
@@ -78,7 +78,6 @@
 
     
     let page;
-    const app = getApp();
     
     const titles = {
         [serviceType.HELP_DELIVER]: ['取件地址', '送件地址'],
@@ -159,7 +158,7 @@
                 
                 let notice;
                 
-                if (!app.globalData.dev) {
+                if (!dev) {
                    if (!page.address.location.isValid()) {
                        notice = '请选择地址';
                    } else if (!page.address.location.hasDetail()) {

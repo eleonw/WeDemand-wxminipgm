@@ -1,8 +1,6 @@
 'use strict';
 
-const request = require('request');
-const db = uniCloud.database();
-const user = db.collection('user');
+const uniID = require('uni-id');
 
 function randomLetter() {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
@@ -31,8 +29,15 @@ exports.main = async (event, context) => {
     let userInfo;
 
     switch (event.type) {
-        case 0: // tel
-            userInfo = await loginWithTel(event.tel);
+        case 'SMS': // tel
+            const {
+                mobile,
+                code
+            } = event;
+            return await loginBySMS({
+                mobile,
+                code
+            });
         case 1: // wx
             userInfo = await loginWithWxCode(event.wxCode);
             break;
@@ -74,30 +79,20 @@ async function loginWithWxCode(code) {
 
 }
 
-async function loginWithTel(tel) {
-    const res = await user.where({
-        tel: tel
-    }).get();
-    
-    console.log(res);
-    
-    if (res.data.length != 0) {
-        return res.data[0];
-    } else {
-        return await signup({
-            tel: tel
-        })
-    }
-    
+async function loginBySMS(opt) {
+    const res = await uniID.loginBySms({
+        mobile: opt.mobile,
+        code: opt.code,
+    });
+    return res;
 }
 
-async function signup(userInfo) {
-    if (!userInfo.nickname) {
-        userInfo.nickname = generateNickname();
-    }
-    let res = await user.add(userInfo);
-    userInfo._id = res.id;
-    return userInfo;
+async function register(opt) {
+    const res = await uniID.register({
+        username: opt.tel,
+        password: opt.password,
+    });
+    
 }
 
 

@@ -13,7 +13,7 @@ export const serviceType = {
     NONE: -1,
     HELP_DELIVER: 0,
     HELP_BUY: 1,
-    OTHERS: 2,
+    OTHER_SERVICE: 2,
 }
 
 export const defaultLocation = new Location({
@@ -30,4 +30,5 @@ export const userInfo = {
     nickname: "Gvs01892",
     wxOpenid: "ogjlP5YAbGPGuaTpblXIwWe8o07E",
     balance: 10,
+    mobile: '13728084958'
 };

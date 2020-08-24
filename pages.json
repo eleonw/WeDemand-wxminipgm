@@ -40,13 +40,17 @@
             }
         }
         ,{
-            "path" : "pages/makeOrder/detailForms/others",
+            "path" : "pages/makeOrder/detailForms/otherService",
             "style" : {
                 "navigationStyle":"custom"
             }
         }
         ,{
             "path" : "pages/makeOrder/addressBook/modifyAddress",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/front/fillInSMSCode",
             "style" : {}
         }
     ],
@@ -84,8 +88,12 @@
                 "path": "pages/makeOrder/makeOrder"
             },
             {
-                "name": "others",
-                "path": "pages/makeOrder/detailForms/others"
+                "name": "otherService",
+                "path": "pages/makeOrder/detailForms/otherService"
+            },
+            {
+                "name": "fillInSMSCode",
+                "path": "pages/front/fillInSMSCode"
             }
                 
         ]

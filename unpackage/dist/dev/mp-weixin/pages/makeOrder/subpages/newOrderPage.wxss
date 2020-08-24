@@ -1,10 +1,10 @@
 
-.page.data-v-c7de9e6e {
+.page.data-v-611fef30 {
      position: fixed;
      top: 0;
      left: 0;
 }
-.map.data-v-c7de9e6e {
+.map.data-v-611fef30 {
      position: absolute;
      top: -15vh;
      left: 0;
@@ -12,11 +12,11 @@
      height: 120vh;
      z-index: 0;
 }
-.bounce.data-v-c7de9e6e {
+.bounce.data-v-611fef30 {
      -webkit-animation: bounce .3s;
              animation: bounce .3s;
 }
-.mapIcon.data-v-c7de9e6e {
+.mapIcon.data-v-611fef30 {
      width: 70rpx;
      height: 70rpx;
      
@@ -26,10 +26,10 @@
      margin: auto;
      z-index: 1;
 }
-.hoverMapIcon.data-v-c7de9e6e {
+.hoverMapIcon.data-v-611fef30 {
      bottom: 62vh;
 }
-.mapIconShadow.data-v-c7de9e6e {
+.mapIconShadow.data-v-611fef30 {
      position: absolute;
      left: 360rpx;
      top: calc(60vh - 10rpx);
@@ -43,11 +43,11 @@
              transform: scaleY(0.2);
      box-shadow: 0 0 10rpx 10rpx rgba(0, 0, 0, 0.3);
 }
-.hoverIconShadow.data-v-c7de9e6e {
+.hoverIconShadow.data-v-611fef30 {
      -webkit-transform: scaleY(0.1) scaleX(0.5);
              transform: scaleY(0.1) scaleX(0.5);
 }
-.topTabBar.data-v-c7de9e6e {
+.topTabBar.data-v-611fef30 {
      z-index: 1;
      position: absolute;
      top: var(--height-navbar);
@@ -56,7 +56,7 @@
      background-color: var(--color-main);
      color: white;
 }
-.aboveMap.data-v-c7de9e6e {
+.aboveMap.data-v-611fef30 {
      z-index: 1;
      width: 700rpx;
      
@@ -82,7 +82,7 @@
      -webkit-align-items: flex-start;
              align-items: flex-start;
 }
-.locateIconContainer.data-v-c7de9e6e {
+.locateIconContainer.data-v-611fef30 {
      background-color: white;
      border-radius: 20%;
      width: 60rpx;
@@ -90,7 +90,7 @@
      
      margin-bottom: 10rpx;
 }
-.locateIcon.data-v-c7de9e6e {
+.locateIcon.data-v-611fef30 {
      width: 60rpx;
      height: 60rpx;
 }

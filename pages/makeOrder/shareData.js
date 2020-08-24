@@ -9,7 +9,7 @@ let mapContext;
 const detailFormUrls = {
     [serviceType.HELP_DELIVER]: '/pages/makeOrder/detailForms/helpDeliver',
     [serviceType.HELP_BUY]: '/pages/makeOrder/detailForms/helpBuy',
-    [serviceType.OTHERS]: '/pages/makeOrder/detailForms/others'
+    [serviceType.OTHER_SERVICE]: '/pages/makeOrder/detailForms/otherService'
 }
 
 const shareData = {
@@ -53,8 +53,8 @@ const shareData = {
                 this.address = [originAddress];
                 this.completed = [false];
                 break;
-            case serviceType.OTHERS:
-                this.serviceType = serviceType.OTHERS;
+            case serviceType.OTHER_SERVICE:
+                this.serviceType = serviceType.OTHER_SERVICE;
                 this.address = [originAddress];
                 this.completed = [false];
                 break;
@@ -96,7 +96,7 @@ const shareData = {
                 return this.completed[0] && this.completed[1];
             case serviceType.HELP_BUY:
                 return this.completed[0];
-            case serviceType.OTHERS:
+            case serviceType.OTHER_SERVICE:
                 return this.completed[0];
             default:
                 console.log();

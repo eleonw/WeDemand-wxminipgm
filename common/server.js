@@ -1,5 +1,20 @@
 import { userInfo } from '@/common/globalData.js';
 
+export async function sendSMSCode(opt) {
+    const {
+        type
+    } = opt;
+    const res = await uniCloud.callFunction({
+        name: 'sendSMSCode',
+        data: {
+            type,
+            mobile: userInfo.mobile
+        }
+    })
+    console.log(res);
+    return res;
+}
+
 export async function login(loginData) {
     
     console.log('login called')
@@ -8,23 +23,34 @@ export async function login(loginData) {
         name: 'login',
         data: loginData
     });
-    const userInfo =  res.result.userInfo;
-    userInfo.wxOpenid = userInfo.wx_openid;
-    userInfo.id = userInfo._id;
-    delete userInfo._id;
-    delete userInfo.wx_openid;
-    console.log('login success:')
-    console.log(userInfo);
+
     
-    return res.result;
+    console.log(res)
+}
+
+export const paymentAssistant = {
+    
+    payWithBlance: async function(opt) {
+        const res = await uniCloud.callFunction({
+            name: changeBalance,
+            data: {
+                userId: userInfo.id,
+                amount: -opt.amount,
+            }
+        })
+        console.log(res)
+    }
+    
+    
 }
 
 export const addressBookHelper = {
     getAddressBook: async function(arg) {
         const res = await uniCloud.callFunction({
-            name: 'getAddressBook',
+            name: 'addressBookService',
             data: {
-                user_id: arg.userId
+                type: 3,
+                userId: arg.userId
             }
         });
         const addressBook = [];
@@ -39,7 +65,7 @@ export const addressBookHelper = {
         
         
         const res = await uniCloud.callFunction({
-            name: 'modifyAddressBook',
+            name: 'addressBookService',
             data: {
                 type: 0,
                 userId: userInfo.id,
@@ -52,7 +78,7 @@ export const addressBookHelper = {
     
     updateAddressBook: async function(arg) {
         const res = await uniCloud.callFunction({
-            name: 'modifyAddressBook',
+            name: 'addressBookService',
             data: {
                 type: 1,
                 recId: arg.recId,
@@ -64,7 +90,7 @@ export const addressBookHelper = {
     
     removeAddress: async function(arg) {
         await uniCloud.callFunction({
-            name: 'modifyAddressBook',
+            name: 'addressBookService',
             data: {
                 type: 2,
                 recId: arg.recId

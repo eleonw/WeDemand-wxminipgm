@@ -41,7 +41,7 @@
                                 <radio :value="1" :color="colorMain" :checked="buyingLocationType==1"/><text>指定地址</text>
                             </label>
                         </radio-group>
-                        <view v-if="buyingLocationType == 1">
+                        <view v-if="buyingLocationType==1">
                             <navigatorWithPlaceholder :content="buyingLocation.name==''?buyingLocation.address:buyingLocation.name" placeholder="请选择购买地址"  @click.native="chooseBuyingLocation"></navigatorWithPlaceholder>
                         </view>
                     </view>
