@@ -1,4 +1,4 @@
-import { userInfo, serviceType } from '@/common/globalData.js';
+import { userInfo, serviceType as _serviceType } from '@/common/globalData.js';
 import { loginErr } from '@/common/error.js';
 
 export async function resetSmsCode(arg) {
@@ -69,18 +69,16 @@ export const paymentAssistant = {
 
 export const orderAssistant = {
     
-    createOrder: async function(arg) {
-
-        const order = arg.order;
+    createOrder: async function(order) {
         
-        swicth(order.serviceType) {
-            case serviceType.HELP_DELIVER:
+        switch(order.serviceType) {
+            case _serviceType.HELP_DELIVER:
                 order.serviceType = 1;
                 break;
-            case serviceType.HELP_BUY:
+            case _serviceType.HELP_BUY:
                 order.serviceType = 2;
                 break;
-            case serviceType.OTHER_SERVICE:
+            case _serviceType.OTHER_SERVICE:
                 order.serviceType = 3;
                 break;
             default:
@@ -99,7 +97,8 @@ export const orderAssistant = {
                     order,
                 }
             })
-            if (!res.result.success) {
+            console.log(res)
+            if (!res.result || !res.result.success) {
                 throw new Error(res);
             }
         } catch(e) {
@@ -108,6 +107,10 @@ export const orderAssistant = {
                 success: false,
                 error: e,
             }
+        }
+        
+        return {
+            success: true,
         }
         
     },

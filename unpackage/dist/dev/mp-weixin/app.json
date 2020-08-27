@@ -9,7 +9,8 @@
     "pages/makeOrder/detailForms/helpBuy",
     "pages/makeOrder/detailForms/otherService",
     "pages/makeOrder/addressBook/modifyAddress",
-    "pages/front/fillInSmsCode"
+    "pages/front/fillInSmsCode",
+    "pages/makeOrder/detailForms/result"
   ],
   "subPackages": [],
   "window": {

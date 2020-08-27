@@ -79,7 +79,7 @@
     import seperateTextarea from '@/components/seperateTextarea/seperateTextarea.vue';
     import priceInput from '@/components/priceInput/priceInput.vue';
     
-    import { color, dev }from '@/common/globalData.js';
+    import { color, dev, serviceType as _serviceType }from '@/common/globalData.js';
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
@@ -200,6 +200,8 @@
             },
             
             confirm: async function(e) {
+                
+                console.log('confirm')
                 let notice;
                 
                 if (!dev) {
@@ -208,7 +210,7 @@
                     } else if (!shareData.completed[1]) {
                         notice = '请填写送件地址';
                     } else if (!page.retriveTime) {
-                        notice = '请选择取件事件';
+                        notice = '请选择取件时间';
                     } else if (Object.keys(page.itemInfo).length == 0) {
                         notice = '请完善物品信息';
                     }
@@ -222,15 +224,41 @@
                     return;
                 }
                 
-                try {
-                    await orderAssistant.createNewOrder();
-                } catch(e) {
-                    console.log(e);
-                    uni.showToast({
-                        title: '系统异常,请重试',
-                        icon: 'none',
+                uni.showLoading();
+                const fromAddress = shareData.address[0];
+                const toAddress = shareData.address[1];
+                const serviceType = _serviceType.HELP_DELIVER;
+                const retriveTime = page.retriveTime;
+                const itemInfo = page.itemInfo;
+                const note = page.note;
+                const couponId = page.coupon ? page.coupon.id : null;
+                const tip = page.tip?page.tip:0;
+                
+                const res = await orderAssistant.createOrder({
+                    fromAddress,
+                    toAddress,
+                    serviceType,
+                    retriveTime,
+                    itemInfo,
+                    note,
+                    couponId,
+                    tip,
+                });
+                
+                
+                const url = './result/result?success=' + res.success;
+                uni.hideLoading();
+                if (res.success) {
+                    shareData.clear();
+                    uni.redirectTo({
+                        url
+                    })
+                } else {
+                    uni.navigateTo({
+                        url
                     })
                 }
+                
                 
                 
             },
@@ -240,12 +268,13 @@
             }
             
 		},
-        onLoad: function() {
+        onLoad: function() {  
             page = this;
             page.QQ_MAP_KEY = QQ_MAP_KEY;
             page.shareData = shareData;
             
             mapContext = uni.createMapContext('map', page);
+            
         },
         
         onShow: function() {

@@ -39,11 +39,14 @@ exports.main = async (event) => {
     
 
     try {
-        create({
+        const orderId = await create({
             userId,
             order: event.order
         });
-        
+        return {
+            orderId,
+            success: true
+        }
         // switch(event.serviceType) {
         //     case 1:
         //         create();

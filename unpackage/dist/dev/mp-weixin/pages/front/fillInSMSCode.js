@@ -15,7 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   statusBar: function() {
-    return __webpack_require__.e(/*! import() | components/statusBar/statusBar */ "components/statusBar/statusBar").then(__webpack_require__.bind(null, /*! @/components/statusBar/statusBar.vue */ 199))
+    return __webpack_require__.e(/*! import() | components/statusBar/statusBar */ "components/statusBar/statusBar").then(__webpack_require__.bind(null, /*! @/components/statusBar/statusBar.vue */ 205))
   }
 }
 var render = function() {
@@ -83,7 +83,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var _helper = __webpack_require__(/*! @/common/helper.js */ 8);
 var _server = __webpack_require__(/*! @/common/server.js */ 25);
-var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 199));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 205));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var page;var _default =
 

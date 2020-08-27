@@ -53,6 +53,10 @@
             "path" : "pages/front/fillInSmsCode",
             "style" : {}
         }
+        ,{
+            "path" : "pages/makeOrder/detailForms/result",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#FFFFFF",

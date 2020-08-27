@@ -81,8 +81,8 @@
                 return cost;
             },
             clickConfirm: function() {
-                this.$emit('confirm', {
-                    totalCost: getTotalCost,
+                this.$emit('clickConfirm', {
+                    totalCost: that.getTotalCost(),
                 });
             }
         }
