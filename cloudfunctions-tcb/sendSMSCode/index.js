@@ -20,8 +20,8 @@ exports.main = async (event, context) => {
 };
 
 function getRandomLetter() {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    return letters[Math.floor(Math.random() * 26)];
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return characters[Math.floor(Math.random() * 36)];
 }
 
 function getRandomCode() {

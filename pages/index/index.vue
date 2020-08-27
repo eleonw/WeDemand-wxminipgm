@@ -42,6 +42,8 @@
     import priceInput from '@/components/priceInput/priceInput.vue';
     import paymentMethodSelector from '@/components/paymentMethodSelector/paymentMethodSelector.vue';
     
+    import { userInfo } from '@/common/globalData.js';
+    
     const pageUrls = {
         makeOrder: '/pages/makeOrder/makeOrder',
         takeOrder: '/pages/takeOrder/takeOrder',
@@ -72,7 +74,7 @@
         
         onLoad: function() {
 
-
+            console.log(userInfo)
         }
 	}
 </script>

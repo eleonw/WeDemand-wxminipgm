@@ -24,7 +24,9 @@
     
     import statusBar from '@/components/statusBar/statusBar.vue'
     
-    import { login } from '@/common/server.js';
+    import { addAll } from '@/common/helper.js';
+    import { login, resetSmsCode } from '@/common/server.js';
+    import { dev, userInfo } from '@/common/globalData.js';
     
     let page;
     
@@ -47,13 +49,16 @@
             page.mobile = opt.mobile;
             
             page.targetIndex = 0;
+            
+            if (dev) {
+                page.code = 'AAAA'
+            }
         },
         
 		methods: {
             
                 
             toFocus: function() {
-                console.log('aaa')
                 page.focus = true;
             },
             
@@ -76,12 +81,27 @@
             
             
             confirm: async function() {
-                console.log(this.code)
-                // const res = await login({
-                //     type: 'SMS',
-                //     mobile: mobile,
-                //     code: this.code
-                // })
+                const res = await login({
+                    type: 'sms',
+                    mobile: page.mobile,
+                    code: page.code
+                })
+                
+                console.log(res)
+                
+                if (res.success) {
+                    console.log('login success');
+                    addAll.call(userInfo, res.userInfo)
+                    console.log(userInfo)
+                    uni.reLaunch({
+                        url: '/pages/index/index'
+                    })
+                }
+                
+                resetSmsCode({
+                    recId: '65825b355f40951900160ef6225676b6'
+                });
+                
             }
 		}
 	}

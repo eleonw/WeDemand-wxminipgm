@@ -7,8 +7,8 @@
                 <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
             <view class="main">
-                <textarea :value="value" placeholder="可填写送货要求及物品描述等信息" class="textarea" maxlength="50" @input="input" />
-                <view class="words">{{ value.length + '/50'}} </view>
+                <textarea v-model="content" placeholder="可填写送货要求及物品描述等信息" class="textarea" maxlength="50"/>
+                <view class="words">{{ content.length + '/50'}} </view>
             </view>
         </view>
 		
@@ -25,23 +25,25 @@
             title: {
                 type: String,
                 default: '填写信息',
+            },
+            value: {
+                type: String,
+                default: '',
             }
         },
 		data() {
 			return {
                 outFlag: false,
-                value: ''
+                content: ''
 			};
 		},
         
         created: function() {
             that = this;
+            that.content = that.value;
         },
         
         methods: {
-            input: function(e) {
-                this.value = e.detail.value;
-            },
             
             fadeOut: function() {
                 that.outFlag = true;
@@ -50,7 +52,7 @@
                 }, 1500);
             },
             
-            back: function() {
+            cancel: function() {
                 that.fadeOut();
                 setTimeout(function() {
                     that.$emit('exit', {
@@ -61,10 +63,10 @@
             
             confirm: function() {
                 that.fadeOut();
+                that.$emit('input', that.content);
                 setTimeout(function() {
                     that.$emit('exit', {
-                        valid: true,
-                        value: that.value,
+                        valid: true
                     })
                 }, 300)
             }

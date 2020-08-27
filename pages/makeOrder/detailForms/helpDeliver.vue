@@ -12,13 +12,13 @@
                 <view class="formItem">
                     <view class="formItemTitle">取件时间</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="retriveTimeString" placeholder="选择取件时间" @click.native="chooseRetriveTime"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="getRetriveTimeString()" placeholder="选择取件时间" @click.native="chooseRetriveTime"></navigatorWithPlaceholder>
                     </view>
                 </view>
                 <view class="formItem">
                     <view class="formItemTitle">物品信息</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="itemInfo" placeholder="物品类型、价值、重量" @click.native="chooseItemInfo"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="getItemInfoString()" placeholder="物品类型、价值、重量" @click.native="chooseItemInfo"></navigatorWithPlaceholder>
                     </view>
                 </view>
                 <view class="formItem">
@@ -51,9 +51,9 @@
 
         
         <timePicker v-if="showTimePicker" class="selectorComponent" @exit="completeRetriveTime"></timePicker>
-        <itemInfoSelector v-else-if="showItemInfoSelector" class="selectorComponent" :value="itemInfo" @exit="completeItemInfo"></itemInfoSelector>
-        <seperateTextarea v-else-if="showNoteInput" class="selectorComponent" @exit="completeNote"></seperateTextarea>
-        <tipSelector v-else-if="showTipSelector" class="selectorComponent" @exit="completeTip"></tipSelector>
+        <itemInfoSelector v-else-if="showItemInfoSelector" class="selectorComponent" v-model="itemInfo" @exit="completeItemInfo"></itemInfoSelector>
+        <seperateTextarea v-else-if="showNoteInput" v-model="note" class="selectorComponent" @exit="completeNote"></seperateTextarea>
+        <priceInput v-else-if="showTipSelector" class="selectorComponent" @exit="completeTip" v-model="tip"></priceInput>
 
         <orderNav class="orderNav" :costItems="[{
             title: '基础费用',
@@ -77,18 +77,22 @@
     import timePicker from '@/components/timePicker/timePicker.vue';
     import itemInfoSelector from '@/components/itemInfoSelector/itemInfoSelector.vue';
     import seperateTextarea from '@/components/seperateTextarea/seperateTextarea.vue';
-    import tipSelector from '@/components/tipSelector/tipSelector.vue';
+    import priceInput from '@/components/priceInput/priceInput.vue';
     
-    import { color }from '@/common/globalData.js';
+    import { color, dev }from '@/common/globalData.js';
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
+    
+    import { orderAssistant } from '@/common/server.js';
+    import { weightAssistant } from '@/common/helper.js';
+  
     let page;
     let mapContext;
     
 	export default {
         components: {
             addressCard, navigatorWithPlaceholder, statusBar, backgroundIcon, orderNav,
-            timePicker, itemInfoSelector, seperateTextarea, tipSelector
+            timePicker, itemInfoSelector, seperateTextarea, priceInput
         },
 		data() {
 			return {
@@ -98,7 +102,7 @@
                 
                 retriveTime: null,
                 retriveTimeString: '',
-                itemInfo: '',
+                itemInfo: {},
                 note: '',
                 
                 coupon: null,
@@ -148,37 +152,38 @@
                 page.showTipSelector = true;
             },
             
+            getRetriveTimeString: function() {
+                const date = new Date(page.retriveTime);
+                if (date - (new Date()) > 0) {
+                    const hour = date.getHours()<10?'0'+date.getHours():date.getHours();
+                    const minute = date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes();
+                    return date.getMonth() + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute;
+                } else {
+                    return '马上取件';
+                }
+            },
+            
+            getItemInfoString: function() {
+                const itemInfo = page.itemInfo;
+                if (Object.keys(itemInfo).length != 0) {
+                    
+                    return itemInfo.type + '、' + itemInfo.itemValue + '、' + weightAssistant.getWeightString(itemInfo.weight)
+                }
+            },
+            
             completeRetriveTime: function(e) {
                 page.showTimePicker = false;
                 if (e.valid) {
                     page.retriveTime = e.value;
-                    const date = new Date(e.value);
-             
- 
-                    if (date - (new Date()) > 0) {
-                        const hour = date.getHours()<10?'0'+date.getHours():date.getHours();
-                        const minute = date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes();
-                        page.retriveTimeString = date.getMonth() + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute;
-                    } else {
-                        page.retriveTimeString = '马上取件';
-                    }
-                    console.log(page.retriveTimeString)
                 }
             },
             
             completeItemInfo: function(e) {
                 page.showItemInfoSelector = false;
-                if (e.valid) {
-                    page.itemInfo = e.value;
-                    page.itemInfo = e.value.type + '、' + e.value.value + '、' + e.value.weight;
-                }
             },
             
             completeNote: function(e) {
                 page.showNoteInput = false;
-                if (e.valid) {
-                    page.note = e.value;
-                }
             },
             
             completeTip: function(e) {
@@ -194,7 +199,39 @@
                 return 2;
             },
             
-            confirm: function(e) {
+            confirm: async function(e) {
+                let notice;
+                
+                if (!dev) {
+                    if (!shareData.completed[0]) {
+                        notice = '请填写取件地址';
+                    } else if (!shareData.completed[1]) {
+                        notice = '请填写送件地址';
+                    } else if (!page.retriveTime) {
+                        notice = '请选择取件事件';
+                    } else if (Object.keys(page.itemInfo).length == 0) {
+                        notice = '请完善物品信息';
+                    }
+                }
+                
+                if (notice) {
+                    uni.showToast({
+                        title: notice,
+                        icon: 'none',
+                    });
+                    return;
+                }
+                
+                try {
+                    await orderAssistant.createNewOrder();
+                } catch(e) {
+                    console.log(e);
+                    uni.showToast({
+                        title: '系统异常,请重试',
+                        icon: 'none',
+                    })
+                }
+                
                 
             },
             

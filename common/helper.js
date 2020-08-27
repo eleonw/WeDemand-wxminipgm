@@ -20,6 +20,24 @@ export const promisify = function(func, opt, context=null) {
 //     }
 // }
 
+export const weightAssistant = {
+    
+    MAX_WEIGHT: 20,
+    MIN_WEIGHT: 5,
+    
+    getWeightString: function(weight) {
+        if (weight < this.MIN_WEIGHT) {
+            return '小于' + this.MIN_WEIGHT + 'kg';
+        } else if (weight > this.MAX_WEIGHT) {
+            return '大于' + this.MAX_WEIGHT + 'kg';
+        } else {
+            return weight + 'kg';
+        }
+    }
+}
+
+
+
 export const clone = function(obj) {
     const dup = Object.create(Object.getPrototypeOf(obj));
     for (let item in obj) {

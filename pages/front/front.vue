@@ -4,7 +4,7 @@
         使用手机号码登录/注册
         <input v-model="mobile" @change="mobileChange"></input>
         <view> {{mobile}} </view>
-        <button type="default" plain="true" @click="loginWithSMS">使用手机登录</button>
+        <button type="default" plain="true" @click="loginWithSms">使用手机登录</button>
         <button type="default" plain="true" @click="login(1)">使用微信登录</button>
     </view>
     </view>
@@ -16,7 +16,7 @@
     
     import { promisify, addAll } from '@/common/helper.js';
     import { userInfo, dev } from '@/common/globalData.js';
-    import { login, sendSMSCode } from '@/common/server.js';
+    import { login, sendSmsCode } from '@/common/server.js';
     
     let page;
     
@@ -36,7 +36,7 @@
                 page.mobile = e.detail.value;
             },
             
-            loginWithSMS: async function() {
+            loginWithSms: async function() {
                     
                 if (page.mobile.length != 11 || isNaN(Number(page.mobile)) || Number(page.mobile)<0) {
                     uni.showToast({
@@ -55,7 +55,7 @@
                             code: 0,
                         }
                     } else {
-                        res = (await sendSMSCode({
+                        res = (await sendSmsCode({
                             mobile: page.mobile,
                             type: 'login'
                         })).result
@@ -66,7 +66,7 @@
                         throw new Error(res);
                     }
                     uni.navigateTo({
-                        url: './fillInSMSCode?mobile=' + this.mobile,
+                        url: './fillInSmsCode?mobile=' + this.mobile,
                         complete: e=> {
                             console.log(e)
                         }

@@ -1,7 +1,7 @@
 import Address from "@/common/classes/Address.js";
 import { serviceType, userInfo } from "@/common/globalData.js";
 import Vue from 'vue';
-import { addressBookHelper } from "@/common/server.js";
+import { addressBookAssistant } from "@/common/server.js";
 import { beanify } from "@/common/helper.js";
 
 let mapContext;
@@ -124,7 +124,7 @@ const shareData = {
     getAddressBook: async function() {
         console.log('get address book')
         try {
-            this.addressBook = await addressBookHelper.getAddressBook({
+            this.addressBook = await addressBookAssistant.getAddressBook({
                 userId: userInfo.id
             });
             this.addressBookFailure = false;
@@ -145,19 +145,19 @@ const shareData = {
         } else {
             
             address = beanify(address);
-            const res = await addressBookHelper.addToAddressBook({address: address});
+            const res = await addressBookAssistant.addToAddressBook({address: address});
             this.addressBook.push({_id: res.id, address: address});
         }
     },
     
     updateAddressBook: async function(arg) {
         const address = beanify(arg.address)
-        await addressBookHelper.updateAddressBook({recId: this.addressBook[arg.index]['_id'], address: address});
+        await addressBookAssistant.updateAddressBook({recId: this.addressBook[arg.index]['_id'], address: address});
         this.addressBook[arg.index].address = address;
     },
     
     removeAddress: async function(arg) {
-        await addressBookHelper.removeAddress({recId: this.addressBook[arg.index]['_id']});
+        await addressBookAssistant.removeAddress({recId: this.addressBook[arg.index]['_id']});
         this.addressBook.splice(arg.index, 1);
     }
 }

@@ -10,34 +10,39 @@
                 <view class="section">
                     <view class="sectionTitle">物品种类</view>
                     <view class="sectionGrid">
-                        <view class="item" :class="{selectedItem: index==typeIndex}" v-for="(type,index) in typeList" :key="index" @click="selectType(index)">{{ type }}</view>
+                        <view class="item" :class="{selectedItem: type==item}" v-for="(item,index) in typeList" :key="index" @click="selectType(item)">{{ item }}</view>
                     </view>
                     
                     
                 </view>
                 
-                <view v-if="typeIndex==EXPRESS_PACKAGE_TYPE_INDEX" class="section">
+                <view v-if="type=='快递'" class="section">
                     <view class="sectionTitle">快递信息</view>
                     <textarea class="expressInfo" :value="expressInfo" placeholder="请根据快递提取方式提供快递收件人姓名及手机或粘贴短信" />
                 </view>
                 
+                <view v-else-if="type=='外卖'" class="section">
+                    <view class="sectionTitle">外卖信息</view>
+                    <textarea class="expressInfo" :value="expressInfo" placeholder="请提供取外卖所需的信息,如取件姓名电话和骑手电话等" />
+                </view>
                 
-                <view v-else-if="typeIndex==OTHERS_TYPE_INDEX" class="section">
+                
+                <view v-else-if="type=='其他'" class="section">
                     <view class="sectionTitle">具体种类</view>
-                    <input type="text" :value="otherType" maxlength="5" class="concreteType"/>
+                    <input type="text" v-model="otherType" maxlength="5" class="concreteType"/>
                 </view>
                 
                 <view class="section">
                     <view class="sectionTitle">物品价值</view>
                     <view class="sectionGrid">
-                        <view class="item" :class="{selectedItem: index==valueIndex}" v-for="(value,index) in valueList" :key="index" @click="selectValue(index)">{{ value }}</view>
+                        <view class="item" :class="{selectedItem: item==itemValue}" v-for="(item,index) in itemValueList" :key="index" @click="selectValue(item)">{{ item }}</view>
                     </view>
                 </view>
                 
                 <view class="section">
                     <view class="sectionTitle">物品重量</view>
-                    <view class="weight"> {{ weight==4?'<4kg':weight==21?'>20kg':weight+'kg' }} </view>
-                    <slider block-size="20" :value="weight" @change="changeWeight" min="4" max="21" :activeColor="colorMain" class="weightSlider"/>
+                    <view class="weight"> {{ getWeightString() }} </view>
+                    <slider block-size="20" :value="weight" @change="changeWeight" :min="MIN_WEIGHT-1" :max="MAX_WEIGHT+1" :activeColor="colorMain" class="weightSlider"/>
                 </view>
                 
                 <view class="button" @click="confirm">确定</view>
@@ -50,6 +55,7 @@
 
 <script>
     import { color } from '@/common/globalData.js';
+    import { weightAssistant } from '@/common/helper.js';
     
     let that;
     
@@ -63,17 +69,17 @@
         },
 		data() {
 			return {
-				typeList: ['快递', '书籍', '文件', '生活用品', '钥匙', '其他'],
-                typeIndex: null,
-                EXPRESS_PACKAGE_TYPE_INDEX: 0,
-                OTHERS_TYPE_INDEX: 5,
+				typeList: ['快递', '外卖', '书籍文件', '生活用品', '钥匙', '其他'],
+                type: null,
                 
-                expressInfo: null,
+                additionalInfo: null,
                 otherType: null,
                 
-                valueList: ['50元以下', '50-200元', '200元以上'],
-                valueIndex: null,
+                itemValueList: ['50元以下', '50-200元', '200元以上'],
+                itemValue: null,
                 
+                MIN_WEIGHT: null,
+                MAX_WEIGHT: null,
                 weight: 4,
                 
                 colorMain: color.MAIN,
@@ -96,17 +102,23 @@
                 }, 300)
             },
             
-            selectType: function(index) {
-                if (index == that.EXPRESS_PACKAGE_TYPE_INDEX) {
-                    that.expressInfo = '';
-                } else if (index == that.OTHERS_TYPE_INDEX) {
-                    that.otherType = '';
+            selectType: function(type) {
+                if (type == '快递' || type == '外卖') {
+                    that.additionalInfo = '';
+                } else {
+                    that.additionalInfo = null;
                 }
-                that.typeIndex = index;
+                
+                if (type == '其他') {
+                    that.otherType = '';
+                } else {
+                    that.otherType = null;
+                }
+                that.type = type;
             },
             
-            selectValue: function(index) {
-                that.valueIndex = index;
+            selectValue: function(value) {
+                that.itemValue = value;
             },
             
             changeWeight: function(e) {
@@ -115,13 +127,15 @@
             
             confirm: function() {
                 let notice = null;
-                if (!that.typeIndex) {
+                if (!that.type) {
                     notice = '请选择物品种类';
-                } else if ((that.typeIndex==that.EXPRESS_PACKAGE_TYPE_INDEX) && (that.expressInfo.trim() == '')) {
-                    notice = '请填写取件信息';
-                } else if ((that.typeIndex==that.OTHERS_TYPE_INDEX) && (that.otherType.trim() == '')) {
-                    notice = '请填写快递取货信息';
-                } else if (!that.valueIndex) {
+                } else if ((that.type=='快递') && (that.additionalInfo.trim()=='')) {
+                    notice = '请填写快递取件信息';
+                } else if ((that.type=='外卖') && (that.additionalInfo.trim()=='')) {
+                    notice = '请填写取外卖信息'
+                } else if ((that.type=='其他') && (that.otherType.trim() == '')) {
+                    notice = '请填写具体物品种类';
+                } else if (!that.itemValue) {
                     notice = '请选择物品价值';
                 }
                 
@@ -133,47 +147,62 @@
                     return;
                 } else {
                     let type;
-                    let expressInfo;
-                    let weight;
+                    let additionalInfo = that.additionalInfo;
+                    let itemValue = that.itemValue;
+                    let weight = that.weight;
                     
-                    if (that.typeIndex == that.OTHERS_TYPE_INDEX) {
+                    
+                    if (that.type == '其他') {
                         type = that.otherType;
                     } else {
-                        type = that.typeList[that.typeIndex];
-                        if (that.typeIndex == that.EXPRESS_PACKAGE_TYPE_INDEX) {
-                            expressInfo = that.expressInfo;
-                        }
+                        type = that.type;
                     }
                     
-                    switch(that.weight) {
-                        case 4:
-                            weight = '小于5kg';
-                            break;
-                        case 21:
-                            weight = '大于20kg';
-                            break;
-                        default:
-                            weight = that.weight + 'kg';
-                            break;
-                    }
                     
                     that.fadeOut();
+                    that.$emit('input', {
+                        type,
+                        additionalInfo,
+                        itemValue,
+                        weight,
+                    });
+                    
                     that.$emit('exit', {
                         valid: true,
                         value: {
-                            type: type,
-                            expressInfo: expressInfo,
-                            value: that.valueList[that.valueIndex],
-                            weight: weight
+                            type,
+                            additionalInfo,
+                            itemValue,
+                            weight,
                         }
                     });
+                    
                 }
+            },
+            
+            getWeightString: function() {
+                return weightAssistant.getWeightString(that.weight)
             }
         },
         
         created: function() {
             that = this;
-
+            
+            that.MIN_WEIGHT = weightAssistant.MIN_WEIGHT;
+            that.MAX_WEIGHT = weightAssistant.MAX_WEIGHT;
+            
+            if (Object.keys(that.value).length != 0) {
+                if (that.typeList.includes(that.value.type)) {
+                    that.type = that.value.type;
+                } else {
+                    that.type = '其他',
+                    that.otherType = that.value.type;
+                }
+                that.additionalInfo = that.value.additionalInfo;
+                that.itemValue = that.value.itemValue;
+                that.weight = that.value.weight;
+                
+            }
         }
 	}
 </script>

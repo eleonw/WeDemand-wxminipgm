@@ -29,15 +29,38 @@ exports.main = async (event, context) => {
     let userInfo;
 
     switch (event.type) {
-        case 'SMS': // tel
+        case 'sms': // smsCode
             const {
                 mobile,
                 code
             } = event;
-            return await loginBySMS({
+            
+            let res = await uniID.loginBySms({
                 mobile,
                 code
             });
+            
+            if (res.code != 0) {
+                return {
+                    success: false,
+                    notice: res,
+                }
+            }
+            res = await uniID.checkToken(res.token);
+            if (res.code != 0) {
+                return {
+                    success: false,
+                    notice: res,
+                }
+            }
+            
+            return {
+                success: true,
+                userInfo: res.userInfo
+            }
+            
+            break;
+
         case 1: // wx
             userInfo = await loginWithWxCode(event.wxCode);
             break;
@@ -79,7 +102,7 @@ async function loginWithWxCode(code) {
 
 }
 
-async function loginBySMS(opt) {
+async function loginBySms(opt) {
     const res = await uniID.loginBySms({
         mobile: opt.mobile,
         code: opt.code,

@@ -50,7 +50,7 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/front/fillInSMSCode",
+            "path" : "pages/front/fillInSmsCode",
             "style" : {}
         }
     ],
@@ -93,7 +93,7 @@
             },
             {
                 "name": "fillInSMSCode",
-                "path": "pages/front/fillInSMSCode"
+                "path": "pages/makeOrder/detailForms/otherService"
             }
                 
         ]

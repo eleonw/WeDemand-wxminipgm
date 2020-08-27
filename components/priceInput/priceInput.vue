@@ -7,7 +7,7 @@
                 <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
             <view class="main">
-                <view class="container"><text class="yuan">￥</text><input :value="value" type="digit" @blur="blur" class="input"></input></view>
+                <view class="container"><text class="yuan">￥</text><input v-model="price" type="digit" class="input"></input></view>
                 <view class="notice" :class="{showNotice: showNotice}">请输入格式正确的数字</view>
             </view>
         </view>
@@ -24,16 +24,16 @@
                 type: String,
                 default: '输入金额',
             },
-            initalValue: {
+            value: {
                 type: String,
-                default: ''
+                default: null,
             }
         },
 		data() {
 			return {
                 outFlag: false,
 				showNotice: false,
-                value: null,
+                price: null,
 			};
 		},
         
@@ -41,24 +41,20 @@
         created: function() {
             that = this;
             
-            that.value = that.initialValue;
+            that.price = that.value;
         },
         
         methods: {
-            blur: function(e) {
-                that.value = e.detail.value;
-                that.processDigit()
-            },
             
             processDigit: function() {
-                let number = Number(that.value);
+                let number = Number(that.price);
                 if (isNaN(number)) {
                     that.showNotice = true;
                     return false;
                 } else {
                     that.showNotice = false;
                     number = Math.floor(number*10) / 10;
-                    that.value = number;
+                    that.price = number;
                     return true;
                 }
             },
@@ -83,10 +79,10 @@
                     return;
                 } else {
                     that.fadeOut();
+                    that.$emit('input', that.price);
                     setTimeout(function() {
                         that.$emit('exit', {
                             valid: true,
-                            value: Number(that.value),
                         });
                     }, 300)
                 }

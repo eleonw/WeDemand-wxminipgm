@@ -1,11 +1,26 @@
-import { userInfo } from '@/common/globalData.js';
+import { userInfo, serviceType } from '@/common/globalData.js';
+import { loginErr } from '@/common/error.js';
 
-export async function sendSMSCode(opt) {
+export async function resetSmsCode(arg) {
+    
+    const {
+        recId
+    } = arg;
+    
+    await uniCloud.callFunction({
+        name: 'resetSmsCode',
+        data: {
+            recId
+        }
+    })
+}
+
+export async function sendSmsCode(opt) {
     const {
         type
     } = opt;
     const res = await uniCloud.callFunction({
-        name: 'sendSMSCode',
+        name: 'sendSmsCode',
         data: {
             type,
             mobile: userInfo.mobile
@@ -19,13 +34,21 @@ export async function login(loginData) {
     
     console.log('login called')
     
-    let res = await uniCloud.callFunction({
-        name: 'login',
-        data: loginData
-    });
-
+    let res;
+    try {
+        res = (await uniCloud.callFunction({
+            name: 'login',
+            data: loginData
+        })).result;
+        return res;
+    } catch(e) {
+        console.log(e);
+        return {
+            code: loginErr.SYSTEM_FAILURE,
+        }
+    }
     
-    console.log(res)
+     
 }
 
 export const paymentAssistant = {
@@ -44,7 +67,55 @@ export const paymentAssistant = {
     
 }
 
-export const addressBookHelper = {
+export const orderAssistant = {
+    
+    createOrder: async function(arg) {
+
+        const order = arg.order;
+        
+        swicth(order.serviceType) {
+            case serviceType.HELP_DELIVER:
+                order.serviceType = 1;
+                break;
+            case serviceType.HELP_BUY:
+                order.serviceType = 2;
+                break;
+            case serviceType.OTHER_SERVICE:
+                order.serviceType = 3;
+                break;
+            default:
+                throw new Error('invalid service type');
+        }
+        
+        const serviceType = 1;
+        const userId = userInfo.id;
+        
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    serviceType,
+                    userId,
+                    order,
+                }
+            })
+            if (!res.result.success) {
+                throw new Error(res);
+            }
+        } catch(e) {
+            console.log(e);
+            return {
+                success: false,
+                error: e,
+            }
+        }
+        
+    },
+    
+    
+}
+
+export const addressBookAssistant = {
     getAddressBook: async function(arg) {
         const res = await uniCloud.callFunction({
             name: 'addressBookService',
@@ -68,7 +139,7 @@ export const addressBookHelper = {
             name: 'addressBookService',
             data: {
                 type: 0,
-                userId: userInfo.id,
+                userId: userInfo._id,
                 address: arg.address,
             }
         });

@@ -1,6 +1,6 @@
 'use strict';
 const db = uniCloud.database();
-const addressBookRec = db.collection('addressBookRec');
+const addressBookRec = db.collection('addressbook-rec');
 const push = db.command.push;
 
 const maxRecNum = 10;

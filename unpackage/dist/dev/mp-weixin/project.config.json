@@ -62,4 +62,34 @@
 					"name": "addressForm",
 					"query": "",
 					"id": 1,
-					"pathName": "pages/makeOrder/addressForm
+					"pathName": "pages/makeOrder/addressForm/addressForm"
+				},
+				{
+					"name": "index",
+					"id": 2,
+					"pathName": "pages/index/index"
+				},
+				{
+					"name": "helpBuy",
+					"id": 3,
+					"pathName": "pages/makeOrder/detailForms/helpBuy"
+				},
+				{
+					"name": "makeOrder",
+					"id": 4,
+					"pathName": "pages/makeOrder/makeOrder"
+				},
+				{
+					"name": "otherService",
+					"id": 5,
+					"pathName": "pages/makeOrder/detailForms/otherService"
+				},
+				{
+					"name": "fillInSMSCode",
+					"id": 6,
+					"pathName": "pages/makeOrder/detailForms/otherService"
+				}
+			]
+		}
+	}
+}
