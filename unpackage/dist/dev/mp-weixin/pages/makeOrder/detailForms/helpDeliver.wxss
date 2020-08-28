@@ -185,5 +185,21 @@ radio {
     
     z-index: 900;
 }
+.timeRangeItem {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    
+    -webkit-box-pack: justify;
+    
+    -webkit-justify-content: space-between;
+    
+            justify-content: space-between;
+    width: 350rpx;
+}
 
 

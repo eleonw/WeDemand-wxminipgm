@@ -6,7 +6,7 @@
                 <view class="title">{{ title }}</view>
                 <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
-            <picker-view indicator-style="height: 90rpx;" :value="value" @change="bindChange">
+            <picker-view indicator-style="height: 90rpx;" :value="pickerValue" @change="bindChange">
                 <picker-view-column>
                     <view class="item" v-for="(day,index) in days">{{day}}</view>
                 </picker-view-column>
@@ -35,6 +35,10 @@
 	export default {
         name: 'timePicker',
         props: {
+            value: {
+                type: Number,
+                default: null,
+            },
             title: {
                 type: String,
                 default: '选择时间',
@@ -46,11 +50,17 @@
             forwardDayCount: {
                 type: [Number, String],
                 default: 5,
+            },
+            startTimestamp: {
+                type: Number,
+            },
+            endTimestamp: {
+                type: Number,
             }
         },
 		data() {
 			return {
-                value: [0, 0, 0],
+                pickerValue: [0, 0, 0],
                 
 				days: null,
                 hours: null,
@@ -93,53 +103,51 @@
             
             that.hours = that.dynamicHours;
             that.minutes = that.dynamicMinutes;
-            that.value = [0, 0, 0];
+            that.pickerValue = [0, 0, 0];
         },
         methods: {
             bindChange: function(e) {
-                const newValue = e.detail.value;
-                // console.log(that.value);
-                // console.log(newValue)
-                if (newValue[0] != that.value[0]) {
-                    if (newValue[0] == 0) {
+                const newPickerValue = e.detail.value;
+                if (newPickerValue[0] != that.pickerValue[0]) {
+                    if (newPickerValue[0] == 0) {
                         that.hours = that.dynamicHours;
                         that.minutes = that.dynamicMinutes;
-                        that.value.splice(1, 1, 0);
-                        that.value.splice(2, 1, 0);
-                    } else if (that.value[0] == 0) {
+                        that.pickerValue.splice(1, 1, 0);
+                        that.pickerValue.splice(2, 1, 0);
+                    } else if (that.pickerValue[0] == 0) {
                         that.hours = that.staticHours;
                         that.minutes = that.staticMinutes;
-                        that.value.splice(1, 1, 0);
-                        that.value.splice(2, 1, 0);
+                        that.pickerValue.splice(1, 1, 0);
+                        that.pickerValue.splice(2, 1, 0);
                     } 
-                    that.value.splice(0, 1, newValue[0]);
-                } else if ((newValue[0] == 0) && (newValue[1] != that.value[1])) {
-                    if (newValue[1] == 0) {
+                    that.pickerValue.splice(0, 1, newPickerValue[0]);
+                } else if ((newPickerValue[0] == 0) && (newPickerValue[1] != that.pickerValue[1])) {
+                    if (newPickerValue[1] == 0) {
                         that.minutes = that.dynamicMinutes;
-                        that.value.splice(2, 1, 0);
-                    } else if (that.value[1] == 0) {
+                        that.pickerValue.splice(2, 1, 0);
+                    } else if (that.pickerValue[1] == 0) {
                         that.minutes = that.staticMinutes;
-                        that.value.splice(2, 1, 0);
+                        that.pickerValue.splice(2, 1, 0);
                     }
-                    that.value.splice(1, 1, newValue[1]);
+                    that.pickerValue.splice(1, 1, newPickerValue[1]);
                 } else {
-                    that.value.splice(2, 1, newValue[2]);
+                    that.pickerValue.splice(2, 1, newPickerValue[2]);
                 }
             },
             
             getSelectedTimestamp: function() {
-                let timestamp = dayBaseTime[that.value[0]];
-                if (that.value[0] == 0) {
-                    timestamp += (that.value[1]+currentTime.getHours()) * HOUR_TIME;
-                    if (that.value[1] == 0) {
+                let timestamp = dayBaseTime[that.pickerValue[0]];
+                if (that.pickerValue[0] == 0) {
+                    timestamp += (that.pickerValue[1]+currentTime.getHours()) * HOUR_TIME;
+                    if (that.pickerValue[1] == 0) {
                         let minute = currentTime.getMinutes();
                         timestamp += (minute - minute%10) * MINUTE_TIME;
                     } else {
-                        timestamp += that.value[2]*10*MINUTE_TIME;
+                        timestamp += that.pickerValue[2]*10*MINUTE_TIME;
                     }
                 } else {
-                    timestamp += that.value[1]*HOUR_TIME;
-                    timestamp += that.value[2]*10*MINUTE_TIME; 
+                    timestamp += that.pickerValue[1]*HOUR_TIME;
+                    timestamp += that.pickerValue[2]*10*MINUTE_TIME; 
                 }
                 return timestamp;
             },
@@ -154,10 +162,11 @@
             confirm: function() {
                 that.fadeOut();
                 let timestamp = that.getSelectedTimestamp();
+                that.$emit('input', timestamp);
                 setTimeout(function() {
                     that.$emit('exit', {
                         valid: true,
-                        value: timestamp,
+                        pickerValue: timestamp,
                     });
                 }, 300)
                 

@@ -108,9 +108,6 @@ var components = {
   priceInput: function() {
     return __webpack_require__.e(/*! import() | components/priceInput/priceInput */ "components/priceInput/priceInput").then(__webpack_require__.bind(null, /*! @/components/priceInput/priceInput.vue */ 176))
   },
-  tipSelector: function() {
-    return __webpack_require__.e(/*! import() | components/tipSelector/tipSelector */ "components/tipSelector/tipSelector").then(__webpack_require__.bind(null, /*! @/components/tipSelector/tipSelector.vue */ 169))
-  },
   orderNav: function() {
     return __webpack_require__.e(/*! import() | components/orderNav/orderNav */ "components/orderNav/orderNav").then(__webpack_require__.bind(null, /*! @/components/orderNav/orderNav.vue */ 226))
   }
@@ -119,12 +116,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var m0 = _vm.getBasicCost()
+  var m0 = _vm.getTimeString(0)
+  var m1 = _vm.getTimeString(1)
+  var m2 = _vm.getBasicCost()
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
-        m0: m0
+        m0: m0,
+        m1: m1,
+        m2: m2
       }
     }
   )
@@ -161,7 +162,16 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));
+
+
+
+
+
+
+
+
+
 
 
 
@@ -269,7 +279,9 @@ var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/
 
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 37));
-var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 233));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 205));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var backgroundIcon = function backgroundIcon() {__webpack_require__.e(/*! require.ensure | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then((function () {return resolve(__webpack_require__(/*! @/components/backgroundIcon/backgroundIcon.vue */ 212));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 219));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var orderNav = function orderNav() {__webpack_require__.e(/*! require.ensure | components/orderNav/orderNav */ "components/orderNav/orderNav").then((function () {return resolve(__webpack_require__(/*! @/components/orderNav/orderNav.vue */ 226));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var priceInput = function priceInput() {__webpack_require__.e(/*! require.ensure | components/priceInput/priceInput */ "components/priceInput/priceInput").then((function () {return resolve(__webpack_require__(/*! @/components/priceInput/priceInput.vue */ 176));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {__webpack_require__.e(/*! require.ensure | components/tipSelector/tipSelector */ "components/tipSelector/tipSelector").then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);
+
+var _helper = __webpack_require__(/*! @/common/helper.js */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 233));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 205));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var backgroundIcon = function backgroundIcon() {__webpack_require__.e(/*! require.ensure | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then((function () {return resolve(__webpack_require__(/*! @/components/backgroundIcon/backgroundIcon.vue */ 212));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 219));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var orderNav = function orderNav() {__webpack_require__.e(/*! require.ensure | components/orderNav/orderNav */ "components/orderNav/orderNav").then((function () {return resolve(__webpack_require__(/*! @/components/orderNav/orderNav.vue */ 226));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var priceInput = function priceInput() {__webpack_require__.e(/*! require.ensure | components/priceInput/priceInput */ "components/priceInput/priceInput").then((function () {return resolve(__webpack_require__(/*! @/components/priceInput/priceInput.vue */ 176));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {__webpack_require__.e(/*! require.ensure | components/tipSelector/tipSelector */ "components/tipSelector/tipSelector").then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 var page;
 var mapContext;var _default =
@@ -286,19 +298,19 @@ var mapContext;var _default =
 
       colorMain: null,
       textareaKeyWords: ['需要小票', '赶时间'],
-      buyingLocationType: 0,
       buyingLocation: null,
 
-      deliverTime: null,
-      deliverTimeString: '',
+      timeStart: null,
+      timeEnd: null,
 
       commodityDesc: '',
       commodityPrice: null,
       tip: null,
 
-      showTimePicker: false,
-      showCommodityPriceInput: false,
-      showTipSelector: false };
+      show_timeStart: false,
+      show_timeEnd: false,
+      show_commodityPrice: false,
+      show_tip: false };
 
 
   },
@@ -345,17 +357,36 @@ var mapContext;var _default =
 
     },
 
-    commodityDescChange: function commodityDescChange(e) {
-      page.commodityDesc = e.detail.value;
+    showSelector: function showSelector(type) {
+      page['show_' + type] = true;
     },
+
+    hideSelector: function hideSelector(type) {
+      page['show_' + type] = false;
+    },
+
+    getTimeString: function getTimeString(index) {
+
+      var target = index == 0 ? 'timeStart' : 'timeEnd';
+
+      var substitude = '现在';
+
+      if (page[target]) {
+        return (0, _helper.getTimeString)({ timestamp: page[target], substitude: substitude });
+      } else {
+        return '';
+      }
+    },
+
+
 
     addKeyWord: function addKeyWord(keyWord) {
       page.commodityDesc = page.commodityDesc + ' ' + keyWord + ' ';
     },
 
     buyingLocationTypeChange: function buyingLocationTypeChange(e) {
-      page.buyingLocationType = e.detail.value;
-      if (page.buyingLocationType == 1) {
+
+      if (e.detail.value == 1) {
         page.buyingLocation = new _Location.default();
       } else {
         page.buyingLocation = null;
@@ -374,44 +405,73 @@ var mapContext;var _default =
 
     },
 
-    chooseDeliverTime: function chooseDeliverTime() {
-      page.showTimePicker = true;
-    },
-
-    fillInCommidityPrice: function fillInCommidityPrice() {
-      page.showCommodityPriceInput = true;
-    },
-
-    completeCommodityPrice: function completeCommodityPrice(e) {
-      if (e.valid) {
-        page.commodityPrice = e.value;
-      }
-      page.showCommodityPriceInput = false;
-      console.log(page.commodityPrice);
-    },
-
-    addTip: function addTip() {
-      page.showTipSelector = true;
-    },
-
-    completeDeliverTime: function completeDeliverTime(e) {
-      page.showTimePicker = false;
-      if (e.valid) {
-        page.deliverTime = e.value;
-        var date = new Date(e.value);
-      }
-    },
-
-    completeTip: function completeTip(e) {
-      page.showTipSelector = false;
-      if (e.valid) {
-        page.tip = e.value;
-      }
-    },
-
     getBasicCost: function getBasicCost() {
       return 2;
-    } } };exports.default = _default;
+    },
+
+    confirm: function () {var _confirm = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(e) {var notice, serviceType, address, timeStart, timeEnd, commodityDesc, buyingLocation, couponId, tip, res, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+
+
+
+                if (!dev) {
+                  if (!_shareData.default.completed[0]) {
+                    notice = '请填写送货地址';
+                  } else if (!page.timeStart || !page.timeEnd) {
+                    notice = '请完善送货时间';
+                  } else if (page.timeStart >= page.timeEnd) {
+                    notice = '请确保送货起始时间早于送货结束时间';
+                  } else if (page.commodityDesc.trim() == '') {
+                    notice = '请填写商品信息';
+                  } else if (page.buyingLocation && !page.buyingLocation.isValid()) {
+                    notice = '请选择购买地址';
+                  } else if (!page.commodityPrice) {
+                    notice = '请填写商品预估价格';
+                  }
+                }if (!
+
+                notice) {_context.next = 4;break;}
+                uni.showToast({
+                  title: notice,
+                  icon: 'none' });return _context.abrupt("return");case 4:
+
+
+
+
+                uni.showLoading();
+
+                serviceType = _serviceType.HELP_BUY;
+                address = _shareData.default.address[0];
+                timeStart = page.timeStart;
+                timeEnd = page.timeEnd;
+                commodityDesc = page.commodityDesc;
+                buyingLocation = page.buyingLocation;
+                couponId = page.coupon ? page.coupon.id : null;
+                tip = page.tip ? page.tip : 0;_context.next = 15;return (
+
+                  orderAssistant.createOrder({
+
+                    serviceType: serviceType,
+                    commodityDesc: commodityDesc,
+                    timeStart: timeStart,
+                    timeEnd: timeEnd,
+                    buyingLocation: buyingLocation,
+                    couponId: couponId,
+                    tip: tip }));case 15:res = _context.sent;
+
+
+
+                url = './result/result?success=' + res.success;
+                uni.hideLoading();
+                if (res.success) {
+                  _shareData.default.clear();
+                  uni.redirectTo({
+                    url: url });
+
+                } else {
+                  uni.navigateTo({
+                    url: url });
+
+                }case 19:case "end":return _context.stop();}}}, _callee);}));function confirm(_x) {return _confirm.apply(this, arguments);}return confirm;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

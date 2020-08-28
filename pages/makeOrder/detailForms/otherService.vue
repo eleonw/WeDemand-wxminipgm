@@ -1,60 +1,69 @@
 <template>
 	<view class="root page">
-        
+
         <statusBar class="statusBar"></statusBar>
         
-        <map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" :markers="mapMarkers"></map>
+		<map id="map" class="map" longitude="113" latitude="39" scale="15" :subkey="QQ_MAP_KEY" :markers="mapMarkers"></map>
         <backgroundIcon type="back" size="25" shadow="true" class="backNavigator" @click="back"></backgroundIcon>
-        
         <view class="detailForm">
-            <addressCard></addressCard>
+            
             <view class="form card">
-                <view class="formItem">
-                    <view class="formItemTitle">取件时间</view>
-                    <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="retriveTimeString" placeholder="选择取件时间" @click.native="chooseRetriveTime"></navigatorWithPlaceholder>
+                <addressCard></addressCard>
+                <view class="formItem lastFormItem">
+                    <view class="formItemTitle">服务时间</view>
+                    <view class="formItemRight fromItemBlock">
+                        <view class="timeRangeItem">
+                            <view>从</view>
+                            <navigatorWithPlaceholder :content="getTimeString(0)" placeholder="选择时间" @click.native="showSelector('timeStart')"></navigatorWithPlaceholder>
+                        </view>
+                        <view class="timeRangeItem">
+                            <view>至</view>
+                            <navigatorWithPlaceholder :content="getTimeString(1)" placeholder="选择时间" @click.native="showSelector('timeEnd')"></navigatorWithPlaceholder>
+                        </view>
+                        
                     </view>
                 </view>
-                <view class="formItem">
-                    <view class="formItemTitle">物品信息</view>
-                    <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="itemInfo" placeholder="物品类型、价值、重量" @click.native="chooseItemInfo"></navigatorWithPlaceholder>
-                    </view>
-                </view>
-                <view class="formItem">
-                    <view class="formItemTitle">备注</view>
-                    <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="note" placeholder="送件要求、物品描述等" @click.native="addNote"></navigatorWithPlaceholder>
-                    </view>
-                </view>
-
             </view>
+            
+            
+            <view class="form card">
+                <view class="formItem textareaSet">
+                    <view class="textareaTitle">填写需要的服务及注意事项</view>
+                    <textarea class="textareaBody"  v-model="serviceDesc" placeholder="如排队、搬东西、送花..." maxlength="250"></textarea>
+                    <view class="textareaKeyWords">
+                        <view class="textareaKeyWord" v-for="(keyWord,index) in textareaKeyWords" :keys="index" @click="addKeyWord(keyWord)">{{ keyWord }}</view>
+                    </view>
+                </view>
+                
+            </view>
+            
+           
+            
             
             <view class="form card">
                 <view class="formItem">
                     <view class="formItemTitle">优惠券</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :value="coupon" placeholder="选择优惠券" @click.native="chooseCoupon"></navigatorWithPlaceholder>
+                       <navigatorWithPlaceholder :content="coupon?coupon:''" placeholder="选择优惠券" @click.native="chooseCoupon"></navigatorWithPlaceholder>
                     </view>
                 </view>
-                <view class="formItem">
-                    <view class="formItemTitle">小费</view>
+                <view class="formItem lastFormItem">
+                    <view class="formItemTitle">服务费</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="addTip"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="通过增加服务费加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
                     </view>
                 </view>
             </view>
             
             
-        </view>
             
-
+        </view>
         
-        <timePicker v-if="showTimePicker" class="selectorComponent" @exit="completeRetriveTime"></timePicker>
-        <itemInfoSelector v-else-if="showItemInfoSelector" class="selectorComponent" :value="itemInfo" @exit="completeItemInfo"></itemInfoSelector>
-        <seperateTextarea v-else-if="showNoteInput" class="selectorComponent" @exit="completeNote"></seperateTextarea>
-        <tipSelector v-else-if="showTipSelector" class="selectorComponent" @exit="completeTip"></tipSelector>
+        <timePicker v-if="show_timeStart" class="selectorComponent" @exit="hideSelector('timeStart')" v-model="timeStart"></timePicker>
+        <timePicker v-if="show_timeEnd" class="selectorComponent" @exit="hideSelector('timeEnd')" v-model="timeEnd"></timePicker>
 
+        <priceInput v-else-if="show_tip" class="selectorComponent" title="服务费" @exit="hideSelector('tip')" v-model="tip"></priceInput>
+        
         <orderNav class="orderNav" :costItems="[{
             title: '基础费用',
             cost: getBasicCost(),
@@ -62,7 +71,9 @@
         {
             title: '小费',
             cost: tip?tip:0,
-        }]" @clickConfirm="confirm"></orderNav>
+        }]"></orderNav>
+        
+        
         
 	</view>
 </template>
@@ -75,47 +86,75 @@
     import orderNav from '@/components/orderNav/orderNav.vue';
     
     import timePicker from '@/components/timePicker/timePicker.vue';
-    import itemInfoSelector from '@/components/itemInfoSelector/itemInfoSelector.vue';
-    import seperateTextarea from '@/components/seperateTextarea/seperateTextarea.vue';
+    import priceInput from '@/components/priceInput/priceInput.vue';
     import tipSelector from '@/components/tipSelector/tipSelector.vue';
+    
+    import Location from '@/common/classes/Location.js';
     
     import { color }from '@/common/globalData.js';
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
+    
+    import { getTimeString } from '@/common/helper.js';
+    
     let page;
     let mapContext;
     
 	export default {
         components: {
-            addressCard, navigatorWithPlaceholder, statusBar, backgroundIcon, orderNav,
-            timePicker, itemInfoSelector, seperateTextarea, tipSelector
+             addressCard, navigatorWithPlaceholder, statusBar, backgroundIcon, orderNav,
+             timePicker, tipSelector, priceInput
         },
+        
 		data() {
 			return {
-				mapMarkers: null,
-                QQ_MAP_KEY: null,
-                shareData: null,
+                mapMarkers: null,
                 
-                retriveTime: null,
-                retriveTimeString: '',
-                itemInfo: '',
-                note: '',
+				colorMain: null,
+                textareaKeyWords: ['务必准时'],
                 
-                coupon: null,
+                timeStart: null,
+                timeEnd: null,
+                
+                serviceDesc: '',
+                    
                 tip: null,
                 
-                showTimePicker: false,
-                showItemInfoSelector: false,
-                showNoteInput: false,
-                showTipSelector: false,
-                
-                costItems: null,
+                show_timeStart: false,
+                show_timeEnd: false,
+                show_tip: false,
                 
 			}
 		},
+        
+        onLoad: function() {
+            page = this;
+            page.colorMain = color.MAIN;
+            
+            mapContext = uni.createMapContext('map');
+        },
+        
+        onShow: function() {
+            page.mapMarkers = [
+                {
+                    id: 0,
+                    latitude: shareData.address[0].location.latitude,
+                    longitude: shareData.address[0].location.longitude,
+                    iconPath: '/static/image/icon/deliver.png',
+                    width: 40,
+                    height: 40, 
+                }
+            ];
+            
+            mapContext.includePoints({
+                points: page.mapMarkers,
+                padding: [80, 30, 120, 30],
+            });
+        },
+        
 		methods: {
             back: function() {
-
+            
                 uni.showModal({
                     content: '放弃订单？',
                     cancelColor: color.MAIN,
@@ -130,118 +169,113 @@
                 })
             },
             
-			chooseRetriveTime: function() {
-                page.showTimePicker = true;
+            showSelector: function(type) {
+                page['show_'+type] = true;
             },
             
-            chooseItemInfo: function() {
-                page.showItemInfoSelector = true;
+            hideSelector: function(type) {
+                page['show_'+type] = false;
             },
             
-            addNote: function() {
-                console.log('3')
-                page.showNoteInput = true;
-            },
-            
-            addTip: function() {
-                console.log('4')
-                page.showTipSelector = true;
-            },
-            
-            completeRetriveTime: function(e) {
-                page.showTimePicker = false;
-                if (e.valid) {
-                    page.retriveTime = e.value;
-                    const date = new Date(e.value);
-             
- 
-                    if (date - (new Date()) > 0) {
-                        const hour = date.getHours()<10?'0'+date.getHours():date.getHours();
-                        const minute = date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes();
-                        page.retriveTimeString = date.getMonth() + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute;
-                    } else {
-                        page.retriveTimeString = '马上取件';
-                    }
-                    console.log(page.retriveTimeString)
+            getTimeString: function(index) {
+                
+                const target = index==0 ? 'timeStart' : 'timeEnd'; 
+                
+                const substitude = '现在'
+                
+                if (page[target]) {
+                    return getTimeString({timestamp: page[target], substitude});
+                } else {
+                    return '';
                 }
             },
             
-            completeItemInfo: function(e) {
-                page.showItemInfoSelector = false;
-                if (e.valid) {
-                    page.itemInfo = e.value;
-                    page.itemInfo = e.value.type + '、' + e.value.value + '、' + e.value.weight;
-                }
-            },
+
             
-            completeNote: function(e) {
-                page.showNoteInput = false;
-                if (e.valid) {
-                    page.note = e.value;
-                }
-            },
-            
-            completeTip: function(e) {
-                page.showTipSelector = false;
-                if (e.valid) {
-                    page.tip = e.value;
-                    console.log(e);
-                    console.log(page.tip)
-                }
+            addKeyWord: function(keyWord) {
+                page.serviceDesc = page.serviceDesc + ' ' + keyWord + ' ';
             },
             
             getBasicCost: function() {
                 return 2;
             },
             
-            confirm: function(e) {
+            confirm: async function(e) {
+                
+                let notice;
+                
+                if (!dev) {
+                    if (!shareData.completed[0]) {
+                        notice = '请填写服务地址';
+                    } else if (!page.timeStart || !page.timeEnd) {
+                        notice = '请完善服务时间';
+                    } else if (page.timeStart >= page.timeEnd) {
+                        notice = '请确保服务起始时间早于服务结束时间';
+                    } else if (page.serviceDesc.trim() == '') {
+                        notice = '请填写服务信息';
+                    } else if (!page.tip || page.tip<=0) {
+                        notice = '请填写服务费用';
+                    }
+                }
+                
+                if (notice) {
+                    uni.showToast({
+                        title: notice,
+                        icon: 'none',
+                    });
+                    return;
+                }
+                
+                uni.showLoading();
+                
+                const serviceType = _serviceType.OTHER_SERVICE;
+                const address = shareData.address[0];
+                const timeStart = page.timeStart;
+                const timeEnd = page.timeEnd;
+                const serviceDesc = page.serviceDesc;
+                const couponId = page.coupon ? page.coupon.id : null;
+                const tip = page.tip;
+                
+                const res = await orderAssistant.createOrder({
+
+                    serviceType,
+                    serviceDesc,
+                    timeStart,
+                    timeEnd,
+                    buyingLocation,
+                    couponId,
+                    tip,
+                });
+                
+                
+                const url = './result/result?success=' + res.success;
+                uni.hideLoading();
+                if (res.success) {
+                    shareData.clear();
+                    uni.redirectTo({
+                        url
+                    })
+                } else {
+                    uni.navigateTo({
+                        url
+                    })
+                }
                 
             },
             
-            pay: function() {
-                
-            }
-            
-		},
-        onLoad: function() {
-            page = this;
-            page.QQ_MAP_KEY = QQ_MAP_KEY;
-            page.shareData = shareData;
-            
-            mapContext = uni.createMapContext('map', page);
-        },
-        
-        onShow: function() {
-            
-            page.mapMarkers = [
-                {
-                    id: 0,
-                    latitude: shareData.address[0].location.latitude,
-                    longitude: shareData.address[0].location.longitude,
-                    iconPath: '/static/image/icon/retrive.png',
-                    width: 40,
-                    height: 40, 
-                }, 
-                {
-                    id: 1,
-                    latitude: shareData.address[1].location.latitude,
-                    longitude: shareData.address[1].location.longitude,
-                    iconPath: '/static/image/icon/deliver.png',
-                    width: 40,
-                    height: 40,
-                }
-            ];
-            
-            mapContext.includePoints({
-                points: page.mapMarkers,
-                padding: [80, 30, 120, 30],
-            });
-        }
+		}
 	}
 </script>
 
 <style>
+    @import url("./detailForms.css");
     
-   @import url("./detailForms.css");
-   
+    #buyingLocationBlock {
+        align-items: flex-end;
+    }
+    
+    #buyingLocationBlock view {
+        margin: 5rpx 0;
+    }
+    
 </style>

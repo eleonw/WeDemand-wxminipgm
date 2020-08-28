@@ -46,3 +46,11 @@
     
     z-index: 900;
 }
+
+.timeRangeItem {
+    display: flex;
+    flex-flow: row nowrap;
+    
+    justify-content: space-between;
+    width: 350rpx;
+}

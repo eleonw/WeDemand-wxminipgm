@@ -68,3 +68,43 @@ export const addAll = function(src) {
 export const beanify = function(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
+
+export const formatNumber = function(value, strLength) {
+    let numberString = value.toString();
+    if (numberString.length > strLength) {
+        console.log({
+            value,
+            strLength
+        })
+        throw new Error('value exceed')
+    } else {
+        let boundary = strLength - numberString.length;
+        while (boundary) {
+            numberString = '0' + numberString;
+            boundary--;
+        }
+        return numberString;
+    }
+}
+
+export const getTimeString = function(arg) {
+    let date = new Date(arg.timestamp);
+    
+    if (date - (new Date()) > 0) {
+        const hour = formatNumber(date.getHours(), 2);
+        const minute = formatNumber(date.getMinutes(), 2);
+        return (date.getMonth()+1) + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute;
+    } else {
+        if (arg.substitude) {
+            return arg.substitude;
+        } else {
+            date = new Date(Number(date) + 1000*60*60);
+            const hour = formatNumber(date.getHours(), 2);
+            const minute = '00'
+            return (date.getMonth()+1) + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute + arg.suffix;
+        }
+        
+    }
+    
+}
+

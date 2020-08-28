@@ -11,8 +11,16 @@
                 <addressCard></addressCard>
                 <view class="formItem lastFormItem">
                     <view class="formItemTitle">送货时间</view>
-                    <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="deliverTimeString" placeholder="选择送达时间" @click.native="chooseDeliverTime"></navigatorWithPlaceholder>
+                    <view class="formItemRight fromItemBlock">
+                        <view class="timeRangeItem">
+                            <view>从</view>
+                            <navigatorWithPlaceholder :content="getTimeString(0)" placeholder="选择时间" @click.native="showSelector('timeStart')"></navigatorWithPlaceholder>
+                        </view>
+                        <view class="timeRangeItem">
+                            <view>至</view>
+                            <navigatorWithPlaceholder :content="getTimeString(1)" placeholder="选择时间" @click.native="showSelector('timeEnd')"></navigatorWithPlaceholder>
+                        </view>
+                        
                     </view>
                 </view>
             </view>
@@ -21,7 +29,7 @@
             <view class="form card">
                 <view class="formItem textareaSet">
                     <view class="textareaTitle">填写想购买的商品</view>
-                    <textarea class="textareaBody"  :value="commodityDesc" placeholder="填写代买商品的要求描述,如品牌、种类、数量等" maxlength="250"@change="commodityDescChanged"></textarea>
+                    <textarea class="textareaBody"  v-model="commodityDesc" placeholder="填写代买商品的要求描述,如品牌、种类、数量等" maxlength="250"></textarea>
                     <view class="textareaKeyWords">
                         <view class="textareaKeyWord" v-for="(keyWord,index) in textareaKeyWords" :keys="index" @click="addKeyWord(keyWord)">{{ keyWord }}</view>
                     </view>
@@ -37,11 +45,11 @@
                     <view class="formItemRight formItemBlock" id="buyingLocationBlock">
                         <radio-group @change="buyingLocationTypeChange">
                             <label>
-                                <radio :value="0" :color="colorMain" :checked="buyingLocationType==0"/><text>就近购买</text>
-                                <radio :value="1" :color="colorMain" :checked="buyingLocationType==1"/><text>指定地址</text>
+                                <radio :value="0" :color="colorMain" :checked="buyingLocation==null"/><text>就近购买</text>
+                                <radio :value="1" :color="colorMain" :checked="buyingLocation"/><text>指定地址</text>
                             </label>
                         </radio-group>
-                        <view v-if="buyingLocationType==1">
+                        <view v-if="buyingLocation!=null">
                             <navigatorWithPlaceholder :content="buyingLocation.name==''?buyingLocation.address:buyingLocation.name" placeholder="请选择购买地址"  @click.native="chooseBuyingLocation"></navigatorWithPlaceholder>
                         </view>
                     </view>
@@ -49,7 +57,7 @@
                 <view class="formItem lastFormItem">
                     <view class="formItemTitle">预估价格</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="commodityPrice?commodityPrice + '￥':''" placeholder="预估商品价格" @click.native="fillInCommidityPrice"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="commodityPrice?commodityPrice + '￥':''" placeholder="预估商品价格" @click.native="showSelector('commodityPrice')"></navigatorWithPlaceholder>
                     </view>
                 </view>
             </view>
@@ -64,7 +72,7 @@
                 <view class="formItem lastFormItem">
                     <view class="formItemTitle">小费</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="addTip"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
                     </view>
                 </view>
             </view>
@@ -73,9 +81,10 @@
             
         </view>
         
-        <timePicker v-if="showTimePicker" class="selectorComponent" @exit="completeDeliverTime"></timePicker>
-        <priceInput v-else-if="showCommodityPriceInput" title="商品估价" @exit="completeCommodityPrice"></priceInput>
-        <tipSelector v-else-if="showTipSelector" class="selectorComponent" @exit="completeTip"></tipSelector>
+        <timePicker v-if="show_timeStart" class="selectorComponent" @exit="hideSelector('timeStart')" v-model="timeStart"></timePicker>
+        <timePicker v-if="show_timeEnd" class="selectorComponent" @exit="hideSelector('timeEnd')" v-model="timeEnd"></timePicker>
+        <priceInput v-else-if="show_commodityPrice" class="selectorComponent" title="商品估价" @exit="hideSelector('commodityPrice')" v-model="commodityPrice"></priceInput>
+        <priceInput v-else-if="show_tip" class="selectorComponent" title="小费" @exit="hideSelector('tip')" v-model="tip"></priceInput>
         
         <orderNav class="orderNav" :costItems="[{
             title: '基础费用',
@@ -108,6 +117,8 @@
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
+    import { getTimeString } from '@/common/helper.js';
+    
     let page;
     let mapContext;
     
@@ -123,19 +134,19 @@
                 
 				colorMain: null,
                 textareaKeyWords: ['需要小票', '赶时间'],
-                buyingLocationType: 0,
                 buyingLocation: null,
                 
-                deliverTime: null,
-                deliverTimeString: '',
-                
+                timeStart: null,
+                timeEnd: null,
+                    
                 commodityDesc: '',
                 commodityPrice: null,
                 tip: null,
                 
-                showTimePicker: false,
-                showCommodityPriceInput: false,
-                showTipSelector: false,
+                show_timeStart: false,
+                show_timeEnd: false,
+                show_commodityPrice: false,
+                show_tip: false,
                 
 			}
 		},
@@ -182,17 +193,36 @@
                 })
             },
             
-            commodityDescChange: function(e) {
-                page.commodityDesc = e.detail.value;
+            showSelector: function(type) {
+                page['show_'+type] = true;
             },
+            
+            hideSelector: function(type) {
+                page['show_'+type] = false;
+            },
+            
+            getTimeString: function(index) {
+                
+                const target = index==0 ? 'timeStart' : 'timeEnd'; 
+                
+                const substitude = '现在'
+                
+                if (page[target]) {
+                    return getTimeString({timestamp: page[target], substitude});
+                } else {
+                    return '';
+                }
+            },
+            
+
             
             addKeyWord: function(keyWord) {
                 page.commodityDesc = page.commodityDesc + ' ' + keyWord + ' ';
             },
             
 			buyingLocationTypeChange: function(e) {
-                page.buyingLocationType = e.detail.value;
-                if (page.buyingLocationType == 1) {
+                
+                if (e.detail.value == 1) {
                     page.buyingLocation = new Location();
                 } else {
                     page.buyingLocation = null;
@@ -211,44 +241,76 @@
                 })
             },
             
-            chooseDeliverTime: function() {
-                page.showTimePicker = true;
-            },
-            
-            fillInCommidityPrice: function() {
-                page.showCommodityPriceInput = true;
-            },
-            
-            completeCommodityPrice: function(e) {
-                if (e.valid) {
-                    page.commodityPrice = e.value;
-                }
-                page.showCommodityPriceInput = false;
-                console.log(page.commodityPrice)
-            },
-            
-            addTip: function() {
-                page.showTipSelector = true;
-            },
-            
-            completeDeliverTime: function(e) {
-                page.showTimePicker = false;
-                if (e.valid) {
-                    page.deliverTime = e.value;
-                    const date = new Date(e.value);
-                }
-            },
-            
-            completeTip: function(e) {
-                page.showTipSelector = false;
-                if (e.valid) {
-                    page.tip = e.value;
-                }
-            },
-            
             getBasicCost: function() {
                 return 2;
-            }
+            },
+            
+            confirm: async function(e) {
+                
+                let notice;
+                
+                if (!dev) {
+                    if (!shareData.completed[0]) {
+                        notice = '请填写送货地址';
+                    } else if ((!page.timeStart) || (!page.timeEnd)) {
+                        notice = '请完善送货时间';
+                    } else if (page.timeStart >= page.timeEnd) {
+                        notice = '请确保送货起始时间早于送货结束时间';
+                    } else if (page.commodityDesc.trim() == '') {
+                        notice = '请填写商品信息';
+                    } else if (page.buyingLocation && !page.buyingLocation.isValid()) {
+                        notice = '请选择购买地址';
+                    } else if (!page.commodityPrice) {
+                        notice = '请填写商品预估价格'
+                    }
+                }
+                
+                if (notice) {
+                    uni.showToast({
+                        title: notice,
+                        icon: 'none',
+                    });
+                    return;
+                }
+                
+                uni.showLoading();
+                
+                const serviceType = _serviceType.HELP_BUY;
+                const address = shareData.address[0];
+                const timeStart = page.timeStart;
+                const timeEnd = page.timeEnd;
+                const commodityDesc = page.commodityDesc;
+                const buyingLocation = page.buyingLocation;
+                const couponId = page.coupon ? page.coupon.id : null;
+                const tip = page.tip?page.tip:0;
+                
+                const res = await orderAssistant.createOrder({
+
+                    serviceType,
+                    commodityDesc,
+                    timeStart,
+                    timeEnd,
+                    buyingLocation,
+                    couponId,
+                    tip,
+                });
+                
+                
+                const url = './result/result?success=' + res.success;
+                uni.hideLoading();
+                if (res.success) {
+                    shareData.clear();
+                    uni.redirectTo({
+                        url
+                    })
+                } else {
+                    uni.navigateTo({
+                        url
+                    })
+                }
+                
+            },
+            
 		}
 	}
 </script>

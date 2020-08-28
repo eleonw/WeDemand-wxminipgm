@@ -11,20 +11,28 @@
             <view class="form card">
                 <view class="formItem">
                     <view class="formItemTitle">取件时间</view>
-                    <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="getRetriveTimeString()" placeholder="选择取件时间" @click.native="chooseRetriveTime"></navigatorWithPlaceholder>
+                    <view class="formItemRight fromItemBlock">
+                        <view class="timeRangeItem">
+                            <view>从</view>
+                            <navigatorWithPlaceholder :content="getTimeString(0)" placeholder="选择时间" @click.native="showSelector('timeStart')"></navigatorWithPlaceholder>
+                        </view>
+                        <view class="timeRangeItem">
+                            <view>至</view>
+                            <navigatorWithPlaceholder :content="getTimeString(1)" placeholder="选择时间" @click.native="showSelector('timeEnd')"></navigatorWithPlaceholder>
+                        </view>
+                        
                     </view>
                 </view>
                 <view class="formItem">
                     <view class="formItemTitle">物品信息</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="getItemInfoString()" placeholder="物品类型、价值、重量" @click.native="chooseItemInfo"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="getItemInfoString()" placeholder="物品类型、价值、重量" @click.native="showSelector('itemInfo')"></navigatorWithPlaceholder>
                     </view>
                 </view>
                 <view class="formItem">
                     <view class="formItemTitle">备注</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="note" placeholder="送件要求、物品描述等" @click.native="addNote"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="note" placeholder="送件要求、物品描述等" @click.native="showSelector('note')"></navigatorWithPlaceholder>
                     </view>
                 </view>
 
@@ -40,7 +48,7 @@
                 <view class="formItem">
                     <view class="formItemTitle">小费</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="addTip"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
                     </view>
                 </view>
             </view>
@@ -50,10 +58,11 @@
             
 
         
-        <timePicker v-if="showTimePicker" class="selectorComponent" @exit="completeRetriveTime"></timePicker>
-        <itemInfoSelector v-else-if="showItemInfoSelector" class="selectorComponent" v-model="itemInfo" @exit="completeItemInfo"></itemInfoSelector>
-        <seperateTextarea v-else-if="showNoteInput" v-model="note" class="selectorComponent" @exit="completeNote"></seperateTextarea>
-        <priceInput v-else-if="showTipSelector" class="selectorComponent" @exit="completeTip" v-model="tip"></priceInput>
+        <timePicker v-if="show_timeStart" class="selectorComponent" @exit="hideSelector('timeStart')" v-model="timeStart"></timePicker>
+        <timePicker v-else-if="show_timeEnd" class="selectorComponent"  @exit="hideSelector('timeEnd')" v-model="timeEnd"></timePicker>
+        <itemInfoSelector v-else-if="show_itemInfo" class="selectorComponent" v-model="itemInfo" @exit="hideSelector('itemInfo')"></itemInfoSelector>
+        <seperateTextarea v-else-if="show_note" v-model="note" class="selectorComponent"  @exit="hideSelector('note')"></seperateTextarea>
+        <priceInput v-else-if="show_tip" class="selectorComponent"  @exit="hideSelector('tip')" v-model="tip"></priceInput>
 
         <orderNav class="orderNav" :costItems="[{
             title: '基础费用',
@@ -84,7 +93,7 @@
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
     import { orderAssistant } from '@/common/server.js';
-    import { weightAssistant } from '@/common/helper.js';
+    import { weightAssistant, getTimeString } from '@/common/helper.js';
   
     let page;
     let mapContext;
@@ -100,18 +109,19 @@
                 QQ_MAP_KEY: null,
                 shareData: null,
                 
-                retriveTime: null,
-                retriveTimeString: '',
+                timeStart: null,
+                timeEnd: null,
                 itemInfo: {},
                 note: '',
                 
                 coupon: null,
                 tip: null,
                 
-                showTimePicker: false,
-                showItemInfoSelector: false,
-                showNoteInput: false,
-                showTipSelector: false,
+                show_timeStart: false,
+                show_timeEnd: false,
+                show_itemInfo: false,
+                show_note: false,
+                show_tip: false,
                 
                 costItems: null,
                 
@@ -134,34 +144,27 @@
                 })
             },
             
-			chooseRetriveTime: function() {
-                page.showTimePicker = true;
+            showSelector: function(type) {
+                page['show_' + type] = true;
             },
             
-            chooseItemInfo: function() {
-                page.showItemInfoSelector = true;
+            hideSelector: function(type) {
+                page['show_' + type] = false;
             },
             
-            addNote: function() {
-                console.log('3')
-                page.showNoteInput = true;
-            },
-            
-            addTip: function() {
-                console.log('4')
-                page.showTipSelector = true;
-            },
-            
-            getRetriveTimeString: function() {
-                const date = new Date(page.retriveTime);
-                if (date - (new Date()) > 0) {
-                    const hour = date.getHours()<10?'0'+date.getHours():date.getHours();
-                    const minute = date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes();
-                    return date.getMonth() + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute;
+			getTimeString: function(index) {
+                
+                const target = index==0 ? 'timeStart' : 'timeEnd'; 
+                
+                const substitude = '现在'
+                
+                if (page[target]) {
+                    return getTimeString({timestamp: page[target], substitude});
                 } else {
-                    return '马上取件';
+                    return '';
                 }
             },
+            
             
             getItemInfoString: function() {
                 const itemInfo = page.itemInfo;
@@ -171,29 +174,7 @@
                 }
             },
             
-            completeRetriveTime: function(e) {
-                page.showTimePicker = false;
-                if (e.valid) {
-                    page.retriveTime = e.value;
-                }
-            },
-            
-            completeItemInfo: function(e) {
-                page.showItemInfoSelector = false;
-            },
-            
-            completeNote: function(e) {
-                page.showNoteInput = false;
-            },
-            
-            completeTip: function(e) {
-                page.showTipSelector = false;
-                if (e.valid) {
-                    page.tip = e.value;
-                    console.log(e);
-                    console.log(page.tip)
-                }
-            },
+     
             
             getBasicCost: function() {
                 return 2;
@@ -209,8 +190,10 @@
                         notice = '请填写取件地址';
                     } else if (!shareData.completed[1]) {
                         notice = '请填写送件地址';
-                    } else if (!page.retriveTime) {
-                        notice = '请选择取件时间';
+                    } else if (!page.timeStart || !page.timeEnd) {
+                        notice = '请完善取件时间';
+                    } else if (page.timeStart >= page.timeEnd) {
+                        notice = '请确保取件起始时间早于取件结束时间'
                     } else if (Object.keys(page.itemInfo).length == 0) {
                         notice = '请完善物品信息';
                     }
@@ -228,7 +211,8 @@
                 const fromAddress = shareData.address[0];
                 const toAddress = shareData.address[1];
                 const serviceType = _serviceType.HELP_DELIVER;
-                const retriveTime = page.retriveTime;
+                const timeStart = page.timeStart;
+                const timeEnd = page.timeEnd;
                 const itemInfo = page.itemInfo;
                 const note = page.note;
                 const couponId = page.coupon ? page.coupon.id : null;
@@ -238,7 +222,8 @@
                     fromAddress,
                     toAddress,
                     serviceType,
-                    retriveTime,
+                    timeStart,
+                    timeEnd,
                     itemInfo,
                     note,
                     couponId,

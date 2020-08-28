@@ -155,6 +155,10 @@ var dayBaseTime;var _default =
 {
   name: 'timePicker',
   props: {
+    value: {
+      type: Number,
+      default: null },
+
     title: {
       type: String,
       default: '选择时间' },
@@ -165,12 +169,18 @@ var dayBaseTime;var _default =
 
     forwardDayCount: {
       type: [Number, String],
-      default: 5 } },
+      default: 5 },
+
+    startTimestamp: {
+      type: Number },
+
+    endTimestamp: {
+      type: Number } },
 
 
   data: function data() {
     return {
-      value: [0, 0, 0],
+      pickerValue: [0, 0, 0],
 
       days: null,
       hours: null,
@@ -213,53 +223,51 @@ var dayBaseTime;var _default =
 
     that.hours = that.dynamicHours;
     that.minutes = that.dynamicMinutes;
-    that.value = [0, 0, 0];
+    that.pickerValue = [0, 0, 0];
   },
   methods: {
     bindChange: function bindChange(e) {
-      var newValue = e.detail.value;
-      // console.log(that.value);
-      // console.log(newValue)
-      if (newValue[0] != that.value[0]) {
-        if (newValue[0] == 0) {
+      var newPickerValue = e.detail.value;
+      if (newPickerValue[0] != that.pickerValue[0]) {
+        if (newPickerValue[0] == 0) {
           that.hours = that.dynamicHours;
           that.minutes = that.dynamicMinutes;
-          that.value.splice(1, 1, 0);
-          that.value.splice(2, 1, 0);
-        } else if (that.value[0] == 0) {
+          that.pickerValue.splice(1, 1, 0);
+          that.pickerValue.splice(2, 1, 0);
+        } else if (that.pickerValue[0] == 0) {
           that.hours = that.staticHours;
           that.minutes = that.staticMinutes;
-          that.value.splice(1, 1, 0);
-          that.value.splice(2, 1, 0);
+          that.pickerValue.splice(1, 1, 0);
+          that.pickerValue.splice(2, 1, 0);
         }
-        that.value.splice(0, 1, newValue[0]);
-      } else if (newValue[0] == 0 && newValue[1] != that.value[1]) {
-        if (newValue[1] == 0) {
+        that.pickerValue.splice(0, 1, newPickerValue[0]);
+      } else if (newPickerValue[0] == 0 && newPickerValue[1] != that.pickerValue[1]) {
+        if (newPickerValue[1] == 0) {
           that.minutes = that.dynamicMinutes;
-          that.value.splice(2, 1, 0);
-        } else if (that.value[1] == 0) {
+          that.pickerValue.splice(2, 1, 0);
+        } else if (that.pickerValue[1] == 0) {
           that.minutes = that.staticMinutes;
-          that.value.splice(2, 1, 0);
+          that.pickerValue.splice(2, 1, 0);
         }
-        that.value.splice(1, 1, newValue[1]);
+        that.pickerValue.splice(1, 1, newPickerValue[1]);
       } else {
-        that.value.splice(2, 1, newValue[2]);
+        that.pickerValue.splice(2, 1, newPickerValue[2]);
       }
     },
 
     getSelectedTimestamp: function getSelectedTimestamp() {
-      var timestamp = dayBaseTime[that.value[0]];
-      if (that.value[0] == 0) {
-        timestamp += (that.value[1] + currentTime.getHours()) * HOUR_TIME;
-        if (that.value[1] == 0) {
+      var timestamp = dayBaseTime[that.pickerValue[0]];
+      if (that.pickerValue[0] == 0) {
+        timestamp += (that.pickerValue[1] + currentTime.getHours()) * HOUR_TIME;
+        if (that.pickerValue[1] == 0) {
           var minute = currentTime.getMinutes();
           timestamp += (minute - minute % 10) * MINUTE_TIME;
         } else {
-          timestamp += that.value[2] * 10 * MINUTE_TIME;
+          timestamp += that.pickerValue[2] * 10 * MINUTE_TIME;
         }
       } else {
-        timestamp += that.value[1] * HOUR_TIME;
-        timestamp += that.value[2] * 10 * MINUTE_TIME;
+        timestamp += that.pickerValue[1] * HOUR_TIME;
+        timestamp += that.pickerValue[2] * 10 * MINUTE_TIME;
       }
       return timestamp;
     },
@@ -274,10 +282,11 @@ var dayBaseTime;var _default =
     confirm: function confirm() {
       that.fadeOut();
       var timestamp = that.getSelectedTimestamp();
+      that.$emit('input', timestamp);
       setTimeout(function () {
         that.$emit('exit', {
           valid: true,
-          value: timestamp });
+          pickerValue: timestamp });
 
       }, 300);
 

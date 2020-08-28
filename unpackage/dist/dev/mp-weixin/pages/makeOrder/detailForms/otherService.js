@@ -105,14 +105,8 @@ var components = {
   timePicker: function() {
     return __webpack_require__.e(/*! import() | components/timePicker/timePicker */ "components/timePicker/timePicker").then(__webpack_require__.bind(null, /*! @/components/timePicker/timePicker.vue */ 148))
   },
-  itemInfoSelector: function() {
-    return __webpack_require__.e(/*! import() | components/itemInfoSelector/itemInfoSelector */ "components/itemInfoSelector/itemInfoSelector").then(__webpack_require__.bind(null, /*! @/components/itemInfoSelector/itemInfoSelector.vue */ 155))
-  },
-  seperateTextarea: function() {
-    return __webpack_require__.e(/*! import() | components/seperateTextarea/seperateTextarea */ "components/seperateTextarea/seperateTextarea").then(__webpack_require__.bind(null, /*! @/components/seperateTextarea/seperateTextarea.vue */ 162))
-  },
-  tipSelector: function() {
-    return __webpack_require__.e(/*! import() | components/tipSelector/tipSelector */ "components/tipSelector/tipSelector").then(__webpack_require__.bind(null, /*! @/components/tipSelector/tipSelector.vue */ 169))
+  priceInput: function() {
+    return __webpack_require__.e(/*! import() | components/priceInput/priceInput */ "components/priceInput/priceInput").then(__webpack_require__.bind(null, /*! @/components/priceInput/priceInput.vue */ 176))
   },
   orderNav: function() {
     return __webpack_require__.e(/*! import() | components/orderNav/orderNav */ "components/orderNav/orderNav").then(__webpack_require__.bind(null, /*! @/components/orderNav/orderNav.vue */ 226))
@@ -122,12 +116,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var m0 = _vm.getBasicCost()
+  var m0 = _vm.getTimeString(0)
+  var m1 = _vm.getTimeString(1)
+  var m2 = _vm.getBasicCost()
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
-        m0: m0
+        m0: m0,
+        m1: m1,
+        m2: m2
       }
     }
   )
@@ -164,7 +162,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));
 
 
 
@@ -244,41 +242,80 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+var _Location = _interopRequireDefault(__webpack_require__(/*! @/common/classes/Location.js */ 22));
 
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 37));
-var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 233));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 205));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var backgroundIcon = function backgroundIcon() {__webpack_require__.e(/*! require.ensure | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then((function () {return resolve(__webpack_require__(/*! @/components/backgroundIcon/backgroundIcon.vue */ 212));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 219));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var orderNav = function orderNav() {__webpack_require__.e(/*! require.ensure | components/orderNav/orderNav */ "components/orderNav/orderNav").then((function () {return resolve(__webpack_require__(/*! @/components/orderNav/orderNav.vue */ 226));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var itemInfoSelector = function itemInfoSelector() {__webpack_require__.e(/*! require.ensure | components/itemInfoSelector/itemInfoSelector */ "components/itemInfoSelector/itemInfoSelector").then((function () {return resolve(__webpack_require__(/*! @/components/itemInfoSelector/itemInfoSelector.vue */ 155));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var seperateTextarea = function seperateTextarea() {__webpack_require__.e(/*! require.ensure | components/seperateTextarea/seperateTextarea */ "components/seperateTextarea/seperateTextarea").then((function () {return resolve(__webpack_require__(/*! @/components/seperateTextarea/seperateTextarea.vue */ 162));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {__webpack_require__.e(/*! require.ensure | components/tipSelector/tipSelector */ "components/tipSelector/tipSelector").then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);
+
+var _helper = __webpack_require__(/*! @/common/helper.js */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var addressCard = function addressCard() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/components/addressCard */ "pages/makeOrder/components/addressCard").then((function () {return resolve(__webpack_require__(/*! ./../components/addressCard.vue */ 233));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var statusBar = function statusBar() {__webpack_require__.e(/*! require.ensure | components/statusBar/statusBar */ "components/statusBar/statusBar").then((function () {return resolve(__webpack_require__(/*! @/components/statusBar/statusBar.vue */ 205));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var backgroundIcon = function backgroundIcon() {__webpack_require__.e(/*! require.ensure | components/backgroundIcon/backgroundIcon */ "components/backgroundIcon/backgroundIcon").then((function () {return resolve(__webpack_require__(/*! @/components/backgroundIcon/backgroundIcon.vue */ 212));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navigatorWithPlaceholder = function navigatorWithPlaceholder() {__webpack_require__.e(/*! require.ensure | components/navigatorWithPlaceholder/navigatorWithPlaceholder */ "components/navigatorWithPlaceholder/navigatorWithPlaceholder").then((function () {return resolve(__webpack_require__(/*! @/components/navigatorWithPlaceholder/navigatorWithPlaceholder.vue */ 219));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var orderNav = function orderNav() {__webpack_require__.e(/*! require.ensure | components/orderNav/orderNav */ "components/orderNav/orderNav").then((function () {return resolve(__webpack_require__(/*! @/components/orderNav/orderNav.vue */ 226));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var timePicker = function timePicker() {__webpack_require__.e(/*! require.ensure | components/timePicker/timePicker */ "components/timePicker/timePicker").then((function () {return resolve(__webpack_require__(/*! @/components/timePicker/timePicker.vue */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var priceInput = function priceInput() {__webpack_require__.e(/*! require.ensure | components/priceInput/priceInput */ "components/priceInput/priceInput").then((function () {return resolve(__webpack_require__(/*! @/components/priceInput/priceInput.vue */ 176));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tipSelector = function tipSelector() {__webpack_require__.e(/*! require.ensure | components/tipSelector/tipSelector */ "components/tipSelector/tipSelector").then((function () {return resolve(__webpack_require__(/*! @/components/tipSelector/tipSelector.vue */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+
 var page;
 var mapContext;var _default =
 
 {
   components: {
     addressCard: addressCard, navigatorWithPlaceholder: navigatorWithPlaceholder, statusBar: statusBar, backgroundIcon: backgroundIcon, orderNav: orderNav,
-    timePicker: timePicker, itemInfoSelector: itemInfoSelector, seperateTextarea: seperateTextarea, tipSelector: tipSelector },
+    timePicker: timePicker, tipSelector: tipSelector, priceInput: priceInput },
+
 
   data: function data() {
     return {
       mapMarkers: null,
-      QQ_MAP_KEY: null,
-      shareData: null,
 
-      retriveTime: null,
-      retriveTimeString: '',
-      itemInfo: '',
-      note: '',
+      colorMain: null,
+      textareaKeyWords: ['务必准时'],
 
-      coupon: null,
+      timeStart: null,
+      timeEnd: null,
+
+      serviceDesc: '',
+
       tip: null,
 
-      showTimePicker: false,
-      showItemInfoSelector: false,
-      showNoteInput: false,
-      showTipSelector: false,
-
-      costItems: null };
+      show_timeStart: false,
+      show_timeEnd: false,
+      show_tip: false };
 
 
   },
+
+  onLoad: function onLoad() {
+    page = this;
+    page.colorMain = _globalData.color.MAIN;
+
+    mapContext = uni.createMapContext('map');
+  },
+
+  onShow: function onShow() {
+    page.mapMarkers = [
+    {
+      id: 0,
+      latitude: _shareData.default.address[0].location.latitude,
+      longitude: _shareData.default.address[0].location.longitude,
+      iconPath: '/static/image/icon/deliver.png',
+      width: 40,
+      height: 40 }];
+
+
+
+    mapContext.includePoints({
+      points: page.mapMarkers,
+      padding: [80, 30, 120, 30] });
+
+  },
+
   methods: {
     back: function back() {
 
@@ -296,113 +333,97 @@ var mapContext;var _default =
 
     },
 
-    chooseRetriveTime: function chooseRetriveTime() {
-      page.showTimePicker = true;
+    showSelector: function showSelector(type) {
+      page['show_' + type] = true;
     },
 
-    chooseItemInfo: function chooseItemInfo() {
-      page.showItemInfoSelector = true;
+    hideSelector: function hideSelector(type) {
+      page['show_' + type] = false;
     },
 
-    addNote: function addNote() {
-      console.log('3');
-      page.showNoteInput = true;
-    },
+    getTimeString: function getTimeString(index) {
 
-    addTip: function addTip() {
-      console.log('4');
-      page.showTipSelector = true;
-    },
+      var target = index == 0 ? 'timeStart' : 'timeEnd';
 
-    completeRetriveTime: function completeRetriveTime(e) {
-      page.showTimePicker = false;
-      if (e.valid) {
-        page.retriveTime = e.value;
-        var date = new Date(e.value);
+      var substitude = '现在';
 
-
-        if (date - new Date() > 0) {
-          var hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
-          var minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-          page.retriveTimeString = date.getMonth() + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute;
-        } else {
-          page.retriveTimeString = '马上取件';
-        }
-        console.log(page.retriveTimeString);
+      if (page[target]) {
+        return (0, _helper.getTimeString)({ timestamp: page[target], substitude: substitude });
+      } else {
+        return '';
       }
     },
 
-    completeItemInfo: function completeItemInfo(e) {
-      page.showItemInfoSelector = false;
-      if (e.valid) {
-        page.itemInfo = e.value;
-        page.itemInfo = e.value.type + '、' + e.value.value + '、' + e.value.weight;
-      }
-    },
 
-    completeNote: function completeNote(e) {
-      page.showNoteInput = false;
-      if (e.valid) {
-        page.note = e.value;
-      }
-    },
 
-    completeTip: function completeTip(e) {
-      page.showTipSelector = false;
-      if (e.valid) {
-        page.tip = e.value;
-        console.log(e);
-        console.log(page.tip);
-      }
+    addKeyWord: function addKeyWord(keyWord) {
+      page.serviceDesc = page.serviceDesc + ' ' + keyWord + ' ';
     },
 
     getBasicCost: function getBasicCost() {
       return 2;
     },
 
-    confirm: function confirm(e) {
-
-    },
-
-    pay: function pay() {
-
-    } },
-
-
-  onLoad: function onLoad() {
-    page = this;
-    page.QQ_MAP_KEY = _sensitiveData.QQ_MAP_KEY;
-    page.shareData = _shareData.default;
-
-    mapContext = uni.createMapContext('map', page);
-  },
-
-  onShow: function onShow() {
-
-    page.mapMarkers = [
-    {
-      id: 0,
-      latitude: _shareData.default.address[0].location.latitude,
-      longitude: _shareData.default.address[0].location.longitude,
-      iconPath: '/static/image/icon/retrive.png',
-      width: 40,
-      height: 40 },
-
-    {
-      id: 1,
-      latitude: _shareData.default.address[1].location.latitude,
-      longitude: _shareData.default.address[1].location.longitude,
-      iconPath: '/static/image/icon/deliver.png',
-      width: 40,
-      height: 40 }];
+    confirm: function () {var _confirm = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(e) {var notice, serviceType, address, timeStart, timeEnd, serviceDesc, couponId, tip, res, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
 
 
 
-    mapContext.includePoints({
-      points: page.mapMarkers,
-      padding: [80, 30, 120, 30] });
+                if (!dev) {
+                  if (!_shareData.default.completed[0]) {
+                    notice = '请填写服务地址';
+                  } else if (!page.timeStart || !page.timeEnd) {
+                    notice = '请完善服务时间';
+                  } else if (page.timeStart >= page.timeEnd) {
+                    notice = '请确保服务起始时间早于服务结束时间';
+                  } else if (page.serviceDesc.trim() == '') {
+                    notice = '请填写服务信息';
+                  } else if (!page.tip || page.tip <= 0) {
+                    notice = '请填写服务费用';
+                  }
+                }if (!
 
-  } };exports.default = _default;
+                notice) {_context.next = 4;break;}
+                uni.showToast({
+                  title: notice,
+                  icon: 'none' });return _context.abrupt("return");case 4:
+
+
+
+
+                uni.showLoading();
+
+                serviceType = _serviceType.OTHER_SERVICE;
+                address = _shareData.default.address[0];
+                timeStart = page.timeStart;
+                timeEnd = page.timeEnd;
+                serviceDesc = page.serviceDesc;
+                couponId = page.coupon ? page.coupon.id : null;
+                tip = page.tip;_context.next = 14;return (
+
+                  orderAssistant.createOrder({
+
+                    serviceType: serviceType,
+                    serviceDesc: serviceDesc,
+                    timeStart: timeStart,
+                    timeEnd: timeEnd,
+                    buyingLocation: buyingLocation,
+                    couponId: couponId,
+                    tip: tip }));case 14:res = _context.sent;
+
+
+
+                url = './result/result?success=' + res.success;
+                uni.hideLoading();
+                if (res.success) {
+                  _shareData.default.clear();
+                  uni.redirectTo({
+                    url: url });
+
+                } else {
+                  uni.navigateTo({
+                    url: url });
+
+                }case 18:case "end":return _context.stop();}}}, _callee);}));function confirm(_x) {return _confirm.apply(this, arguments);}return confirm;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

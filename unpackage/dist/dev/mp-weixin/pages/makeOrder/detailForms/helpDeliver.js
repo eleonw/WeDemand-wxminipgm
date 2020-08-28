@@ -122,16 +122,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var m0 = _vm.getRetriveTimeString()
-  var m1 = _vm.getItemInfoString()
-  var m2 = _vm.getBasicCost()
+  var m0 = _vm.getTimeString(0)
+  var m1 = _vm.getTimeString(1)
+  var m2 = _vm.getItemInfoString()
+  var m3 = _vm.getBasicCost()
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
         m0: m0,
         m1: m1,
-        m2: m2
+        m2: m2,
+        m3: m3
       }
     }
   )
@@ -249,6 +251,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
 var _globalData = __webpack_require__(/*! @/common/globalData.js */ 21);
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./../shareData.js */ 37));
 var _sensitiveData = __webpack_require__(/*! @/common/sensitiveData.js */ 23);
@@ -270,18 +281,19 @@ var mapContext;var _default =
       QQ_MAP_KEY: null,
       shareData: null,
 
-      retriveTime: null,
-      retriveTimeString: '',
+      timeStart: null,
+      timeEnd: null,
       itemInfo: {},
       note: '',
 
       coupon: null,
       tip: null,
 
-      showTimePicker: false,
-      showItemInfoSelector: false,
-      showNoteInput: false,
-      showTipSelector: false,
+      show_timeStart: false,
+      show_timeEnd: false,
+      show_itemInfo: false,
+      show_note: false,
+      show_tip: false,
 
       costItems: null };
 
@@ -304,34 +316,27 @@ var mapContext;var _default =
 
     },
 
-    chooseRetriveTime: function chooseRetriveTime() {
-      page.showTimePicker = true;
+    showSelector: function showSelector(type) {
+      page['show_' + type] = true;
     },
 
-    chooseItemInfo: function chooseItemInfo() {
-      page.showItemInfoSelector = true;
+    hideSelector: function hideSelector(type) {
+      page['show_' + type] = false;
     },
 
-    addNote: function addNote() {
-      console.log('3');
-      page.showNoteInput = true;
-    },
+    getTimeString: function getTimeString(index) {
 
-    addTip: function addTip() {
-      console.log('4');
-      page.showTipSelector = true;
-    },
+      var target = index == 0 ? 'timeStart' : 'timeEnd';
 
-    getRetriveTimeString: function getRetriveTimeString() {
-      var date = new Date(page.retriveTime);
-      if (date - new Date() > 0) {
-        var hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
-        var minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-        return date.getMonth() + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute;
+      var substitude = '现在';
+
+      if (page[target]) {
+        return (0, _helper.getTimeString)({ timestamp: page[target], substitude: substitude });
       } else {
-        return '马上取件';
+        return '';
       }
     },
+
 
     getItemInfoString: function getItemInfoString() {
       var itemInfo = page.itemInfo;
@@ -341,35 +346,13 @@ var mapContext;var _default =
       }
     },
 
-    completeRetriveTime: function completeRetriveTime(e) {
-      page.showTimePicker = false;
-      if (e.valid) {
-        page.retriveTime = e.value;
-      }
-    },
 
-    completeItemInfo: function completeItemInfo(e) {
-      page.showItemInfoSelector = false;
-    },
-
-    completeNote: function completeNote(e) {
-      page.showNoteInput = false;
-    },
-
-    completeTip: function completeTip(e) {
-      page.showTipSelector = false;
-      if (e.valid) {
-        page.tip = e.value;
-        console.log(e);
-        console.log(page.tip);
-      }
-    },
 
     getBasicCost: function getBasicCost() {
       return 2;
     },
 
-    confirm: function () {var _confirm = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(e) {var notice, fromAddress, toAddress, serviceType, retriveTime, itemInfo, note, couponId, tip, res, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+    confirm: function () {var _confirm = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(e) {var notice, fromAddress, toAddress, serviceType, timeStart, timeEnd, itemInfo, note, couponId, tip, res, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
 
                 console.log('confirm');
 
@@ -379,8 +362,10 @@ var mapContext;var _default =
                     notice = '请填写取件地址';
                   } else if (!_shareData.default.completed[1]) {
                     notice = '请填写送件地址';
-                  } else if (!page.retriveTime) {
-                    notice = '请选择取件时间';
+                  } else if (!page.timeStart || !page.timeEnd) {
+                    notice = '请完善取件时间';
+                  } else if (page.timeStart >= page.timeEnd) {
+                    notice = '请确保取件起始时间早于取件结束时间';
                   } else if (Object.keys(page.itemInfo).length == 0) {
                     notice = '请完善物品信息';
                   }
@@ -398,21 +383,23 @@ var mapContext;var _default =
                 fromAddress = _shareData.default.address[0];
                 toAddress = _shareData.default.address[1];
                 serviceType = _globalData.serviceType.HELP_DELIVER;
-                retriveTime = page.retriveTime;
+                timeStart = page.timeStart;
+                timeEnd = page.timeEnd;
                 itemInfo = page.itemInfo;
                 note = page.note;
                 couponId = page.coupon ? page.coupon.id : null;
-                tip = page.tip ? page.tip : 0;_context.next = 16;return (
+                tip = page.tip ? page.tip : 0;_context.next = 17;return (
 
                   _server.orderAssistant.createOrder({
                     fromAddress: fromAddress,
                     toAddress: toAddress,
                     serviceType: serviceType,
-                    retriveTime: retriveTime,
+                    timeStart: timeStart,
+                    timeEnd: timeEnd,
                     itemInfo: itemInfo,
                     note: note,
                     couponId: couponId,
-                    tip: tip }));case 16:res = _context.sent;
+                    tip: tip }));case 17:res = _context.sent;
 
 
 
@@ -427,7 +414,7 @@ var mapContext;var _default =
                   uni.navigateTo({
                     url: url });
 
-                }case 20:case "end":return _context.stop();}}}, _callee);}));function confirm(_x) {return _confirm.apply(this, arguments);}return confirm;}(),
+                }case 21:case "end":return _context.stop();}}}, _callee);}));function confirm(_x) {return _confirm.apply(this, arguments);}return confirm;}(),
 
 
 
