@@ -54,10 +54,11 @@
 		},
         methods: {
             switchTab(index) {
-                this.activeIndex = index;
-                this.$emit('switchTab', {index: index});
-                this.$emit('input', index);
-                console.log('tab change to: ' + index)
+                if (this.activeIndex != index) {
+                    this.activeIndex = index;
+                    this.$emit('switchTab', {index: index});
+                    this.$emit('input', index);
+                }
             }
         },
         created: function() {

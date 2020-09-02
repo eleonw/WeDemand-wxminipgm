@@ -127,10 +127,9 @@
 			}
 		},
         
-        onLoad: function() {
+        created: function() {
             page = this;
             page.colorMain = color.MAIN;
-            
             mapContext = uni.createMapContext('map');
         },
         

@@ -105,6 +105,7 @@
             that.minutes = that.dynamicMinutes;
             that.pickerValue = [0, 0, 0];
         },
+        
         methods: {
             bindChange: function(e) {
                 const newPickerValue = e.detail.value;

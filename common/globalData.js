@@ -16,6 +16,17 @@ export const serviceType = {
     OTHER_SERVICE: 2,
 }
 
+export const orderStatus = {
+    INITIALING: 0,
+    CREATED: 1,
+    ACCEPTED: 2,
+    SERVING: 3,
+    EVALUATING: 4,
+    COMPLETED: 5,
+    CANCELED: -2,
+    EXCEPTION: -1,
+}
+
 export const defaultLocation = new Location({
     longitude: 116.347236349,
     latitude: 39.981800698,

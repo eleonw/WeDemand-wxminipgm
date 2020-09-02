@@ -47,10 +47,22 @@
     z-index: 900;
 }
 
+.formItemBlock {
+    align-items: flex-end;
+}
+
 .timeRangeItem {
     display: flex;
     flex-flow: row nowrap;
     
     justify-content: space-between;
     width: 350rpx;
+}
+
+.radioGroup {
+    margin-right: 15rpx;
+}
+
+.textareaTitle {
+    color: var(--color-main)
 }

@@ -1,0 +1,19 @@
+
+.topTabBar {
+    z-index: 1;
+    position: absolute;
+    top: var(--height-navbar);
+    left: 0;
+    width: 100vw;
+    background-color: var(--color-main);
+    color: white;
+}
+.test {
+    background-color: orange;
+    width: 100vw;
+    height: 40vh;
+    
+    margin-top: 20rpx;
+}
+
+

@@ -60,7 +60,7 @@
 }
 .textareaTitle {
     font-size: 1.1em;
-    font-weight: 500;
+    font-weight: 600;
     
     margin-bottom: 10rpx;
 }
@@ -185,6 +185,11 @@ radio {
     
     z-index: 900;
 }
+.formItemBlock {
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+            align-items: flex-end;
+}
 .timeRangeItem {
     display: -webkit-box;
     display: -webkit-flex;
@@ -200,6 +205,12 @@ radio {
     
             justify-content: space-between;
     width: 350rpx;
+}
+.radioGroup {
+    margin-right: 15rpx;
+}
+.textareaTitle {
+    color: var(--color-main)
 }
 #buyingLocationBlock {
     -webkit-box-align: end;

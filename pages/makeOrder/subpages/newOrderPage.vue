@@ -1,6 +1,5 @@
 <template>
-	<view class="root">
-    <view class="page">
+	<view class="root page">
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
 		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @touchstart="mapTouchStart" @touchend="mapTouchEnd">
@@ -14,7 +13,6 @@
             </view>
             <addressCard></addressCard>
         </view>
-	</view>
     </view>
 </template>
 

@@ -14,11 +14,11 @@
                     <view class="formItemRight fromItemBlock">
                         <view class="timeRangeItem">
                             <view>从</view>
-                            <navigatorWithPlaceholder :content="getTimeString(0)" placeholder="选择时间" @click.native="showSelector('timeStart')"></navigatorWithPlaceholder>
+                            <navigatorWithPlaceholder :content="getTimeString(0)" placeholder="选择时间" @click.native="showSelector('startTime')"></navigatorWithPlaceholder>
                         </view>
                         <view class="timeRangeItem">
                             <view>至</view>
-                            <navigatorWithPlaceholder :content="getTimeString(1)" placeholder="选择时间" @click.native="showSelector('timeEnd')"></navigatorWithPlaceholder>
+                            <navigatorWithPlaceholder :content="getTimeString(1)" placeholder="选择时间" @click.native="showSelector('endTime')"></navigatorWithPlaceholder>
                         </view>
                         
                     </view>
@@ -28,7 +28,7 @@
             
             <view class="form card">
                 <view class="formItem textareaSet">
-                    <view class="textareaTitle">填写想购买的商品</view>
+                    <view class="textareaTitle">描述想购买的商品</view>
                     <textarea class="textareaBody"  v-model="commodityDesc" placeholder="填写代买商品的要求描述,如品牌、种类、数量等" maxlength="250"></textarea>
                     <view class="textareaKeyWords">
                         <view class="textareaKeyWord" v-for="(keyWord,index) in textareaKeyWords" :keys="index" @click="addKeyWord(keyWord)">{{ keyWord }}</view>
@@ -42,8 +42,8 @@
             <view class="form card">
                 <view class="formItem">
                     <view class="formItemTitle">购买地址</view>
-                    <view class="formItemRight formItemBlock" id="buyingLocationBlock">
-                        <radio-group @change="buyingLocationTypeChange">
+                    <view class="formItemRight formItemBlock">
+                        <radio-group @change="buyingLocationTypeChange" class="radioGroup">
                             <label>
                                 <radio :value="0" :color="colorMain" :checked="buyingLocation==null"/><text>就近购买</text>
                                 <radio :value="1" :color="colorMain" :checked="buyingLocation"/><text>指定地址</text>
@@ -77,14 +77,32 @@
                 </view>
             </view>
             
+            <view class="form card">
+                <view class="formItem">
+                    <view class="formItemTitle">取消时间</view>
+                    <view class="formItemRight formItemBlock">
+                        <radio-group @change="expireTimeTypeChange" class="radioGroup">
+                            <label>
+                                <radio :value="0" :color="colorMain" :checked="!assignExpireTime"/><text>自动取消</text>
+                                <radio :value="1" :color="colorMain" :checked="assignExpireTime"/><text>指定时间</text>
+                            </label>
+                        </radio-group>
+                        <view v-if="assignExpireTime">
+                            <navigatorWithPlaceholder :content="getTimeString(3)" placeholder="请选择取消时间"  @click.native="showSelector('expireTime')"></navigatorWithPlaceholder>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            
             
             
         </view>
         
-        <timePicker v-if="show_timeStart" class="selectorComponent" @exit="hideSelector('timeStart')" v-model="timeStart"></timePicker>
-        <timePicker v-if="show_timeEnd" class="selectorComponent" @exit="hideSelector('timeEnd')" v-model="timeEnd"></timePicker>
+        <timePicker v-if="show_startTime" class="selectorComponent" @exit="hideSelector('startTime')" v-model="startTime"></timePicker>
+        <timePicker v-if="show_endTime" class="selectorComponent" @exit="hideSelector('endTime')" v-model="endTime"></timePicker>
         <priceInput v-else-if="show_commodityPrice" class="selectorComponent" title="商品估价" @exit="hideSelector('commodityPrice')" v-model="commodityPrice"></priceInput>
         <priceInput v-else-if="show_tip" class="selectorComponent" title="小费" @exit="hideSelector('tip')" v-model="tip"></priceInput>
+        <timePicker v-else-if="show_expireTime" class="selectorComponent"  @exit="hideSelector('expireTime')" v-model="expireTime"></timePicker>
         
         <orderNav class="orderNav" :costItems="[{
             title: '基础费用',
@@ -136,22 +154,25 @@
                 textareaKeyWords: ['需要小票', '赶时间'],
                 buyingLocation: null,
                 
-                timeStart: null,
-                timeEnd: null,
+                startTime: null,
+                endTime: null,
                     
                 commodityDesc: '',
                 commodityPrice: null,
                 tip: null,
                 
-                show_timeStart: false,
-                show_timeEnd: false,
+                assignExpireTime: false,
+                
+                show_startTime: false,
+                show_endTime: false,
                 show_commodityPrice: false,
                 show_tip: false,
+                show_expireTime: false,
                 
 			}
 		},
         
-        onLoad: function() {
+        created: function() {
             page = this;
             page.colorMain = color.MAIN;
             
@@ -201,17 +222,23 @@
                 page['show_'+type] = false;
             },
             
-            getTimeString: function(index) {
+			getTimeString: function(index) {
                 
-                const target = index==0 ? 'timeStart' : 'timeEnd'; 
-                
-                const substitude = '现在'
-                
-                if (page[target]) {
-                    return getTimeString({timestamp: page[target], substitude});
-                } else {
-                    return '';
+                let timestamp;
+                switch(index) {
+                    case 0:
+                        timestamp = page.startTime;
+                        break;
+                    case 1:
+                        timestamp = page.endTime;
+                        break;
+                    case 2:
+                        timestamp = page.expireTime;
+                        break;
                 }
+                
+                return timestamp? getTimeString({timestamp, substitude: '现在'}): '';
+               
             },
             
 
@@ -245,6 +272,15 @@
                 return 2;
             },
             
+            expireTimeTypeChange: function(e) {
+                if (e.detail.value == 0) {
+                    page.assignExpireTime = false;
+                    page.expireTime = null;
+                } else {
+                    page.assignExpireTime = true;
+                }
+            },
+            
             confirm: async function(e) {
                 
                 let notice;
@@ -252,9 +288,9 @@
                 if (!dev) {
                     if (!shareData.completed[0]) {
                         notice = '请填写送货地址';
-                    } else if ((!page.timeStart) || (!page.timeEnd)) {
+                    } else if ((!page.startTime) || (!page.endTime)) {
                         notice = '请完善送货时间';
-                    } else if (page.timeStart >= page.timeEnd) {
+                    } else if (page.startTime >= page.endTime) {
                         notice = '请确保送货起始时间早于送货结束时间';
                     } else if (page.commodityDesc.trim() == '') {
                         notice = '请填写商品信息';
@@ -277,22 +313,27 @@
                 
                 const serviceType = _serviceType.HELP_BUY;
                 const address = shareData.address[0];
-                const timeStart = page.timeStart;
-                const timeEnd = page.timeEnd;
+                const startTime = page.startTime;
+                const endTime = page.endTime;
                 const commodityDesc = page.commodityDesc;
                 const buyingLocation = page.buyingLocation;
                 const couponId = page.coupon ? page.coupon.id : null;
-                const tip = page.tip?page.tip:0;
+                const expireTime = page.expireTime;
+                const cost = {
+                    tip: page.tip?page.tip:0,
+                    basic: page.getBasicCost(),
+                }
                 
                 const res = await orderAssistant.createOrder({
 
                     serviceType,
                     commodityDesc,
-                    timeStart,
-                    timeEnd,
+                    startTime,
+                    endTime,
                     buyingLocation,
                     couponId,
-                    tip,
+                    expireTime,
+                    cost,
                 });
                 
                 
@@ -318,12 +359,5 @@
 <style>
     @import url("./detailForms.css");
     
-    #buyingLocationBlock {
-        align-items: flex-end;
-    }
-    
-    #buyingLocationBlock view {
-        margin: 5rpx 0;
-    }
     
 </style>

@@ -1,32 +1,32 @@
 <template>
 	<view class="root">
-    <view class="page">
+
         
         <view v-if="selectedTabIndex==0">
             <newOrderPage></newOrderPage>
         </view>
         
-        <view v-else-if="selectedTabIndex==1">
-            page of index 1
+        <view v-else>
+            <myOrderPage></myOrderPage>
         </view>
         
-        
-        <view v-else-if="selectedTabIndex==2">
-            page of index 2
-        </view>
+       
         
         
 		<tabBar class="tabBar" :tabs="mainTabs" v-model="selectedTabIndex" @tabchange="tabChange"></tabBar>
-    </view>
+ 
 	</view>
 </template>
 
 <script>
     import tabBar from "@/components/tabBar/tabBar.vue";
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
+    
     import newOrderPage from "./subpages/newOrderPage.vue";
+    import myOrderPage from "./subpages/myOrderPage.vue";
     
     import shareData from "./shareData.js";
+    import eventBus from "@/common/eventBus.js";
     
     let mapContext;
     let page;
@@ -35,51 +35,22 @@
 	export default {
 
         components: {
-            tabBar, topTabBar, newOrderPage
+            tabBar, topTabBar, 
+            newOrderPage, myOrderPage
         },
 		data() {
 			return {
-                newOrderPage: {
-                    location: {
-                        latitude: "39.980988001848075",
-                        longitude: "116.34694203128674",
-                    },
-                    tabs: [
-                        {
-                            index: 0,
-                            text: "帮我取"
-                        },
-                        {
-                           index: 1,
-                           text: "帮我送"
-                        },
-                        {
-                            index: 2,
-                            text: "帮我买"
-                        },
-                        {
-                            index: 3,
-                            text: "其他服务"
-                        }
-                    ],
-                },
-                selectedTabIndex: 0,
+                selectedTabIndex: 1,
 				mainTabs: [
                     {
                         index: 0,
-                        text: '首页',
+                        text: '新的订单',
                         iconPath: '/static/image/icon/home.png',
                         selectedIconPath: '/static/image/icon/home_sel.png'
                     },
                     {
                         index: 1,
-                        text: '订单',
-                        iconPath: '/static/image/icon/order.png',
-                        selectedIconPath: '/static/image/icon/order_sel.png'
-                    },
-                    {
-                        index: 2,
-                        text: '我的',
+                        text: '我的订单',
                         iconPath: '/static/image/icon/me.png',
                         selectedIconPath: '/static/image/icon/me_sel.png'
                     }
@@ -123,8 +94,12 @@
         },
         
         onShow: function() {
-            
             page.setCurrentLocation();
+        },
+        
+        onReachBottom: function() {
+            console.log('reach bottom')
+            eventBus.$emit('reachBottom');
         }
 	}
 </script>
