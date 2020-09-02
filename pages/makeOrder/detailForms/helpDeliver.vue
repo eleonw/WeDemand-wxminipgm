@@ -59,12 +59,15 @@
                     <view class="formItemRight formItemBlock">
                         <radio-group @change="expireTimeTypeChange" class="radioGroup">
                             <label>
-                                <radio :value="0" :color="colorMain" :checked="!assignExpireTime"/><text>自动取消</text>
+                                <radio :value="0" :color="colorMain" :checked="!assignExpireTime"/><text>默认时间</text>
                                 <radio :value="1" :color="colorMain" :checked="assignExpireTime"/><text>指定时间</text>
                             </label>
                         </radio-group>
                         <view v-if="assignExpireTime">
                             <navigatorWithPlaceholder :content="getTimeString(3)" placeholder="请选择取消时间"  @click.native="showSelector('expireTime')"></navigatorWithPlaceholder>
+                        </view>
+                        <view else>
+                            {{ getTimeString(1) }}
                         </view>
                     </view>
                 </view>
@@ -240,6 +243,8 @@
                         notice = '请确保取件起始时间早于取件结束时间'
                     } else if (Object.keys(page.itemInfo).length == 0) {
                         notice = '请完善物品信息';
+                    } else if (page.assignExpireTime && !page.expireTime) {
+                        notice = '请选择订单取消时间'
                     }
                 }
                 

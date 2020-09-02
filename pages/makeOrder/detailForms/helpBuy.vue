@@ -298,6 +298,8 @@
                         notice = '请选择购买地址';
                     } else if (!page.commodityPrice) {
                         notice = '请填写商品预估价格'
+                    } else if (page.assignExpireTime && !page.expireTime) {
+                        notice = '请选择订单取消时间';
                     }
                 }
                 

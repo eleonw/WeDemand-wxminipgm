@@ -126,7 +126,8 @@ var render = function() {
   var m1 = _vm.getTimeString(1)
   var m2 = _vm.getItemInfoString()
   var m3 = _vm.assignExpireTime ? _vm.getTimeString(3) : null
-  var m4 = _vm.getBasicCost()
+  var m4 = _vm.getTimeString(1)
+  var m5 = _vm.getBasicCost()
   _vm.$mp.data = Object.assign(
     {},
     {
@@ -135,7 +136,8 @@ var render = function() {
         m1: m1,
         m2: m2,
         m3: m3,
-        m4: m4
+        m4: m4,
+        m5: m5
       }
     }
   )
@@ -173,6 +175,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 18));
+
+
+
 
 
 
@@ -414,6 +419,8 @@ var mapContext;var _default =
                     notice = '请确保取件起始时间早于取件结束时间';
                   } else if (Object.keys(page.itemInfo).length == 0) {
                     notice = '请完善物品信息';
+                  } else if (page.assignExpireTime && !page.expireTime) {
+                    notice = '请选择订单取消时间';
                   }
                 }if (!
 
