@@ -1,1 +1,0 @@
-<view class="navigatorWithPlaceholder"><with-placeholder vue-id="db479e7c-1" content="{{content}}" appendix="{{appendix}}" placeholder="{{placeholder}}" bind:__l="__l"></with-placeholder><uni-icons vue-id="db479e7c-2" type="forward" bind:__l="__l"></uni-icons></view>

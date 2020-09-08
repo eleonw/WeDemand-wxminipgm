@@ -1,1 +1,0 @@
-<view class="root page"><uni-nav-bar vue-id="8dd740cc-1" left-icon="none" title="微叮当" bind:__l="__l"></uni-nav-bar><view class="grid"><view data-event-opts="{{[['tap',[['navigateTo',['makeOrder']]]]]}}" class="gridItem" bindtap="__e">下单入口</view><view data-event-opts="{{[['tap',[['navigateTo',['takeOrder']]]]]}}" class="gridItem" bindtap="__e">接单入口</view></view></view>

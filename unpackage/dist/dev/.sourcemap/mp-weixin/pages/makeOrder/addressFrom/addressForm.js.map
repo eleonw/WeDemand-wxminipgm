@@ -1,1 +1,0 @@
-{"version":3,"sources":["uni-app:///main.js"],"names":["createPage","Page"],"mappings":";;;;;;;;;;kDAAA;AACA;AACA,wO;AACAA,UAAU,CAACC,oBAAD,CAAV,C","file":"pages/makeOrder/addressFrom/addressForm.js","sourcesContent":["import 'uni-pages';\nimport Vue from 'vue'\nimport Page from './pages/makeOrder/addressFrom/addressForm.vue'\ncreatePage(Page)"],"sourceRoot":""}

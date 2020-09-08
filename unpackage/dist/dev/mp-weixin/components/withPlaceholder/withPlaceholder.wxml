@@ -1,1 +1,0 @@
-<view class="viewWithPlaceholder"><block wx:if="{{$root.g0!=''}}"><view class="text">{{''+(content+appendix)+''}}</view></block><block wx:else><view class="placeholder">{{''+placeholder+''}}</view></block></view>
