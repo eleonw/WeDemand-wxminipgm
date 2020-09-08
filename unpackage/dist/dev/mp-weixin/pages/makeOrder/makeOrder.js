@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   tabBar: function() {
-    return __webpack_require__.e(/*! import() | components/tabBar/tabBar */ "components/tabBar/tabBar").then(__webpack_require__.bind(null, /*! @/components/tabBar/tabBar.vue */ 121))
+    return __webpack_require__.e(/*! import() | components/tabBar/tabBar */ "components/tabBar/tabBar").then(__webpack_require__.bind(null, /*! @/components/tabBar/tabBar.vue */ 122))
   }
 }
 var render = function() {
@@ -134,7 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -162,11 +162,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _shareData = _interopRequireDefault(__webpack_require__(/*! ./shareData.js */ 37));
-var _eventBus = _interopRequireDefault(__webpack_require__(/*! @/common/eventBus.js */ 39));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar/tabBar */ "components/tabBar/tabBar").then((function () {return resolve(__webpack_require__(/*! @/components/tabBar/tabBar.vue */ 121));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var topTabBar = function topTabBar() {__webpack_require__.e(/*! require.ensure | components/topTabBar/topTabBar */ "components/topTabBar/topTabBar").then((function () {return resolve(__webpack_require__(/*! @/components/topTabBar/topTabBar.vue */ 128));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var newOrderPage = function newOrderPage() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/subpages/newOrderPage */ "pages/makeOrder/subpages/newOrderPage").then((function () {return resolve(__webpack_require__(/*! ./subpages/newOrderPage.vue */ 135));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var myOrderPage = function myOrderPage() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/subpages/myOrderPage */ "pages/makeOrder/subpages/myOrderPage").then((function () {return resolve(__webpack_require__(/*! ./subpages/myOrderPage.vue */ 142));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _eventBus = _interopRequireDefault(__webpack_require__(/*! @/common/eventBus.js */ 39));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar/tabBar */ "components/tabBar/tabBar").then((function () {return resolve(__webpack_require__(/*! @/components/tabBar/tabBar.vue */ 122));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var topTabBar = function topTabBar() {__webpack_require__.e(/*! require.ensure | components/topTabBar/topTabBar */ "components/topTabBar/topTabBar").then((function () {return resolve(__webpack_require__(/*! @/components/topTabBar/topTabBar.vue */ 129));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var newOrderPage = function newOrderPage() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/subpages/newOrderPage */ "pages/makeOrder/subpages/newOrderPage").then((function () {return resolve(__webpack_require__(/*! ./subpages/newOrderPage.vue */ 136));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var myOrderPage = function myOrderPage() {__webpack_require__.e(/*! require.ensure | pages/makeOrder/subpages/myOrderPage */ "pages/makeOrder/subpages/myOrderPage").then((function () {return resolve(__webpack_require__(/*! ./subpages/myOrderPage.vue */ 143));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
-var mapContext;
-var page;
-var app = getApp();var _default =
+var page;var _default =
 
 {
 
@@ -224,7 +222,6 @@ var app = getApp();var _default =
 
     page = this;
 
-    mapContext = uni.createMapContext('map', page);
     _shareData.default.getAddressBook();
 
   },
@@ -237,7 +234,6 @@ var app = getApp();var _default =
     console.log('reach bottom');
     _eventBus.default.$emit('reachBottom');
   } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

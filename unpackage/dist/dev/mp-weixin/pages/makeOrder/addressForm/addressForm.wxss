@@ -128,7 +128,7 @@
 .formItemBottom {
     border-bottom: 0 solid transparent;
 } */
-radio {
+.radio {
     -webkit-transform: scale(0.7);
             transform: scale(0.7);
 }

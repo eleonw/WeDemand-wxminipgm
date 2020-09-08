@@ -28,9 +28,7 @@
     import shareData from "./shareData.js";
     import eventBus from "@/common/eventBus.js";
     
-    let mapContext;
     let page;
-    const app = getApp();
     
 	export default {
 
@@ -88,7 +86,6 @@
             
             page = this;
 
-            mapContext = uni.createMapContext('map', page);
             shareData.getAddressBook();
             
         },

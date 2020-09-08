@@ -1,7 +1,7 @@
 <template>
     <view class="root">
 	<view class="component" :style="{'background-color': backgroundColor}">
-		<view v-for="item in tabs" class="tabItem" :class="{selected: index==item.index, touching: touching==item.index}" @touchstart.stop="touchstart(item.index)" @touchend.stop="touchend(item.index)">
+		<view v-for="(item, index) in tabs" :key="index" class="tabItem" :class="{selected: index==item.index, touching: touching==item.index}" @touchstart.stop="touchstart(item.index)" @touchend.stop="touchend(item.index)">
             <view >
                 <image class="icon" mode="aspectFit" :src="item.iconPath" v-if="index==item.index"></image>
                 <image class="icon" mode="aspectFit" :src="item.selectedIconPath" v-else></image>

@@ -2,7 +2,7 @@
 	<view class="root page">
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
-		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @touchstart="mapTouchStart" @touchend="mapTouchEnd">
+		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @regionchange="regionchange">
             <image src="../../../static/image/icon/location.png" class="mapIcon" :class="{'hoverMapIcon': mapIconHover, bounce: false}"></image>
             <view class="mapIconShadow" :class="{'hoverIconShadow': mapIconHover}"></view>
         </map>
@@ -41,25 +41,24 @@
             topTabBar, addressCard, uniNavBar
         },
 		methods: {
+            regionchange: async function(e) {
+                if (e.type == 'begin') {
+                    page.mapIconHover = true;
+                    page.iconBounce = false;
+                } else {
+                    page.mapIconHover = false;
+                    page.iconBounce = true;
+                    shareData.addressCardLock = true;
+                    let res = await promisify(mapContext.getCenterLocation, null, mapContext);
+                    await shareData.setCurrentLocation(res.longitude, res.latitude, false);
+                    shareData.addressCardLock = false;
+                }
+            },
             switchTab: function(e) {
                 console.log(e)
                 shareData.setServiceType(e.index);
             },
-            
-            mapTouchStart: function() {
-                console.log('touch begin')
-                page.mapIconHover = true;
-                page.iconBounce = false;
-            },
-            
-			mapTouchEnd: async function() {
-                page.mapIconHover = false;
-                page.iconBounce = true;
-                shareData.addressCardLock = true;
-                let res = await promisify(mapContext.getCenterLocation, null, mapContext);
-                await shareData.setCurrentLocation(res.longitude, res.latitude);
-                shareData.addressCardLock = false;
-            },
+           
             
             locate: async function() {
                 try {
@@ -98,13 +97,12 @@
             page.shareData = shareData;
             mapContext = uni.createMapContext('map', page);
             shareData.setMapContext(mapContext);
-            page.color = color;
+            page.colorMain = color.MAIN;
             page.defaultLocation = defaultLocation;
             
         },
         
         beforeMount: async function(e) {
-            console.log('mount')
             page.clearShareData();
         },
         
@@ -129,7 +127,7 @@
                 ],
                 shareData: null,
                 QQ_MAP_KEY: null,
-                color: null,
+                colorMain: null,
                 defaultLocation: null,
                 lock: false,
                 mapIconHover: false,
@@ -140,19 +138,13 @@
 </script>
 
 <style scoped>
-    
-   .page {
-        position: fixed;
-        top: 0;
-        left: 0;
-    }
 
     .map {
-        position: absolute;
+        position: fixed;
         top: -15vh;
         left: 0;
-        width: 100vw;
-        height: 120vh;
+        width: 750rpx;
+        height: 115vh;
         z-index: 0;
     }
     
@@ -164,9 +156,9 @@
         width: 70rpx;
         height: 70rpx;
         
-        position: absolute;
+        position: fixed;
         left: 340rpx;
-        bottom: 60vh;
+        bottom: 55vh;
         margin: auto;
         z-index: 1;
         
@@ -174,13 +166,13 @@
     }
     
     .hoverMapIcon {
-        bottom: 62vh;
+        bottom: 57vh;
     }
     
     .mapIconShadow {
-        position: absolute;
+        position: fixed;
         left: 360rpx;
-        top: calc(60vh - 10rpx);
+        bottom: calc(55vh - 25rpx);
         
         width: 25rpx;
         height: 25rpx;
@@ -217,7 +209,6 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
-        
         
     }
     

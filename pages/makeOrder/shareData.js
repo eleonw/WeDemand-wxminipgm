@@ -34,6 +34,10 @@ const shareData = {
     currentAddressIdx: 0,
     addressCardLock: false,
     
+    setMapContext: function(context) {
+        mapContext = context;
+    },
+    
     setServiceType: function(type, newAddress=false) {
         let originAddress;
         if (newAddress) {
@@ -65,9 +69,6 @@ const shareData = {
         this.currentAddressIdx = 0;
     },
 
-    setMapContext: function(context) {
-        mapContext = context;
-    },
     
     setCurrentLocation: async function(longitude, latitude, move=true) {
         if (move) {
