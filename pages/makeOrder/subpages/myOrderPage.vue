@@ -3,19 +3,11 @@
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
         
-        <view class="test"></view>
 
         
         <orderCard v-for="(order,index) in orders" :key="index" class="orderCard" :order="order"> </orderCard>
 
 
-        <view class="test"></view>
-        <view class="test"></view>
-        <view class="test"></view>
-        <view class="test"></view>
-        <view class="test"></view>
-        <view class="test"></view>
-        <view class="test"></view>
         
         <view class="loadMore"></view>
         
@@ -29,7 +21,7 @@
     
     import eventBus from '@/common/eventBus.js';
     
-
+    import { testOrder_HelpDeliver as testOrder} from '@/common/classes/Order.js'; 
     
     
     let page;
@@ -42,9 +34,10 @@
 		data() {
 			return {
                 orders: [
-                    {
-                        serviceType: 1
-                    }
+                    testOrder,
+                    testOrder,
+                    testOrder,
+                    testOrder
                 ],
                 tabIndex: 0,
                 tabs: [

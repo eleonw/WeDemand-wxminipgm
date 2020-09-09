@@ -38,6 +38,25 @@ export const orderStatus = {
     COMPLETED: 5,
     CANCELED: -2,
     EXCEPTION: -1,
+    
+    getOrderStatusString: function(status) {
+        switch(status) {
+            case this.INITIALING:
+                return '待付款';
+            case this.CREATED:
+                return '待接单';
+            case this.ACCEPTED:
+                return '已接单';
+            case this.SERVING:
+                return '服务中';
+            case this.EVALUATING:
+                return '待评价';
+            case this.COMPLETED:
+                return '已完成';
+            case this.EXCEPTION:
+                return '异常处理中'
+        }
+    }
 }
 
 export const defaultLocation = new Location({

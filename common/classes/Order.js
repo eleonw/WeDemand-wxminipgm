@@ -42,6 +42,17 @@ function Order_HelpDeliver(arg={}) {
 
 Order_HelpDeliver.prototype = new Order();
 
+const testOrder_HelpDeliver = new Order_HelpBuy({
+    _id: "0010159852745706700068688",
+    fromAddress: Address.defaultAddress,
+    toAddress: Address.defaultAddress,
+    serviceType: 1,
+    tip: 5,
+    retriveTime: 1598827512653,
+    timestamp: 1598527512653,
+    
+})
+
 function Order_HelpBuy(arg={}) {
     const {
         _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status} = arg;
@@ -63,3 +74,5 @@ function Order_OtherService(arg={}) {
 }
 
 Order_OtherService.prototype = new Order();
+
+export { Order_HelpDeliver, Order_HelpBuy, Order_OtherService, testOrder_HelpDeliver }

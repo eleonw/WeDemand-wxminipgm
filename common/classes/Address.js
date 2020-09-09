@@ -30,3 +30,11 @@ Address.prototype.hasSex = function() {
 Address.prototype.hasValidTel =  function() {
     return this.tel && (this.tel != '') && (this.tel.length) == 11 && !isNaN(Number(this.tel));
 };
+
+
+Address.defaultAddress = new Address( {
+    location: Location.defaultLocation,
+    name: 'wyl',
+    tel: '138200000000',
+    sex: 1,
+})
