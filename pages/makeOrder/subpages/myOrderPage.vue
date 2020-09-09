@@ -6,7 +6,7 @@
         <view class="test"></view>
 
         
-        <orderCard class="orderCard" :order="order"> </orderCard>
+        <orderCard v-for="(order,index) in orders" :key="index" class="orderCard" :order="order"> </orderCard>
 
 
         <view class="test"></view>
@@ -41,7 +41,11 @@
         },
 		data() {
 			return {
-                order: {},
+                orders: [
+                    {
+                        serviceType: 1
+                    }
+                ],
                 tabIndex: 0,
                 tabs: [
                     {

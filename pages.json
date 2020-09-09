@@ -57,6 +57,22 @@
             "path" : "pages/makeOrder/detailForms/result",
             "style" : {}
         }
+        ,{
+            "path" : "pages/takeOrder/takeOrder",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/carpool/carpool",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/fleaMarket/fleaMarket",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/socialLife/socialLife",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#FFFFFF",
