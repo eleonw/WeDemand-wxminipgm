@@ -73,6 +73,10 @@
             "path" : "pages/socialLife/socialLife",
             "style" : {}
         }
+        ,{
+            "path" : "pages/test/test",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#FFFFFF",

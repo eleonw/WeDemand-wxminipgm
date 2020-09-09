@@ -96,10 +96,13 @@
 </script>
 
 <style>
+    .page {
+        padding-top:  calc(var(--height-navbar) + var(--height-toptabbar));
+    }
 
     .topTabBar {
         z-index: 1;
-        position: absolute;
+        position: fixed;
         top: var(--height-navbar);
         left: 0;
         width: 100vw;

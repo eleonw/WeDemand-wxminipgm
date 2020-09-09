@@ -28,21 +28,23 @@ function Order(arg={}) {
 function Order_HelpDeliver(arg={}) {
     
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status} = arg;
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status,
+        fromAddress, toAddress, itemInfo, note
+    } = arg;
     
     Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, serviceType: serviceType.HELP_DELIVER});
     
-    this.fromAddress = arg.fromAddress;
-    this.toAddress = arg.toAddress;
+    this.fromAddress = new Address(fromAddress);
+    this.toAddress = new Address(toAddress);
 
-    this.itemInfo = arg.itemInfo;
-    this.note = arg.note;
+    this.itemInfo = itemInfo;
+    this.note = note;
 
 }
 
 Order_HelpDeliver.prototype = new Order();
 
-const testOrder_HelpDeliver = new Order_HelpBuy({
+const testOrder_HelpDeliver = new Order_HelpDeliver({
     _id: "0010159852745706700068688",
     fromAddress: Address.defaultAddress,
     toAddress: Address.defaultAddress,
@@ -50,17 +52,20 @@ const testOrder_HelpDeliver = new Order_HelpBuy({
     tip: 5,
     retriveTime: 1598827512653,
     timestamp: 1598527512653,
-    
+    status: 0
 })
 
 function Order_HelpBuy(arg={}) {
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status} = arg;
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, commodityDesc, 
+        addrsss, buyingLocation
+    } = arg;
     
     Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, serviceType: serviceType.HELP_BUY});
     
-    this.commodityDesc = arg.commodityDesc;
-    this.buyingLocation = arg.buyingLocation;
+    this.commodityDesc = commodityDesc;
+    this.address = new Address(address);
+    this.buyingLocation = new Location(buyingLocation);
     
 }
 
@@ -68,11 +73,32 @@ Order_HelpBuy.prototype = new Order();
 
 function Order_OtherService(arg={}) {
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status} = arg;
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status,
+        address
+    } = arg;
     
     Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, serviceType: serviceType.HELP_BUY});
+    this.address = new Address(address);
 }
 
 Order_OtherService.prototype = new Order();
 
-export { Order_HelpDeliver, Order_HelpBuy, Order_OtherService, testOrder_HelpDeliver }
+function orderFactory(arg) {
+    
+    if (!arg.serviceType) {
+        console.log(arg)
+        throw new Error('no valid service type');
+    }
+    switch (arg.serviceType) {
+        case serviceType.HELP_DELIVER:
+            return new Order_HelpDeliver(arg);
+        case serviceType.HELP_BUY:
+            return new Order_HelpBuy(arg);
+        case serviceType.OTHER_SERVICE:
+            return new Order_OtherService(arg);
+        default:
+            throw new Error('no valid service type');
+    }
+}
+
+export { Order_HelpDeliver, Order_HelpBuy, Order_OtherService, orderFactory, testOrder_HelpDeliver }

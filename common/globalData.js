@@ -11,9 +11,9 @@ export const color = {
 
 export const serviceType = {
     NONE: -1,
-    HELP_DELIVER: 0,
-    HELP_BUY: 1,
-    OTHER_SERVICE: 2,
+    HELP_DELIVER: 1,
+    HELP_BUY: 2,
+    OTHER_SERVICE: 3,
     
     getServiceTypeString: function(type) {
         switch(type) {

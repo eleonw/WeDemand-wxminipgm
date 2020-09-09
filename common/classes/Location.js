@@ -63,6 +63,15 @@ Location.prototype.hasDetail = function() {
     return this.detail && (this.detail != '');
 }
 
-Location.defaultLocation = new Location(116.347468, 39.981617, '北京市海淀区学院路37号', '北京航空航天大学');
+Location.prototype.toString = function() {
+    return this.name==''?this.address:this.name + this.detail;
+}
+
+Location.defaultLocation = new Location({
+    longitude: 116.347468,
+    latitude: 39.981617,
+    name: '北京航空航天大学',
+    address: '北京市海淀区学院路37号'
+});
 
 export default Location;

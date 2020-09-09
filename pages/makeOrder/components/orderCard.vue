@@ -8,8 +8,19 @@
         
         
         <view class="main" v-if="order.serviceType==serviceType.HELP_DELIVER">
-            <view class="fromAddress"></view>
-            <view class="toAddress"></view>
+            <view class="address">
+                <view class="addressMain"> 
+                    {{ orderObj.fromAddress.location.toString() }} 
+                </view>
+                <view class="addressSub">
+                    
+                </view>
+            </view>
+            <view class="address">
+                <view class="addressMain">
+                    {{ orderObj.toAddress.location.toString() }}
+                </view>
+            </view>
         </view>
         
         <view class="main" v-else-if="order.serviceType==serviceType.HELP_BUY">
@@ -32,6 +43,7 @@
 <script>
     
     import { serviceType, orderStatus } from '@/common/globalData.js';
+    import { orderFactory } from '@/common/classes/Order.js';
     
     let that;
     
@@ -46,6 +58,8 @@
         data() {
             return {
                 serviceType: null,
+                
+                orderObj: null,
             }
         },
         methods: {
@@ -58,7 +72,11 @@
         },
         created: function() {
             that = this;
-            that.serviceType = serviceType
+            that.serviceType = serviceType;
+            that.orderObj = orderFactory(that.order);
+            console.log(that.orderObj.fromAddress.location.toString())
+            console.log(that.order.serviceType)
+            console.log()
         }
     }
 </script>
