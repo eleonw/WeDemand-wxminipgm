@@ -29,7 +29,7 @@
     
     import eventBus from '@/common/eventBus.js';
     
-    import { serviceType } from '@/common/globalData.js';
+
     
     
     let page;
