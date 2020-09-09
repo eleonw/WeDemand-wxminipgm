@@ -1,18 +1,24 @@
 <template>
-    <view class="root">
-	<view class="page">
-        使用手机号码登录/注册
+    <view class="root page">
+        
+        <view class="loginArea">
+            <view class="title">Login</view>
+            <inputWithTitle v-model="mobile"></inputWithTitle>
+        </view>
+        
+<!--        使用手机号码登录/注册
         <input v-model="mobile" @change="mobileChange"></input>
         <view> {{mobile}} </view>
-        <button type="default" plain="true" @click="loginWithSms">使用手机登录</button>
-        <button type="default" plain="true" @click="login(1)">使用微信登录</button>
-    </view>
+        
+        <view class="button" @click="loginWithSms">使用手机登录</view>
+        <view class="button" @click="login(1)">使用微信登录</view> -->
     </view>
 </template>
 
 <script>
     
     import uniPopup from '@/components/uni-popup/uni-popup.vue';
+    import inputWithTitle from '@/components/inputWithTitle/inputWithTitle.vue';
     
     import { promisify, addAll } from '@/common/helper.js';
     import { userInfo, dev } from '@/common/globalData.js';
@@ -22,7 +28,7 @@
     
 	export default {
         components: {
-            uniPopup,
+            uniPopup, inputWithTitle
         },
         
 		data() {
@@ -133,11 +139,36 @@
 	}
 </script>
 
-<style>
-    button {
-        width: 95vw;
-        margin-left: 2.5vw;
+<style scoped>
+    
+    .page {
+        justify-content: flex-end;
+    }
+    
+    .loginArea {
+        width: 600rpx;
+        height: 600rpx;
+        background-color: rgba(0, 0 ,0 0.5);
 
+    }
+    
+    .title {
+        background-color: red;
+    }
+    
+    .button {
+        width: 710rpx;
+        height: 80rpx;
+        
+        text-align: center;
+        line-height: 80rpx;
+        font-size: 50rpx;
+        letter-spacing: .1em;
+        
+        border: 5rpx solid black;
+        border-radius: 10rpx;
+        
+        margin-bottom: 20rpx;
     }
 
 </style>
