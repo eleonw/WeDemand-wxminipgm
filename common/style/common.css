@@ -78,7 +78,7 @@
 
 .card {
     width: 700rpx;
-    border-radius: .3em;
+    border-radius: 10rpx;
     box-shadow: 0 0 .2em .1em var(--color-shadow);
 }
 

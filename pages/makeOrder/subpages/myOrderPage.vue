@@ -4,10 +4,11 @@
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
         
         <view class="test"></view>
-        <view class="test"></view>
-        <view class="test"></view>
-        <view class="test"></view>
-        <view class="test"></view>
+
+        
+        <orderCard class="orderCard" :order="order"> </orderCard>
+
+
         <view class="test"></view>
         <view class="test"></view>
         <view class="test"></view>
@@ -24,8 +25,11 @@
 <script>
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import topTabBar from '@/components/topTabBar/topTabBar.vue';
+    import orderCard from './../components/orderCard.vue';
     
     import eventBus from '@/common/eventBus.js';
+    
+    import { serviceType } from '@/common/globalData.js';
     
     
     let page;
@@ -33,10 +37,11 @@
 	export default {
         name: 'myOrderPage',
         components: {
-            uniNavBar, topTabBar,
+            uniNavBar, topTabBar, orderCard
         },
 		data() {
 			return {
+                order: {},
                 tabIndex: 0,
                 tabs: [
                     {
@@ -111,6 +116,10 @@
         height: 40vh;
         
         margin-top: 20rpx;
+    }
+    
+    .orderCard {
+        margin: 30rpx 0;
     }
     
 </style>

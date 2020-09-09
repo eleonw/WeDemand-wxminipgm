@@ -14,6 +14,19 @@ export const serviceType = {
     HELP_DELIVER: 0,
     HELP_BUY: 1,
     OTHER_SERVICE: 2,
+    
+    getServiceTypeString: function(type) {
+        switch(type) {
+            case this.HELP_DELIVER:
+                return '校园帮送';
+            case this.HELP_BUY:
+                return '校园帮买';
+            case this.OTHER_SERVICE:
+                return '其他跑腿';
+            default:
+                throw new Error('invalid service type');
+        }
+    }
 }
 
 export const orderStatus = {

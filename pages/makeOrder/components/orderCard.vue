@@ -1,8 +1,38 @@
 <template>
-    <view class="root"></view>
+    <view class="root card">
+        
+        <view class="header">
+            <view class="orderType">{{ getOrderTypeString(order.serviceType) }}</view>
+            <view class="orderStatus"></view>
+        </view>
+        
+        
+        <view class="main" v-if="order.serviceType==serviceType.HELP_DELIVER">
+            
+        </view>
+        
+        <view class="main" v-else-if="order.serviceType==serviceType.HELP_BUY">
+            
+        </view>
+        
+        <view class="main" v-else-if="order.serviceType==serviceType.OTHER_SERVICE">
+            
+        </view>
+        
+        
+        <view class="buttons">
+            
+        </view>
+        
+        
+    </view>
 </template>
 
 <script>
+    
+    import { serviceType } from '@/common/globalData.js';
+    
+    let that;
     
     export default {
         name: 'orderCard',
@@ -14,14 +44,36 @@
         },
         data() {
             return {
-                
+                serviceType: null,
             }
         },
         methods: {
-            
+            getOrderTypeString: function(type) {
+                return serviceType.getServiceTypeString(type);
+            },
+        },
+        created: function() {
+            that = this;
+            that.serviceType = serviceType
         }
     }
 </script>
 
-<style>
+<style scoped>
+    
+    .root {
+        width: 700rpx;
+        height: 500rpx;
+        background-color: white;
+        
+        overflow: hidden;
+    }
+    
+    .header {
+        height: 80rpx;
+        line-height: 80rpx;
+        
+        background-color: var(--color-main);
+    }
+    
 </style>
