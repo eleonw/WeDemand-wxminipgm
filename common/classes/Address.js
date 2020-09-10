@@ -5,7 +5,7 @@ export default class Address {
         location: new Location(),
         name: '',
         sex: undefined,
-        tel: '',
+        mobile: '',
     }) {
         if (arg.location instanceof Location) {
             this.location = arg.location;
@@ -15,7 +15,7 @@ export default class Address {
         
         this.name = arg.name?arg.name:'';
         this.sex = arg.sex?arg.sex:undefined;
-        this.tel = arg.tel?arg.tel:'';
+        this.mobile = arg.mobile?arg.mobile:'';
     }
 };
 
@@ -27,14 +27,14 @@ Address.prototype.hasSex = function() {
     return this.sex == 0 || this.sex == 1;
 };
 
-Address.prototype.hasValidTel =  function() {
-    return this.tel && (this.tel != '') && (this.tel.length) == 11 && !isNaN(Number(this.tel));
+Address.prototype.hasValidmobile =  function() {
+    return this.mobile && (this.mobile != '') && (this.mobile.length) == 11 && !isNaN(Number(this.mobile));
 };
 
 
 Address.defaultAddress = new Address( {
     location: Location.defaultLocation,
     name: 'wyl',
-    tel: '138200000000',
+    mobile: '138200000000',
     sex: 1,
 })

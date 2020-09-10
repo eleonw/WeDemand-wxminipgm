@@ -6,10 +6,10 @@
             <view v-for="(item,idx) in shareData.addressBook" :key="item['_id']" @click="selectAddress(item.address)" @longtap="removeAddress(idx)"  class="formItem">
                 <view class="formItemBlock">
                     <view class="addressMain">
-                        {{ (item.address.location.name==''?item.address.location.name:item.address.location.address) + ' ' + item.address.location.detail }}
+                        {{ item.address.location.toString() }}
                     </view>
                     <view class="addressSub">
-                        {{ item.address.name + ' ' + item.address.tel }}
+                        {{ item.address.name + ' ' + item.address.mobile }}
                     </view>
                 </view>
                 <uni-icons type="compose" class="formItemRight" @click.native.stop="modifyAddress(idx)"></uni-icons>

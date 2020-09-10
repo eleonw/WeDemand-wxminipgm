@@ -6,7 +6,7 @@
             <textIcon class="formItemIcon" :text="static[shareData.serviceType][index].text" :backgroundColor="static[shareData.serviceType][index].color" color="white" diameter="1.2em"></textIcon>
             <view class="formItemBlock" @click="addressClick(index)">
                 <withPlaceholder :content="item.location.toString()" :placeholder="static[shareData.serviceType][index].placeholder" class="addressMain"></withPlaceholder>
-                <view v-if="item.location.name!=''|| item.location.address!=''">
+                <view v-if="item.location.toString()!=''">
                     <withPlaceholder :content="item.name + ' ' + item.tel" placeholder="请填写详细信息" class="addressDtl"></withPlaceholder>
                 </view>
             </view>

@@ -31,7 +31,7 @@
             
             <view class="formItem">
                 <uni-icons class="formItemIcon" type="phone"></uni-icons>
-                <input placeholder="联系电话" type="number" maxlength="11" v-model="address.tel" class="tel"></input>
+                <input placeholder="联系电话" type="number" maxlength="11" v-model="address.mobile" class="mobile"></input>
                 <view class="formItemBlank"></view>
             </view>
             
@@ -139,7 +139,7 @@
                        notice = '请填写联系人姓名或昵称';
                    } else if (!page.address.hasSex()) {
                        notice = '请选择联系人性别（用于称呼）';
-                   } else if (!page.address.hasValidTel()) {
+                   } else if (!page.address.hasValidmobile()) {
                        notice = '请填写正确联系方式';
                    } 
                 }
@@ -208,7 +208,7 @@
         width: 80vw;
     }
     
-    .tel {
+    .mobile {
         width: 80vw;
     }
     

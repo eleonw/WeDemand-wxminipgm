@@ -13,7 +13,7 @@
                     {{ orderObj.fromAddress.location.toString() }} 
                 </view>
                 <view class="addressSub">
-                    
+                    {{ orderObj.fromAddress.name + ' ' + orderObj.fromAddress.mobile }}
                 </view>
             </view>
             <view class="address">
