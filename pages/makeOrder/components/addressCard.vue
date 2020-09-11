@@ -7,7 +7,7 @@
             <view class="formItemBlock" @click="addressClick(index)">
                 <withPlaceholder :content="item.location.toString()" :placeholder="static[shareData.serviceType][index].placeholder" class="addressMain"></withPlaceholder>
                 <view v-if="item.location.toString()!=''">
-                    <withPlaceholder :content="item.name + ' ' + item.tel" placeholder="请填写详细信息" class="addressDtl"></withPlaceholder>
+                    <withPlaceholder :content="item.name + ' ' + item.mobile" placeholder="请填写详细信息" class="addressDtl"></withPlaceholder>
                 </view>
             </view>
             <uni-icons type="list" @click="listClick(index)" class="formItemRight"></uni-icons>

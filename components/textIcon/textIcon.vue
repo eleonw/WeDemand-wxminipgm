@@ -22,7 +22,7 @@
                 default: '字'
             },
             diameter: {
-                type: [Number, String],
+                type: String,
                 default: '1em'
             },
             backgroundColor: {
@@ -60,6 +60,6 @@
 	}
 </script>
 
-<style>
+<style scoped>
 
 </style>

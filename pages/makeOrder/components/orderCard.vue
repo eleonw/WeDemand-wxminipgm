@@ -8,19 +8,30 @@
         
         
         <view class="main" v-if="order.serviceType==serviceType.HELP_DELIVER">
-            <view class="address">
-                <view class="addressMain"> 
-                    {{ orderObj.fromAddress.location.toString() }} 
-                </view>
-                <view class="addressSub">
-                    {{ orderObj.fromAddress.name + ' ' + orderObj.fromAddress.mobile }}
-                </view>
-            </view>
-            <view class="address">
-                <view class="addressMain">
-                    {{ orderObj.toAddress.location.toString() }}
+            <view class="row">
+                <textIcon text="取" :backgroundColor="color.LIGHT"></textIcon>
+                <view class="address">
+                    <view class="addressMain"> 
+                        {{ orderObj.fromAddress.location.toString() }} 
+                    </view>
+                    <view class="addressSub" v-if="showDetail">
+                        {{ orderObj.fromAddress.name + ' ' + orderObj.fromAddress.mobile }}
+                    </view>
                 </view>
             </view>
+            
+            <view class="row">
+                <textIcon text="送" :backgroundColor="color.DARK"></textIcon>
+                <view class="address">
+                    <view class="addressMain">
+                        {{ orderObj.toAddress.location.toString() }}
+                    </view>
+                    <view class="addressSub" v-if="showDetail">
+                        {{ orderObj.toAddress.name + ' ' + orderObj.toAddress.mobile}}
+                    </view>
+                </view>
+            </view>
+           
         </view>
         
         <view class="main" v-else-if="order.serviceType==serviceType.HELP_BUY">
@@ -42,24 +53,33 @@
 
 <script>
     
-    import { serviceType, orderStatus } from '@/common/globalData.js';
+    import textIcon from '@/components/textIcon/textIcon.vue';
+    
+    import { serviceType, orderStatus, color } from '@/common/globalData.js';
     import { orderFactory } from '@/common/classes/Order.js';
     
     let that;
     
     export default {
         name: 'orderCard',
+        components: {
+            textIcon,
+        },
         props: {
             order: {
                 type: Object,
                 required: true,
+            },
+            showDetail: {
+                type: Boolean,
+                default: true,
             }
         },
         data() {
             return {
                 serviceType: null,
-                
                 orderObj: null,
+                color: null,
             }
         },
         methods: {
@@ -74,14 +94,13 @@
             that = this;
             that.serviceType = serviceType;
             that.orderObj = orderFactory(that.order);
-            console.log(that.orderObj.fromAddress.location.toString())
-            console.log(that.order.serviceType)
-            console.log()
-        }
+            that.color = color;
+        },
     }
+    
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     
     .root {
         width: 700rpx;
@@ -101,15 +120,26 @@
         
         padding: 0 20rpx;
         
-        color: white
+        
+        color: white;
+        
+        .orderType {
+            font-weight: 600;
+        }
+        
+        .orderStatus {
+            margin-left: auto;
+        }
+        
     }
     
-    .orderType {
-        font-weight: 600;
-    }
     
-    .orderStatus {
-        margin-left: auto;
+    .row {
+        display: flex;
+        flex-flow: row nowrap;
+        
+        justify-content: baseline;
+
     }
     
     
