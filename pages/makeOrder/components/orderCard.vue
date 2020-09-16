@@ -31,6 +31,19 @@
                     </view>
                 </view>
             </view>
+            
+            <view class="row">
+                <view>取件时间</view>
+                <view>{{ getTimeRangeString() }}</view>
+            </view>
+            
+            <view class="row">
+                <view>物品信息</view>
+                <view>{{ getItemInfoString() }}</view>
+            </view>
+            
+            
+            
            
         </view>
         
@@ -57,6 +70,8 @@
     
     import { serviceType, orderStatus, color } from '@/common/globalData.js';
     import { orderFactory } from '@/common/classes/Order.js';
+    
+    import { getTimeString } from '@/common/helper.js';
     
     let that;
     
@@ -88,6 +103,13 @@
             },
             getOrderStatusString: function(status) {
                 return orderStatus.getOrderStatusString(status);
+            },
+            getTimeRangeString: function() {
+                return getTimeString({timestamp: page.orderObj.startTime, substitude: '现在'}) + '-',
+                    + getTimeString({timestamp: page.orderObj.endTime, substitude: '现在'})
+            },
+            getItemInfoString: function() {
+                return page.orderObj.getItemInfoString();
             }
         },
         created: function() {

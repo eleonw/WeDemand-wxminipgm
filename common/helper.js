@@ -88,20 +88,25 @@ export const formatNumber = function(value, strLength) {
 }
 
 export const getTimeString = function(arg) {
-    let date = new Date(arg.timestamp);
+    
+    const {
+        timestamp, substitude, suffix
+    } = arg;
+    
+    let date = new Date(timestamp);
     
     if (date - (new Date()) > 0) {
         const hour = formatNumber(date.getHours(), 2);
         const minute = formatNumber(date.getMinutes(), 2);
         return (date.getMonth()+1) + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute;
     } else {
-        if (arg.substitude) {
-            return arg.substitude;
+        if (substitude) {
+            return substitude;
         } else {
             date = new Date(Number(date) + 1000*60*60);
             const hour = formatNumber(date.getHours(), 2);
             const minute = '00'
-            return (date.getMonth()+1) + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute + arg.suffix;
+            return (date.getMonth()+1) + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute + suffix;
         }
         
     }

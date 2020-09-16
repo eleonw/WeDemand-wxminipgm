@@ -203,11 +203,14 @@
             
             
             getItemInfoString: function() {
-                const itemInfo = page.itemInfo;
-                if (Object.keys(itemInfo).length != 0) {
+                
+                return Order_HelpDeliver.getItemInfoString.call(page)
+                
+                // const itemInfo = page.itemInfo;
+                // if (Object.keys(itemInfo).length != 0) {
                     
-                    return itemInfo.type + '、' + itemInfo.itemValue + '、' + weightAssistant.getWeightString(itemInfo.weight)
-                }
+                //     return itemInfo.type + '、' + itemInfo.itemValue + '、' + weightAssistant.getWeightString(itemInfo.weight)
+                // }
             },
             
      

@@ -22,7 +22,6 @@ function Order(arg={}) {
     
     this.status = arg.status ? arg.status : orderStatus.INITIALING;
 
-
 }
 
 function Order_HelpDeliver(arg={}) {
@@ -44,15 +43,31 @@ function Order_HelpDeliver(arg={}) {
 
 Order_HelpDeliver.prototype = new Order();
 
+Order_HelpDeliver.prototype.getItemInfoString = function() {
+    let result = '';
+    for (let item in this.itemInfo) {
+        result = result + this.itemInfo[item] + '、';
+    }
+    return result == '' ? '' : result.substring(0, -1);
+}
+
 const testOrder_HelpDeliver = new Order_HelpDeliver({
     _id: "0010159852745706700068688",
     fromAddress: Address.defaultAddress,
     toAddress: Address.defaultAddress,
     serviceType: 1,
-    tip: 5,
+    order: {
+       basic: 1,
+       tip: 4,
+    },
     retriveTime: 1598827512653,
     timestamp: 1598527512653,
-    status: 0
+    status: 0,
+    note: '没有什么要注意的',
+    itemInfo: {
+        weight: '5kg',
+        type: '外卖'
+    }
 })
 
 function Order_HelpBuy(arg={}) {
