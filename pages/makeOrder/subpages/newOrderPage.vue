@@ -141,10 +141,10 @@
 
     .map {
         position: fixed;
-        top: -15vh;
+        top: -10vh;
         left: 0;
         width: 750rpx;
-        height: 115vh;
+        height: 110vh;
         z-index: 0;
     }
     
@@ -166,13 +166,13 @@
     }
     
     .hoverMapIcon {
-        bottom: 57vh;
+        bottom: 58vh;
     }
     
     .mapIconShadow {
         position: fixed;
         left: 360rpx;
-        bottom: calc(55vh - 25rpx);
+        bottom: calc(55vh - 20rpx);
         
         width: 25rpx;
         height: 25rpx;

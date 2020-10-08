@@ -1,6 +1,5 @@
 <template>
-    <view class="root">
-    <view class="component" :style="[{'font-size': size}]">
+    <view class="root" :style="[{'font-size': size}]">
         <view class="tabItem" :style="[activeIndex==item.index?activeStyle:inactiveStyle]" v-for="item in tabs" :key="item.index" @click.stop="switchTab(item.index)">
             {{ item.text }}
         </view>
@@ -68,8 +67,9 @@
 </script>
 
 <style scoped>
+    
 
-   .component {
+   .root {
         height: var(--height-toptabbar);
         background-color: transparent;
         display: flex;
