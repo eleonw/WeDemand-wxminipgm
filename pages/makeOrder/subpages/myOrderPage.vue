@@ -17,7 +17,7 @@
 <script>
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import topTabBar from '@/components/topTabBar/topTabBar.vue';
-    import orderCard from './../components/orderCard.vue';
+    import orderCard from '@/components/orderCard/orderCard.vue';
     
     import eventBus from '@/common/eventBus.js';
     

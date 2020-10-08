@@ -20,7 +20,6 @@
     import topTabBar from "@/components/topTabBar/topTabBar.vue";
     import addressCard from './../components/addressCard.vue';
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
-    import orderCard from './../components/orderCard.vue';
     
     import { QQ_MAP_KEY } from "@/common/sensitiveData.js";
     import shareData from "./../shareData.js";
@@ -39,7 +38,7 @@
 	export default {
         name: 'newOrderPage',
         components: {
-            topTabBar, addressCard, uniNavBar, orderCard
+            topTabBar, addressCard, uniNavBar
         },
 		methods: {
             regionchange: async function(e) {
