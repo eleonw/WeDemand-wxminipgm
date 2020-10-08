@@ -88,12 +88,13 @@ Order_HelpBuy.prototype = new Order();
 
 function Order_OtherService(arg={}) {
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status,
-        address
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, address, serviceDesc
     } = arg;
     
-    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, serviceType: serviceType.HELP_BUY});
+    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, 
+        cost, status, serviceType: serviceType.OTHER_SERVICE});
     this.address = new Address(address);
+    this.serviceDesc = serviceDesc;
 }
 
 Order_OtherService.prototype = new Order();
