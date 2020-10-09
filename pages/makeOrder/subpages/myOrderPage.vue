@@ -3,11 +3,7 @@
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
         
-
-        
         <orderCard v-for="(order,index) in orders" :key="index" class="orderCard" :order="order"> </orderCard>
-
-
         
         <view class="loadMore"></view>
         

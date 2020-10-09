@@ -48,7 +48,7 @@ Order_HelpDeliver.prototype.getItemInfoString = function() {
     for (let item in this.itemInfo) {
         result = result + this.itemInfo[item] + '、';
     }
-    return result == '' ? '' : result.substring(0, -1);
+    return result == '' ? '' : result.slice(0, -1);
 }
 
 const testOrder_HelpDeliver = new Order_HelpDeliver({
@@ -56,12 +56,12 @@ const testOrder_HelpDeliver = new Order_HelpDeliver({
     fromAddress: Address.defaultAddress,
     toAddress: Address.defaultAddress,
     serviceType: 1,
-    order: {
+    cost: {
        basic: 1,
        tip: 4,
     },
-    retriveTime: 1598827512653,
-    timestamp: 1598527512653,
+    startTime: 1598827512653,
+    endTime: 1598827522653,
     status: 0,
     note: '没有什么要注意的',
     itemInfo: {
@@ -85,6 +85,7 @@ function Order_HelpBuy(arg={}) {
 }
 
 Order_HelpBuy.prototype = new Order();
+
 
 function Order_OtherService(arg={}) {
     const {

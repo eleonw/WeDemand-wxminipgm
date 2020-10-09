@@ -172,7 +172,7 @@
     .mapIconShadow {
         position: fixed;
         left: 360rpx;
-        bottom: calc(55vh - 20rpx);
+        bottom: calc(55vh - 25rpx);
         
         width: 25rpx;
         height: 25rpx;

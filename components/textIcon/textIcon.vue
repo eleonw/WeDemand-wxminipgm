@@ -9,7 +9,7 @@
      * Text Icon 单字图标
      * @description 内部有单个字的圆形图标
      * @param {String} text 图标内部文字
-     * @param {String} diameter 图标直径
+     * @param {String} size 图标直径
      * @param {String} backgroundColor 图标颜色
      * @param {String} textColor 文字颜色        
      */
@@ -21,9 +21,9 @@
                 required: true,
                 default: '字'
             },
-            diameter: {
+            size: {
                 type: String,
-                default: '1em'
+                default: '1.2em'
             },
             backgroundColor: {
                 type: String,
@@ -42,9 +42,9 @@
                     justifyContent: 'center',
                     alignItems: 'center',
                     
-                    width: that.diameter,
-                    height: that.diameter,
-                    fontSize: that.diameter,
+                    width: that.size,
+                    height: that.size,
+                    fontSize: that.size,
                     borderRadius: '50%',
                     backgroundColor: that.backgroundColor
                 },

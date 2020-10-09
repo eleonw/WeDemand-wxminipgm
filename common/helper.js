@@ -106,7 +106,7 @@ export const getTimeString = function(arg) {
             date = new Date(Number(date) + 1000*60*60);
             const hour = formatNumber(date.getHours(), 2);
             const minute = '00'
-            return (date.getMonth()+1) + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute + suffix;
+            return (date.getMonth()+1) + '月' + date.getDate() + '日' + ' ' + hour + ':' + minute + (suffix?suffix:'');
         }
         
     }
