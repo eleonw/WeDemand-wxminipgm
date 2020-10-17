@@ -7,7 +7,7 @@
         
         <view class="codeArea">
             
-            <input v-model="code" maxlength="4" class="input" focus="true"></input>
+            <input v-model="code" maxlength"4" class="input" focus="true"></input>
             <view class="code" @click="toFocus">{{code.length>=1?code[0]:''}}</view>
             <view class="code" @click="toFocus">{{code.length>=2?code[1]:''}}</view>
             <view class="code" @click="toFocus">{{code.length>=3?code[2]:''}}</view>

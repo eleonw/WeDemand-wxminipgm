@@ -84,7 +84,24 @@ function Order_HelpBuy(arg={}) {
     
 }
 
+
 Order_HelpBuy.prototype = new Order();
+
+const testOrder_HelpBuy = new Order_HelpBuy({
+    _id: "0010159852745706700068688",
+    startTime: 1598827512653,
+    endTime: 1598827522653,
+    cost: {
+       basic: 1,
+       tip: 4,
+    },
+    status: 1,
+    commodityDesc: "这是商品描述",
+    address: Address.defaultAddress,
+    buyingLocation: Location.defaultLocation,
+    
+})
+
 
 
 function Order_OtherService(arg={}) {
@@ -99,6 +116,20 @@ function Order_OtherService(arg={}) {
 }
 
 Order_OtherService.prototype = new Order();
+
+const testOrder_OtherService = new Order_OtherService({
+    _id: "001015985274570670006863",
+    startTime: 1598837512653,
+    endTime: 1598837522653,
+    cost: {
+       basic: 1,
+       tip: 4,
+    },
+    status: 1,
+    address: Address.defaultAddress,
+    serviceDesc: "这是服务信息",
+    
+})
 
 function orderFactory(arg) {
     
