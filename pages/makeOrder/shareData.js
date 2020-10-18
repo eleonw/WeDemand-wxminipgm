@@ -162,6 +162,11 @@ const shareData = {
         this.addressBook.splice(arg.index, 1);
     },
     
+    orderList: [],
+    getOrderList: async function(status, renew) {
+        
+    }
+    
 }
 
 export default shareData;

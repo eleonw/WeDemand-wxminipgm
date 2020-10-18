@@ -19,10 +19,13 @@
     import orderCard from '@/components/orderCard/orderCard.vue';
     import paymentMethodSelector from '@/components/paymentMethodSelector/paymentMethodSelector.vue';
     
-    import eventBus from '@/common/eventBus.js';
+    import eventBus from './../eventBus.js';
     
     import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
     import { orderStatus } from '@/common/globalData.js';
+    import shareData from '../shareData.js';
+    
+    import { promisify } from '@/common/helper.js';
     
     
     let that;
@@ -76,6 +79,7 @@
                     [orderStatus.COMPLETED]: true,
                     [orderStatus.EXCEPTION]: true,
                     [orderStatus.CANCELED]: true,
+                    [orderStatus.CANCELING]: true,
                 },
                 cost: 0,
                 show_paymentMethodSelector: false,
@@ -101,7 +105,7 @@
                         that.updateStatusShowMap(orderStatus.INITIALING, orderStatus.CREATED);
                         break;
                     case 2:
-                        that.updateStatusShowMap(orderStatus.ACCEPTED, orderStatus.SERVING);
+                        that.updateStatusShowMap(orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING);
                         break;
                     case 3:
                         that.updateStatusShowMap(orderStatus.EVALUATING);
@@ -129,15 +133,89 @@
                     that.orderStatusShowMap[status] = true;
                 }
             },
-      
-            buttonClick: function(index) {
-                const order = that.orders[index];
-                console.log(order);
+            
+            createOrder: async function(index) {
+                const order = shareData.orderList[index];
+                let res = await promisify(uni.showModal, {content: '付款后取消订单将会扣取25%费用', icon: 'none'});
+                if (res.cancel) {
+                    return;
+                }
+
+                res = await that.pay(cost)
+                if (!res.success) {
+                    return;
+                }
+                uni.showLoading();
+                res = await orderAssistant.create({orderId: order._id});
+                uni.hideLoading();
+                uni.showToast({
+                    title: '订单创建成功',
+                    icon: 'success',
+                })
+                order.status = orderStatus.CREATED;
+            },
+            
+            cancelOrder: async function(index) {
+                const order = shareData.orderList[index];
+                let notice, res;
                 switch(order.status) {
                     case orderStatus.INITIALING:
-                        that.cost = getTotalCost(order.cost);
-                        that.show_paymentMethodSelector = true;
+                        notice = '确认是否要取消订单'
                         break;
+                    case orderStatus.CREATED:
+                        notice = '频繁地取消订单会影响您的信用评分';
+                        break;
+                    case orderStatus.ACCEPTED:
+                        notice = '已接单，订单取消将扣取50%违约金';
+                        break;
+                    case orderStatus.SERVING:
+                        notice = '服务中，订单取消需与对方协商';
+                        break;
+                    default:
+                        throw new error('not a status for canceling');
+                }
+                res = promisify(uni.showToast, {content: notice, icon: 'none'});
+                if (res.cancel) {
+                    return;
+                }
+                uni.showLoading();
+                res = await orderAssistant.cancel({orderId: order._id})
+                if (res.success) {
+                    uni.showToast({
+                        title: '订单取消成功',
+                        icon: 'success',
+                    })
+                    shareData.orderList[index].status = CANCELED;
+                } else {
+                    uni.showToast({
+                        title: '订单取消失败，请重试',
+                        icon: 'none'
+                    })
+                }
+                
+            },
+            
+            evaluateOrder: async function(index) {
+                uni.navigateTo({
+                    url: '/pages/makeOrder/evaluateOrder/evaluateOrder',
+                    
+                }),
+                eventBus.$on('evaluateOrder', function(e) {
+                    if (e.success) {
+                        shareData.orderList[index].status = orderStatus.COMPLETED;
+                    }
+                    eventBus.$off('evaluateOrder');
+                })
+            },
+            
+            buttonClick: async function(index) {
+                const order = that.orders[index];
+                console.log(order);
+                
+                let success = false;
+                let res;
+                
+                switch(order.status) {
                     
                         
                 }
@@ -154,14 +232,7 @@
             })
         }
 	}
-    
-    function getTotalCost(cost) {
-        let result = 0;
-        for (let field in cost) {
-            result += cost[field];
-        }
-        return result;
-    }
+
 </script>
 
 <style>

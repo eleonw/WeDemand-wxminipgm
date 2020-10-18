@@ -70,9 +70,7 @@ export const paymentAssistant = {
     
 }
 
-export const orderAssistant = {
-    
-    
+export const orderAssistant_creater = {
     
     initial: async function(order) {
         
@@ -89,7 +87,7 @@ export const orderAssistant = {
             default:
                 throw new Error('invalid service type');
         }
-        
+        const side = 0;
         const serviceType = 1;
         const userId = userInfo.id;
         
@@ -97,6 +95,7 @@ export const orderAssistant = {
             const res = await uniCloud.callFunction({
                 name: 'orderService',
                 data: {
+                    side,
                     serviceType,
                     userId,
                     order,
@@ -113,7 +112,6 @@ export const orderAssistant = {
                 error: e,
             }
         }
-        
         return {
             success: true,
         }
@@ -122,8 +120,9 @@ export const orderAssistant = {
     
     create: async function(opt) {
         const {
-            _id
+            orderId
         } = opt;
+        const side = 0;
         const serviceType = 2;
         const userId = userInfo._id;
         try {
@@ -132,9 +131,12 @@ export const orderAssistant = {
                 data: {
                     serviceType,
                     userId,
-                    orderId: _id,
+                    orderId
                 }
             });
+            if (!res.result || !res.result.success) {
+                throw new Error(res);
+            }
         } catch(e) {
             console.log(e);
             return {
@@ -142,6 +144,10 @@ export const orderAssistant = {
                 error: e,
             }
         }
+    },
+    
+    cancel: async function(opt) {
+        
     }
     
 }

@@ -26,7 +26,7 @@
     import myOrderPage from "./subpages/myOrderPage.vue";
     
     import shareData from "./shareData.js";
-    import eventBus from "@/common/eventBus.js";
+    import eventBus from "./eventBus.js";
     
     let page;
     

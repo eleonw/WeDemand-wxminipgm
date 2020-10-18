@@ -77,6 +77,10 @@
             "path" : "pages/test/test",
             "style" : {}
         }
+        ,{
+            "path" : "pages/makeOrder/evaluateOrder/evaluateOrder",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#FFFFFF",

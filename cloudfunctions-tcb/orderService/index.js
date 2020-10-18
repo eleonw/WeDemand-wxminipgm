@@ -2,16 +2,25 @@
 const db = uniCloud.database();
 const order = db.collection('order');
 
-
 exports.main = async (event) => {
 
     /**
+     * event.side:
+     * 0: creater
+     * 1: server
+     * 
      * event.serviceType:
-     * 1: create
-     * 2: cancel
-     * 3: complete
-     * 4: evaluate
-     * 5: go into exception
+     * for creater:
+     * 1: initial
+     * 2: create
+     * 3: evaluate
+     * 4: cancel
+     * 5: go to exception
+     * 
+     * for server:
+     * 
+     * 
+     * event.serviceY
      * 
      * orders' status:
      * 1: created
@@ -24,6 +33,53 @@ exports.main = async (event) => {
      */
     
     const userId = event.userId;
+    
+    switch(event.side) {
+        case 0:     // creater
+            switch(event.serviceType) {
+                case 1: // initial
+                    const order = event.order;
+                    try {
+                        const orderId = await initial({
+                            userId,
+                            order
+                        })
+                        return {
+                            orderId,
+                            success: true
+                        }
+                    } catch(e) {
+                        return {
+                            success: false,
+                            code: -1
+                        }
+                    }
+                case 2: // create
+                    const orderId = event.orderId;
+                    try {
+                        await create({orderId});
+                        return {
+                            success: true,
+                        }
+                    } catch(e) {
+                        return {
+                            success: false,
+                            code: -1,
+                        }
+                    }
+                case 3: // 
+                    
+                    
+                    
+                    
+            }
+            break;
+        case 1:     // server
+
+            break;
+        default:
+            throw new Error("invalid side");
+    }
     
 
     try {

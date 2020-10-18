@@ -36,6 +36,7 @@ export const orderStatus = {
     SERVING: 3,
     EVALUATING: 4,
     COMPLETED: 5,
+    CANCELING: -3,
     CANCELED: -2,
     EXCEPTION: -1,
     
@@ -53,6 +54,11 @@ export const orderStatus = {
                 return '待评价';
             case this.COMPLETED:
                 return '已完成';
+            case this.CANCELING_SERVER:
+            case this.CANCELING_CREATER:
+                return '取消中';
+            case this.CANCELED:
+                return '已取消';
             case this.EXCEPTION:
                 return '异常处理中'
         }
@@ -69,7 +75,7 @@ export const defaultLocation = new Location({
 export const dev = true;
 
 export const userInfo = {
-    _id,
+    _id: '1111',
     wxOpenid: "ogjlP5YAbGPGuaTpblXIwWe8o07E",
 };
 
