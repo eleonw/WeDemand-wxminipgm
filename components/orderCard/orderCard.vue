@@ -101,7 +101,7 @@
                     
         </view>
         
-        <view class="button">
+        <view class="button" @clidk="clidkButton">
             {{ getButtonTitle() }}
         </view>
         
@@ -114,7 +114,7 @@
     import textIcon from '@/components/textIcon/textIcon.vue';
     
     import { serviceType, orderStatus, color } from '@/common/globalData.js';
-    import { orderFactory } from '@/common/classes/Order.js';
+    import { parseOrder } from '@/common/classes/Order.js';
     
     import { getTimeString } from '@/common/helper.js';
     
@@ -183,85 +183,116 @@
                 } else if (that.identity == 1) {
                     switch(that.orderObj.status) {}
                 }
+            },
+            clickButton: function() {
+                
             }
         },
         created: function() {
             that = this;
+            that.orderObj = parseOrder(that.order);
             that.serviceType = serviceType;
-            that.orderObj = orderFactory(that.order);
-            that.color = color;
+            that.color = color;      
         },
     }
-    
+
 </script>
 
 <style scoped lang="scss">
     
     .root {
         width: 700rpx;
-        height: 500rpx;
+        min-height: 500rpx;
         background-color: white;
         
         overflow: hidden;
         
         font-size: 30rpx;
-    }
-    
-    .header {
-        height: 80rpx;
-        line-height: 80rpx;
-        
-        background-color: var(--color-main);
-        display: flex;
-        flex-flow: row nowrap;
-        
-        padding: 0 20rpx;
+        box-shadow: 0 5px 10px 2px gray;
         
         
-        color: white;
-        
-        .orderType {
-            font-weight: 600;
+        .header {
+            height: 80rpx;
+            line-height: 80rpx;
+            
+            background-color: var(--color-main);
+            display: flex;
+            flex-flow: row nowrap;
+            
+            padding: 0 20rpx;
+            
+            
+            color: white;
+            
+            .orderType {
+                font-weight: 600;
+            }
+            
+            .orderStatus {
+                margin-left: auto;
+            }
+            
         }
         
-        .orderStatus {
+        .row {
+            display: flex;
+            flex-flow: row nowrap;
+            
+            justify-content: baseline;
+            margin: 20rpx;
+            
+            .textIcon {
+                margin-right: .5em;
+            }
+            
+            .addressMain {
+                font-size: 1.2em;
+                font-weight: 500;
+            }
+            
+            .title {
+                
+                width: 130rpx;
+                margin-right: .3em;
+                padding-right: 10rpx;
+                padding-left: 10rpx;
+                
+                text-align: justify;
+                text-align-last: justify;
+                
+                border-right: var(--color-main) 1rpx solid;
+                border-left: var(--color-main) 1rpx solid;
+            }
+        
+        }
+        
+        .button {
+            width: 500rpx;
+            height: 50rpx;
+            line-height: 50rpx;
+            background-color: var(--color-main);
+            color: white;
+            
+            text-align: center;
             margin-left: auto;
+            margin-right: auto;
+            
+            margin-top: auto;
+            margin-bottom: 20rpx;
+            
+            letter-spacing: 20rpx;
+            font-weight: 600;
+            
+            border-radius: 10rpx;
         }
+        
         
     }
     
     
-    .row {
-        display: flex;
-        flex-flow: row nowrap;
-        
-        justify-content: baseline;
-        margin: 10rpx;
-        
-        .textIcon {
-            margin-right: .5em;
-        }
-        
-        .addressMain {
-            font-size: 1.2em;
-            font-weight: 500;
-        }
-        
-        .title {
-            
-            width: 130rpx;
-            margin-right: .3em;
-            padding-right: 10rpx;
-            padding-left: 10rpx;
-            
-            text-align: justify;
-            text-align-last: justify;
-            
-            border-right: var(--color-main) 1rpx solid;
-            border-left: var(--color-main) 1rpx solid;
-        }
-
-    }
+    
+    
+    
     
     
     

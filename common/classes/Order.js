@@ -73,7 +73,7 @@ const testOrder_HelpDeliver = new Order_HelpDeliver({
 function Order_HelpBuy(arg={}) {
     const {
         _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, commodityDesc, 
-        addrsss, buyingLocation
+        address, buyingLocation
     } = arg;
     
     Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, serviceType: serviceType.HELP_BUY});
@@ -131,7 +131,7 @@ const testOrder_OtherService = new Order_OtherService({
     
 })
 
-function orderFactory(arg) {
+function parseOrder(arg) {
     
     if (!arg.serviceType) {
         console.log(arg)
@@ -149,4 +149,4 @@ function orderFactory(arg) {
     }
 }
 
-export { Order_HelpDeliver, Order_HelpBuy, Order_OtherService, orderFactory, testOrder_HelpDeliver }
+export { Order_HelpDeliver, Order_HelpBuy, Order_OtherService, parseOrder, testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService };

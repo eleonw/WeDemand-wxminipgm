@@ -3,7 +3,7 @@
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
         
-        <orderCard v-for="(order,index) in orders" :key="index" class="orderCard" :order="order"> </orderCard>
+        <orderCard v-for="(order,index) in orders" :key="index" class="orderCard" :order="order" v-if="orderStatusShowMap[order.status]"> </orderCard>
         
         <view class="loadMore"></view>
         
@@ -17,10 +17,11 @@
     
     import eventBus from '@/common/eventBus.js';
     
-    import { testOrder_HelpDeliver as testOrder} from '@/common/classes/Order.js'; 
+    import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
+    import { orderStatus } from '@/common/globalData.js';
     
     
-    let page;
+    let that;
     
 	export default {
         name: 'myOrderPage',
@@ -30,10 +31,9 @@
 		data() {
 			return {
                 orders: [
-                    testOrder,
-                    testOrder,
-                    testOrder,
-                    testOrder
+                    testOrder_HelpBuy,
+                    testOrder_HelpDeliver,
+                    testOrder_OtherService
                 ],
                 tabIndex: 0,
                 tabs: [
@@ -43,11 +43,11 @@
                     },
                     {
                         index: 1,
-                        text: '待接单',
+                        text: '待服务',
                     },
                     {
                         index: 2,
-                        text: '服务中',
+                        text: '进行中',
                     },
                     {
                         index: 3,
@@ -55,16 +55,29 @@
                     },
                     {
                         index: 4,
-                        text: '已完成',
+                        text: '已结束',
+                    },
+                    {
+                        index: 5,
+                        text: '异常',
                     }
                 ],
                 orderList: [],
-                orderPage: 0,
+                orderStatusShowMap: {
+                    [orderStatus.INITIALING]: true,
+                    [orderStatus.CREATED]: true,
+                    [orderStatus.ACCEPTED]: true,
+                    [orderStatus.SERVING]: true,
+                    [orderStatus.EVALUATING]: true,
+                    [orderStatus.COMPLETED]: true,
+                    [orderStatus.EXCEPTION]: true,
+                    [orderStatus.CANCELED]: true,
+                }
 			}
 		},
         
         created: function() {
-            page = this;
+            that = this;
         },
         
 		methods: {
@@ -73,14 +86,42 @@
             },
             
             switchTab: function(e) {
-                
+                switch(e.index) {
+                    case 0:
+                        that.updateStatusShowMap();
+                        break;
+                    case 1:
+                        that.updateStatusShowMap(orderStatus.INITIALING, orderStatus.CREATED);
+                        break;
+                    case 2:
+                        that.updateStatusShowMap(orderStatus.ACCEPTED, orderStatus.SERVING);
+                        break;
+                    case 3:
+                        that.updateStatusShowMap(orderStatus.EVALUATING);
+                        break;
+                    case 4:
+                        that.updateStatusShowMap(orderStatus.COMPLETED, orderStatus.CANCELED);
+                        break;
+                    case 5:
+                        that.updateStatusShowMap(orderStatus.EXCEPTION);
+                        break;
+                }
             },
             
-            test: function(e) {
-                console.log(e)
-                
-            }
-            
+            updateStatusShowMap: function(...visibleStatus) {
+                if (visibleStatus.length == 0) {
+                    for (let status in orderStatus) {
+                        orderStatusShowMap[status] = true;
+                    }
+                    return;
+                }
+                for (let status in orderStatus) {
+                    orderStatusShowMap[status] = false;
+                }
+                for (let status of visibleStatus) {
+                    orderStatusShowMap[status] = true;
+                }
+            }            
 		},
         
         created: function() {
@@ -94,6 +135,7 @@
 <style>
     .page {
         padding-top:  calc(var(--height-navbar) + var(--height-toptabbar));
+        padding-bottom: var(--height-navbar)
     }
 
     .topTabBar {
