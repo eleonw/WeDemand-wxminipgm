@@ -160,7 +160,8 @@ const shareData = {
     removeAddress: async function(arg) {
         await addressBookAssistant.removeAddress({recId: this.addressBook[arg.index]['_id']});
         this.addressBook.splice(arg.index, 1);
-    }
+    },
+    
 }
 
 export default shareData;

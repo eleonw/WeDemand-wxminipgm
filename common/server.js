@@ -54,11 +54,14 @@ export async function login(loginData) {
 export const paymentAssistant = {
     
     payWithBlance: async function(opt) {
+        const {
+            amount
+        } = opt;
         const res = await uniCloud.callFunction({
             name: changeBalance,
             data: {
                 userId: userInfo.id,
-                amount: -opt.amount,
+                amount
             }
         })
         console.log(res)
@@ -69,7 +72,9 @@ export const paymentAssistant = {
 
 export const orderAssistant = {
     
-    createOrder: async function(order) {
+    
+    
+    initial: async function(order) {
         
         switch(order.serviceType) {
             case _serviceType.HELP_DELIVER:
@@ -115,6 +120,29 @@ export const orderAssistant = {
         
     },
     
+    create: async function(opt) {
+        const {
+            _id
+        } = opt;
+        const serviceType = 2;
+        const userId = userInfo._id;
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    serviceType,
+                    userId,
+                    orderId: _id,
+                }
+            });
+        } catch(e) {
+            console.log(e);
+            return {
+                success: false,
+                error: e,
+            }
+        }
+    }
     
 }
 

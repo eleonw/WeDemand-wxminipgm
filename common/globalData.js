@@ -69,6 +69,7 @@ export const defaultLocation = new Location({
 export const dev = true;
 
 export const userInfo = {
+    _id,
     wxOpenid: "ogjlP5YAbGPGuaTpblXIwWe8o07E",
 };
 

@@ -101,7 +101,7 @@
                     
         </view>
         
-        <view class="button" @clidk="clidkButton">
+        <view class="button" @click="clickButton">
             {{ getButtonTitle() }}
         </view>
         
@@ -185,7 +185,7 @@
                 }
             },
             clickButton: function() {
-                
+                this.$emit('buttonClick')
             }
         },
         created: function() {
@@ -201,15 +201,18 @@
 <style scoped lang="scss">
     
     .root {
+        display: flex;
+        flex-flow: column nowrap;
+        
+        justify-content: flex-start;
+        
         width: 700rpx;
-        min-height: 500rpx;
         background-color: white;
         
         overflow: hidden;
         
         font-size: 30rpx;
         box-shadow: 0 5px 10px 2px gray;
-        
         
         .header {
             height: 80rpx;
@@ -274,11 +277,8 @@
             color: white;
             
             text-align: center;
-            margin-left: auto;
-            margin-right: auto;
             
-            margin-top: auto;
-            margin-bottom: 20rpx;
+            margin: 30rpx auto 30rpx auto;
             
             letter-spacing: 20rpx;
             font-weight: 600;

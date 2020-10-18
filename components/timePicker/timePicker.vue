@@ -6,7 +6,7 @@
                 <view class="title">{{ title }}</view>
                 <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
-            <picker-view indicator-style="height: 90rpx;" :value="pickerValue" @change="bindChange">
+            <picker-view class="picker-view" indicator-style="height: 90rpx;" :value="pickerValue" @change="bindChange">
                 <picker-view-column>
                     <view class="item" v-for="(day,index) in days">{{day}}</view>
                 </picker-view-column>
@@ -190,7 +190,7 @@
     
     @import url("@/common/style/formInputComponent.css");
     
-    picker-view {
+    .picker-view {
         width: 750rpx;
         height: 360rpx;
         

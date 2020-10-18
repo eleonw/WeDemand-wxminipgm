@@ -3,9 +3,12 @@
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
         
-        <orderCard v-for="(order,index) in orders" :key="index" class="orderCard" :order="order" v-if="orderStatusShowMap[order.status]"> </orderCard>
+        <orderCard v-for="(order,index) in orders" :key="index" class="orderCard" 
+            :order="order" v-if="orderStatusShowMap[order.status]" @buttonClick="buttonClick(index)"> </orderCard>
         
         <view class="loadMore"></view>
+        
+        <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="cost"></paymentMethodSelector>
         
 	</view>
 </template>
@@ -14,6 +17,7 @@
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import topTabBar from '@/components/topTabBar/topTabBar.vue';
     import orderCard from '@/components/orderCard/orderCard.vue';
+    import paymentMethodSelector from '@/components/paymentMethodSelector/paymentMethodSelector.vue';
     
     import eventBus from '@/common/eventBus.js';
     
@@ -26,7 +30,7 @@
 	export default {
         name: 'myOrderPage',
         components: {
-            uniNavBar, topTabBar, orderCard
+            uniNavBar, topTabBar, orderCard, paymentMethodSelector
         },
 		data() {
 			return {
@@ -59,7 +63,7 @@
                     },
                     {
                         index: 5,
-                        text: '异常',
+                        text: '异 常',
                     }
                 ],
                 orderList: [],
@@ -72,11 +76,13 @@
                     [orderStatus.COMPLETED]: true,
                     [orderStatus.EXCEPTION]: true,
                     [orderStatus.CANCELED]: true,
-                }
+                },
+                cost: 0,
+                show_paymentMethodSelector: false,
 			}
 		},
         
-        created: function() {
+        beforeCreate: function() {
             that = this;
         },
         
@@ -89,6 +95,7 @@
                 switch(e.index) {
                     case 0:
                         that.updateStatusShowMap();
+                        
                         break;
                     case 1:
                         that.updateStatusShowMap(orderStatus.INITIALING, orderStatus.CREATED);
@@ -110,18 +117,35 @@
             
             updateStatusShowMap: function(...visibleStatus) {
                 if (visibleStatus.length == 0) {
-                    for (let status in orderStatus) {
-                        orderStatusShowMap[status] = true;
+                    for (let status in that.orderStatusShowMap) {
+                        that.orderStatusShowMap[status] = true;
                     }
                     return;
                 }
-                for (let status in orderStatus) {
-                    orderStatusShowMap[status] = false;
+                for (let status in that.orderStatusShowMap) {
+                    that.orderStatusShowMap[status] = false;
                 }
                 for (let status of visibleStatus) {
-                    orderStatusShowMap[status] = true;
+                    that.orderStatusShowMap[status] = true;
                 }
-            }            
+            },
+      
+            buttonClick: function(index) {
+                const order = that.orders[index];
+                console.log(order);
+                switch(order.status) {
+                    case orderStatus.INITIALING:
+                        that.cost = getTotalCost(order.cost);
+                        that.show_paymentMethodSelector = true;
+                        break;
+                    
+                        
+                }
+            },
+            
+            hideSelector: function(type) {
+                that['show_'+type] = false;
+            },
 		},
         
         created: function() {
@@ -130,6 +154,14 @@
             })
         }
 	}
+    
+    function getTotalCost(cost) {
+        let result = 0;
+        for (let field in cost) {
+            result += cost[field];
+        }
+        return result;
+    }
 </script>
 
 <style>
@@ -158,6 +190,13 @@
     
     .orderCard {
         margin: 30rpx 0;
+    }
+    
+    .selector {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
     }
     
 </style>

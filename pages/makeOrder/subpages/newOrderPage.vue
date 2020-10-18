@@ -55,7 +55,6 @@
                 }
             },
             switchTab: function(e) {
-                console.log(e)
                 shareData.setServiceType(e.index);
             },
            
