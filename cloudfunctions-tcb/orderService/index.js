@@ -1,122 +1,127 @@
 'use strict';
 const db = uniCloud.database();
-const order = db.collection('order');
+const activeOrder = db.collection('active-order');
+const inactiveOrder = db.collection('inactive-order');
+const orderComment = db.collection('order-comment');
+const dbCmd = db.command;
+
+const _orderStatus = {
+    INITIALING: 0,
+    CREATED: 1,
+    ACCEPTED: 2,
+    SERVING: 3,
+    EVALUATING: 4,
+    COMPLETED: 5,
+    CANCELING: -3,
+    CANCELED: -2,
+    EXCEPTION: -1,
+}
+
+const serviceType_creater = {
+    INITIAL: 1,
+    CREATE: 2,
+    EVALUATE: 3,
+    CANCEL: 4,
+}
+
+const side = {
+    CREATER: 0,
+    SERVER: 1,
+}
+
+function getDeposit(cost) {
+ 
+    res = Math.ceil((cost * 10) * depositRate) / 10
+}
+
+function getTotalCost(cost) {
+    let res = 0;
+    for (item in cost) {
+        res += cost[item];
+    }
+}
 
 exports.main = async (event) => {
-
-    /**
-     * event.side:
-     * 0: creater
-     * 1: server
-     * 
-     * event.serviceType:
-     * for creater:
-     * 1: initial
-     * 2: create
-     * 3: evaluate
-     * 4: cancel
-     * 5: go to exception
-     * 
-     * for server:
-     * 
-     * 
-     * event.serviceY
-     * 
-     * orders' status:
-     * 1: created
-     * 2. accepted
-     * 3: serving
-     * 4: evaluating
-     * 5: completed
-     * -2: canceled
-     * -1: exception
-     */
     
     const userId = event.userId;
     
-    switch(event.side) {
-        case 0:     // creater
-            switch(event.serviceType) {
-                case 1: // initial
-                    const order = event.order;
-                    try {
+    try {
+        switch(event.side) {
+            case side.CREATER:     // creater
+                switch(event.serviceType) {
+                    case serviceType_creater.INITIAL:  {// initial
+                        let 
+                        const order = event.order;
+                        order.deposit = getDeposit(getTotalCost(order.cost));
                         const orderId = await initial({
                             userId,
-                            order
+                            order,
                         })
                         return {
                             orderId,
                             success: true
                         }
-                    } catch(e) {
-                        return {
-                            success: false,
-                            code: -1
-                        }
+                      
                     }
-                case 2: // create
-                    const orderId = event.orderId;
-                    try {
+                    case serviceType_creater.CREATE: 
+                        const {
+                            orderId
+                        } = event;
+
                         await create({orderId});
                         return {
                             success: true,
                         }
-                    } catch(e) {
-                        return {
-                            success: false,
-                            code: -1,
-                        }
                     }
-                case 3: // 
-                    
-                    
-                    
-                    
-            }
-            break;
-        case 1:     // server
+                    case serviceType_creater.EVALUATE: {
+                        const {
+                            orderId, score, comment
+                        } = event;
+                        const side = 0;
 
-            break;
-        default:
-            throw new Error("invalid side");
-    }
-    
+                        await evaluate({orderId, side, score, comment});
+                        return {
+                            success: true,
+                        }
+                    },
+                    case serviceType_creater.CANCEL: {
+                        const {
+                            orderId, status, userId
+                        } = event;
+                        const side = 0;
 
-    try {
-        const orderId = await create({
-            userId,
-            order: event.order
-        });
-        return {
-            orderId,
-            success: true
+                        await cancel({orderId, side, status, userId});
+                        return {
+                            success: true,
+                        }
+                        
+                    },
+                    default:
+                        throw new Error('invalid service type');
+                }
+            case side.SERVER:     // server
+        
+                break;
+            default:
+                throw new Error("invalid side");
         }
-        // switch(event.serviceType) {
-        //     case 1:
-        //         create();
-        //         break;
-        //     case 2:
-        //         cancel();
-        //     case 3:
-        //         complete();
-        //     case 4:
-        //         evaluate();
-        // }
     } catch(e) {
+        code = e.code ? e.code : -1;
+        let error = e.error ? e.error : e;
         return {
             success: false,
-            error: e,
+            code,
+            error,
         }
     }
-	
-	
-	//返回数据给客户端
+    
 };
 
 
-async function create(arg) {
+async function initial(arg) {
     
     const createrId = arg.userId;
+    const serverId = null;
     
     const _id = (await uniCloud.callFunction({
         name: 'createId',
@@ -126,20 +131,145 @@ async function create(arg) {
         }
     })).result;
     
-    const status = 1;
+    const status = _orderStatus.INITIALING;
     const timestamp = Number(new Date());
     
-    const res = await order.add({
+    const res = await activeOrder.add({
         _id,
         createrId,
+        serverId,
         status,
         timestamp,
         ...arg.order,
     })
     
     return res.id;
-  
-    
 }
 
+async function create(arg) {
+    
+    const {
+        orderId
+    } = arg;
+    
+    await activeOrder.doc(orderId).update({
+        status: _orderStatus.CREATED,
+    })
+}
 
+async function evaluate(opt) {
+    const {
+        side, orderId, score, comment
+    } = opt;
+    
+    let sideField;
+    let scoreField;
+    let commentField;
+    switch(opt.side) {
+        case side.CREATER: 
+            sideField = 'hasCreaterComment';
+            scoreField = 'createrScore';
+            commentField = 'createrComment';
+            break;
+        case side.SERVER:
+            sideField = 'hasServerComment';
+            scoreField = 'serverScore';
+            commentField = 'serverComment';
+        default:
+    }
+    await db.runTransaction(async transaction => {
+        try {
+            await transaction.collection('inactive-order').doc(orderId).update({
+                [sideField]: true
+            })
+            await transaction.collection('order-comment').doc(orderId).update({
+                [scoreField]: score,
+                [commentField]: comment,
+            })
+        } catch(e) {
+            transaction.rollback({code: -1, error: e});
+        }
+    })
+}
+
+async function cancel(arg) {
+    const {
+        side, orderId, status,
+    } = arg;
+    
+    switch(status) {
+        case _orderStatus.INITIALING:
+            await inactiveOrder.doc(orderId).remove();
+            break;
+        case _orderStatus.CREATED:
+            await db.runTransaction(async transaction => {
+                try {
+                    await res = transaction.collection('activeOrder').doc(orderId).get();
+                    const order = res.data[0];
+                    if (order.status != _orderStatus.CREATED) {
+                        transaction.rollback({code: -2, error: 'already accepted'})
+                    }
+                    const returnAmount = getTotalCost(order.cost) - order.deposit;
+                    await transaction.collection('activeOrder').doc(orderid).update({
+                        status: _orderStatus.CALCELED,
+                    })
+                    await transaction.collection('uni-id-users').doc(order.createrId).update({
+                        balance: dbCmd.inc(returnAmount);
+                    })
+                }
+            })
+            break;
+        case _orderStatus.ACCEPTED:
+            await db.runTransaction(async transaction => {
+                try {
+                    await res = transaction.collection('activeOrder').doc(orderId).get();
+                    const order = res.data.length() == 1 ? res.data[0] : null;
+                    if (order == null || order.status != _orderStatus.ACCEPTED) {
+                        transaction.rollback({code: -2, error: 'already canceled or serving'});
+                    }
+                    const totalCost = getTotalCost(order.cost);
+                    let createrReturn = side == 0 ? totalCost - order.deposit : totalCost + order.deposit;
+                    let serverReturn = side == 0 ? 2 * order.deposit : 0;
+                    await transaction.collection('uni-id-users').doc(order.createrId).update({
+                        balance: dbCmd.inc(createrReturn);
+                    });
+                    await transaction.collection('uni-id-users').doc(order.serverId).update({
+                        balance: dbCmd.inc(serverReturn);
+                    })
+                    order.cancelSide = side;
+                    order.status = _orderStatus.CANCELED;
+                    await transaction.collection('inactiveOrder').add(order);
+                    await transaction.collection('activeOrder').remove();
+                }
+            })
+            break;
+        case _orderStatus.SERVING:
+            await db.runTransaction(async transaction => {
+                try {
+                    await res = transaction.collection('activeOrder').doc(orderId).get();
+                    const order = res.data.length() == 1 ? res.data[0] : null;
+                    if (order == null || order.status != _orderStatus.SERVING) {
+                        transaction.rollback({code: -2, error: 'already completed'});
+                    }
+                    const cancelSide = side;
+                    await transaction.collection('activeOrder').doc(orderId).update({
+                        cancelSide,
+                        status: _orderStatus.CANCELING;
+                    })
+                }
+            })
+            break;
+        default:
+    }
+    
+    db.runTransaction(async transaction => {
+        try {
+            transaction.collection('')
+        }
+    })
+    
+    switch(side) {
+        
+    }
+    
+}
