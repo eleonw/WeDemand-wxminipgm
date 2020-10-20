@@ -146,8 +146,70 @@ export const orderAssistant_creater = {
         }
     },
     
-    cancel: async function(opt) {
+    evaluate: async function(opt) {
+        const {
+            orderId, score, comment
+        } = opt;
+        const serviceType = 3;
+        const side = 0;
+        let res;
+        try {
+            res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    serviceType,
+                    orderId,
+                    score,
+                    comment,
+                    side,
+                }
+            })
+            return res.result;
+        } catch(e) {
+            return {
+                success: false,
+                code: -1,
+                error: e,
+            }
+        }
         
+    }
+    
+    cancel: async function(opt) {
+        const {
+            orderId, status
+        } = opt;
+        const userId = userInfo._id;
+        const serviceType = 4;
+        let res;
+        try {
+            res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    serviceType,
+                    orderId,
+                    status,
+                    userId
+                }
+            })
+            return res.result;
+        } catch(e) {
+            return {
+                success: false,
+                code: -1,
+                error: e
+            }
+        }
+    },
+    
+    getOrderList: async function(opt) {
+        const {
+            limit, skip
+        } = opt;
+        const userId = userInfo._id;
+        let status = opt.status;
+        uni
+
     }
     
 }

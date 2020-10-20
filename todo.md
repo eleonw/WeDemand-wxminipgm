@@ -12,7 +12,7 @@ myOrderPage.buttonClick
 
   return {success, code: -1 other -2 inconsistantStatus }
 
-- [x] orderAssistant_creater.evaluate() cloud.orderService(serviceType = 3, orderId, score, comment)
+- [x] orderAssistant_creater.evaluate() cloud.orderService(serviceType = 3, orderId, score, comment，side)
 
   return {success, code;-1 other -2 inconsisitantStatus}		错误都只实现了了-1
 

@@ -22,6 +22,7 @@ const serviceType_creater = {
     CREATE: 2,
     EVALUATE: 3,
     CANCEL: 4,
+    GET: 5,
 }
 
 const side = {
@@ -260,16 +261,6 @@ async function cancel(arg) {
             })
             break;
         default:
-    }
-    
-    db.runTransaction(async transaction => {
-        try {
-            transaction.collection('')
-        }
-    })
-    
-    switch(side) {
-        
     }
     
 }
