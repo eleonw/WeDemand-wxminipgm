@@ -12,7 +12,7 @@ function Order(arg={}) {
     this.serverId = arg.serverId;
     
     this.createTime = arg.createTime;
-    this.expireTime = arg.expireTIme;
+    this.expireTime = arg.expireTime;
     
     this.startTime = arg.startTime;
     this.endTime = arg.endTime;
@@ -20,7 +20,10 @@ function Order(arg={}) {
     this.couponId = arg.couponId,
     this.cost = arg.cost;
     
+    this.commentId = arg.commentId;
+    
     this.status = arg.status ? arg.status : orderStatus.INITIALING;
+    this.sensitiveInfo = arg.sensitiveInfo;
 
 }
 
@@ -62,6 +65,7 @@ const testOrder_HelpDeliver = new Order_HelpDeliver({
     },
     startTime: 1598827512653,
     endTime: 1598827522653,
+    expireTime: 1598827522653,
     status: orderStatus.CREATED,
     note: '没有什么要注意的',
     itemInfo: {
@@ -73,10 +77,11 @@ const testOrder_HelpDeliver = new Order_HelpDeliver({
 function Order_HelpBuy(arg={}) {
     const {
         _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, commodityDesc, 
-        address, buyingLocation
+        address, buyingLocation, sensitiveInfo,
     } = arg;
     
-    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, serviceType: serviceType.HELP_BUY});
+    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, 
+        cost, status, sensitiveInfo, serviceType: serviceType.HELP_BUY});
     
     this.commodityDesc = commodityDesc;
     this.address = new Address(address);
@@ -99,6 +104,7 @@ const testOrder_HelpBuy = new Order_HelpBuy({
     commodityDesc: "这是商品描述",
     address: Address.defaultAddress,
     buyingLocation: Location.defaultLocation,
+    expireTime: 1598827522653,
     
 })
 
@@ -106,11 +112,11 @@ const testOrder_HelpBuy = new Order_HelpBuy({
 
 function Order_OtherService(arg={}) {
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, address, serviceDesc
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, address, serviceDesc, sensitiveInfo
     } = arg;
     
     Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, 
-        cost, status, serviceType: serviceType.OTHER_SERVICE});
+        cost, status, serviceType: serviceType.OTHER_SERVICE}, sensitiveInfo);
     this.address = new Address(address);
     this.serviceDesc = serviceDesc;
 }
@@ -121,6 +127,7 @@ const testOrder_OtherService = new Order_OtherService({
     _id: "001015985274570670006863",
     startTime: 1598837512653,
     endTime: 1598837522653,
+    expireTime: 1598827522653,
     cost: {
        basic: 1,
        tip: 4,

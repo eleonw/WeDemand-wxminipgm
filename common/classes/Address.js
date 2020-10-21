@@ -27,7 +27,7 @@ Address.prototype.hasSex = function() {
     return this.sex == 0 || this.sex == 1;
 };
 
-Address.prototype.hasValidmobile =  function() {
+Address.prototype.hasValidMobile =  function() {
     return this.mobile && (this.mobile != '') && (this.mobile.length) == 11 && !isNaN(Number(this.mobile));
 };
 

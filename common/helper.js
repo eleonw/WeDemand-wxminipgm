@@ -87,13 +87,18 @@ export const formatNumber = function(value, strLength) {
     }
 }
 
+
 export const getTimeString = function(arg) {
     
     const {
-        timestamp, substitude, suffix
+        timestamp, substitude, suffix, simple
     } = arg;
     
     let date = new Date(timestamp);
+    
+    if (simple) {
+        return (date.getMonth() + 1) + '月' + date.getDate() + '日' +  formatNumber(date.getHours(), 2) + ":" + formatNumber(date.getMinutes(), 2);
+    }
     
     if (date - (new Date()) > 0) {
         const hour = formatNumber(date.getHours(), 2);

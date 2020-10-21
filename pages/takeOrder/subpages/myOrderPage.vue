@@ -16,9 +16,11 @@
     import eventBus from '../../makeOrder/eventBus.js';
     
     import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js';
-    import {orderStatus} from '@/common/globalData.js';
+    import { orderStatus } from '@/common/globalData.js';
     
     import { promisify } from '@/common/helper.js';
+    
+    let that;
     
 	export default {
     name: 'myOrderPage',
@@ -71,11 +73,80 @@
 			}
 		},
 		methods: {
-			
-		}
+			navigateBack: function() {
+                uni.navigateBack({
+                })
+            },
+            
+            updateStatusShowMap: function(...visibleStatus) {
+                if (visibleStatus.length == 0) {
+                    for (let status in that.orderStatusShowMap) {
+                        that.orderStatusShowMap[status] = true;
+                    }
+                    return;
+                }
+                for (let status in that.orderStatusShowMap) {
+                    that.orderStatusShowMap[status] = false;
+                }
+                for (let status of visibleStatus) {
+                    that.orderStatusShowMap[status] = true;
+                }
+            },
+            
+            switchTab: function(e) {
+                switch(e.index) {
+                    case 0:
+                        that.updateStatusShowMap();
+                        break;
+                    case 1:
+                        that.updateStatusShowMap(orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING);
+                        break;
+                    case 2:
+                        that.updateStatusShowMap(orderStatus.EVALUATING);
+                        break;
+                    case 3:
+                        that.updateStatusShowMap(orderStatus.COMPLETED, orderStatus.CANCELED);
+                        break;
+                    case 4:
+                        that.updateStatusShowMap(orderStatus.EXCEPTION);
+                        break;
+                    default:
+                }
+            }
+		},
+        beforeCreate: function() {
+            that = this;
+        }
 	}
 </script>
 
-<style>
-
+<style lang="scss">
+    
+    .page {
+        padding-top:  calc(var(--height-navbar) + var(--height-toptabbar));
+        padding-bottom: calc(var(--height-tabbar) + 20rpx);
+        
+        .topTabBar {
+            z-index: 1;
+            position: fixed;
+            top: var(--height-navbar);
+            left: 0;
+            width: 100vw;
+            background-color: var(--color-main);
+            color: white;
+        }
+        
+        .orderCard {
+            margin: 30rpx 0;
+        }
+    }
+    
+    
+    
+    .selector {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+    }
 </style>

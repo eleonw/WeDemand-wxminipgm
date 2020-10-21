@@ -138,6 +138,7 @@
                 startTime: null,
                 endTime: null,
                 itemInfo: {},
+                sensitiveInfo: {},
                 note: '',
                 
                 coupon: null,
@@ -266,6 +267,7 @@
                 const startTime = page.startTime;
                 const endTime = page.endTime;
                 const itemInfo = page.itemInfo;
+                const sensitiveInfo = page.sensitiveInfo;
                 const note = page.note;
                 const couponId = page.coupon ? page.coupon.id : null;
                 const expireTime = page.expireTime;

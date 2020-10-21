@@ -60,9 +60,6 @@
                 }
             }
         },
-        created: function() {
-            console.log(this.fontSize)
-        }
 	}
 </script>
 

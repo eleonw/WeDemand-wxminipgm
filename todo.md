@@ -8,7 +8,7 @@ myOrderPage.buttonClick
 
   return {success,  code:  -1 other -2 inconsistantStatus }
 
-- [ ] orderAssistant_creater.cancel() cloud.orderservive({serviceType=4, orderId,  status, userId})
+- [x] orderAssistant_creater.cancel() cloud.orderservive({serviceType=4, orderId,  status, userId})
 
   return {success, code: -1 other -2 inconsistantStatus }
 

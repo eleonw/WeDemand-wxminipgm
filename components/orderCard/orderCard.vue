@@ -98,6 +98,14 @@
                 <view class="title">小费</view>
                 <view>{{ orderObj.cost.tip }}￥</view>
             </view>
+            
+            <view class="row additional">
+                订单编号：{{ orderObj._id }}
+            </view>
+            
+            <view class="row additional">
+                取消时间：{{ getCancelTimeString() }}
+            </view>
                     
         </view>
         
@@ -184,8 +192,13 @@
                     switch(that.orderObj.status) {}
                 }
             },
+            
             clickButton: function() {
                 this.$emit('buttonClick')
+            },
+            
+            getCancelTimeString: function() {
+                return getTimeString({timestamp: that.orderObj.expireTime, simple: true});
             }
         },
         created: function() {
@@ -267,6 +280,12 @@
                 border-left: var(--color-main) 1rpx solid;
             }
         
+        }
+        
+        .additional {
+            color: grey;
+            font-size: .8em;
+            letter-spacing: .1em;
         }
         
         .button {
