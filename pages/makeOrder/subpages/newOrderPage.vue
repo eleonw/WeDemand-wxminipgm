@@ -109,7 +109,7 @@
         	return {
                 longitude: 113,
                 latitude: 40,
-        		tabIndex: 0,
+        		tabIndex: 1,
                 tabs: [
                     {
                         index: serviceType.HELP_DELIVER,

@@ -71,10 +71,10 @@
     import Location from '@/common/classes/Location.js';
     import Address from '@/common/classes/Address.js';
     
-    import { clone } from '@/common/helper.js';
+    import { clone, promisify } from '@/common/helper.js';
     import { addToAddressBook } from '@/common/server.js';
     
-    import Vue from 'vue';
+    // import Vue from 'vue';
 
     
     let page;
@@ -130,14 +130,14 @@
                         argument.longitude = page.address.location.longitude;
                         argument.latitude = page.address.location.latitude;
                     }
-                    let res = await uni.chooseLocation(argument);
+                    let res = await promisify(uni.chooseLocation, argument); 
                     console.log(res)
                     
                     const location = page.address.location;
-                    location.longitude = res[1].longitude;
-                    location.latitude = res[1].latitude;
-                    location.address = res[1].address;
-                    location.name = res[1].name;
+                    location.longitude = res.longitude;
+                    location.latitude = res.latitude;
+                    location.address = res.address;
+                    location.name = res.name;
                     
                 } catch(e) {
                     console.log(e)
@@ -147,7 +147,7 @@
                     })
                 }
                 
-                console.log(location)
+        
             },
             
             sexChange: function(e) {

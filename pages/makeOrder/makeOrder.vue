@@ -38,7 +38,7 @@
         },
 		data() {
 			return {
-        selectedTabIndex: 1,
+        selectedTabIndex: 0,
 				mainTabs: [
                     {
                         index: 0,
@@ -102,23 +102,5 @@
 </script>
 
 <style>
-    
-    /* map {
-        z-index: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-    }
 
-    #newOrderTabBar {
-        z-index: 1;
-        position: fixed;
-        top: 0;
-        left: 0;
-    }    */
-
-
-    
 </style>
