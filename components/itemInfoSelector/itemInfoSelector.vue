@@ -18,12 +18,12 @@
                 
                 <view v-if="type=='快递'" class="section">
                     <view class="sectionTitle">快递信息</view>
-                    <textarea class="expressInfo" :value="expressInfo" placeholder="请根据快递提取方式提供快递收件人姓名及手机或粘贴短信" />
+                    <textarea class="expressInfo" :value="_sensitiveInfo.expressInfo" @input="inputExpressInfo" placeholder="请根据快递提取方式提供快递收件人姓名及手机或粘贴短信" />
                 </view>
                 
                 <view v-else-if="type=='外卖'" class="section">
                     <view class="sectionTitle">外卖信息</view>
-                    <textarea class="expressInfo" :value="expressInfo" placeholder="请提供取外卖所需的信息,如取件姓名电话和骑手电话等" />
+                    <textarea class="expressInfo" :value="_sensitiveInfo.takeAwayInfo" @input="inputTakeAwayInfo" placeholder="请提供取外卖所需的信息,如取件姓名电话和骑手电话等" />
                 </view>
                 
                 
@@ -62,17 +62,22 @@
 	export default {
         name: 'itemInfoSelector',
         props: {
-            value: {
+            itemInfo: {
                 type: Object,
-                default: null,
+                required: true,
+            },
+            sensitiveInfo: {
+                type: Object,
+                required: true,
             }
         },
 		data() {
 			return {
+                _sensitiveInfo: {},
+                
 				typeList: ['快递', '外卖', '书籍文件', '生活用品', '钥匙', '其他'],
                 type: null,
                 
-                additionalInfo: null,
                 otherType: null,
                 
                 itemValueList: ['50元以下', '50-200元', '200元以上'],
@@ -87,6 +92,12 @@
 			};
 		},
         methods: {
+            inputExpressInfo: function(e) {
+                that._sensitiveInfo.expressInfo = e.detail.value;
+            },
+            inputTakeAwayInfo: function(e) {
+                that._sensitiveInfo.takeAwayInfo = e.detail.value;
+            },
             fadeOut: function() {
                 that.outFlag = true;
                 setTimeout(function() {
@@ -103,18 +114,24 @@
             },
             
             selectType: function(type) {
-                if (type == '快递' || type == '外卖') {
-                    that.additionalInfo = '';
-                } else {
-                    that.additionalInfo = null;
+                that.type = type;
+                const infoObj = that._sensitiveInfo;
+                
+                if (type != '快递') {
+                    delete infoObj.expressInfo;
+                }
+                if (type != '外卖') {
+                    delete infoObj.takeAwayInfo;
                 }
                 
                 if (type == '其他') {
                     that.otherType = '';
+                    return;
                 } else {
                     that.otherType = null;
                 }
-                that.type = type;
+                
+                console.log(infoObj)
             },
             
             selectValue: function(value) {
@@ -129,9 +146,9 @@
                 let notice = null;
                 if (!that.type) {
                     notice = '请选择物品种类';
-                } else if ((that.type=='快递') && (that.additionalInfo.trim()=='')) {
+                } else if ((that.type=='快递') && (!that._sensitiveInfo.expressInfo || that._sensitiveInfo.expressInfo.trim()=='')) {
                     notice = '请填写快递取件信息';
-                } else if ((that.type=='外卖') && (that.additionalInfo.trim()=='')) {
+                } else if ((that.type=='外卖') && (!that._sensitiveInfo.takeAwayInfo || that._sensitiveInfo.takeAwayInfo.trim()=='')) {
                     notice = '请填写取外卖信息'
                 } else if ((that.type=='其他') && (that.otherType.trim() == '')) {
                     notice = '请填写具体物品种类';
@@ -146,35 +163,24 @@
                     });
                     return;
                 } else {
-                    let type;
-                    let additionalInfo = that.additionalInfo;
-                    let itemValue = that.itemValue;
-                    let weight = that.weight;
+                    let {
+                        type, itemValue, weight
+                    } = that;
                     
-                    
-                    if (that.type == '其他') {
+                    if (type == '其他') {
                         type = that.otherType;
-                    } else {
-                        type = that.type;
-                    }
-                    
+                    } 
                     
                     that.fadeOut();
-                    that.$emit('input', {
-                        type,
-                        additionalInfo,
-                        itemValue,
-                        weight,
-                    });
                     
                     that.$emit('exit', {
                         valid: true,
-                        value: {
+                        itemInfo: {
                             type,
-                            additionalInfo,
                             itemValue,
                             weight,
-                        }
+                        },
+                        sensitiveInfo: that._sensitiveInfo,
                     });
                     
                 }
@@ -191,18 +197,18 @@
             that.MIN_WEIGHT = weightAssistant.MIN_WEIGHT;
             that.MAX_WEIGHT = weightAssistant.MAX_WEIGHT;
             
-            if (Object.keys(that.value).length != 0) {
-                if (that.typeList.includes(that.value.type)) {
-                    that.type = that.value.type;
+            if (Object.keys(that.itemInfo).length != 0) {
+                if (that.typeList.includes(that.itemInfo.type)) {
+                    that.type = that.itemInfo.type;
                 } else {
                     that.type = '其他',
-                    that.otherType = that.value.type;
+                    that.otherType = that.itemInfo.type;
                 }
-                that.additionalInfo = that.value.additionalInfo;
-                that.itemValue = that.value.itemValue;
-                that.weight = that.value.weight;
-                
+                that.itemValue = that.itemInfo.itemValue;
+                that.weight = that.itemInfo.weight;
             }
+            that._sensitiveInfo = that.sensitiveInfo;
+            console.log(that.sensitiveInfo);
         }
 	}
 </script>
