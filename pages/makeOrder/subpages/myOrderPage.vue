@@ -3,7 +3,7 @@
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
         
-        <orderCard v-for="(order,index) in orders" :key="index" class="orderCard" 
+        <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard" 
             :order="order" v-if="orderStatusShowMap[order.status]" @buttonClick="buttonClick(index)"> </orderCard>
         
         <view class="loadMore"></view>
@@ -37,7 +37,7 @@
         },
 		data() {
 			return {
-                orders: [
+                orderList: [
                     testOrder_HelpBuy,
                     testOrder_HelpDeliver,
                     testOrder_OtherService
@@ -238,7 +238,7 @@
 <style>
     .page {
         padding-top:  calc(var(--height-navbar) + var(--height-toptabbar));
-        padding-bottom: var(--height-navbar)
+        padding-bottom: calc(var(--height-tabbar) + 20rpx);
     }
 
     .topTabBar {

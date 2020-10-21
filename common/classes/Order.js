@@ -62,7 +62,7 @@ const testOrder_HelpDeliver = new Order_HelpDeliver({
     },
     startTime: 1598827512653,
     endTime: 1598827522653,
-    status: 0,
+    status: orderStatus.CREATED,
     note: '没有什么要注意的',
     itemInfo: {
         weight: '5kg',
@@ -95,7 +95,7 @@ const testOrder_HelpBuy = new Order_HelpBuy({
        basic: 1,
        tip: 4,
     },
-    status: 1,
+    status: orderStatus.CREATED,
     commodityDesc: "这是商品描述",
     address: Address.defaultAddress,
     buyingLocation: Location.defaultLocation,
@@ -125,7 +125,7 @@ const testOrder_OtherService = new Order_OtherService({
        basic: 1,
        tip: 4,
     },
-    status: 1,
+    status: orderStatus.CREATED,
     address: Address.defaultAddress,
     serviceDesc: "这是服务信息",
     

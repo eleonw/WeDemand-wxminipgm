@@ -173,7 +173,7 @@ export const orderAssistant_creater = {
             }
         }
         
-    }
+    },
     
     cancel: async function(opt) {
         const {
