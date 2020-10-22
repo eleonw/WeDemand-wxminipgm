@@ -18,12 +18,12 @@
                 
                 <view v-if="type=='快递'" class="section">
                     <view class="sectionTitle">快递信息</view>
-                    <textarea class="expressInfo" :value="_sensitiveInfo.expressInfo" @input="inputExpressInfo" placeholder="请根据快递提取方式提供快递收件人姓名及手机或粘贴短信" />
+                    <textarea class="expressInfo" :value="_sensitiveInfo.expressInfo" @input="inputExpressInfo" placeholder="请根据快递提取方式提供快递收件人姓名及手机或粘贴短信"/>
                 </view>
                 
                 <view v-else-if="type=='外卖'" class="section">
                     <view class="sectionTitle">外卖信息</view>
-                    <textarea class="expressInfo" :value="_sensitiveInfo.takeAwayInfo" @input="inputTakeAwayInfo" placeholder="请提供取外卖所需的信息,如取件姓名电话和骑手电话等" />
+                    <textarea class="expressInfo" :value="_sensitiveInfo.takeAwayInfo" @input="inputTakeAwayInfo" placeholder="请提供取外卖所需的信息,如取件姓名电话和骑手电话等"/>
                 </view>
                 
                 

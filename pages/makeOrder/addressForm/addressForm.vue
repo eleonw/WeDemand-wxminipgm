@@ -153,6 +153,7 @@
                 }
             },
             
+            
             sexChange: function(e) {
                 this.address.sex = e.detail.value;
             },

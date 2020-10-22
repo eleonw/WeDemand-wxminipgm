@@ -2,6 +2,7 @@
 const db = uniCloud.database();
 const activeOrder = db.collection('active-order');
 const inactiveOrder = db.collection('inactive-order');
+const acceptedOrder = db.collection('accepted-order');
 const orderComment = db.collection('order-comment');
 const dbCmd = db.command;
 
@@ -15,6 +16,24 @@ const _orderStatus = {
     CANCELING: -3,
     CANCELED: -2,
     EXCEPTION: -1,
+}
+
+function isActiveStatus(status) {
+    return status == _orderStatus.INITIALING
+        || status == _orderStatus.ACCEPTED
+        || status == _orderStatus.SERVING
+        || status == _orderStatus.CANCELING
+        || status == _orderStatus.EXCEPTION
+}
+
+function isCreatedStatus(status) {
+    return status == _orderStatus.CREATED;
+}
+
+function isInactiveStatus(status) {
+    return status == _orderStatus.EVALUATING 
+        || status == _orderStatus.COMPLETED
+        || status == _orderStatus.CANCELED
 }
 
 const serviceType_creater = {
@@ -95,7 +114,19 @@ exports.main = async (event) => {
                         return {
                             success: true,
                         }
-                        
+                    },
+                    case serviceType_creater.GET: {
+                        const {
+                            status, userId, _getListRec, limit
+                        } = event;
+                        let res = await getCreaterOrderList({
+                            status, userId, _getListRec, limit
+                        })
+                        return {
+                            orderList: res.orderList,
+                            _getListRec: res._getListRec,
+                            success: true
+                        }
                     },
                     default:
                         throw new Error('invalid service type');
@@ -200,30 +231,45 @@ async function cancel(arg) {
     
     switch(status) {
         case _orderStatus.INITIALING:
-            await inactiveOrder.doc(orderId).remove();
+            await db.runTransaction(async transaction => {
+                try {
+                    await res = transaction.collection('active-order').doc(orderId).get();
+                    if (res.data.length == 0 || res.data[0].status != _orderStatus.INITIALING) {
+                        transaction.rollback({
+                            code: -2
+                        })
+                    }
+                    await transaction.collection('active-order').doc(orderId).remove();
+                } catch(e) {
+                    transaction.rollback({code: -1, error: e});
+                }
+            })
+            
             break;
         case _orderStatus.CREATED:
             await db.runTransaction(async transaction => {
                 try {
-                    await res = transaction.collection('activeOrder').doc(orderId).get();
-                    const order = res.data[0];
-                    if (order.status != _orderStatus.CREATED) {
-                        transaction.rollback({code: -2, error: 'already accepted'})
+                    await res = transaction.collection('created-order').doc(orderId).get();
+                    if (res.data.length == 0) {
+                        transaction.rollback({code: -2});
                     }
+                    const order = res.data[0];
+                    order.status = _orderStatus.CANCELED;
                     const returnAmount = getTotalCost(order.cost) - order.deposit;
-                    await transaction.collection('activeOrder').doc(orderid).update({
-                        status: _orderStatus.CALCELED,
-                    })
+                    await transaction.collection('inactive-order').add(order);
+                    await transaction.collection('createdOrder').doc(orderId).remove();
                     await transaction.collection('uni-id-users').doc(order.createrId).update({
                         balance: dbCmd.inc(returnAmount);
                     })
+                } catch(e) {
+                    transaction.rollback({code: -1, error: e});
                 }
             })
             break;
         case _orderStatus.ACCEPTED:
             await db.runTransaction(async transaction => {
                 try {
-                    await res = transaction.collection('activeOrder').doc(orderId).get();
+                    await res = transaction.collection('active-order').doc(orderId).get();
                     const order = res.data.length() == 1 ? res.data[0] : null;
                     if (order == null || order.status != _orderStatus.ACCEPTED) {
                         transaction.rollback({code: -2, error: 'already canceled or serving'});
@@ -239,28 +285,96 @@ async function cancel(arg) {
                     })
                     order.cancelSide = side;
                     order.status = _orderStatus.CANCELED;
-                    await transaction.collection('inactiveOrder').add(order);
-                    await transaction.collection('activeOrder').remove();
+                    await transaction.collection('inactive-order').add(order);
+                    await transaction.collection('active-order').doc(orderId).remove();
+                } catch(e) {
+                    transaction.rollback({code: -1, error: e});
                 }
             })
             break;
         case _orderStatus.SERVING:
             await db.runTransaction(async transaction => {
                 try {
-                    await res = transaction.collection('activeOrder').doc(orderId).get();
+                    await res = transaction.collection('active-order').doc(orderId).get();
                     const order = res.data.length() == 1 ? res.data[0] : null;
                     if (order == null || order.status != _orderStatus.SERVING) {
                         transaction.rollback({code: -2, error: 'already completed'});
                     }
                     const cancelSide = side;
-                    await transaction.collection('activeOrder').doc(orderId).update({
+                    await transaction.collection('active-order').doc(orderId).update({
                         cancelSide,
                         status: _orderStatus.CANCELING;
                     })
+                } catch(e) {
+                    transaction.rollback({code: -1, error: e});
                 }
             })
             break;
         default:
     }
     
+}
+
+async function getCreaterOrderList(opt) {
+    const {
+        status, userId, limit
+    } = opt;
+    const _getListRec = opt._getListRec ? opt._getListRec : 
+    if (!opt._getListRec) {
+        
+    }
+    const activeStatus = [];
+    const inactiveStatus = [];
+    let hasCreated = false;
+    
+    for (let astatus of status) {
+        if (isActiveStatus(astatus)) {
+            activeStatus.push(astatus);
+        } else if (isInactiveStatus(astatus)) {
+            inactiveStatus.push(astatus);
+        } else if (astatus == _orderStatus.CREATED) {
+            hasCreated = true;
+        }
+    }
+    
+    const resList = [];
+    
+    if (activeStatus.length > 0) {
+        let res = await activeOrder.where({
+            status: dbCmd.in(activeStatus),
+            createrId: userId,
+        }).skip(_getListRec.activeSkip).limit(limit).get();
+        
+        let count = res.data.length;
+        if (count > 0) {
+            _getListRec.activeSkip = _getListRec.activeSkip + count;
+            resList.push(...res.data);
+        }
+    }
+    
+    if (hasCreated) {
+        let res = await acceptedOrder.where({
+            createrId: userId,
+        }).skip(_getListRec.createdSkip).limit(limit).get();
+        let count = res.data.length;
+        if (count > 0) {
+            _getListRec.acceptedSkip = _getListRec.acceptedSkip + count;
+            resList.push(...res.data);
+        }
+    }
+    if (inactiveStatus.length > 0) {
+        let res = await inactiveOrder.where({
+            status: dbCmd.in(inactiveStatus),
+            createrId: userId,
+        }).skip(_getListRec.inactiveSkip).limit(limit).get();
+        let count = res.data.length;
+        if (count > 0) {
+            _getListRec.inactiveSkip = _getListRec.inactiveSkip + count;
+            resList.push(...res.data);
+        }
+    }
+    return {
+        orderList: resList,
+        _getListRec
+    }
 }
