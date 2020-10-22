@@ -50,28 +50,29 @@ const side = {
 }
 
 function getDeposit(cost) {
- 
-    res = Math.ceil((cost * 10) * depositRate) / 10
+    const depositRate = 0.25;
+    let res = Math.ceil(cost * depositRate * 10) / 10;
+    return res;
 }
 
 function getTotalCost(cost) {
     let res = 0;
-    for (item in cost) {
-        res += cost[item];
+    for (let item in cost) {
+        res = res + cost[item];
     }
+    return res;
 }
 
 exports.main = async (event) => {
     
     const userId = event.userId;
-    
     try {
         switch(event.side) {
             case side.CREATER:     // creater
                 switch(event.serviceType) {
                     case serviceType_creater.INITIAL:  {// initial
-                        let 
                         const order = event.order;
+                        console.log(order);
                         order.deposit = getDeposit(getTotalCost(order.cost));
                         const orderId = await initial({
                             userId,
@@ -81,9 +82,8 @@ exports.main = async (event) => {
                             orderId,
                             success: true
                         }
-                      
                     }
-                    case serviceType_creater.CREATE: 
+                    case serviceType_creater.CREATE: {
                         const {
                             orderId
                         } = event;
@@ -103,7 +103,7 @@ exports.main = async (event) => {
                         return {
                             success: true,
                         }
-                    },
+                    }
                     case serviceType_creater.CANCEL: {
                         const {
                             orderId, status, userId
@@ -114,7 +114,7 @@ exports.main = async (event) => {
                         return {
                             success: true,
                         }
-                    },
+                    }
                     case serviceType_creater.GET: {
                         const {
                             status, userId, _getListRec, limit
@@ -128,18 +128,18 @@ exports.main = async (event) => {
                             _getListRec: res._getListRec,
                             success: true
                         }
-                    },
+                    }
                     default:
                         throw new Error('invalid service type');
                 }
+                break;
             case side.SERVER:     // server
-        
                 break;
             default:
                 throw new Error("invalid side");
         }
     } catch(e) {
-        code = e.code ? e.code : -1;
+        const code = e.code ? e.code : -1;
         let error = e.error ? e.error : e;
         return {
             success: false,
@@ -150,32 +150,33 @@ exports.main = async (event) => {
     
 };
 
-
 async function initial(arg) {
+    console.log('initial')
     
     const createrId = arg.userId;
     const serverId = null;
     
-    const _id = (await uniCloud.callFunction({
+    const timestamp = Number(new Date());
+    let res = await uniCloud.callFunction({
         name: 'createId',
         data: {
-            timestamp: Number(new Date()),
+            timestamp,
             type: 1,
         }
-    })).result;
+    });
+    const _id = res.result.orderId;
     
     const status = _orderStatus.INITIALING;
-    const timestamp = Number(new Date());
-    
-    const res = await activeOrder.add({
+    const createTime = Number(new Date());
+    res = await activeOrder.add({
         _id,
         createrId,
         serverId,
         status,
-        timestamp,
+        createTime,
         ...arg.order,
     })
-    
+    console.log(res);
     return res.id;
 }
 
@@ -234,7 +235,7 @@ async function cancel(arg) {
         case _orderStatus.INITIALING:
             await db.runTransaction(async transaction => {
                 try {
-                    await res = transaction.collection('active-order').doc(orderId).get();
+                    const res = await transaction.collection('active-order').doc(orderId).get();
                     if (res.data.length == 0 || res.data[0].status != _orderStatus.INITIALING) {
                         transaction.rollback({
                             code: -2
@@ -250,7 +251,7 @@ async function cancel(arg) {
         case _orderStatus.CREATED:
             await db.runTransaction(async transaction => {
                 try {
-                    await res = transaction.collection('created-order').doc(orderId).get();
+                    let res = await transaction.collection('created-order').doc(orderId).get();
                     if (res.data.length == 0) {
                         transaction.rollback({code: -2});
                     }
@@ -260,7 +261,7 @@ async function cancel(arg) {
                     await transaction.collection('inactive-order').add(order);
                     await transaction.collection('createdOrder').doc(orderId).remove();
                     await transaction.collection('uni-id-users').doc(order.createrId).update({
-                        balance: dbCmd.inc(returnAmount);
+                        balance: dbCmd.inc(returnAmount)
                     })
                 } catch(e) {
                     transaction.rollback({code: -1, error: e});
@@ -270,7 +271,7 @@ async function cancel(arg) {
         case _orderStatus.ACCEPTED:
             await db.runTransaction(async transaction => {
                 try {
-                    await res = transaction.collection('active-order').doc(orderId).get();
+                    let res = await transaction.collection('active-order').doc(orderId).get();
                     const order = res.data.length() == 1 ? res.data[0] : null;
                     if (order == null || order.status != _orderStatus.ACCEPTED) {
                         transaction.rollback({code: -2, error: 'already canceled or serving'});
@@ -279,10 +280,10 @@ async function cancel(arg) {
                     let createrReturn = side == 0 ? totalCost - order.deposit : totalCost + order.deposit;
                     let serverReturn = side == 0 ? 2 * order.deposit : 0;
                     await transaction.collection('uni-id-users').doc(order.createrId).update({
-                        balance: dbCmd.inc(createrReturn);
+                        balance: dbCmd.inc(createrReturn)
                     });
                     await transaction.collection('uni-id-users').doc(order.serverId).update({
-                        balance: dbCmd.inc(serverReturn);
+                        balance: dbCmd.inc(serverReturn)
                     })
                     order.cancelSide = side;
                     order.status = _orderStatus.CANCELED;
@@ -296,7 +297,7 @@ async function cancel(arg) {
         case _orderStatus.SERVING:
             await db.runTransaction(async transaction => {
                 try {
-                    await res = transaction.collection('active-order').doc(orderId).get();
+                    let res = await transaction.collection('active-order').doc(orderId).get();
                     const order = res.data.length() == 1 ? res.data[0] : null;
                     if (order == null || order.status != _orderStatus.SERVING) {
                         transaction.rollback({code: -2, error: 'already completed'});
@@ -304,7 +305,7 @@ async function cancel(arg) {
                     const cancelSide = side;
                     await transaction.collection('active-order').doc(orderId).update({
                         cancelSide,
-                        status: _orderStatus.CANCELING;
+                        status: _orderStatus.CANCELING
                     })
                 } catch(e) {
                     transaction.rollback({code: -1, error: e});

@@ -229,14 +229,19 @@
             },
 		},
         
-        created: function() {
-            eventBus.$on('reachBottom', function() {
+        created: async function() {
+            await shareData.getList({status: that.tabs[that.tabIndex].status, renew: true});
+            await shareData.test();
+            eventBus.$on('reachBottom', async function(){
                 console.log('reachBottom received');
                 const status = that.tabs[that.tabIndex].status;
                 const renew = false;
-                shareData.getOrderList({status, renew});
+                uni.showLoading();
+                await shareData.getList({status: status, renew: false});
+                uni.hideLoading();
             })
-        }
+        },
+        
 	}
 
 </script>

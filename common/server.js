@@ -97,7 +97,7 @@ export const orderAssistant_creater = {
         }
         const side = 0;
         const serviceType = this.serviceType.INITIAL;
-        const userId = userInfo.id;
+        const userId = userInfo._id;
         
         try {
             const res = await uniCloud.callFunction({
@@ -222,8 +222,10 @@ export const orderAssistant_creater = {
                     status, limit, _getListRec, userId, serviceType
                 }
             })
+            console.log(res)
             return res.result;
         } catch(e) {
+            console.log(e)
             return {
                 success: false,
                 code: -1,

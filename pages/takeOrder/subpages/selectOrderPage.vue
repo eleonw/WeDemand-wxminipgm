@@ -34,7 +34,9 @@
 			}
 		},
 		methods: {
-			
+			navigateBack: function() {
+                uni.navigateBack()
+            }
 		},
         beforeCreate: function()  {
             that = this;

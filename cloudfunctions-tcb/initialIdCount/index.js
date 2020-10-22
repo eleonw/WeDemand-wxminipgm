@@ -10,6 +10,7 @@ exports.main = async (event, context) => {
     date.setSeconds(0);
     date.setMilliseconds(0);
     
+    
     const dateNumber = date - 0;
     for (let i = 0; i < 500; i++) {
         let res = await idCount.add({

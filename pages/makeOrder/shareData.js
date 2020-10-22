@@ -123,10 +123,9 @@ const shareData = {
     },
     
     getAddressBook: async function() {
-        console.log('get address book')
         try {
             this.addressBook = await addressBookAssistant.getAddressBook({
-                userId: userInfo.id
+                userId: userInfo._id
             });
             this.addressBookFailure = false;
         } catch(e) {
@@ -164,11 +163,17 @@ const shareData = {
     
     orderList: [],
     _getListRec: null,
-    getOrderList: async function(arg) {
-        console.log(arg)
+    
+    test: async function() {
+        console.log('hhh')
+    },
+    
+    getList: async function(arg) {
         const {
             status, renew
         } = arg;
+        console.log('status')
+        console.log(arg.renew)
         if (renew) {
             this.orderList.splice(0, this.orderList.length);
             this._getListRec = null;

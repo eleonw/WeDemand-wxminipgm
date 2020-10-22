@@ -112,7 +112,7 @@
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
-    import { orderAssistant } from '@/common/server.js';
+    import { orderAssistant_creater } from '@/common/server.js';
     import { weightAssistant, getTimeString, addAll } from '@/common/helper.js';
     
     let page;
@@ -268,7 +268,7 @@
                     basic: page.getBasicCost(),
                 }
                 
-                const res = await orderAssistant.createOrder({
+                const res = await orderAssistant_creater.initial({
                     fromAddress,
                     toAddress,
                     serviceType,

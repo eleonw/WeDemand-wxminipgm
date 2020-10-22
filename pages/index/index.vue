@@ -1,8 +1,6 @@
 <template>
 	<view class="root page">
-        
         <uni-nav-bar left-icon="none"  title="微叮当"></uni-nav-bar>
-        
         <view class="grid">
             <view class="gridItem" @click="navigateTo('makeOrder')">
                 下单入口
@@ -80,8 +78,6 @@
 </script>
 
 <style>
-
-    
     
     .grid {
         display: grid;
@@ -89,7 +85,7 @@
         background-color: orange;
         grid-gap: 10px 10px;
         
-        height: 100vw;
+        height: 20vw;
     }
     
     .gridItem {

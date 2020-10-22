@@ -1,7 +1,7 @@
 <template>
 	<view class="root page">
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
-        <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
+        <topTabBar class="topTabBar" :tabs="tabs" :value="tabIndex" size="35rpx" @switchTab="switchTab"></topTabBar>
 		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @regionchange="regionchange">
             <image src="../../../static/image/icon/location.png" class="mapIcon" :class="{'hoverMapIcon': mapIconHover, bounce: false}"></image>
             <view class="mapIconShadow" :class="{'hoverIconShadow': mapIconHover}"></view>
@@ -72,7 +72,6 @@
                             setTimeout(function() {
                                 shareData.setCurrentLocation(defaultLocation.longitude, defaultLocation.latitude);
                             }, 1000)
-                            
                         }
                     });
                     

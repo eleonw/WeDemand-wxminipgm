@@ -29,9 +29,8 @@ let idCount;
 
 exports.main = async (event) => {
 	
-    timestamp = Number(event.timestamp)
+    timestamp = Number(event.timestamp);
     timestamp = timestamp - timestamp%DAY_TIME;
-    
     try {
         idCount = await db.runTransaction(getIdCount, 5);
     } catch(e) {
@@ -44,25 +43,24 @@ exports.main = async (event) => {
     switch(event.type) {
         case 1: // order
             return {
-                success: true;
-                orderId: createOrderId();
+                success: true,
+                orderId: createOrderId()
             }
         default:
             return {
                 success: false,
-                error: new Error('unkown type: ' + event.type);
+                error: new Error('unkown type: ' + event.type)
             }
     }
     
 };
 
 async function getIdCount(transaction) {
-    
-    let result = await transaction.collection('id-count').doc(time).get();
+    let result = await transaction.collection('id-count').doc(timestamp).get();
     console.log(result)
     if (result.data) {
         try {
-            let res = await transaction.collection('id-count').doc(time).update({
+            let res = await transaction.collection('id-count').doc(timestamp).update({
                 count: cmd.inc(1)
             })
             if (res.updated != 1) {
