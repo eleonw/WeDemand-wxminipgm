@@ -163,10 +163,39 @@ const shareData = {
     },
     
     orderList: [],
-    getOrderList: async function(status, renew) {
+    _getListRec: null,
+    getOrderList: async function(arg) {
+        console.log(arg)
+        const {
+            status, renew
+        } = arg;
+        if (renew) {
+            this.orderList.splice(0, this.orderList.length);
+            this._getListRec = null;
+        }
         
+        try {
+            const res = await orderAssistant_creater.getOrderList({
+                _getListRec: this._getListRec,
+                limit: 5,
+            });
+            if (res.success) {
+                _getListRec = res._getListRec;
+                if (res.orderList.length > 0) {
+                    this.orderList.push(...res.orderList);
+                    this.orderList.sort((a, b) => {return a.createTime - b.createtime;})
+                    return {success: true, nomore: false};
+                } else {
+                    return {success: true, nomore: true};
+                }
+            } else {
+                console.log(res);
+                throw new Error();
+            }
+        } catch(e) {
+            return {success: false};
+        }
     }
-    
 }
 
 export default shareData;

@@ -47,27 +47,30 @@
                     {
                         index: 0,
                         text: '全 部',
+                        status: [orderStatus.INITIALING, orderStatus.CREATED, orderStatus.ACCEPTED, 
+                            orderStatus.SERVING, orderStatus.CANCELING, orderStatus.EXCEPTION, orderStatus.EVALUATING,
+                            orderStatus.CANCELED, orderStatus.COMPLETED]
                     },
                     {
                         index: 1,
                         text: '待服务',
+                        status: [orderStatus.INITIALING, orderStatus.CREATED]
                     },
                     {
                         index: 2,
                         text: '进行中',
+                        status: [orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING, orderStatus.EXCEPTION]
                     },
                     {
                         index: 3,
                         text: '待评价',
+                        status: [orderStatus.EVALUATING],
                     },
                     {
                         index: 4,
                         text: '已结束',
+                        status: [orderStatus.CANCELED, orderStatus.COMPLETED],
                     },
-                    {
-                        index: 5,
-                        text: '异 常',
-                    }
                 ],
                 orderList: [],
                 orderStatusShowMap: {
@@ -229,6 +232,9 @@
         created: function() {
             eventBus.$on('reachBottom', function() {
                 console.log('reachBottom received');
+                const status = that.tabs[that.tabIndex].status;
+                const renew = false;
+                shareData.getOrderList({status, renew});
             })
         }
 	}

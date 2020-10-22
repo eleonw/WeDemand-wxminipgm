@@ -72,6 +72,14 @@ export const paymentAssistant = {
 
 export const orderAssistant_creater = {
     
+    serviceType: {
+        INITIAL: 1,
+        CREATE: 2,
+        EVALUATE: 3,
+        CANCEL: 4,
+        GET: 5,
+    },
+    
     initial: async function(order) {
         
         switch(order.serviceType) {
@@ -88,7 +96,7 @@ export const orderAssistant_creater = {
                 throw new Error('invalid service type');
         }
         const side = 0;
-        const serviceType = 1;
+        const serviceType = this.serviceType.INITIAL;
         const userId = userInfo.id;
         
         try {
@@ -123,7 +131,7 @@ export const orderAssistant_creater = {
             orderId
         } = opt;
         const side = 0;
-        const serviceType = 2;
+        const serviceType = this.serviceType.CREATE;
         const userId = userInfo._id;
         try {
             const res = await uniCloud.callFunction({
@@ -134,9 +142,7 @@ export const orderAssistant_creater = {
                     orderId
                 }
             });
-            if (!res.result || !res.result.success) {
-                throw new Error(res);
-            }
+            return res.result;
         } catch(e) {
             console.log(e);
             return {
@@ -150,7 +156,7 @@ export const orderAssistant_creater = {
         const {
             orderId, score, comment
         } = opt;
-        const serviceType = 3;
+        const serviceType = this.serviceType.EVALUATE;
         const side = 0;
         let res;
         try {
@@ -180,7 +186,7 @@ export const orderAssistant_creater = {
             orderId, status
         } = opt;
         const userId = userInfo._id;
-        const serviceType = 4;
+        const serviceType = this.serviceType.CANCEL;
         let res;
         try {
             res = await uniCloud.callFunction({
@@ -204,11 +210,26 @@ export const orderAssistant_creater = {
     
     getOrderList: async function(opt) {
         const {
-            limit, skip
+            limit, _getListRec, status
         } = opt;
         const userId = userInfo._id;
-        let status = opt.status;
-        uni
+        const serviceType = this.serviceType.GET;
+
+        try {
+            const res = await uniCLoud.callFunction({
+                name: 'orderService',
+                data: {
+                    status, limit, _getListRec, userId, serviceType
+                }
+            })
+            return res.result;
+        } catch(e) {
+            return {
+                success: false,
+                code: -1,
+                error: e,
+            }
+        }
 
     }
     

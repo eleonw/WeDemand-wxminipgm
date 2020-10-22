@@ -16,7 +16,7 @@ myOrderPage.buttonClick
 
   return {success, code;-1 other -2 inconsisitantStatus}		错误都只实现了了-1
 
-- [ ] shareData.getOrderList(status, skip, limit), orderAssistant.getOrderList(status(Array), _getListRec, limit)
+- [ ] ~~shareData.getOrderList(status, skip, limit),~~ orderAssistant.getOrderList(status(Array), _getListRec, limit)
 
   return {success, code:-1 other}
 

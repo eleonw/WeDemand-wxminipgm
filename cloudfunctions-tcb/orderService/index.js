@@ -119,7 +119,8 @@ exports.main = async (event) => {
                         const {
                             status, userId, _getListRec, limit
                         } = event;
-                        let res = await getCreaterOrderList({
+
+                        const res = await getCreaterOrderList({
                             status, userId, _getListRec, limit
                         })
                         return {
@@ -319,10 +320,8 @@ async function getCreaterOrderList(opt) {
     const {
         status, userId, limit
     } = opt;
-    const _getListRec = opt._getListRec ? opt._getListRec : 
-    if (!opt._getListRec) {
-        
-    }
+    const _getListRec = !opt._getListRec || Object.keys(opt._getListRec).length==0 ? 
+        {activeSkip: 0, inactiveSkip: 0, acceptedSkip: 0} : opt._getListRec;
     const activeStatus = [];
     const inactiveStatus = [];
     let hasCreated = false;
