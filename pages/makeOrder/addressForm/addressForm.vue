@@ -139,6 +139,11 @@
                     location.address = res.address;
                     location.name = res.name;
                     
+                    if (location.address == '北京市北京市') {
+                        location.reverseGeocoder();
+                    }
+                    
+                    
                 } catch(e) {
                     console.log(e)
                     uni.showToast({
@@ -146,8 +151,6 @@
                         icon: 'none'
                     })
                 }
-                
-        
             },
             
             sexChange: function(e) {
@@ -211,10 +214,10 @@
                 })
             }
 		},
-        created: function(opt) {
+        beforeCreate: function() {
             page = this;
-            
-            
+        },
+        created: function(opt) {
             page.shareData = shareData;
             page.title = titles[shareData.serviceType][shareData.currentAddressIdx];
 

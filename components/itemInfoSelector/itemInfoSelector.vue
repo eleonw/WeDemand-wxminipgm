@@ -131,7 +131,6 @@
                     that.otherType = null;
                 }
                 
-                console.log(infoObj)
             },
             
             selectValue: function(value) {
