@@ -15,7 +15,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.fromAddress.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showPrivate">
+                    <view class="addressSub" v-if="showSensitive">
                         {{ orderObj.fromAddress.name + ' ' + orderObj.fromAddress.mobile }}
                     </view>
                 </view>
@@ -27,7 +27,7 @@
                     <view class="addressMain">
                         {{ orderObj.toAddress.location.toString() }}
                     </view>
-                    <view class="addressSub" v-if="showPrivate">
+                    <view class="addressSub" v-if="showSensitive">
                         {{ orderObj.toAddress.name + ' ' + orderObj.toAddress.mobile}}
                     </view>
                 </view>
@@ -53,7 +53,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.address.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showPrivate">
+                    <view class="addressSub" v-if="showSensitive">
                         {{ orderObj.address.name + ' ' + orderObj.address.mobile }}
                     </view>
                 </view>
@@ -79,7 +79,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.address.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showPrivate">
+                    <view class="addressSub" v-if="showSensitive">
                         {{ orderObj.address.name + ' ' + orderObj.address.mobile }}
                     </view>
                 </view>
@@ -136,14 +136,10 @@
                 type: Number,   // 0: creater; 1: server
                 default: 0,
             },
-            showPrivate: {
-                type: [Boolean, String],
-                default: false,
-            }
         },
         data() {
             return {
-                showPrivate: false,
+                showSensitive: false,
                 serviceType: null,
                 orderObj: null,
                 color: null,
@@ -195,11 +191,11 @@
             that.color = color;      
             
             if (that.orderObj.serverId == UserInfo._id) {
-                showPrivate = true;
+                that.showSensitive = true;
             } else {
-                showPrivate = false;
+                that.showSensitive = false;
             }
-        },
+        }
     }
 
 </script>

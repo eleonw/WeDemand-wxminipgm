@@ -17,6 +17,8 @@ function Order(arg={}) {
     this.startTime = arg.startTime;
     this.endTime = arg.endTime;
     
+    this.sensitiveInfo = arg.sensitiveInfo;
+    
     this.couponId = arg.couponId,
     this.cost = arg.cost;
     
@@ -30,11 +32,11 @@ function Order(arg={}) {
 function Order_HelpDeliver(arg={}) {
     
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status,
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo,
         fromAddress, toAddress, itemInfo, note
     } = arg;
     
-    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, serviceType: serviceType.HELP_DELIVER});
+    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo, serviceType: serviceType.HELP_DELIVER});
     
     this.fromAddress = new Address(fromAddress);
     this.toAddress = new Address(toAddress);

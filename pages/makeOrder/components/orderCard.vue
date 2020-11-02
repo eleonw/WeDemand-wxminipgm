@@ -15,7 +15,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.fromAddress.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showDetail">
+                    <view class="addressSub">
                         {{ orderObj.fromAddress.name + ' ' + orderObj.fromAddress.mobile }}
                     </view>
                 </view>
@@ -27,7 +27,7 @@
                     <view class="addressMain">
                         {{ orderObj.toAddress.location.toString() }}
                     </view>
-                    <view class="addressSub" v-if="showDetail">
+                    <view class="addressSub">
                         {{ orderObj.toAddress.name + ' ' + orderObj.toAddress.mobile}}
                     </view>
                 </view>
@@ -53,7 +53,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.address.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showDetail">
+                    <view class="addressSub">
                         {{ orderObj.address.name + ' ' + orderObj.address.mobile }}
                     </view>
                 </view>
@@ -79,7 +79,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.address.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showDetail">
+                    <view class="addressSub">
                         {{ orderObj.address.name + ' ' + orderObj.address.mobile }}
                     </view>
                 </view>
@@ -129,10 +129,6 @@
             order: {
                 type: Object,
                 required: true,
-            },
-            showDetail: {
-                type: Boolean,
-                default: true,
             },
             identity: {
                 type: Number,   // 0: creater; 1: server
