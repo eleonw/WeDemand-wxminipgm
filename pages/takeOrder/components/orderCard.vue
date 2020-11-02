@@ -15,7 +15,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.fromAddress.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showDetail">
+                    <view class="addressSub" v-if="showPrivate">
                         {{ orderObj.fromAddress.name + ' ' + orderObj.fromAddress.mobile }}
                     </view>
                 </view>
@@ -27,7 +27,7 @@
                     <view class="addressMain">
                         {{ orderObj.toAddress.location.toString() }}
                     </view>
-                    <view class="addressSub" v-if="showDetail">
+                    <view class="addressSub" v-if="showPrivate">
                         {{ orderObj.toAddress.name + ' ' + orderObj.toAddress.mobile}}
                     </view>
                 </view>
@@ -53,7 +53,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.address.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showDetail">
+                    <view class="addressSub" v-if="showPrivate">
                         {{ orderObj.address.name + ' ' + orderObj.address.mobile }}
                     </view>
                 </view>
@@ -79,7 +79,7 @@
                     <view class="addressMain"> 
                         {{ orderObj.address.location.toString() }} 
                     </view>
-                    <view class="addressSub" v-if="showDetail">
+                    <view class="addressSub" v-if="showPrivate">
                         {{ orderObj.address.name + ' ' + orderObj.address.mobile }}
                     </view>
                 </view>
@@ -94,17 +94,10 @@
             </view>
             </view>
             
+            
             <view class="row">
                 <view class="title">小费</view>
                 <view>{{ orderObj.cost.tip }}￥</view>
-            </view>
-            
-            <view class="row additional">
-                订单编号：{{ orderObj._id }}
-            </view>
-            
-            <view class="row additional">
-                取消时间：{{ getCancelTimeString() }}
             </view>
                     
         </view>
@@ -125,6 +118,7 @@
     import { parseOrder } from '@/common/classes/Order.js';
     
     import { getTimeString } from '@/common/helper.js';
+    import { userInfo } from '@/common/globalData.js';
     
     let that;
     
@@ -138,10 +132,6 @@
                 type: Object,
                 required: true,
             },
-            showDetail: {
-                type: Boolean,
-                default: true,
-            },
             identity: {
                 type: Number,   // 0: creater; 1: server
                 default: 0,
@@ -153,6 +143,7 @@
         },
         data() {
             return {
+                showPrivate: false,
                 serviceType: null,
                 orderObj: null,
                 color: null,
@@ -192,20 +183,22 @@
                     switch(that.orderObj.status) {}
                 }
             },
-            
             clickButton: function() {
                 this.$emit('buttonClick')
-            },
-            
-            getCancelTimeString: function() {
-                return getTimeString({timestamp: that.orderObj.expireTime, simple: true});
             }
         },
+       
         created: function() {
             that = this;
             that.orderObj = parseOrder(that.order);
             that.serviceType = serviceType;
             that.color = color;      
+            
+            if (that.orderObj.serverId == UserInfo._id) {
+                showPrivate = true;
+            } else {
+                showPrivate = false;
+            }
         },
     }
 
@@ -280,12 +273,6 @@
                 border-left: var(--color-main) 1rpx solid;
             }
         
-        }
-        
-        .additional {
-            color: grey;
-            font-size: .8em;
-            letter-spacing: .1em;
         }
         
         .button {

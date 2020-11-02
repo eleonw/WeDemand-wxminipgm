@@ -13,7 +13,7 @@
 
 <script>
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
-    import orderCard from '@/components/orderCard/orderCard.vue';
+    import orderCard from './../components/orderCard.vue';
     
     import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
     
