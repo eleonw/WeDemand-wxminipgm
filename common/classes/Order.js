@@ -27,8 +27,8 @@ function Order(arg={}) {
     this.status = arg.status ? arg.status : orderStatus.INITIALING;
     this.sensitiveInfo = arg.sensitiveInfo;
     
-    this.hasCreaterComment = arg.hasCreaterComment;
-    this.hasServerComment = arg.hasServerComment;
+    this.evalStatus = arg.evalStatus;
+    this.cancelSide = arg.cancelSide;
 
 }
 
@@ -54,10 +54,10 @@ function Order_HelpDeliver(arg={}) {
     
     const {
         _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo,   // expressInfo, takeAwayInfo 
-        fromAddress, toAddress, itemInfo, note, hasCreaterComment, hasServerComment
+        fromAddress, toAddress, itemInfo, note, evalStatus, cancelSide
     } = arg;
     
-    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo,  hasCreaterComment, hasServerComment, serviceType: serviceType.HELP_DELIVER});
+    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo, serviceType: serviceType.HELP_DELIVER}, evalStatus, cancelSide);
     
     this.fromAddress = new Address(fromAddress);
     this.toAddress = new Address(toAddress);
@@ -120,11 +120,11 @@ const testOrder_HelpDeliver = new Order_HelpDeliver({
 function Order_HelpBuy(arg={}) {
     const {
         _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, commodityDesc, 
-        address, buyingLocation, sensitiveInfo, hasCreaterComment, hasServerComment
+        address, buyingLocation, sensitiveInfo, evalStatus, cancelSide
     } = arg;
     
     Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, 
-        cost, status, sensitiveInfo, hasCreaterComment, hasServerComment, serviceType: serviceType.HELP_BUY});
+        cost, status, sensitiveInfo, serviceType: serviceType.HELP_BUY}, evalStatus, cancelSide);
     
     this.commodityDesc = commodityDesc;
     this.address = new Address(address);
@@ -156,11 +156,11 @@ const testOrder_HelpBuy = new Order_HelpBuy({
 function Order_OtherService(arg={}) {
     const {
         _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, address, serviceDesc, sensitiveInfo,
-        hasCreaterComment, hasServerComment
+        evalStatus, cancelSide
     } = arg;
     
     Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, 
-        cost, status, serviceType: serviceType.OTHER_SERVICE}, sensitiveInfo, hasCreaterComment, hasServerComment);
+        cost, status, serviceType: serviceType.OTHER_SERVICE}, sensitiveInfo, evalStatus, cancelSide);
     this.address = new Address(address);
     this.serviceDesc = serviceDesc;
 }

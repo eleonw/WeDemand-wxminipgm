@@ -201,21 +201,31 @@ async function evaluate(opt) {
     let commentField;
     switch(opt.side) {
         case side.CREATER: 
-            sideField = 'hasCreaterComment';
+            // sideField = 'hasCreaterComment';
             scoreField = 'createrScore';
             commentField = 'createrComment';
             break;
         case side.SERVER:
-            sideField = 'hasServerComment';
+            // sideField = 'hasServerComment';
             scoreField = 'serverScore';
             commentField = 'serverComment';
         default:
     }
     await db.runTransaction(async transaction => {
         try {
-            await transaction.collection('inactive-order').doc(orderId).update({
-                [sideField]: true
-            })
+            const res = await transaction.collection('inactive-order').doc(orderId).get();
+            const evalStatus = (res.data)[0].evalStatus;
+            if (evalStatus == opt.side) {
+                throw new error('already commented');
+            } else if (evalStatus == -1) {
+                await transaction.collection('inactive-order').doc(orderId).update({
+                    evalStatus: opt.side;
+                })
+            } else {
+                await transaction.collection('inactive-order').doc(orderId).update({
+                    status: _orderStatus.COMPLETED
+                });
+            }
             await transaction.collection('order-comment').doc(orderId).update({
                 [scoreField]: score,
                 [commentField]: comment,

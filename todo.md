@@ -49,4 +49,16 @@ myOrderPage.buttonClick
 + [x] otherService.vue sensitiveInfo.main
 + [x] 修改creater的orderCard的按钮功能，并提供新的取消按钮
 + [x] 修改server的orderCard的按钮功能，并提供新的取消按钮
-+ [ ] 修改evaluate的状态为整数(evalStatus) -1:都未评价, 0:creater已评价, 1:server已评价, 2:评价完成(需要修改Order，orderService.evaluate orderService.initial)
++ [x] 修改evaluate的状态为整数(evalStatus) -1:都未评价, 0:creater已评价, 1:server已评价, 2:评价完成(需要修改Order，orderService.evaluate orderService.initial)
+
+server在不同阶段可以进行的操作：（修改server.js和orderService的index.js）
+
++ [ ] CREATED: takeOrder
+
++ [ ] ACCEPTED: startService, cancel
+
++ [ ] SERVING: finishService, cancel
+
++ [ ] EVALUATING: evaluate
+
++ [ ] CANCELING: passCancel
