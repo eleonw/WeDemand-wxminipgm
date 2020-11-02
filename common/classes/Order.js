@@ -38,6 +38,7 @@ Order.prototype.getSensitiveInfoArray = function() {
                 mainSensitives.push();
             }
         }
+        
         if (mainSensitives.length != 0) {
             array.push({title: '敏感信息', content: mainSensitives.join("; ")});
         }
