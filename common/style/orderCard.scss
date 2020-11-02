@@ -1,0 +1,94 @@
+.root {
+    display: flex;
+    flex-flow: column nowrap;
+    
+    justify-content: flex-start;
+    
+    width: 700rpx;
+    background-color: white;
+    
+    overflow: hidden;
+    
+    font-size: 30rpx;
+    box-shadow: 0 5px 10px 2px gray;
+    
+    .header {
+        height: 80rpx;
+        line-height: 80rpx;
+        
+        background-color: var(--color-main);
+        display: flex;
+        flex-flow: row nowrap;
+        
+        padding: 0 20rpx;
+        
+        
+        color: white;
+        
+        .orderType {
+            font-weight: 600;
+        }
+        
+        .orderStatus {
+            margin-left: auto;
+        }
+        
+    }
+    
+    .row {
+        display: flex;
+        flex-flow: row nowrap;
+        
+        justify-content: baseline;
+        margin: 20rpx;
+        
+        .textIcon {
+            margin-right: .5em;
+        }
+        
+        .addressMain {
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        
+        .title {
+            
+            width: 130rpx;
+            margin-right: .3em;
+            padding-right: 10rpx;
+            padding-left: 10rpx;
+            
+            text-align: justify;
+            text-align-last: justify;
+            
+            border-right: var(--color-main) 1rpx solid;
+            border-left: var(--color-main) 1rpx solid;
+        }
+    
+    }
+    
+    .orderId {
+        font-size: 20rpx;
+        color: grey;
+        letter-spacing: 3rpx;
+    }
+    
+    .button {
+        width: 500rpx;
+        height: 50rpx;
+        line-height: 50rpx;
+        background-color: var(--color-main);
+        color: white;
+        
+        text-align: center;
+        
+        margin: 30rpx auto 30rpx auto;
+        
+        letter-spacing: 20rpx;
+        font-weight: 600;
+        
+        border-radius: 10rpx;
+    }
+        
+        
+}

@@ -29,10 +29,26 @@ function Order(arg={}) {
 
 }
 
+Order.prototype.getSensitiveInfoArray = function() {
+    if (this.sensitiveInfo) {
+        mainSensitives = []
+        for (let item in this.sensitiveInfo) {
+            const infoStr = this.sensitiveInfo[item].trim();
+            if (infoStr != '') {
+                mainSensitives.push();
+            }
+        }
+        if (mainSensitives.length != 0) {
+            array.push({title: '敏感信息', content: mainSensitives.join("; ")});
+        }
+    }
+    return array;
+}
+
 function Order_HelpDeliver(arg={}) {
     
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo,
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo,   // expressInfo, takeAwayInfo 
         fromAddress, toAddress, itemInfo, note
     } = arg;
     
@@ -43,7 +59,6 @@ function Order_HelpDeliver(arg={}) {
 
     this.itemInfo = itemInfo;
     this.note = note;
-
 }
 
 Order_HelpDeliver.prototype = new Order();
@@ -54,6 +69,27 @@ Order_HelpDeliver.prototype.getItemInfoString = function() {
         result = result + this.itemInfo[item] + '、';
     }
     return result == '' ? '' : result.slice(0, -1);
+}
+
+Order_HelpDeliver.prototype.getSensitiveInfoArray = function() {
+    // expressInfo, takeAwayInfo
+    const array = [];
+    const others = [];
+    for (let item in this.sensitiveInfo) {
+        const infoStr = this.sensitiveInfo[item].trim();
+        if (infoStr.length != 0) {
+            if (item == 'expressInfo') {
+                array.push({title: '快递信息', content: infoStr});
+            } else if (item == 'takeAwayInfo') {
+                array.push({title: '外卖信息', content: infoStr});
+            } else {
+                others.push(infoStr);
+            }
+        }
+    }
+    if (others.length != 0) {
+        array.push({title: '敏感信息', content: others.join("; ")})
+    }
 }
 
 const testOrder_HelpDeliver = new Order_HelpDeliver({
