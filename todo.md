@@ -53,12 +53,12 @@ myOrderPage.buttonClick
 
 server在不同阶段可以进行的操作：（修改server.js和orderService的index.js）
 
-+ [ ] CREATED: takeOrder
-
++ [x] CREATED: takeOrder	paras: orderId, userId, serverMobile  code: -1other, -2already taken away
 + [ ] ACCEPTED: startService, cancel
-
 + [ ] SERVING: finishService, cancel
-
 + [ ] EVALUATING: evaluate
-
 + [ ] CANCELING: passCancel
+
+
+
++ [ ] takeOrder的时候需要填入contact 手机号，还要收订金

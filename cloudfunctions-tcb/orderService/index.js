@@ -44,6 +44,10 @@ const serviceType_creater = {
     GET: 5,
 }
 
+const serviceType_service = {
+    TAKE: 1
+}
+
 const side = {
     CREATER: 0,
     SERVER: 1,
@@ -134,7 +138,17 @@ exports.main = async (event) => {
                 }
                 break;
             case side.SERVER:     // server
-                break;
+                switch(event.serviceType) {
+                    case serviceType_service.TAKE: {
+                        const {
+                            userId, orderId, mobile
+                        } = event;
+                        await take({userId, orderId, mobile});
+                        return {
+                            success: true
+                        }
+                    }
+                }
             default:
                 throw new Error("invalid side");
         }
@@ -387,4 +401,21 @@ async function getCreaterOrderList(opt) {
         orderList: resList,
         _getListRec
     }
+}
+
+async take(arg) {
+    const {
+        userId, orderId, mobile
+    } = arg;
+    await db.runTransaction(async transaction => {
+        let res = await transaction.collection('active-order').doc(orderId).get();
+        if (res.data.length == 0 || res.data[0].status != _orderStatus.CREATED) {
+            transaction.rollback({code: -2});
+        }
+        await transaction.collection('active-order').doc(orderId).update({
+            status: _orderStatus.ACCEPTED,
+            serverId: userId,
+            serverMobile: mobile,
+        })
+    })
 }
