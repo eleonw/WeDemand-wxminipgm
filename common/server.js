@@ -23,7 +23,7 @@ export async function sendSmsCode(opt) {
         name: 'sendSmsCode',
         data: {
             type,
-            mobile: userInfo.mobile
+            mobile: opt.mobile,
         }
     })
     console.log(res);

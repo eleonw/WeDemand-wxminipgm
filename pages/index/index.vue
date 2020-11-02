@@ -1,15 +1,11 @@
 <template>
 	<view class="root page">
         <uni-nav-bar left-icon="none"  title="微叮当"></uni-nav-bar>
-        <view class="grid">
-            <view class="gridItem" @click="navigateTo('makeOrder')">
-                下单入口
-            </view>
-            <view class="gridItem" @click="navigateTo('takeOrder')">
-                接单入口
-            </view>
-        </view>
         
+        <view class="item" @click="navigateTo('makeOrder')">我要下单</view>
+        <view class="item" @click="navigateTo('takeOrder')">我要接单</view>
+        
+       
        <!-- <view class="grid">
             <view class="item"></view>
             <view class="item"></view>
@@ -79,16 +75,34 @@
 
 <style>
     
+    .page {
+        background-color: var(--color-main);
+    }
+    
     .grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        background-color: orange;
+        /* background-color: orange; */
         grid-gap: 10px 10px;
         
         height: 20vw;
     }
     
     .gridItem {
-        background-color: blue;
+        background-color: var(--color-main);
+        text-align: center;
+    }
+    
+    .item {
+        font-size: 70rpx;
+        text-align: center;
+        margin: 30rpx;
+        width: 400rpx;
+        height: 300rpx;
+        line-height: 300rpx;
+        color: var(--color-main);
+        background-color: white;
+        
+        border-radius: 30rpx;
     }
 </style>

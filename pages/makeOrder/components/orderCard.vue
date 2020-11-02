@@ -94,6 +94,8 @@
             </view>
             </view>
             
+            
+            
             <view class="row">
                 <view class="title">小费</view>
                 <view>{{ orderObj.cost.tip }}￥</view>

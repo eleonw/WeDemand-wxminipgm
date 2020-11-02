@@ -72,7 +72,11 @@
                         status: [orderStatus.CANCELED, orderStatus.COMPLETED],
                     },
                 ],
-                orderList: [],
+                orderList: [
+                    testOrder_HelpBuy,
+                    testOrder_HelpDeliver,
+                    testOrder_OtherService
+                ],
                 orderStatusShowMap: {
                     [orderStatus.INITIALING]: true,
                     [orderStatus.CREATED]: true,

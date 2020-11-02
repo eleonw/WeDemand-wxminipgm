@@ -3,26 +3,22 @@
         
         <statusBar></statusBar>
         
-        <view class="notice">已发送短信至{{mobile}},请填写验证码</view>
+        <uni-icons type="back" class="back" @click="navigateBack" color="white" size="28"></uni-icons>
         
-        <view class="codeArea">
+        <view class="notice">已发送短信至{{ mobile }},请填写验证码</view>
+        
             
-            <input v-model="code" maxlength"4" class="input" focus="true"></input>
-            <view class="code" @click="toFocus">{{code.length>=1?code[0]:''}}</view>
-            <view class="code" @click="toFocus">{{code.length>=2?code[1]:''}}</view>
-            <view class="code" @click="toFocus">{{code.length>=3?code[2]:''}}</view>
-            <view class="code" @click="toFocus">{{code.length>=4?code[3]:''}}</view>
-            
-
-        </view>
+        <input class="code" v-model="code" maxlength="4"></input>
+        
+        <view class="button" @click="confirm">确 认</view>
 		
-        <button @click="confirm">确认</button>
 	</view>
 </template>
 
 <script>
     
-    import statusBar from '@/components/statusBar/statusBar.vue'
+    import uniIcons from '@/components/uni-icons/uni-icons.vue';
+    import statusBar from '@/components/statusBar/statusBar.vue';
     
     import { addAll } from '@/common/helper.js';
     import { login, resetSmsCode } from '@/common/server.js';
@@ -32,7 +28,7 @@
     
 	export default {
         components: {
-            statusBar,
+            statusBar, uniIcons,
         },
 		data() {
 			return {
@@ -44,9 +40,13 @@
 			}
 		},
         
-        created: function(opt) {
-            page = this;
+        onLoad: function(opt) {
             page.mobile = opt.mobile;
+        },
+        
+        created: function(opt) {
+           
+            page = this;
             
             page.targetIndex = 0;
             
@@ -56,6 +56,9 @@
         },
         
 		methods: {
+            navigateBack: function() {
+                uni.navigateBack();
+            },
             
                 
             toFocus: function() {
@@ -110,8 +113,14 @@
 
 <style>
     
+    .page {
+        background-color: var(--color-main);
+    }
+    
     .notice {
         margin: 30vh 0 40rpx 0;
+        color: white;
+        font-size: 35rpx;
         
     }
     
@@ -138,8 +147,39 @@
         
         height: 80rpx;
         line-height: 80rpx;
-        width:60rpx;
-        border: 1px solid black;
+        width: 200rpx;
+        
+        border: solid 5rpx white;
+        color: white;
+        font-size: 50rpx;
+        text-align: center;
+        
+    }
+    
+    .button {
+        /* text-align: center; */
+        display: flex;
+        justify-content: center;
+        height: 80rpx;
+        line-height: 80rpx;
+        
+        /* letter-spacing: 20rpx; */
+        font-size: 60rpx;
+        
+        background-color: white;
+        color: var(--color-main);
+        font-weight: 600;
+        width: 200rpx;
+        
+        margin-top: 40rpx;
+        
+        border-radius: 10rpx;
+    }
+    
+    .back {
+        position: fixed;
+        top: 40rpx;
+        left: 20rpx;
     }
     
 </style>

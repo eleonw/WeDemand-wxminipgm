@@ -2,9 +2,10 @@
     <view class="root page">
         
         <view class="loginArea">
-            <view class="title">Login</view>
-            <inputWithTitle v-model="mobile"></inputWithTitle>
+            <view class="title">输入手机号码</view>
+            <input class="mobile" v-model="mobile" @input="mobileChange"></input>
         </view>
+        <view class="button" @click="loginWithSms">使用手机登录</view>
         
 <!--        使用手机号码登录/注册
         <input v-model="mobile" @change="mobileChange"></input>
@@ -33,7 +34,7 @@
         
 		data() {
 			return {
-                mobile: '13728084958',
+                mobile: '',
 			}
 		},
         
@@ -71,6 +72,7 @@
                     if (res.code != 0) {
                         throw new Error(res);
                     }
+                    uni.hideLoading();
                     uni.navigateTo({
                         url: './fillInSmsCode?mobile=' + this.mobile,
                         complete: e=> {
@@ -143,32 +145,52 @@
     
     .page {
         justify-content: flex-end;
+        background-color: var(--color-main);
     }
     
     .loginArea {
-        width: 600rpx;
+        width: 700rpx;
         height: 600rpx;
         background-color: rgba(0, 0 ,0 0.5);
-
+        display: flex;
+        align-items: center;
+        
+        font-size: 40rpx;
+        text-align: center;
     }
     
     .title {
-        background-color: red;
+        color: white;
+
+        border-radius: 10rpx;
+        font-weight: 600;
+        padding: 10rpx 30rpx;
+        width: 400rpx;
+    }
+    
+    .mobile {
+        background-color: white;
+        color: var(--color-main);
+        height: 50rpx;
+        line-height: 50rpx;
+        border-radius: 20rpx;
+        width: 450rpx;
     }
     
     .button {
         width: 710rpx;
         height: 80rpx;
+        color: white;
         
         text-align: center;
         line-height: 80rpx;
         font-size: 50rpx;
         letter-spacing: .1em;
         
-        border: 5rpx solid black;
-        border-radius: 10rpx;
+        border: 5rpx solid white;
+        border-radius: 20rpx;
         
-        margin-bottom: 20rpx;
+        margin-bottom: 100rpx;
     }
 
 </style>
