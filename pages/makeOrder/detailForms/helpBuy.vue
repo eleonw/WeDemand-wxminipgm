@@ -31,7 +31,7 @@
                     <view class="textareaTitle">描述想购买的商品</view>
                     <textarea class="textareaBody"  v-model="commodityDesc" placeholder="填写代买商品的要求描述,如品牌、种类、数量等" maxlength="250"></textarea>
                     <view class="textareaKeyWords">
-                        <view class="textareaKeyWord" v-for="(keyWord,index) in textareaKeyWords" :keys="index" @click="addKeyWord(keyWord)">{{ keyWord }}</view>
+                        <view class="textareaKeyWord" v-for="(keyWord,idx) in textareaKeyWords" :key="idx" @click="addKeyWord(keyWord)">{{ keyWord }}</view>
                     </view>
                 </view>
                 
@@ -54,6 +54,12 @@
                         </view>
                     </view>
                 </view>
+                <view class="formItem">
+                    <view class="formitemTitle">敏感信息</view>
+                    <view class="formItemRight">
+                        <navigatorWithPlaceholder :content="sensitiveInfo.main" placeholder="只有接单的用户可以查看" @click.native="showSelector('sensitiveInfo')"></navigatorWithPlaceholder>
+                    </view>
+                </view>
                 <view class="formItem lastFormItem">
                     <view class="formItemTitle">预估价格</view>
                     <view class="formItemRight">
@@ -61,6 +67,8 @@
                     </view>
                 </view>
             </view>
+            
+            
             
             <view class="form card">
                 <view class="formItem">
@@ -101,6 +109,7 @@
         <timePicker v-if="show_startTime" class="selectorComponent" @exit="hideSelector('startTime')" v-model="startTime"></timePicker>
         <timePicker v-if="show_endTime" class="selectorComponent" @exit="hideSelector('endTime')" v-model="endTime"></timePicker>
         <priceInput v-else-if="show_commodityPrice" class="selectorComponent" title="商品估价" @exit="hideSelector('commodityPrice')" v-model="commodityPrice"></priceInput>
+        <seperateTextarea v-else-if="show_sensitiveInfo" v-model="sensitiveInfo.main" class="selectorComponent"  @exit="hideSelector('sensitiveInfo')"></seperateTextarea>
         <priceInput v-else-if="show_tip" class="selectorComponent" title="小费" @exit="hideSelector('tip')" v-model="tip"></priceInput>
         <timePicker v-else-if="show_expireTime" class="selectorComponent"  @exit="hideSelector('expireTime')" v-model="expireTime"></timePicker>
         
@@ -156,6 +165,10 @@
                 
                 startTime: null,
                 endTime: null,
+                
+                sensitiveInfo: {
+                    main: ''
+                },
                     
                 commodityDesc: '',
                 commodityPrice: null,
@@ -165,6 +178,7 @@
                 
                 show_startTime: false,
                 show_endTime: false,
+                show_sensitiveInfo: false,
                 show_commodityPrice: false,
                 show_tip: false,
                 show_expireTime: false,
@@ -321,6 +335,7 @@
                 const buyingLocation = page.buyingLocation;
                 const couponId = page.coupon ? page.coupon.id : null;
                 const expireTime = page.expireTime;
+                const sensitiveInfo = page.sensitiveInfo;
                 const cost = {
                     tip: page.tip?page.tip:0,
                     basic: page.getBasicCost(),
@@ -334,6 +349,7 @@
                     endTime,
                     buyingLocation,
                     couponId,
+                    sensitiveInfo,
                     expireTime,
                     cost,
                 });

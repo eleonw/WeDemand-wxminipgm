@@ -35,6 +35,12 @@
                         <navigatorWithPlaceholder :content="note" placeholder="送件要求、物品描述等" @click.native="showSelector('note')"></navigatorWithPlaceholder>
                     </view>
                 </view>
+                <view class="formItem">
+                    <view class="formitemTitle">敏感信息</view>
+                    <view class="formItemRight">
+                        <navigatorWithPlaceholder :content="sensitiveInfo.main" placeholder="只有接单的用户可以查看" @click.native="showSelector('sensitiveInfo')"></navigatorWithPlaceholder>
+                    </view>
+                </view>
 
             </view>
             
@@ -79,6 +85,7 @@
         <timePicker v-else-if="show_endTime" class="selectorComponent"  @exit="hideSelector('endTime')" v-model="endTime"></timePicker>
         <itemInfoSelector v-else-if="show_itemInfo" class="selectorComponent" :itemInfo="itemInfo" :sensitiveInfo="sensitiveInfo" @exit="exitItemInfoSelector"></itemInfoSelector>
         <seperateTextarea v-else-if="show_note" v-model="note" class="selectorComponent"  @exit="hideSelector('note')"></seperateTextarea>
+        <seperateTextarea v-else-if="show_sensitiveInfo" v-model="sensitiveInfo.main" class="selectorComponent"  @exit="hideSelector('sensitiveInfo')"></seperateTextarea>
         <priceInput v-else-if="show_tip" class="selectorComponent"  @exit="hideSelector('tip')" v-model="tip"></priceInput>
         <timePicker v-else-if="show_expireTime" class="selectorComponent"  @exit="hideSelector('expireTime')" v-model="expireTime"></timePicker>
 
@@ -135,7 +142,7 @@
                 endTime: null,
                 itemInfo: {},
                 sensitiveInfo: {
-                    name: 'hhhhhh'
+                    main: ''
                 },
                 sensitiveInfo: null,
                 note: '',
@@ -150,6 +157,7 @@
                 show_endTime: false,
                 show_itemInfo: false,
                 show_note: false,
+                show_sensitiveInfo: false,
                 show_tip: false,
                 show_expireTime: false,
                 
@@ -276,6 +284,7 @@
                     endTime,
                     itemInfo,
                     note,
+                    sensitiveInfo,
                     couponId,
                     expireTime,
                     cost,

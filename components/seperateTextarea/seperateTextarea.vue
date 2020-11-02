@@ -7,7 +7,7 @@
                 <uni-icons type="checkmarkempty" size="24" class="confirm" @click="confirm"></uni-icons>
             </view>
             <view class="main">
-                <textarea v-model="content" placeholder="可填写送货要求及物品描述等信息" class="textarea" maxlength="50"/>
+                <textarea v-model="content" :placeholder="placeholder" class="textarea" maxlength="50"/>
                 <view class="words">{{ content.length + '/50'}} </view>
             </view>
         </view>
@@ -29,6 +29,10 @@
             value: {
                 type: String,
                 default: '',
+            },
+            placeholder: {
+                type: String,
+                default: '请填写相关信息'
             }
         },
 		data() {

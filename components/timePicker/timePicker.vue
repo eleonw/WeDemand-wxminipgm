@@ -8,13 +8,13 @@
             </view>
             <picker-view class="picker-view" indicator-style="height: 90rpx;" :value="pickerValue" @change="bindChange">
                 <picker-view-column>
-                    <view class="item" v-for="(day,index) in days">{{day}}</view>
+                    <view class="item" v-for="(day,index) in days" :key="index">{{day}}</view>
                 </picker-view-column>
                 <picker-view-column>
-                    <view class="item" v-for="(hour,index) in hours">{{hour}}</view>
+                    <view class="item" v-for="(hour,index) in hours" :key="index">{{hour}}</view>
                 </picker-view-column>
                 <picker-view-column>
-                    <view class="item" v-for="(minute,index) in minutes">{{minute}}</view>
+                    <view class="item" v-for="(minute,index) in minutes" :key="index">{{minute}}</view>
                 </picker-view-column>
             </picker-view>
         </view>

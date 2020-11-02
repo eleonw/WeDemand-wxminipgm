@@ -34,6 +34,12 @@
                         <view class="textareaKeyWord" v-for="(keyWord,index) in textareaKeyWords" :keys="index" @click="addKeyWord(keyWord)">{{ keyWord }}</view>
                     </view>
                 </view>
+                <view class="formItem lastFormItem">
+                    <view class="formitemTitle">敏感信息</view>
+                    <view class="formItemRight">
+                        <navigatorWithPlaceholder :content="sensitiveInfo.main" placeholder="只有接单的用户可以查看" @click.native="showSelector('sensitiveInfo')"></navigatorWithPlaceholder>
+                    </view>
+                </view>
                 
             </view>
             
@@ -61,7 +67,7 @@
         
         <timePicker v-if="show_timeStart" class="selectorComponent" @exit="hideSelector('timeStart')" v-model="timeStart"></timePicker>
         <timePicker v-if="show_timeEnd" class="selectorComponent" @exit="hideSelector('timeEnd')" v-model="timeEnd"></timePicker>
-
+        <seperateTextarea v-else-if="show_sensitiveInfo" v-model="sensitiveInfo.main" class="selectorComponent"  @exit="hideSelector('sensitiveInfo')"></seperateTextarea>
         <priceInput v-else-if="show_tip" class="selectorComponent" title="服务费" @exit="hideSelector('tip')" v-model="tip"></priceInput>
         
         <orderNav class="orderNav" :costItems="[{
@@ -113,6 +119,10 @@
 				colorMain: null,
                 textareaKeyWords: ['务必准时'],
                 
+                sensitiveInfo: {
+                    main: ''
+                },
+                
                 timeStart: null,
                 timeEnd: null,
                 
@@ -123,6 +133,7 @@
                 show_timeStart: false,
                 show_timeEnd: false,
                 show_tip: false,
+                show_sensitiveInfo: false,
                 
 			}
 		},
@@ -233,12 +244,14 @@
                 const timeEnd = page.timeEnd;
                 const serviceDesc = page.serviceDesc;
                 const couponId = page.coupon ? page.coupon.id : null;
+                const sensitiveInfo = page.sensitiveInfo;
                 const tip = page.tip;
                 
                 const res = await orderAssistant.createOrder({
 
                     serviceType,
                     serviceDesc,
+                    sensitiveInfo,
                     timeStart,
                     timeEnd,
                     buyingLocation,

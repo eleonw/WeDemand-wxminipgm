@@ -43,7 +43,7 @@ myOrderPage.buttonClick
 + [x] server orderCard展示sensitiveInfo部分
 + [x] 修改Order对象，加入sensitiveInfo域
 + [ ] server接单的时候也需要填写联系方式，联系方式要展示到orderCard上
-+ [ ] 给Order增加getSensitiveInfoArray()(js有没有函数重写)
-+ [ ] helpDeliver.vue加sensitiveInfo.main
++ [x] 给Order增加getSensitiveInfoArray()(js有没有函数重写)
++ [x] helpDeliver.vue加sensitiveInfo.main
 + [ ] helpBuy.vue sensitiveInfo.main
 + [ ] otherService.vue sensitiveInfo.main
