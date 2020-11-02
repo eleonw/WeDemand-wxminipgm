@@ -42,8 +42,11 @@ myOrderPage.buttonClick
 + [x] creater orderCard展示sensitiveInfo部分
 + [x] server orderCard展示sensitiveInfo部分
 + [x] 修改Order对象，加入sensitiveInfo域
-+ [ ] server接单的时候也需要填写联系方式，联系方式要展示到orderCard上
++ [ ] server接单的时候也需要填写联系方式，联系方式要展示到orderCard上,相应地(Order构造函数和orderService.create要增加相关域)
 + [x] 给Order增加getSensitiveInfoArray()(js有没有函数重写)
 + [x] helpDeliver.vue加sensitiveInfo.main
-+ [ ] helpBuy.vue sensitiveInfo.main
-+ [ ] otherService.vue sensitiveInfo.main
++ [x] helpBuy.vue sensitiveInfo.main
++ [x] otherService.vue sensitiveInfo.main
++ [x] 修改creater的orderCard的按钮功能，并提供新的取消按钮
++ [x] 修改server的orderCard的按钮功能，并提供新的取消按钮
++ [ ] 修改evaluate的状态为整数(evalStatus) -1:都未评价, 0:creater已评价, 1:server已评价, 2:评价完成(需要修改Order，orderService.evaluate orderService.initial)
