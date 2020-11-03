@@ -1,6 +1,8 @@
 import { userInfo, serviceType as _serviceType } from '@/common/globalData.js';
 import { loginErr } from '@/common/error.js';
 
+const userId = userInfo._id;
+
 export async function resetSmsCode(arg) {
     
     const {
@@ -48,7 +50,18 @@ export async function login(loginData) {
         }
     }
     
-     
+}
+
+export const balanceAssistant = {
+        
+    serviceType: {
+        GET_BALANCE: 1,
+        PAY: 2
+    },
+    
+    pay: async function(arg) {
+        
+    }
 }
 
 export const paymentAssistant = {
@@ -58,14 +71,23 @@ export const paymentAssistant = {
             amount
         } = opt;
         const res = await uniCloud.callFunction({
-            name: changeBalance,
+            name: ,
             data: {
-                userId: userInfo.id,
+                userId: userInfo._id,
                 amount
             }
         })
         console.log(res)
-    }
+    },
+    
+    getBalance: async function() [
+        const res = await uniCloud.callFunction({
+            name: 'balanceService',
+            
+        })
+    ]
+    
+    
     
 }
 

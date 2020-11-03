@@ -68,7 +68,7 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 
 
 + [x] orderAssistant_server getCreatedOrderList	para(limit, fromStart, _createdListRec) return(orderList, _createdListRec)
-+ [ ] orderAssistant_server getUserOrderList para(limit, fromStart, _serverListRec, status, userId) return(orderList, _serverListRec)
++ [x] orderAssistant_server getUserOrderList para(limit, fromStart, _serverListRec, status, userId) return(orderList, _serverListRec)
 
 
 
@@ -77,7 +77,10 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 + [x] orderService server start的时候同时要生成confirmCode
 + [ ] orderStatus.SERVING的的时候creater要可以查看验证码（creater/orderCard buttonText)
 + [ ] ~~数据库创建orderConfirmCode表，在server start的时候创建，在server finish以及所有的进入orderStatus.CANCELED的时候删除~~
-+ [x] 在order表中加入confirmCode域
 + [ ] creater orderCard在不同阶段点击按钮的功能实现
 + [ ] 潜在的一个问题，验证次数超过以后进入exception
 + [ ] 潜在的问题，保证balance的安全操作
++ [ ] 将所有金额都用fen作为单位，以整数值表示
++ [ ] 与balance有关的操作都要加验证
++ [ ] 将changeBalance云函数改为balanceService，加入getBalance
++ [ ] 潜在的问题：将balance有关操作都放到balanceService中，如何保证在处理订单时balance和相应操作的同步问题？（没办法用事务了）

@@ -223,7 +223,7 @@
                 let res;
                 
                 switch(order.status) {
-                    
+                    case orderStatus.INITIALING:
                         
                 }
             },
