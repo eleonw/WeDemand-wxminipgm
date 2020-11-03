@@ -9,7 +9,8 @@
         ,{
             "path" : "pages/makeOrder/makeOrder",
             "style" : {
-                "navigationStyle":"custom"
+                "navigationStyle":"custom",
+                "enablePullDownRefresh": true
             }
         }
           
@@ -59,7 +60,9 @@
         }
         ,{
             "path" : "pages/takeOrder/takeOrder",
-            "style" : {}
+            "style" : {
+                "enablePullDownRefresh": true
+            }
         }
         ,{
             "path" : "pages/carpool/carpool",
@@ -79,6 +82,10 @@
         }
         ,{
             "path" : "pages/makeOrder/evaluateOrder/evaluateOrder",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/evaluateOrder/evaluateOrder",
             "style" : {}
         }
     ],

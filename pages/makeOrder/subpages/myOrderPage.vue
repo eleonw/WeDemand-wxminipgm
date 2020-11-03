@@ -4,11 +4,11 @@
         <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
         
         <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard" 
-            :order="order" v-if="orderStatusShowMap[order.status]" @buttonClick="buttonClick(index)"> </orderCard>
+            :order="order" v-if="orderStatusShowMap[order.status]" @buttonClick="buttonClick(index)" @cancel="cancelOrder(index)"> </orderCard>
         
         <view class="loadMore"></view>
         
-        <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="cost"></paymentMethodSelector>
+        <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="targetOrder.cost"></paymentMethodSelector>
         
 	</view>
 </template>
@@ -24,9 +24,20 @@
     import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
     import { orderStatus } from '@/common/globalData.js';
     import shareData from '../shareData.js';
+    import { orderAssistant_creater as orderAssistant } from '@/common/server.js';
     
-    import { promisify } from '@/common/helper.js';
+    import { promisify, getMoneyString } from '@/common/helper.js';
     
+    
+    const tab2Status = {
+         0: [orderStatus.INITIALING, orderStatus.CREATED, orderStatus.ACCEPTED,
+            orderStatus.SERVING, orderStatus.CANCELING, orderStatus.EXCEPTION, orderStatus.EVALUATING,
+            orderStatus.CANCELED, orderStatus.COMPLETED],
+         1: [orderStatus.INITIALING, orderStatus.CREATED],
+         2: [orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING, orderStatus.EXCEPTION],
+         3: [orderStatus.EVALUATING],
+         4: [orderStatus.CANCELED, orderStatus.COMPLETED],
+    }
     
     let that;
     
@@ -47,29 +58,24 @@
                     {
                         index: 0,
                         text: '全 部',
-                        status: [orderStatus.INITIALING, orderStatus.CREATED, orderStatus.ACCEPTED, 
-                            orderStatus.SERVING, orderStatus.CANCELING, orderStatus.EXCEPTION, orderStatus.EVALUATING,
-                            orderStatus.CANCELED, orderStatus.COMPLETED]
                     },
                     {
                         index: 1,
                         text: '待服务',
-                        status: [orderStatus.INITIALING, orderStatus.CREATED]
+                        status: 
                     },
                     {
                         index: 2,
                         text: '进行中',
-                        status: [orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING, orderStatus.EXCEPTION]
                     },
                     {
                         index: 3,
                         text: '待评价',
-                        status: [orderStatus.EVALUATING],
+                        status: 
                     },
                     {
                         index: 4,
                         text: '已结束',
-                        status: [orderStatus.CANCELED, orderStatus.COMPLETED],
                     },
                 ],
                 orderList: [
@@ -88,7 +94,8 @@
                     [orderStatus.CANCELED]: true,
                     [orderStatus.CANCELING]: true,
                 },
-                cost: 0,
+                targetOrder: null,
+                
                 show_paymentMethodSelector: false,
 			}
 		},
@@ -97,47 +104,21 @@
             that = this;
         },
         
+        created: function() {
+            that.orderList = shareData.orderList;
+        },
+        
 		methods: {
 			navigateBack: function() {
                 uni.navigateBack();
             },
             
             switchTab: function(e) {
-                switch(e.index) {
-                    case 0:
-                        that.updateStatusShowMap();
-                        
-                        break;
-                    case 1:
-                        that.updateStatusShowMap(orderStatus.INITIALING, orderStatus.CREATED);
-                        break;
-                    case 2:
-                        that.updateStatusShowMap(orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING);
-                        break;
-                    case 3:
-                        that.updateStatusShowMap(orderStatus.EVALUATING);
-                        break;
-                    case 4:
-                        that.updateStatusShowMap(orderStatus.COMPLETED, orderStatus.CANCELED);
-                        break;
-                    case 5:
-                        that.updateStatusShowMap(orderStatus.EXCEPTION);
-                        break;
+                for (let item in that.orderStatusShowMap) {
+                    that.orderStatusShowMap[item] = false;
                 }
-            },
-            
-            updateStatusShowMap: function(...visibleStatus) {
-                if (visibleStatus.length == 0) {
-                    for (let status in that.orderStatusShowMap) {
-                        that.orderStatusShowMap[status] = true;
-                    }
-                    return;
-                }
-                for (let status in that.orderStatusShowMap) {
-                    that.orderStatusShowMap[status] = false;
-                }
-                for (let status of visibleStatus) {
-                    that.orderStatusShowMap[status] = true;
+                for (let item of tab2Status[e.index]) {
+                    that.orderStatusShowMap[item] = true;
                 }
             },
             
@@ -162,89 +143,120 @@
                 order.status = orderStatus.CREATED;
             },
             
-            cancelOrder: async function(index) {
-                const order = shareData.orderList[index];
-                let notice, res;
+            cancelOrder: async function() {
+                const order = that.targetOrder;
+                let notice;
                 switch(order.status) {
                     case orderStatus.INITIALING:
-                        notice = '确认是否要取消订单'
+                        notice = '是否要取消订单'
                         break;
                     case orderStatus.CREATED:
                         notice = '频繁地取消订单会影响您的信用评分';
                         break;
                     case orderStatus.ACCEPTED:
-                        notice = '已接单，订单取消将扣取50%违约金';
+                        notice = '已接单，取消将扣取25%订金';
                         break;
                     case orderStatus.SERVING:
-                        notice = '服务中，订单取消需与对方协商';
+                        notice = '服务中，取消将扣取25%订金,且需对方同意后生效';
                         break;
+                    case orderStatus.CANCELING:
+                        notie = '同意取消订单后您将获取' + getMoneyString(order.deposit) + '的订金';
                     default:
                         throw new error('not a status for canceling');
                 }
-                res = promisify(uni.showToast, {content: notice, icon: 'none'});
+                const res = promisify(uni.showToast, {content: notice, icon: 'none'});
                 if (res.cancel) {
                     return;
                 }
                 uni.showLoading();
-                res = await orderAssistant.cancel({orderId: order._id})
+                res = await orderAssistant.cancel({orderId: order._id, status: })
+                uni.hideLoading();
                 if (res.success) {
                     uni.showToast({
-                        title: '订单取消成功',
+                        title: '操作成功',
                         icon: 'success',
                     })
                     shareData.orderList[index].status = CANCELED;
                 } else {
                     uni.showToast({
-                        title: '订单取消失败，请重试',
+                        title: res.notice,
                         icon: 'none'
                     })
                 }
-                
-            },
-            
-            evaluateOrder: async function(index) {
-                uni.navigateTo({
-                    url: '/pages/makeOrder/evaluateOrder/evaluateOrder',
-                    
-                }),
-                eventBus.$on('evaluateOrder', function(e) {
-                    if (e.success) {
-                        shareData.orderList[index].status = orderStatus.COMPLETED;
-                    }
-                    eventBus.$off('evaluateOrder');
-                })
+                await that.getOrderList({fromStart: true});
             },
             
             buttonClick: async function(index) {
-                const order = that.orders[index];
-                console.log(order);
-                
-                let success = false;
-                let res;
+                that.targetOrder = shareData.orders[index];
+                const order = that.targetOrder;
                 
                 switch(order.status) {
-                    case orderStatus.INITIALING:
+                    case orderStatus.INITIALING: {
+                        that.show_paymentMethodSelector = true;
+                        break;
+                    }
+                    case orderStatus.SERVING: {
+                        uni.showModal({
+                            title: '验证码',
+                            content: order.confirmCode,
+                            showCancel: false
+                        })
+                        break;
+                    }
+                    case orderStatus.EVALUATING: {
+                        const paras = 'orderId=' + order._id + '&side=0';
+                        uni.navigateTo({
+                            url: '/pages/evaluateOrder/evaluateOrder?' + paras;
+                        })
+                        break;
+                    }
+                    case orderStatus.CANCELING: {
+                        that.cancelOrder();
+                        
+                        
+                    }
                         
                 }
+                
             },
             
             hideSelector: function(type) {
                 that['show_'+type] = false;
             },
+            
+            getOrderList: async function(arg) {
+                const {
+                    fromStart
+                } = arg;
+                const status.
+                uni.showToast();
+                const res = await shareData.getOrderList({fromStart, status});
+                uni.hideLoading();
+                if (!res.success) {
+                    uni.showToast({
+                        title: res.notice
+                    })
+                }
+            },
+            
+            startPullDownRefresh: function() {
+                eventBus.$emit('startPullDownRefresh');
+            }
 		},
         
-        created: async function() {
-            await shareData.getList({status: that.tabs[that.tabIndex].status, renew: true});
-            await shareData.test();
+        mounted: async function() {
+            await that.getOrderList({fromStart: true});
             eventBus.$on('reachBottom', async function(){
                 console.log('reachBottom received');
-                const status = that.tabs[that.tabIndex].status;
-                const renew = false;
-                uni.showLoading();
-                await shareData.getList({status: status, renew: false});
-                uni.hideLoading();
+                const status = tab2Status[that.tabIndex]
+                const fromStart = false;
+                await that.getOrderList({status, fromStart});
             })
         },
+        
+        beforeDestroy: function() {
+            eventBus.$off('reachBottom')
+        }
         
 	}
 

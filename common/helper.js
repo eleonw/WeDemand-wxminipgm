@@ -118,3 +118,18 @@ export const getTimeString = function(arg) {
     
 }
 
+export const getMoneyString = function(money) {
+    const str = '' + money;
+    switch(str.length) {
+        case 0:
+            throw new Error('invalid money');
+            return '';
+        case 1:
+            return '0.0' + str + '元';
+            break;
+        case 2:
+            return '0.' + str + '元';
+        default:
+            return str.slice(0, -2) + '.' + str.slice(-2) + '元';
+    }
+}

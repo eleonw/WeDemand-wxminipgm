@@ -29,6 +29,7 @@
     import eventBus from "./eventBus.js";
     
     let page;
+    let enablePullDownRefresh;
     
 	export default {
 
@@ -59,11 +60,13 @@
         methods: {
             tabChange(e) {
                 if (e.index == 0) {
+                    eventBus.$off('startPullDownRefresh');
                     page.setCurrentLocation();
+                } else {
+                    eventBus.$on('startPullDownRefresh', function() {
+                        uni.startPullDownRefresh()
+                    });
                 }
-            },
-            setCurrentLocation() {
-                
             },
             mapUpdated: function() {
                 console.log(page.location);
@@ -79,19 +82,39 @@
                     // } 这样子不行，记得做笔记 page.location会变成__ob__ observer
                     // 其实是可以的！
                 })
+            },
+            enablePullDownRefresh: function(status) {
+                if (status) {
+                    enablePullDownRefresh = true;
+                    eventBus.$on('startPullDownRefresh', () => {
+                        uni.startPullDownRefresh();
+                    });
+                    eventBus.$on('stopPullDownRefresh', () => {
+                        uni.stopPullDownRefresh();
+                    });
+                } else {
+                    enablePullDownRefresh = false;
+                    eventBus.$off('startPullDownRefresh');
+                    eventBus.$off('stopPullDownRefresh');
+                }
             }
         },
         
-        onLoad: function(msg) {
-            
+        beforeCreate: function() {
             page = this;
-
             shareData.getAddressBook();
-            
         },
         
-        onShow: function() {
-            page.setCurrentLocation();
+        beforeMount: function() {
+            if (page.selectedTabIndex == 1) {
+                page.enablePullDownRefresh(true);
+            } else {
+                page.enablePullDownRefresh(false);
+            }
+        },
+        
+        beforeDestroy: function() {
+            page.enablePullDownRefresh(false);
         },
         
         onReachBottom: function() {
