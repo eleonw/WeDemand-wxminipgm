@@ -54,11 +54,18 @@ myOrderPage.buttonClick
 server在不同阶段可以进行的操作：（修改server.js和orderService的index.js）
 
 + [x] CREATED: takeOrder	paras: orderId, userId, serverMobile  code: -1other, -2already taken away
-+ [x] ACCEPTED: startService, cancel  paras:orderId, userId code:-1 other, -2 userWrong, -3, statusWrong
-+ [ ] SERVING: finishService, cancel
++ [x] ACCEPTED: startService,  paras:orderId, userId code:-1 other, -2 userWrong, -3, statusWrong
++ [x] startService的时候同时要生成confirmCode
++ [x] SERVING: finish, paras orderId, userId, confirmCode code: -1 other, -2 userWrong, -3 statusWrong, -4 confirmCode wrong, -5 codeErrCount exceeded
 + [ ] EVALUATING: evaluate
++ [ ] ACCEPTED, SERVING的cancel
 + [ ] CANCELING: passCancel
 
 
 
 + [ ] takeOrder的时候需要填入mobile手机号（不用了，直接用用户的手机号，不过要提示一下），还要收订金
++ [ ] startService的时候同时要生成confirmCode
++ [ ] orderStatus.SERVING的的时候creater要可以查看验证码（creater/orderCard buttonText)
++ [ ] ~~数据库创建orderConfirmCode表，在server start的时候创建，在server finish以及所有的进入orderStatus.CANCELED的时候删除~~
++ [ ] 直接在order表中加入confirmCode域
++ [ ] 潜在的一个问题，验证次数超过以后进入exception

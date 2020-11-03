@@ -47,6 +47,7 @@ const serviceType_creater = {
 const serviceType_server = {
     TAKE: 1,
     START: 2,
+    FINISH: 3,
 }
 
 const side = {
@@ -157,6 +158,12 @@ exports.main = async (event) => {
                         return {
                             success: true
                         }
+                    }
+                    case serviceType_server.FINISH: {
+                        const {
+                            userId, orderId, confirmCode
+                        } = event;
+                        await finish({userId, orderId, confirmCode});
                     }
                 }
             default:
@@ -413,7 +420,7 @@ async function getCreaterOrderList(opt) {
     }
 }
 
-async take(arg) {
+async function take(arg) {
     const {
         userId, orderId, mobile
     } = arg;
@@ -430,10 +437,14 @@ async take(arg) {
     })
 }
 
-async start(arg) {
+
+
+async function start(arg) {
     const {
         userId, orderId
     } = arg;
+    const confirmCode = getRandomCode();
+    const errCodeCount = 5;
     await db.runTransaction(async transaction => {
         let res = await transaction.collection('active-order').doc(orderId).get();
         if (res.data.length == 0 || ) {
@@ -444,7 +455,49 @@ async start(arg) {
             transaction.rollback({code: -3})
         }
         await transaction.collection('active-order').doc(orderId).update({
-            status: _orderStatus.SERVING
+            status: _orderStatus.SERVING,
+            confirmCode,
+            errCodeCount,
         });
     })
+}
+
+async function finish(arg) {
+    const {
+        userId, orderId, confirmCode
+    } = arg;
+    await db.runTransaction(async transaction => {
+        const res = await transaction.collection('active-order').doc(orderId).get();
+        if (res.data.length == 0) {
+            transaction.rollback({code: -3});
+        } else if (res.data[0].serverId != userId) {
+            transaction.rollback({code: -2});
+        } else if (res.data[0].status != _orderStatus.SERVING) {
+            transaction.rollback({code: -3});
+        } else if (res.data[0].errCodeCount <= 0) {
+            transaction.rollback({code: -5})
+        } else if (res.data[0].confirmCode != confirmCode) {
+            transaction.collection('active-order').doc(orderId).update({
+                codeErrCount: dbCmd.inc(-1);
+            })
+            transaction.rollback({code: -4, error: {errCodeCount: res.data[0].errCodeCount-1}})
+        }
+        res.data[0].orderStatus = _orderStatus.EVALUATING;
+        await transaction.collection('inactive-order').add(res.data[0]);
+        await transaction.collection('active-roder').doc(orderId).remove();
+    })
+    
+}
+
+function getRandomLetter() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return characters[Math.floor(Math.random() * 36)];
+}
+
+function getRandomCode() {
+    const array = [];
+    for (let i = 0; i < 6; i++) {
+        array.push(getRandomLetter());
+    }
+    return array.join('');
 }

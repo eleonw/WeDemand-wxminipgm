@@ -30,6 +30,7 @@ function Order(arg={}) {
     this.evalStatus = arg.evalStatus;
     this.cancelSide = arg.cancelSide;
 
+    this.confirmCode = arg.confirmCode;
 }
 
 Order.prototype.getSensitiveInfoArray = function() {
@@ -54,10 +55,10 @@ function Order_HelpDeliver(arg={}) {
     
     const {
         _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo,   // expressInfo, takeAwayInfo 
-        fromAddress, toAddress, itemInfo, note, evalStatus, cancelSide
+        fromAddress, toAddress, itemInfo, note, evalStatus, cancelSide, confirmCode
     } = arg;
     
-    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo, serviceType: serviceType.HELP_DELIVER}, evalStatus, cancelSide);
+    Order.call(this, arg);
     
     this.fromAddress = new Address(fromAddress);
     this.toAddress = new Address(toAddress);
@@ -123,8 +124,7 @@ function Order_HelpBuy(arg={}) {
         address, buyingLocation, sensitiveInfo, evalStatus, cancelSide
     } = arg;
     
-    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, 
-        cost, status, sensitiveInfo, serviceType: serviceType.HELP_BUY}, evalStatus, cancelSide);
+    Order.call(this, arg);
     
     this.commodityDesc = commodityDesc;
     this.address = new Address(address);
@@ -159,8 +159,7 @@ function Order_OtherService(arg={}) {
         evalStatus, cancelSide
     } = arg;
     
-    Order.call(this, {_id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, 
-        cost, status, serviceType: serviceType.OTHER_SERVICE}, sensitiveInfo, evalStatus, cancelSide);
+    Order.call(this, arg);
     this.address = new Address(address);
     this.serviceDesc = serviceDesc;
 }
