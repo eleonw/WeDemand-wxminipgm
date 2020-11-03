@@ -212,8 +212,8 @@
                     that.showCancel = true;
                     break;
                 case orderStatus.SERVING:
-                    that.activeButton = false;
-                    that.buttonText = "正在服务";
+                    that.activeButton = true;
+                    that.buttonText = "查看验证码";
                     that.showCancel = true;
                     break;
                 case orderStatus.EVALUATING:

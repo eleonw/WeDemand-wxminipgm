@@ -207,18 +207,19 @@ export const orderAssistant_creater = {
         }
     },
     
-    getOrderList: async function(opt) {
+    getUserOrderList: async function(opt) {
         const {
             limit, _getListRec, status
         } = opt;
         const userId = userInfo._id;
         const serviceType = this.serviceType.GET;
+        const side = 0;
 
         try {
             const res = await uniCLoud.callFunction({
                 name: 'orderService',
                 data: {
-                    status, limit, _getListRec, userId, serviceType
+                    status, limit, _getListRec, userId, serviceType, side
                 }
             })
             console.log(res)
@@ -241,6 +242,61 @@ export const orderAssistant_server = {
         TAKE: 1,
         START: 2,
         FINISH: 3,
+        EVALUATE: 4,
+        CANCEL: 5,
+        GET_CREATED_LIST: 6,
+        GET_SERVER_LIST: 7
+    },
+    
+    getCreatedOrderList: async function(arg) {
+        const {
+            limit, _createdListRec, fromStart
+        } = arg;
+        const serviceType = this.serviceType.GET_CREATED_LIST;
+        const side = 1;
+        
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    limit, _createdListRec, fromStart, serviceType, side
+                },
+            })
+            return res.result;
+        } catch(e) {
+            return {
+                success: false,
+                code: -1,
+                error: e
+            }
+        }
+        
+        
+    },
+    
+    getServerOrderList: async function(arg) {
+        const {
+            limit, _serverListRec, fromStart, status,
+        } = arg;
+        const userId = userInfo._id;
+        const serviceType = this.serviceType.GET_SERVER_LIST;
+        const side = 1;
+        
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    limit, _serverListRec, fromStart, serviceType, side, status, userId
+                },
+            })
+            return res.result;
+        } catch(e) {
+            return {
+                success: false,
+                code: -1,
+                error: e
+            }
+        }
     },
     
     take: async function(arg) {
@@ -328,6 +384,63 @@ export const orderAssistant_server = {
             }
         }
         
+    },
+    
+    evaluate: async function(arg) {
+        const {
+            orderId, score, comment
+        } = arg;
+        const userId = userInfo._id;
+        const side = 1;
+        const serviceType = this.serviceType.EVALUATE;
+        
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    side,
+                    serviceType,
+                    userId,
+                    orderid,
+                    confirmCode,
+                }
+            })
+            return res.result;
+        } catch(e) {
+            return {
+                success: false,
+                code: -1,
+                error: e
+            }
+        }
+    },
+    
+    cancel: async function(arg) {
+        const {
+            orderId, status
+        } = arg;
+        const userId = userInfo._id;
+        const side = 1;
+        const serviceType = this.serviceType.CANCEL;
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    orderId,
+                    status,
+                    userId,
+                    side,
+                    serviceType
+                }
+            })
+            return res.result;
+        } catch(e) {
+            return {
+                success: false,
+                code: -1,
+                error: e
+            }
+        }
     }
 }
 
