@@ -238,17 +238,18 @@ export const orderAssistant_creater = {
 
 export const orderAssistant_server = {
     serviceType: {
-        TAKEORDER: 1,
+        TAKE: 1,
+        START: 2,
     },
     
-    takeOrder: async function(arg) {
+    take: async function(arg) {
         const {
             orderId
         } = arg;
         const mobile = userInfo.mobile;
         const userId = userInfo.userId;
         const side = 1;
-        const serviceType = this.serviceType.TAKEORDER;
+        const serviceType = this.serviceType.TAKE;
         
         try {
             const res = await uniCloud.callFunction({
@@ -269,7 +270,33 @@ export const orderAssistant_server = {
                 error: e
             }
         }
-        
+    },
+    
+    start: async function(arg) {
+        const {
+            orderId
+        } = arg;
+        const userId = userInfo.userId;
+        const side = 1;
+        const serviceType = this.serviceType.START;
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'orderService',
+                data: {
+                    userId,
+                    orderId,
+                    side,
+                    serviceType
+                }
+            })
+            return res.result;
+        } catch(e) {
+            return {
+                success: false,
+                code: -1,
+                error: e,
+            }
+        }
     }
 }
 

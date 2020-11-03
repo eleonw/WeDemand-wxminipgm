@@ -44,8 +44,9 @@ const serviceType_creater = {
     GET: 5,
 }
 
-const serviceType_service = {
-    TAKE: 1
+const serviceType_server = {
+    TAKE: 1,
+    START: 2,
 }
 
 const side = {
@@ -139,11 +140,20 @@ exports.main = async (event) => {
                 break;
             case side.SERVER:     // server
                 switch(event.serviceType) {
-                    case serviceType_service.TAKE: {
+                    case serviceType_server.TAKE: {
                         const {
                             userId, orderId, mobile
                         } = event;
                         await take({userId, orderId, mobile});
+                        return {
+                            success: true
+                        }
+                    }
+                    case serviceType_server.START: {
+                        const {
+                            userId, orderId
+                        } = event;
+                        await start({userId, orderId});
                         return {
                             success: true
                         }
@@ -417,5 +427,24 @@ async take(arg) {
             serverId: userId,
             serverMobile: mobile,
         })
+    })
+}
+
+async start(arg) {
+    const {
+        userId, orderId
+    } = arg;
+    await db.runTransaction(async transaction => {
+        let res = await transaction.collection('active-order').doc(orderId).get();
+        if (res.data.length == 0 || ) {
+            transaction.rollback({code: -3})
+        } else if (res.data[0].serverId != userId) {
+            transaction.rollback({code: -2})
+        } else if (res.data[0].status != _orderStatus.ACCEPTED) {
+            transaction.rollback({code: -3})
+        }
+        await transaction.collection('active-order').doc(orderId).update({
+            status: _orderStatus.SERVING
+        });
     })
 }
