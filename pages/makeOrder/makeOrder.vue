@@ -120,6 +120,12 @@
         onReachBottom: function() {
             console.log('reach bottom')
             eventBus.$emit('reachBottom');
+        },
+        
+        onPullDownRefresh: function() {
+            if (enablePullDownRefresh) {
+                eventBus.$emit('pullDownRefresh');
+            }
         }
 	}
 </script>

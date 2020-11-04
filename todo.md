@@ -78,7 +78,7 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 + [ ] orderStatus.SERVING的的时候creater要可以查看验证码（creater/orderCard buttonText)
 + [ ] ~~数据库创建orderConfirmCode表，在server start的时候创建，在server finish以及所有的进入orderStatus.CANCELED的时候删除~~
 + [x] makeOrder myOrderPage orderCard在不同阶段buttonClick的功能实现
-+ [ ] makeOrder myOrderPage orderCard cancel的实现
++ [x] makeOrder myOrderPage orderCard cancel的实现
 + [ ] takeOrder myOrderPage orderCard在不同阶段buttonClick
 + [ ] takeOrder myOrderPage cancel
 + [ ] takeOrder takeOrderPage buttonClick
@@ -94,3 +94,4 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 + [ ] makeOrder设置onPullDownRefresh
 + [ ] takeOrder设置onPullDownRefresh
 + [ ] makeOrder myOrderPage 中INITIAL中的操作要先付款（通过paymentMethodSelector）
++ [ ] 潜在改进：将balanceChange分为initial和confirm两个阶段

@@ -143,7 +143,8 @@
                 order.status = orderStatus.CREATED;
             },
             
-            cancelOrder: async function() {
+            cancelOrder: async function(index) {
+                that.targetOrder = that.orderList[index];
                 const order = that.targetOrder;
                 let notice;
                 switch(order.status) {
@@ -169,14 +170,13 @@
                     return;
                 }
                 uni.showLoading();
-                res = await orderAssistant.cancel({orderId: order._id, status: })
+                res = await orderAssistant.cancel({orderId: order._id, status: order.status})
                 uni.hideLoading();
                 if (res.success) {
                     uni.showToast({
                         title: '操作成功',
                         icon: 'success',
                     })
-                    shareData.orderList[index].status = CANCELED;
                 } else {
                     uni.showToast({
                         title: res.notice,
@@ -211,13 +211,9 @@
                         break;
                     }
                     case orderStatus.CANCELING: {
-                        that.cancelOrder();
-                        
-                        
+                        that.cancelOrder(index);
                     }
-                        
                 }
-                
             },
             
             hideSelector: function(type) {
@@ -228,7 +224,7 @@
                 const {
                     fromStart
                 } = arg;
-                const status.
+                const status = arg.status ?  arg.status : tab2status[0];
                 uni.showToast();
                 const res = await shareData.getOrderList({fromStart, status});
                 uni.hideLoading();
@@ -244,20 +240,23 @@
             }
 		},
         
-        mounted: async function() {
+        beforeMount: async function() {
             await that.getOrderList({fromStart: true});
             eventBus.$on('reachBottom', async function(){
                 console.log('reachBottom received');
                 const status = tab2Status[that.tabIndex]
-                const fromStart = false;
-                await that.getOrderList({status, fromStart});
+                await that.getOrderList({status, fromStart: false});
+            })
+            eventBus.$on('pullDownRefresh', async function() {
+                console.log('pullDownRefresh received');
+                await that.getOrderList(fromStrat: true);
             })
         },
         
         beforeDestroy: function() {
             eventBus.$off('reachBottom')
+            eventBus.$off('pullDownRefresh')
         }
-        
 	}
 
 </script>
