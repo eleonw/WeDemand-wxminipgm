@@ -5,14 +5,8 @@
             <view class="title">输入手机号码</view>
             <input class="mobile" v-model="mobile" @input="mobileChange"></input>
         </view>
-        <view class="button" @click="loginWithSms">使用手机登录</view>
+        <view class="button" @click="loginWithSmsCode">使用手机登录</view>
         
-<!--        使用手机号码登录/注册
-        <input v-model="mobile" @change="mobileChange"></input>
-        <view> {{mobile}} </view>
-        
-        <view class="button" @click="loginWithSms">使用手机登录</view>
-        <view class="button" @click="login(1)">使用微信登录</view> -->
     </view>
 </template>
 
@@ -21,11 +15,35 @@
     import uniPopup from '@/components/uni-popup/uni-popup.vue';
     import inputWithTitle from '@/components/inputWithTitle/inputWithTitle.vue';
     
-    import { promisify, addAll } from '@/common/helper.js';
-    import { userInfo, dev } from '@/common/globalData.js';
-    import { login, sendSmsCode } from '@/common/server.js';
+    import { promisify, setUserInfo } from '@/common/helper.js';
+    import { loginAssistant , sendSmsCode } from '@/common/server.js';
+    
+    const dev = false;
     
     let page;
+    
+    const test_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkMjMyZGY0YzVmYTI4YzliMDAwYTE5YWI1OGVmZmU2MiIsImNsaWVudElkIjoiZDI2OGZmMDIwZmQwZTRjYzI0NWIxMTJiNjNhYmFkNjAiLCJpYXQiOjE2MDQ0OTk5ODAsImV4cCI6MTYwNDUwNzE4MH0.Qo-ryr-51xdZiXLtVUU2xUcMtMRNrrY2KBADIW7-9mY"
+    
+    async function checkToken() {
+        // uni.setStorageSync('uniIdToken', test_token)
+        const token = uni.getStorageSync('uniIdToken');
+        console.log('token')
+        console.log(token)
+        if (token) {
+            const res = await loginAssistant.loginWithToken({token});
+            console.log(res)
+            if (res.success) {
+                setUserInfo(res.userInfo);
+                uni.setStorage('uniIdToken', res.token);
+                return true;
+            } else {
+                uni.removeStorage('uniIdToken');
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
     
 	export default {
         components: {
@@ -38,13 +56,23 @@
 			}
 		},
         
+        beforeCreate: async function() {
+            page = this;
+            const tokenLogin = await checkToken();
+            if (tokenLogin) {
+                uni.redirectTo({
+                    url: '@/pages/index/index',
+                })
+            }
+            setUserInfo({id: 1})
+        },
+        
 		methods: {
             mobileChange: function(e) {
                 page.mobile = e.detail.value;
             },
             
-            loginWithSms: async function() {
-                    
+            loginWithSmsCode: async function() {
                 if (page.mobile.length != 11 || isNaN(Number(page.mobile)) || Number(page.mobile)<0) {
                     uni.showToast({
                         title: '手机号码无效，请重试',
@@ -54,35 +82,20 @@
                 }
                 
                 uni.showLoading();
-                
-                try {
-                    let res;
-                    if (dev) {
-                        res = {
-                            code: 0,
-                        }
-                    } else {
-                        res = (await sendSmsCode({
-                            mobile: page.mobile,
-                            type: 'login'
-                        })).result
-                    }
-                    
-                    console.log(res)
-                    if (res.code != 0) {
-                        throw new Error(res);
-                    }
-                    uni.hideLoading();
-                    uni.navigateTo({
-                        url: './fillInSmsCode?mobile=' + this.mobile,
-                        complete: e=> {
-                            console.log(e)
-                        }
-                    });
-                } catch (e) {
-                    console.log(e)
-                    uni.hideLoading();
+                const res = await sendSmsCode({
+                    mobile: page.mobile,
+                    type: 'login'
+                })
+                uni.hideLoading();
+                if (!res.success) {
+                    uni.showToast({
+                        title: res.message,
+                        icon: 'none'
+                    })
                 }
+                uni.navigateTo({
+                    url: './fillInSmsCode?mobile=' + this.mobile,
+                });
             },
             
             login: async function(type) {
@@ -135,9 +148,8 @@
                 return;
             }
 		},
-        onLoad: function() {
-            page = this;
-        }
+
+        
 	}
 </script>
 

@@ -72,8 +72,6 @@ export const defaultLocation = new Location({
     address: "北京市海淀区学院路37号"
 })
 
-export const dev = false;
-
 export const userInfo = {
     _id: '1111111',
     wxOpenid: "ogjlP5YAbGPGuaTpblXIwWe8o07E",

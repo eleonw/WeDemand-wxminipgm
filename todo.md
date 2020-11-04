@@ -88,9 +88,10 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 + [ ] makeOrder shareData.getOrderList paras(fromStart, status) return(success, notice(if !success))
 + [ ] orderAssistant_server 和 orderAssistant_creater在!success时都返回notice字符串提示失败原因
 + [x] makeOrder设置onPullDownRefresh, eventBus涉及的消息有 startPullDownRefresh, stopPullDownRefresh, pullDownRefresh, reachBottom, 要在subpages/myOrderPage设置相应
-+ [ ] takeOrder设置onPullDownRefresh, eventBus涉及的消息有 startPullDownRefresh, stopPullDownRefresh, pullDownRefresh, reachBottom，要在subpages中两个设置相应
++ [x] takeOrder设置onPullDownRefresh, eventBus涉及的消息有 startPullDownRefresh, stopPullDownRefresh, pullDownRefresh, reachBottom，要在subpages中两个设置相应
 + [ ] makeOrder myOrderPage 中INITIAL中的操作要先付款（通过paymentMethodSelector）
 + [ ] takeOrder/myOrderPage.getOrderList
 + [ ] takeOrder/selectOrderpage.getOrderList
 + [ ] 考虑在makeOrder/myOrderPage中orderList还需不需要放在shareData中（统一在订单操作（成功或失败）以后刷新订单列表）如果导航到了其他页面，可以通过（思考是统一在mounted的时候刷新列表还是在created的时候刷新列表）
++ [ ] (cloud) sendSmsCode code: -1:other -2:sendFailure -3:setVerifyCodeFailure
 

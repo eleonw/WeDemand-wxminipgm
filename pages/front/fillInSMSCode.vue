@@ -7,8 +7,11 @@
         
         <view class="notice">已发送短信至{{ mobile }},请填写验证码</view>
         
-            
-        <input class="code" v-model="code" maxlength="4"></input>
+        <view class="code">
+            {{ code }}
+            <input class="codeInput" v-model="code" maxlength="4"></input>
+        </view>
+        
         
         <view class="button" @click="confirm">确 认</view>
 		
@@ -20,9 +23,10 @@
     import uniIcons from '@/components/uni-icons/uni-icons.vue';
     import statusBar from '@/components/statusBar/statusBar.vue';
     
-    import { addAll } from '@/common/helper.js';
-    import { login, resetSmsCode } from '@/common/server.js';
-    import { dev, userInfo } from '@/common/globalData.js';
+    import { setUserInfo } from '@/common/helper.js';
+    import { loginAssistant, resetSmsCode } from '@/common/server.js';
+
+    const dev = false;
     
     let page;
     
@@ -41,18 +45,14 @@
 		},
         
         onLoad: function(opt) {
-            page.mobile = opt.mobile;
+            // page.mobile = opt.mobile;
+            page.mobile = '13728084958'
         },
         
         created: function(opt) {
            
             page = this;
             
-            page.targetIndex = 0;
-            
-            if (dev) {
-                page.code = 'AAAA'
-            }
         },
         
 		methods: {
@@ -68,50 +68,35 @@
             
             codeChange: function(index) {
                 
-                if (!page.completed[index] && page.code[index].length == 1) {
-                    page.completed[index] = true;
-                    page.targetIndex = index + 1;
-                } else if (page.completed[index] && page.code[index].length == 0){
-                    page.completed[index] = false;
-                    if (page.targetIndex != 0) {
-                        page.targetIndex = index - 1;
-                    }
-                }
-
-                if (page.code[index].length == 1) {
-                    page.targetIndex = index + 1;
-                }
             },
             
             
             confirm: async function() {
-                const res = await login({
-                    type: 'sms',
-                    mobile: page.mobile,
-                    code: page.code
-                })
-                
-                console.log(res)
-                
+                const mobile = page.mobile;
+                const code = page.code;
+                const res = await loginAssistant.loginWithSmsCode({mobile, code});
+                res.sucess = true
                 if (res.success) {
                     console.log('login success');
-                    addAll.call(userInfo, res.userInfo)
-                    console.log(userInfo)
+                    setUserInfo(res.userInfo);
+                    console.log(res.userInfo)
+                    uni.setStorage('uniIdToken', res.token);
                     uni.reLaunch({
                         url: '/pages/index/index'
                     })
+                } else {
+                    uni.showToast({
+                        title: res.message,
+                        icon: 'none'
+                    })
+                    page.code = '';
                 }
-                
-                resetSmsCode({
-                    recId: '65825b355f40951900160ef6225676b6'
-                });
-                
             }
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
     
     .page {
         background-color: var(--color-main);
@@ -148,12 +133,16 @@
         height: 80rpx;
         line-height: 80rpx;
         width: 200rpx;
+        letter-spacing: 5rpx;
         
         border: solid 5rpx white;
         color: white;
-        font-size: 50rpx;
+        font-size: 60rpx;
         text-align: center;
         
+        .codeInput {
+            color: transparent;
+        }
     }
     
     .button {

@@ -1,3 +1,5 @@
+import { userInfo } from './globalData.js';
+
 export const promisify = function(func, opt, context=null) {
     return new Promise(function(resolve, reject) {
         func.call(context, {
@@ -6,6 +8,13 @@ export const promisify = function(func, opt, context=null) {
             fail: function(err) {reject(err)},
         })
     })
+}
+
+export const setUserInfo = function(new_userInfo) {
+    for (let item in userInfo) {
+        delete userInfo[item];
+    }
+    addAll.call(userInfo, new_userInfo);
 }
 
 // export const clone = function(obj) {

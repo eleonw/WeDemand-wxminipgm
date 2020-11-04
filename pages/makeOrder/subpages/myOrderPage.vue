@@ -8,7 +8,7 @@
         
         <view class="loadMore"></view>
         
-        <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="targetOrder.cost"></paymentMethodSelector>
+        <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="targetOrder.totalCost"></paymentMethodSelector>
         
 	</view>
 </template>
@@ -163,7 +163,7 @@
                     default:
                         throw new error('not a status for canceling');
                 }
-                const res = promisify(uni.showToast, {content: notice, icon: 'none'});
+                let res = promisify(uni.showToast, {content: notice, icon: 'none'});
                 if (res.cancel) {
                     return;
                 }
@@ -185,7 +185,6 @@
             },
             
             buttonClick: async function(index) {
-                console.log(index);
                 that.targetOrder = that.orderList[index];
                 const order = that.targetOrder;
                 
@@ -244,23 +243,22 @@
 		},
         
         beforeMount: async function() {
-            console.log('beforeMount')
+ 
             // await that.getOrderList({fromStart: true});
             eventBus.$on('reachBottom', async function(){
-                console.log('reachBottom received');
+
                 const status = tab2Status[that.tabIndex]
                 await that.getOrderList({status, fromStart: false});
             })
             eventBus.$on('pullDownRefresh', async function() {
-                console.log('pullDownRefresh received');
+
                 await that.getOrderList({fromStrat: true});
                 that.StopPullDownRefresh();
             })
         },
         
         beforeDestroy: function() {
-            
-            console.log('beforeDestory')
+
             eventBus.$off('reachBottom')
             eventBus.$off('pullDownRefresh')
         }

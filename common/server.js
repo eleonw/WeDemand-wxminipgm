@@ -1,5 +1,4 @@
 import { userInfo, serviceType as _serviceType } from '@/common/globalData.js';
-import { loginErr } from '@/common/error.js';
 
 const userId = userInfo._id;
 
@@ -19,41 +18,115 @@ export async function resetSmsCode(arg) {
 
 export async function sendSmsCode(opt) {
     const {
-        type
+        type, mobile
     } = opt;
-    const res = await uniCloud.callFunction({
-        name: 'sendSmsCode',
-        data: {
-            type,
-            mobile: opt.mobile,
-        }
-    })
-    console.log(res);
-    return res;
-}
-
-export async function login(loginData) {
     
-    console.log('login called')
-    
-    let res;
     try {
-        res = (await uniCloud.callFunction({
-            name: 'login',
-            data: loginData
-        })).result;
-        return res;
+        const res = await uniCloud.callFunction({
+            name: 'sendSmsCode',
+            data: { type, mobile }
+        })
+        console.log(res)
+        if (res.result.success) {
+            return { success: true }
+        } else {
+            let message;
+            switch(res.result.code) {
+                case -2:
+                    message = '验证码发送失败，请稍后重试'
+                    break;
+                case -3:
+                    message = '本次发送验证码无效，请重新发送并使用新的验证码'
+                default:
+                    message = '操作失败，请重试'
+            }
+            return { success: false, message };
+        }
     } catch(e) {
         console.log(e);
         return {
-            code: loginErr.SYSTEM_FAILURE,
+            success: false,
+            message: '操作失败，请重试'
         }
     }
+}
+
+export const loginAssistant = {
+    LoginMethod : {
+        SMS_CODE: 1,
+        TOKEN: 2,
+        WXCODE: 3,
+    },
     
+    loginWithSmsCode: async function(opt) {
+        const {
+            mobile, code
+        } = opt;
+        const loginMethod = this.LoginMethod.SMS_CODE;
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'login',
+                data: {
+                    mobile, code, loginMethod
+                }
+            })
+            console.log(res)
+            if (!res.result.success) {
+                console.log(res);
+                throw new Error();
+            }
+            console.log(res.result);
+            const { userInfo, token } = res.result;
+            return {
+                success: true,
+                userInfo,
+                token,
+            }
+        } catch(e) {
+            console.log(e)
+            return {
+                success: false,
+                message: '验证码错误，请重试'
+            }
+        }
+        
+    },
+    
+    loginWithToken: async function(opt) {
+        const {
+            token
+        } = opt;
+        const loginMethod = this.LoginMethod.TOKEN;
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'login',
+                data: {
+                    token, loginMethod
+                }
+            })
+            console.log(res)
+            if (!res.result.success) {
+                throw new Error();
+            }
+            const {
+                userInfo, token
+            } = res.result;
+            return {
+                success: true,
+                token,
+                userInfo
+            }
+        } catch(e) {
+            console.log(e)
+            return {
+                success: false,
+                message: '登陆失败，请重试'
+            }
+        }
+    }
 }
 
 export const balanceAssistant = {
-        
     serviceType: {
         GET_BALANCE: 1,
         PAY: 2

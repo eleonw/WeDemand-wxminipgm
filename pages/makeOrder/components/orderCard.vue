@@ -201,15 +201,12 @@
             that.serviceType = serviceType;
             that.color = color;
             that.sensitiveInfo = that.orderObj.getSensitiveInfoArray();
-            console.log('flag')
-            console.log(that.orderObj)
             switch(that.orderObj.status) {
                 case orderStatus.INITIALING:
                     console.log('orderstatus.initial')
                     that.activeButton = true;
                     that.buttonText = "付款";
                     that.showCancel = true;
-                    // console.log(that)
                     break;
                 case orderStatus.CREATED:
                     that.activeButton = false;
