@@ -2,7 +2,7 @@ import { userInfo, serviceType as _serviceType } from '@/common/globalData.js';
 
 const userId = userInfo._id;
 
-export async function resetSmsCode(arg) {
+export async function _resetSmsCode(arg) {
     
     const {
         recId
@@ -59,6 +59,7 @@ export const loginAssistant = {
     },
     
     loginWithSmsCode: async function(opt) {
+        console.log('loginWithSmsCode');
         const {
             mobile, code
         } = opt;
@@ -75,7 +76,6 @@ export const loginAssistant = {
                 console.log(res);
                 throw new Error();
             }
-            console.log(res.result);
             const { userInfo, token } = res.result;
             return {
                 success: true,
@@ -93,15 +93,13 @@ export const loginAssistant = {
     },
     
     loginWithToken: async function(opt) {
-        const {
-            token
-        } = opt;
+        console.log('loginWithToken');
         const loginMethod = this.LoginMethod.TOKEN;
         try {
             const res = await uniCloud.callFunction({
                 name: 'login',
                 data: {
-                    token, loginMethod
+                    loginMethod
                 }
             })
             console.log(res)

@@ -37,7 +37,24 @@ exports.main = async (event, context) => {
             case LoginMethod.SMS_CODE: // smsCode
                 return loginWithSmsCode(event);
             case LoginMethod.TOKEN:
-                return loginWithToken(event);
+            // return event;
+                const res = await uniID.checkToken(event.uniIdToken);
+                return {
+                    res
+                }
+                if (res.code == 0) {
+                    return {
+                        success: true,
+                        token: res.token,
+                        userInfo: res.userInfo,
+                    }
+                } else {
+                    return {
+                        success: false,
+                        code: -1,
+                        res: res
+                    }
+                }
             default:
                 throw new Error('invalid LoginMethod');
         }
@@ -54,11 +71,13 @@ exports.main = async (event, context) => {
 };
 
 async function loginWithToken(opt) {
-    const {
-        token
-    } = opt;
-    const res = await uniID.checkToken(token);
-    console.log(res)
+    // const {
+    //     uniIdToken
+    // } = opt;
+    const res = await uniID.checkToken(uniIdToken);
+    return {
+        res
+    }
     if (res.code == 0) {
         return {
             success: true,
@@ -80,7 +99,7 @@ async function loginWithSmsCode(opt) {
         code
     } = opt;
     
-    const res = await uniID.loginBySms({
+    let res = await uniID.loginBySms({
         mobile,
         code
     });
@@ -90,14 +109,14 @@ async function loginWithSmsCode(opt) {
             success: false,
             error: res.message,
         }
-    } else {
-        return {
-            success: true,
-            userInfo: res.userInfo,
-            token: res.token,
-            res: res
-        }
     }
+
+    return {
+        success: true,
+        userInfo: res.userInfo,
+        token: res.token,
+    }
+
 }
 
 async function loginWithWxCode(code) {
