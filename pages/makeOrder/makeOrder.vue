@@ -10,9 +10,6 @@
             <myOrderPage></myOrderPage>
         </view>
         
-       
-        
-        
 		<tabBar class="tabBar" :tabs="mainTabs" v-model="selectedTabIndex" @tabchange="tabChange"></tabBar>
  
 	</view>
@@ -39,7 +36,7 @@
         },
 		data() {
 			return {
-        selectedTabIndex: 1,
+                selectedTabIndex: 1,
 				mainTabs: [
                     {
                         index: 0,
@@ -61,28 +58,27 @@
             tabChange(e) {
                 if (e.index == 0) {
                     eventBus.$off('startPullDownRefresh');
-                    page.setCurrentLocation();
                 } else {
                     eventBus.$on('startPullDownRefresh', function() {
                         uni.startPullDownRefresh()
                     });
                 }
             },
-            mapUpdated: function() {
-                console.log(page.location);
-            },
-            regionChange: function() {
-                app.promisify(mapContext.getCenterLocation).then(e => {
-                    console.log(e)
-                    page.location.longitude = e.longitude;
-                    page.location.latitude = e.latitude;
-                    // page.location = {
-                    //     longtitude: e.longtitude,
-                    //     latitude: e.latitude
-                    // } 这样子不行，记得做笔记 page.location会变成__ob__ observer
-                    // 其实是可以的！
-                })
-            },
+            // mapUpdated: function() {
+            //     console.log(page.location);
+            // },
+            // regionChange: function() {
+            //     app.promisify(mapContext.getCenterLocation).then(e => {
+            //         console.log(e)
+            //         page.location.longitude = e.longitude;
+            //         page.location.latitude = e.latitude;
+            //         // page.location = {
+            //         //     longtitude: e.longtitude,
+            //         //     latitude: e.latitude
+            //         // } 这样子不行，记得做笔记 page.location会变成__ob__ observer
+            //         // 其实是可以的！
+            //     })
+            // },
             enablePullDownRefresh: function(status) {
                 if (status) {
                     enablePullDownRefresh = true;
@@ -105,7 +101,7 @@
             shareData.getAddressBook();
         },
         
-        beforeMount: function() {
+        onShow: function() {
             if (page.selectedTabIndex == 1) {
                 page.enablePullDownRefresh(true);
             } else {
@@ -113,7 +109,7 @@
             }
         },
         
-        beforeDestroy: function() {
+        onHide: function() {
             page.enablePullDownRefresh(false);
         },
         

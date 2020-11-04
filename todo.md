@@ -72,26 +72,25 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 
 
 
-+ [ ] takeOrder的时候需要填入mobile手机号（不用了，直接用用户的手机号，不过要提示一下）
-+ [ ] takeOrder的时候需要收订金
 + [x] orderService server start的时候同时要生成confirmCode
-+ [ ] orderStatus.SERVING的的时候creater要可以查看验证码（creater/orderCard buttonText)
-+ [ ] ~~数据库创建orderConfirmCode表，在server start的时候创建，在server finish以及所有的进入orderStatus.CANCELED的时候删除~~
++ [x] orderStatus.SERVING的的时候creater要可以查看验证码（creater/orderCard buttonText)
 + [x] makeOrder myOrderPage orderCard在不同阶段buttonClick的功能实现
 + [x] makeOrder myOrderPage orderCard cancel的实现
 + [ ] takeOrder myOrderPage orderCard在不同阶段buttonClick
 + [ ] takeOrder myOrderPage cancel
 + [ ] takeOrder takeOrderPage buttonClick
-+ [ ] 潜在的一个问题，验证次数超过以后进入exception
-+ [ ] 潜在的问题，保证balance的安全操作
-+ [ ] 将所有金额都用fen作为单位，以整数值表示
++ [ ] takeOrder的时候需要填入mobile手机号（不用了，直接用用户的手机号，不过要提示一下）
++ [ ] takeOrder的时候需要收订金
++ [ ] 将所有金额都用分作为单位，以整数值表示
 + [ ] 与balance有关的操作都要加验证
 + [ ] 将changeBalance云函数改为balanceService，加入getBalance
-+ [ ] 潜在的问题：将balance有关操作都放到balanceService中，如何保证在处理订单时balance和相应操作的同步问题？（没办法用事务了）
 + [ ] 评价页面 evaluationPage
 + [ ] makeOrder shareData.getOrderList paras(fromStart, status) return(success, notice(if !success))
-+ [ ] orderAssistant_server 和 orderAssistant_creater在!success时都返回notice字符串
-+ [ ] makeOrder设置onPullDownRefresh
-+ [ ] takeOrder设置onPullDownRefresh
++ [ ] orderAssistant_server 和 orderAssistant_creater在!success时都返回notice字符串提示失败原因
++ [x] makeOrder设置onPullDownRefresh, eventBus涉及的消息有 startPullDownRefresh, stopPullDownRefresh, pullDownRefresh, reachBottom, 要在subpages/myOrderPage设置相应
++ [ ] takeOrder设置onPullDownRefresh, eventBus涉及的消息有 startPullDownRefresh, stopPullDownRefresh, pullDownRefresh, reachBottom，要在subpages中两个设置相应
 + [ ] makeOrder myOrderPage 中INITIAL中的操作要先付款（通过paymentMethodSelector）
-+ [ ] 潜在改进：将balanceChange分为initial和confirm两个阶段
++ [ ] takeOrder/myOrderPage.getOrderList
++ [ ] takeOrder/selectOrderpage.getOrderList
++ [ ] 考虑在makeOrder/myOrderPage中orderList还需不需要放在shareData中（统一在订单操作（成功或失败）以后刷新订单列表）如果导航到了其他页面，可以通过（思考是统一在mounted的时候刷新列表还是在created的时候刷新列表）
+

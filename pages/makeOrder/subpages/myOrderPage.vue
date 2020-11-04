@@ -57,25 +57,23 @@
                 tabs: [
                     {
                         index: 0,
-                        text: '全 部',
+                        text: '全 部'
                     },
                     {
                         index: 1,
-                        text: '待服务',
-                        status: 
+                        text: '待服务'
                     },
                     {
                         index: 2,
-                        text: '进行中',
+                        text: '进行中'
                     },
                     {
                         index: 3,
-                        text: '待评价',
-                        status: 
+                        text: '待评价'
                     },
                     {
                         index: 4,
-                        text: '已结束',
+                        text: '已结束'
                     },
                 ],
                 orderList: [
@@ -206,7 +204,7 @@
                     case orderStatus.EVALUATING: {
                         const paras = 'orderId=' + order._id + '&side=0';
                         uni.navigateTo({
-                            url: '/pages/evaluateOrder/evaluateOrder?' + paras;
+                            url: '/pages/evaluateOrder/evaluateOrder?' + paras
                         })
                         break;
                     }
@@ -224,8 +222,8 @@
                 const {
                     fromStart
                 } = arg;
-                const status = arg.status ?  arg.status : tab2status[0];
-                uni.showToast();
+                const status = arg.status ?  arg.status : tab2Status[0];
+                uni.showLoading();
                 const res = await shareData.getOrderList({fromStart, status});
                 uni.hideLoading();
                 if (!res.success) {
@@ -237,10 +235,15 @@
             
             startPullDownRefresh: function() {
                 eventBus.$emit('startPullDownRefresh');
+            },
+            
+            stopPullDownRefresh: function() {
+                eventBus.$emit('stopPullDownRefresh');
             }
 		},
         
         beforeMount: async function() {
+            console.log('beforeMount')
             await that.getOrderList({fromStart: true});
             eventBus.$on('reachBottom', async function(){
                 console.log('reachBottom received');
@@ -249,11 +252,14 @@
             })
             eventBus.$on('pullDownRefresh', async function() {
                 console.log('pullDownRefresh received');
-                await that.getOrderList(fromStrat: true);
+                await that.getOrderList({fromStrat: true});
+                that.StopPullDownRefresh();
             })
         },
         
         beforeDestroy: function() {
+            
+            console.log('beforeDestory')
             eventBus.$off('reachBottom')
             eventBus.$off('pullDownRefresh')
         }

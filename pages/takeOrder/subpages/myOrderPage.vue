@@ -112,10 +112,42 @@
                         break;
                     default:
                 }
+            },
+            
+            getOrderList: async function() {
+                
+            },
+            
+            startPullDownRefresh: function() {
+                eventBus.$emit('startPullDownRefresh');
+            },
+            
+            stopPullDownRefresh: function() {
+                eventBus.$emit('stopPullDownRefresh');
             }
 		},
+        
         beforeCreate: function() {
             that = this;
+        },
+        
+        beforeMount: function() {
+            // await that.getOrderList({fromStart: true});
+            eventBus.$on('reachBottom', async function(){
+                console.log('reachBottom received');
+                const status = tab2Status[that.tabIndex]
+                that.getOrderList({status, fromStart: false});
+            })
+            eventBus.$on('pullDownRefresh', async function() {
+                console.log('pullDownRefresh received');
+
+                that.StopPullDownRefresh();
+            })
+        },
+        
+        beforeDestroy: function() {
+            eventBus.$off('reachBottom')
+            eventBus.$off('pullDownRefresh')
         }
 	}
 </script>

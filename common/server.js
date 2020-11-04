@@ -71,7 +71,7 @@ export const paymentAssistant = {
             amount
         } = opt;
         const res = await uniCloud.callFunction({
-            name: ,
+            name: 'balanceService',
             data: {
                 userId: userInfo._id,
                 amount
@@ -80,12 +80,12 @@ export const paymentAssistant = {
         console.log(res)
     },
     
-    getBalance: async function() [
+    getBalance: async function() {
         const res = await uniCloud.callFunction({
             name: 'balanceService',
             
         })
-    ]
+    }
     
     
     

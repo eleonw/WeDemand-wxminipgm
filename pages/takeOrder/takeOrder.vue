@@ -15,14 +15,15 @@
 </template>
 
 <script>
-  import tabBar from '@/components/tabBar/tabBar.vue';
-  import myOrderPage from './subpages/myOrderPage.vue';
-  import selectOrderPage from './subpages/selectOrderPage.vue';
+    import tabBar from '@/components/tabBar/tabBar.vue';
+    import myOrderPage from './subpages/myOrderPage.vue';
+    import selectOrderPage from './subpages/selectOrderPage.vue';
+    import eventBus from './eventBus.js';
   
 	export default {
-    components: {
-      myOrderPage, selectOrderPage, tabBar
-    },
+        components: {
+          myOrderPage, selectOrderPage, tabBar
+        },
 		data() {
 			return {
         selectedTabIndex: 0,
@@ -45,8 +46,50 @@
 			}
 		},
 		methods: {
-			
-		}
+			enablePullDownRefresh: function(status) {
+			    if (status) {
+			        eventBus.$on('startPullDownRefresh', () => {
+			            uni.startPullDownRefresh();
+			        });
+			        eventBus.$on('stopPullDownRefresh', () => {
+			            uni.stopPullDownRefresh();
+			        });
+			    } else {
+			        eventBus.$off('startPullDownRefresh');
+			        eventBus.$off('stopPullDownRefresh');
+			    }
+			}
+		},
+        
+        onShow: function() {
+            page.enablePullDownRefresh(true);
+        },
+        
+        onHide: function() {
+            page.enablePullDownRefresh(false);
+        },
+        
+        beforeCreate: function() {
+            that = this;
+            shareData.getAddressBook();
+        },
+        
+        beforeMount: function() {
+            that.enablePullDownRefresh(true);
+        },
+        
+        beforeDestroy: function() {
+            that.enablePullDownRefresh(false);
+        },
+        
+        onReachBottom: function() {
+            console.log('reach bottom')
+            eventBus.$emit('reachBottom');
+        },
+        
+        onPullDownRefresh: function() {
+            eventBus.$emit('pullDownRefresh');
+        }
 	}
 </script>
 

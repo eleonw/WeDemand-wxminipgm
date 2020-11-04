@@ -66,10 +66,7 @@
             
 		},
         
-        onLoad: function() {
 
-            console.log(userInfo)
-        }
 	}
 </script>
 
