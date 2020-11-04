@@ -19,7 +19,8 @@ function Order(arg={}) {
     
     this.sensitiveInfo = arg.sensitiveInfo;
     
-    this.couponId = arg.couponId,
+    this.couponId = arg.couponId;
+    this.totalCost = arg.totalCost;
     this.cost = arg.cost;
     
     this.commentId = arg.commentId;
@@ -54,11 +55,10 @@ Order.prototype.getSensitiveInfoArray = function() {
 function Order_HelpDeliver(arg={}) {
     
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, sensitiveInfo,   // expressInfo, takeAwayInfo 
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, sensitiveInfo,   // expressInfo, takeAwayInfo 
         fromAddress, toAddress, itemInfo, note, evalStatus, cancelSide, confirmCode
     } = arg;
-    
-    Order.call(this, arg);
+    Order.call(this, {...arg, serviceType: serviceType.HELP_DELIVER});
     
     this.fromAddress = new Address(fromAddress);
     this.toAddress = new Address(toAddress);
@@ -103,14 +103,15 @@ const testOrder_HelpDeliver = new Order_HelpDeliver({
     fromAddress: Address.defaultAddress,
     toAddress: Address.defaultAddress,
     serviceType: 1,
+    totalCost: 5000,
     cost: {
-       basic: 1,
-       tip: 4,
+       basic: 1000,
+       tip: 4000,
     },
     startTime: 1598827512653,
     endTime: 1598827522653,
     expireTime: 1598827522653,
-    status: orderStatus.CREATED,
+    status: orderStatus.INITIALING,
     note: '没有什么要注意的',
     itemInfo: {
         weight: '5kg',
@@ -120,11 +121,11 @@ const testOrder_HelpDeliver = new Order_HelpDeliver({
 
 function Order_HelpBuy(arg={}) {
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, commodityDesc, 
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, commodityDesc, 
         address, buyingLocation, sensitiveInfo, evalStatus, cancelSide
     } = arg;
     
-    Order.call(this, arg);
+    Order.call(this, {...arg, serviceType: serviceType.HELP_BUY});
     
     this.commodityDesc = commodityDesc;
     this.address = new Address(address);
@@ -140,10 +141,10 @@ const testOrder_HelpBuy = new Order_HelpBuy({
     startTime: 1598827512653,
     endTime: 1598827522653,
     cost: {
-       basic: 1,
-       tip: 4,
+       basic: 10,
+       tip: 40,
     },
-    status: orderStatus.CREATED,
+    status: orderStatus.INITIALING,
     commodityDesc: "这是商品描述",
     address: Address.defaultAddress,
     buyingLocation: Location.defaultLocation,
@@ -155,11 +156,10 @@ const testOrder_HelpBuy = new Order_HelpBuy({
 
 function Order_OtherService(arg={}) {
     const {
-        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, status, address, serviceDesc, sensitiveInfo,
+        _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, address, serviceDesc, sensitiveInfo,
         evalStatus, cancelSide
     } = arg;
-    
-    Order.call(this, arg);
+    Order.call(this, {...arg, serviceType: serviceType.OTHER_SERVICE});
     this.address = new Address(address);
     this.serviceDesc = serviceDesc;
 }
@@ -171,11 +171,12 @@ const testOrder_OtherService = new Order_OtherService({
     startTime: 1598837512653,
     endTime: 1598837522653,
     expireTime: 1598827522653,
+    totalCost: 5,
     cost: {
        basic: 1,
        tip: 4,
     },
-    status: orderStatus.COMPLETED,
+    status: orderStatus.INITIALING,
     address: Address.defaultAddress,
     serviceDesc: "这是服务信息",
     

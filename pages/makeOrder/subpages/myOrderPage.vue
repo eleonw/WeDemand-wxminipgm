@@ -103,7 +103,7 @@
         },
         
         created: function() {
-            that.orderList = shareData.orderList;
+            // that.orderList = shareData.orderList;
         },
         
 		methods: {
@@ -185,7 +185,8 @@
             },
             
             buttonClick: async function(index) {
-                that.targetOrder = shareData.orders[index];
+                console.log(index);
+                that.targetOrder = that.orderList[index];
                 const order = that.targetOrder;
                 
                 switch(order.status) {
@@ -244,7 +245,7 @@
         
         beforeMount: async function() {
             console.log('beforeMount')
-            await that.getOrderList({fromStart: true});
+            // await that.getOrderList({fromStart: true});
             eventBus.$on('reachBottom', async function(){
                 console.log('reachBottom received');
                 const status = tab2Status[that.tabIndex]

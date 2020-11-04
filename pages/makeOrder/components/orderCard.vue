@@ -106,7 +106,7 @@
             
             <view class="row">
                 <view class="title">小费</view>
-                <view>{{ orderObj.cost.tip }}￥</view>
+                <view>{{ getMoneyString(orderObj.cost.tip) }}￥</view>
             </view>
                     
         </view>
@@ -136,7 +136,7 @@
     import { serviceType, orderStatus, color } from '@/common/globalData.js';
     import { parseOrder } from '@/common/classes/Order.js';
     
-    import { getTimeString } from '@/common/helper.js';
+    import { getTimeString, getMoneyString } from '@/common/helper.js';
     
     let that;
     
@@ -181,12 +181,18 @@
                 return that.orderObj.getItemInfoString();
             },
             clickButton: function() {
+                console.log('clickButton')
+                console.log(that)
+                console.log(that.activeButton)
                 if (that.activeButton) {
                     this.$emit('buttonClick')
                 }
             },
             cancelOrder: function() {
                 this.$emit('cancel');
+            },
+            getMoneyString: function(money) {
+                return getMoneyString(money);
             }
         },
         created: function() {
@@ -195,11 +201,15 @@
             that.serviceType = serviceType;
             that.color = color;
             that.sensitiveInfo = that.orderObj.getSensitiveInfoArray();
+            console.log('flag')
+            console.log(that.orderObj)
             switch(that.orderObj.status) {
                 case orderStatus.INITIALING:
+                    console.log('orderstatus.initial')
                     that.activeButton = true;
                     that.buttonText = "付款";
                     that.showCancel = true;
+                    // console.log(that)
                     break;
                 case orderStatus.CREATED:
                     that.activeButton = false;
@@ -252,10 +262,14 @@
                     that.showCancel = false;
                     break;
                 default:
-                    
+                    console.log('invalid orderStatus')
             }
             
         },
+        
+        mounted: function() {
+            console.log(that.activeButton)
+        }
     }
 
 </script>

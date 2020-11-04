@@ -34,6 +34,7 @@
 <script>
     
     import { userInfo, color } from '@/common/globalData.js';
+    import { getMoneyString } from '@/common/helper.js';
     
     let that;
     
@@ -62,7 +63,7 @@
         
         methods: {
             bindChange: function(e) {
-                if (e.detail.value == 2 && (that.cost > that.balance)) {
+                if (e.detail.value == 1 && (that.cost > that.balance)) {
                     uni.showModal({
                         title: '余额不足，是否前往充值？',
                         success: e => {
@@ -76,7 +77,7 @@
             
             getBalancePaymentTitle: function() {
                 if (that.cost < that.balance) {
-                    return "余额支付（剩余￥" + that.balance + "）";
+                    return "余额支付（剩余￥" + getMoneyString(balance) + "）";
                 } else {
                     return " 余额支付（剩余￥" + that.balance + "，余额不足）";
                 }

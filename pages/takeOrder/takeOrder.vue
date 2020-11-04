@@ -19,6 +19,7 @@
     import myOrderPage from './subpages/myOrderPage.vue';
     import selectOrderPage from './subpages/selectOrderPage.vue';
     import eventBus from './eventBus.js';
+
   
 	export default {
         components: {
@@ -26,21 +27,22 @@
         },
 		data() {
 			return {
-        selectedTabIndex: 0,
-        mainTabs: [
-          {
-              index: 0,
-              text: '新的订单',
-              iconPath: '/static/image/icon/home.png',
-              selectedIconPath: '/static/image/icon/home_sel.png'
-          },
-          {
-              index: 1,
-              text: '我的订单',
-              iconPath: '/static/image/icon/me.png',
-              selectedIconPath: '/static/image/icon/me_sel.png'
-          }
-        ],
+                selectedTabIndex: 0,
+                mainTabs: [
+                  {
+                      index: 0,
+                      text: '新的订单',
+                      iconPath: '/static/image/icon/home.png',
+                      selectedIconPath: '/static/image/icon/home_sel.png'
+                  },
+                  {
+                      index: 1,
+                      text: '我的订单',
+                      iconPath: '/static/image/icon/me.png',
+                      selectedIconPath: '/static/image/icon/me_sel.png'
+                  }
+                ],
+                
                 
 				
 			}

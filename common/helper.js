@@ -125,11 +125,11 @@ export const getMoneyString = function(money) {
             throw new Error('invalid money');
             return '';
         case 1:
-            return '0.0' + str + '元';
+            return '0.0' + str;
             break;
         case 2:
-            return '0.' + str + '元';
+            return '0.' + str;
         default:
-            return str.slice(0, -2) + '.' + str.slice(-2) + '元';
+            return str.slice(0, -2) + '.' + str.slice(-2);
     }
 }

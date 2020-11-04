@@ -4,10 +4,10 @@
 		<uniNavBar class="navigationBar" @clickLeft="navigateBack"></uniNavBar>
         
         <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard"
-            :order="order" @buttonClick="buttonClick(index)"></orderCard>
+            :order="order" @buttonClick="buttonClick(index)" @cancel="cancelOrder(index)"></orderCard>
             
         <view class="loadMore"></view>
-		s
+	
 	</view>
 </template>
 
@@ -16,7 +16,11 @@
     import orderCard from './../components/orderCard.vue';
     
     import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
+    import { orderAssistant_creater as orderAssistant } from '@/common/server.js';
     
+    let _createdListRec = null;
+    const limit = 5;
+    let nomore = false;
     let that;
     
 	export default {
@@ -30,10 +34,52 @@
                     testOrder_HelpBuy,
                     testOrder_HelpDeliver,
                     testOrder_OtherService
-                ]
+                ],
 			}
 		},
 		methods: {
+            getOrderList: async function(fromStart) {
+                if (fromStart) {
+                    that.orderList.clear();
+                }
+                
+                if (nomore) {
+                    uni.showToast({
+                        title: '没有更多订单，请刷新重试'
+                    })
+                    return;
+                }
+                uni.showLoading();
+                let res = await orderAssistant.getCreatedOrderList({fromStart, limit, _createdListRec});
+                uni.hideLoading();
+                if (res.success) {
+                    _createdListRec = res._createdListRec;
+                    if (res.orderList.length == 0) {
+                        nomore = true;
+                        uni.showToast({
+                            title: '没有更多订单，请刷新重试'
+                        })
+                        return;
+                    } else {
+                        that.orderList.push(...res.orderList);
+                    }
+                } else {
+                    uni.showModal({
+                        title: '操作失败',
+                        content: res.notice,
+                        showCancel: false,
+                    })
+                }
+            },
+            
+            buttonClick: function(index) {
+                
+            },
+            
+            cancelOrder: function(index) {
+                
+            },
+            
 			navigateBack: function() {
                 uni.navigateBack()
             },
