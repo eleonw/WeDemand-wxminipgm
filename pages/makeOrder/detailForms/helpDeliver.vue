@@ -95,7 +95,7 @@
         },
         {
             title: '小费',
-            cost: tip?tip:0,
+            cost: tip,
         }]" @clickConfirm="confirm"></orderNav>
         
 	</view>
@@ -148,7 +148,7 @@
                 note: '',
                 
                 coupon: null,
-                tip: null,
+                tip: 0,
                 
                 expireTime: null,
                 assignExpireTime: false,
@@ -217,7 +217,7 @@
      
             
             getBasicCost: function() {
-                return 2;
+                return 100;
             },
             
             
@@ -324,7 +324,7 @@
             
             getTipString: function(){
                 const moneyString = getMoneyString(page.tip);
-                return moneyString == '' ? '' : moneyString + '￥';
+                return moneyString == '' ? '' : '￥' + moneyString;
             }
             
         },

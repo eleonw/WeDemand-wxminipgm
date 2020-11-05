@@ -80,7 +80,7 @@
                 <view class="formItem lastFormItem">
                     <view class="formItemTitle">小费</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="getTipString()" placeholder="加tip加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
                     </view>
                 </view>
             </view>
@@ -119,7 +119,7 @@
         },
         {
             title: '小费',
-            cost: tip?tip:0,
+            cost: tip,
         }]"></orderNav>
         
         
@@ -172,7 +172,7 @@
                     
                 commodityDesc: '',
                 commodityPrice: null,
-                tip: null,
+                tip: 0,
                 
                 assignExpireTime: false,
                 
@@ -255,7 +255,10 @@
                
             },
             
-
+            getTipString: function(){
+                const moneyString = getMoneyString(page.tip);
+                return moneyString == '' ? '' : '￥' + moneyString;
+            },
             
             addKeyWord: function(keyWord) {
                 page.commodityDesc = page.commodityDesc + ' ' + keyWord + ' ';
@@ -283,7 +286,7 @@
             },
             
             getBasicCost: function() {
-                return 2;
+                return 100;
             },
             
             expireTimeTypeChange: function(e) {

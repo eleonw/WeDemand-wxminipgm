@@ -7,14 +7,14 @@
                 <view class="detailItem" v-for="(item,index) in costItems" :key="index" v-if="item.cost!=0">
                     <view class="detailItemTitle">{{item.title}}</view>
                     <view class="detailItemSub">{{item.sub?item.sub:''}}</view>
-                    <view class="detailItemCost">￥{{item.cost}}</view>
+                    <view class="detailItemCost">{{getCostString(item.cost)}}</view>
                 </view>
             </view>
         </view>
         <view class="barArea shadow">
             <view class="main">
                 <view class="brief">
-                    跑腿费<text class="cost">￥{{ getTotalCost() }}</text>
+                    跑腿费<text class="cost">{{ getCostString(getTotalCost()) }}</text>
                 </view>
                 <view class="detailNav"  @click="showDetailChange">
                     <view>明细</view>
@@ -33,6 +33,7 @@
     let that;
     
     import { color } from '@/common/globalData.js';
+    import { getMoneyString } from '@/common/helper.js';
     
 	export default {
         name: 'orderNav',
@@ -42,7 +43,7 @@
                 default: [
                     {
                         title: '基础费用',
-                        cost: '10',
+                        cost: 10,
                         placeholder: undefined,
                     }
                 ],
@@ -72,6 +73,11 @@
                     that.showDetail = true;
                 }
                 
+            },
+            getCostString: function(cost) {
+                // const costString = getMoneyString(cost)
+                // return costString == '' ? '' : "￥" + costString;
+                return "￥" + getMoneyString(cost);
             },
             getTotalCost: function() {
                 let cost = 0;

@@ -56,7 +56,7 @@
                 <view class="formItem lastFormItem">
                     <view class="formItemTitle">服务费</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="通过增加服务费加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="getTipString()" placeholder="通过增加服务费加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
                     </view>
                 </view>
             </view>
@@ -76,7 +76,7 @@
         },
         {
             title: '小费',
-            cost: tip?tip:0,
+            cost: tip,
         }]"></orderNav>
         
         
@@ -128,7 +128,7 @@
                 
                 serviceDesc: '',
                     
-                tip: null,
+                tip: 0,
                 
                 show_timeStart: false,
                 show_timeEnd: false,
@@ -200,14 +200,17 @@
                 }
             },
             
-
+            getTipString: function(){
+                const moneyString = getMoneyString(page.tip);
+                return moneyString == '' ? '' : '￥' + moneyString;
+            },
             
             addKeyWord: function(keyWord) {
                 page.serviceDesc = page.serviceDesc + ' ' + keyWord + ' ';
             },
             
             getBasicCost: function() {
-                return 2;
+                return 100;
             },
             
             confirm: async function(e) {
