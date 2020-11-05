@@ -60,7 +60,6 @@
             if (tokenLogin) {
                 await promisify(uni.redirectTo, {url: '/pages/index/index'});
             }
-            setUserInfo({id: 1})
         },
         
 		methods: {

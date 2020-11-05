@@ -88,6 +88,10 @@
             "path" : "pages/evaluateOrder/evaluateOrder",
             "style" : {}
         }
+        ,{
+            "path" : "pages/me/me",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#FFFFFF",

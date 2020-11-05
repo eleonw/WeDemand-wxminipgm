@@ -4,6 +4,7 @@
         
         <view class="item" @click="navigateTo('makeOrder')">我要下单</view>
         <view class="item" @click="navigateTo('takeOrder')">我要接单</view>
+        <view class="item" @click="navigateTo('me')">我</view>
         
        
        <!-- <view class="grid">
@@ -41,6 +42,7 @@
     const pageUrls = {
         makeOrder: '/pages/makeOrder/makeOrder',
         takeOrder: '/pages/takeOrder/takeOrder',
+        me: '/pages/me/me'
     }
     
 	export default {
@@ -55,7 +57,6 @@
 		},
 		methods: {
 			navigateTo: function(page) {
-                console.log(page)
                 uni.navigateTo({
                     url: pageUrls[page],
                     complete: e => {
@@ -65,6 +66,11 @@
             },
             
 		},
+        
+        beforeCreate: function() {
+            console.log('userInfo')
+            console.log(userInfo)
+        }
         
 
 	}
