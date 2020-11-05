@@ -139,18 +139,56 @@ export const getTimeString = function(arg) {
     
 }
 
+export const parseMoneyString = function(moneyStr) {
+    if (isNaN(Number(moneyStr))) {
+        return Number.NaN;
+    } else {
+        moneyStr = moneyStr + '00';
+        let idx = moneyStr.indexOf('.');
+        let stdStr;
+        if (idx < 0) {
+            stdStr = moneyStr;
+        } else {
+            stdStr = moneyStr.splice(0, idx) + moneyStr.splice(idx+1, idx+3);
+        }
+        return Number(stdStr);
+    }
+}
+
 export const getMoneyString = function(money) {
+    if (!money) {
+        return '';
+    }
     const str = '' + money;
     switch(str.length) {
         case 0:
-            throw new Error('invalid money');
             return '';
         case 1:
-            return '0.0' + str;
+            if (str == '0') {
+                return '0';
+            } else {
+                return '0.0' + str;
+            }
             break;
         case 2:
-            return '0.' + str;
+            if (str[1] == '0') {
+                if (str[0] == '0') {
+                    return '0';
+                } else {
+                    return '0.' + str[0];
+                }
+            } else {
+                return '0.' + str;
+            }
         default:
+        if (str[str.length-1] == '0') {
+            if (str[str.length-2] == '0') {
+                return str.slice(0, -2);
+            } else {
+                return str.slice(0, -2) + '.' + str[ste.length-2]
+            }
+        } else {
             return str.slice(0, -2) + '.' + str.slice(-2);
+        }
     }
 }

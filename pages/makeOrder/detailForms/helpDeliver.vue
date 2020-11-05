@@ -54,7 +54,7 @@
                 <view class="formItem">
                     <view class="formItemTitle">小费</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="tip?tip + '￥':''" placeholder="加tip加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="getTipString()" placeholder="加tip加快接单速度" @click.native="showSelector('tip')"></navigatorWithPlaceholder>
                     </view>
                 </view>
             </view>
@@ -120,7 +120,7 @@
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
     import { orderAssistant_creater } from '@/common/server.js';
-    import { weightAssistant, getTimeString, addAll } from '@/common/helper.js';
+    import { weightAssistant, getTimeString, addAll, getMoneyString } from '@/common/helper.js';
     
     let page;
     let mapContext;
@@ -320,6 +320,11 @@
                     console.log(page.itemInfo);
                     console.log(page.sensitiveInfo);
                 }
+            },
+            
+            getTipString: function(){
+                const moneyString = getMoneyString(page.tip);
+                return moneyString == '' ? '' : moneyString + '￥';
             }
             
         },

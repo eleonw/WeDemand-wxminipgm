@@ -15,7 +15,11 @@
 </template>
 
 <script>
+    import { getMoneyString, parseMoneyString } from '@/common/helper.js';
+    
     let that;
+    
+    let valueBuffer;
     
 	export default {
         name: 'priceInput',
@@ -25,8 +29,8 @@
                 default: '输入金额',
             },
             value: {
-                type: String,
-                default: null,
+                type: Number,
+                default: 0,
             }
         },
 		data() {
@@ -40,21 +44,20 @@
             
         created: function() {
             that = this;
-            
-            that.price = that.value;
+            that.price = getMoneyString(that.value);
         },
         
         methods: {
             
             processDigit: function() {
-                let number = Number(that.price);
-                if (isNaN(number)) {
+                const res = parseMoneyString(that.price);
+                if (isNaN(res)) {
                     that.showNotice = true;
                     return false;
                 } else {
+                    valueBuffer = res;
+                    that.price = getMoneyString(res);
                     that.showNotice = false;
-                    number = Math.floor(number*10) / 10;
-                    that.price = number;
                     return true;
                 }
             },
@@ -67,7 +70,6 @@
             },
             
             confirm: async function() {
-                
                 if (!that.processDigit()) {
                     that.showNotice = false;
                     await new Promise((resolve, reject) => {
@@ -79,10 +81,11 @@
                     return;
                 } else {
                     that.fadeOut();
-                    that.$emit('input', that.price);
+                    that.$emit('input', valueBuffer);
                     setTimeout(function() {
                         that.$emit('exit', {
                             valid: true,
+                            value: valueBuffer
                         });
                     }, 300)
                 }
