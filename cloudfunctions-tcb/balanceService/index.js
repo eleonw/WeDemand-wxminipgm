@@ -2,7 +2,7 @@
 const db = uniCloud.database();
 const balanceTable = db.collection('balance');
 
-uniID = require('uni-id');
+const uniID = require('uni-id');
 
 const ServiceType = {
     CHECK: 1,
@@ -32,13 +32,13 @@ exports.main = async (event, context) => {
         return {
             success: false,
             code: -1,
-            error: e;
+            error: e
         }
     }
 	
 };
 
-async checkBalance(arg) {
+async function checkBalance(arg) {
     const {
         userId
     } = arg;
@@ -49,7 +49,7 @@ async checkBalance(arg) {
     }
 }
 
-async payWithBalance(arg) {
+async function payWithBalance(arg) {
     const {
         userId, amount
     } = arg;
@@ -60,13 +60,13 @@ async payWithBalance(arg) {
     
 
     
-    await res = await balanceTable.doc(userId).get();
+    let res = await balanceTable.doc(userId).get();
     const balance = res.data[0].balance;
     if (balance < amount) {
         return { success: false, code: -3, balance: balance };
     }
     const newBalance = balance - Math.floor(amount);
-    await res = await balanceTable.doc(userId).update({
+    res = await balanceTable.doc(userId).update({
         balance: newBalance
     })
     if (res.updated == 0) {

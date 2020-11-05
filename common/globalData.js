@@ -73,7 +73,11 @@ export const defaultLocation = new Location({
 })
 
 export const userInfo = {
-    _id: '1111111',
-    wxOpenid: "ogjlP5YAbGPGuaTpblXIwWe8o07E",
+
 };
 
+
+export const PayMethod = {
+    BALANCE: 1,
+    WX: 2,
+}

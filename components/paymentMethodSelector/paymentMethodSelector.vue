@@ -1,25 +1,21 @@
 <template>
 	<view class="root">
         <view class="body" :class="{fadeOut: outFlag}">
-            <view class="header">
+            <view class="header" v-if="asSeletor">
                 <uni-icons type="closeempty" size="20" class="back" @click="cancel"></uni-icons>
                 <view class="title">
                     <view class="titleMain">选择支付方式</view>
-                    <view class="titleSub">￥{{cost}}</view>
+                    <view class="titleSub">￥{{ costString }}</view>
                 </view>
             </view>
             <radio-group class="main" @change="bindChange">
-                <view class="item" :class="{activeItem: paymentMethod==0}">
+                <view class="item" :class="{activeItem: paymentMethod==PayMethod.WX}">
                     <view class="itemTitle">微信支付</view>
-                    <radio class="radio" value="0" :checked="paymentMethod==0" :color="colorMain"/>
+                    <radio class="radio" :value="PayMethod.WX" :checked="paymentMethod==PayMethod.WX" :color="colorMain"/>
                 </view>
-                <view class="item" :class="{activeItem: paymentMethod==1}">
-                    <view class="itemTitle">支付宝支付</view>
-                    <radio class="radio" value="1" :checked="paymentMethod==1" :color="colorMain"/>
-                </view>
-                <view class="item" :class="{activeItem: paymentMethod==2}">
+                <view class="item" :class="{activeItem: paymentMethod==PayMethod.BALANCE}">
                     <view class="itemTitle">{{ getBalancePaymentTitle() }}</view>
-                    <radio class="radio" value="2" :checked="paymentMethod==2" :color="colorMain"/>
+                    <radio class="radio" :value="PayMethod.BALANCE" :checked="paymentMethod==PayMethod.BALANCE" :color="colorMain"/>
                 </view>
                 
                 <view class="button" @click="confirm">确认</view>
@@ -33,53 +29,75 @@
 
 <script>
     
-    import { userInfo, color } from '@/common/globalData.js';
+    import { color, PayMethod } from '@/common/globalData.js';
     import { getMoneyString } from '@/common/helper.js';
+    import { balanceAssistant } from '@/common/server.js';
     
     let that;
     
 	export default {
         name: 'paymentMethodSelector',
         props: {
+            value: {
+                type: Number,
+                default: 0,
+            },
             cost: {
                 type: [Number, String],
                 default: 0,
-            }
+            },
         },
 		data() {
 			return {
+                PayMethod: null,
 				outFlag: false,
                 paymentMethod: 0,
                 balance: null,
                 colorMain: null,
+                costString: null,
+                balancePayString: null,
+                lackBalance: null,
 			};
 		},
         
-        created: function() {
+        created: async function() {
             that = this;
-            that.balance = userInfo.balance;
+            that.PayMethod = PayMethod;
             that.colorMain = color.MAIN;
+            that.costString = getMoneyString(that.cost);
+            if (!initialBalanceRelevant()) {
+                uni.showToast({
+                    title: '获取余额异常',
+                    icon: 'none',
+                })
+            } 
         },
         
         methods: {
             bindChange: function(e) {
-                if (e.detail.value == 1 && (that.cost > that.balance)) {
-                    uni.showModal({
-                        title: '余额不足，是否前往充值？',
-                        success: e => {
-                            console.log(e);
-                        }
-                    })
+                if (e.detail.value == PayMethod.BALANCE) {
+                    if (lackBalance == null) {
+                        uni.showModal({
+                            content: '余额查询异常，请尝试刷新',
+                            complete: function(e) {
+                                that.cancel();
+                            }
+                        })
+                    } else if (lackBalance) {
+                        uni.showModal({
+                            title: '余额不足，是否前往充值？',
+                            success: function(e) {
+                                if (e.confirm) {
+                                    uni.navigateTo({url: '/pages/balanceCenter/recharge'});
+                                    that.cancel();
+                                }
+                            }
+                        })
+                    } else {
+                        that.paymentMethod = 1
+                    }
                 } else {
                     that.paymentMethod = e.detail.value;
-                }
-            },
-            
-            getBalancePaymentTitle: function() {
-                if (that.cost < that.balance) {
-                    return "余额支付（剩余￥" + getMoneyString(balance) + "）";
-                } else {
-                    return " 余额支付（剩余￥" + that.balance + "，余额不足）";
                 }
             },
             
@@ -97,23 +115,42 @@
                         valid: false,
                     });
                 }, 300)
-            
             },
             
             confirm: function() {
                 that.fadeOut();
-                let timestamp = that.getSelectedTimestamp();
-                that.$emit('input', timestamp);
+                that.$emit('input', that.paymentMethod);
                 setTimeout(function() {
                     that.$emit('exit', {
                         valid: true,
-                        pickerValue: timestamp,
+                        paymentMethod: that.paymentMethod,
+                        
                     });
                 }, 300)
                 
             },
         }
 	}
+    
+    async function initialBalanceRelevant() {
+        const res = await balanceAssistant.checkBalance();
+        if (!res.success) {
+            that.balance = null;
+            that.balancePayString = '余额支付 (余额查询异常，请重新打开页面尝试)';
+            that.lackBalance = null;
+        }
+        that.balance = res.balance;
+        if (that.cost < that.balance) {
+            that.lackBalance = false;
+            that.balancePayString = "余额支付（剩余￥" + getMoneyString(that.balance) + "）";
+        } else {
+            that.lackBalance = true;
+            that.balancePayString = "余额支付（剩余￥" + getMoneyString(that.balance) + "，余额不足）";
+        }
+        return true;
+    }
+    
+    
 </script>
 
 <style>

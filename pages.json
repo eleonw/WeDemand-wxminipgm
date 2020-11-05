@@ -92,11 +92,29 @@
             "path" : "pages/me/me",
             "style" : {}
         }
+        ,{
+            "path" : "pages/balanceCenter/index",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/balanceCenter/recharge",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/balanceCenter/withdraw",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/pay/pay",
+            "style" : {
+                "navigationStyle": "default"
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "#FFFFFF",
 		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#FFFFFF",
+		"navigationBarBackgroundColor": "#457b9d",
 		"backgroundColor": "#FFFFFF",
         "navigationStyle": "custom"
 	},

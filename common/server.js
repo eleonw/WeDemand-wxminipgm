@@ -144,6 +144,7 @@ export const balanceAssistant = {
                 return {
                     success: false,
                     balance: result.balance,
+                    code: res.code,
                     message
                 }
             }

@@ -4,9 +4,11 @@
 		<uniNavBar class="navigationBar" @clickLeft="navigateBack"></uniNavBar>
         
         <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard"
-            :order="order" @buttonClick="buttonClick(index)" @cancel="cancelOrder(index)"></orderCard>
+            :order="order" @buttonClick="takeOrder(index)" @cancel="cancelOrder(index)"></orderCard>
             
         <view class="loadMore"></view>
+        
+        <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="targetOrder.totalCost"></paymentMethodSelector>
 	
 	</view>
 </template>
@@ -14,6 +16,7 @@
 <script>
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     import orderCard from './../components/orderCard.vue';
+    import paymentMethodSelector from '@/components/paymentMethodSelector/paymentMethodSelector.vue';
     
     import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
     import { orderAssistant_creater as orderAssistant } from '@/common/server.js';
@@ -35,6 +38,8 @@
                     testOrder_HelpDeliver,
                     testOrder_OtherService
                 ],
+                targetOrder: null,
+                show_paymentMethodSelector: false,
 			}
 		},
 		methods: {
@@ -72,12 +77,25 @@
                 }
             },
             
-            buttonClick: function(index) {
-                
+            takeOrder: function(index) {
+                that.targetOrder = that.orderList[index];
+                uni.showModal({
+                    title: '提示',
+                    content: '接单需要支付订金，将在订单完成后返还',
+                    complete: function(e) {
+                        if (e.confirm) {
+                            that.show_paymentMethodSelector = true;
+                        }
+                    }
+                })
             },
             
             cancelOrder: function(index) {
                 
+            },
+            
+            hideSelector: function(type) {
+                that['show_'+type] = false;
             },
             
 			navigateBack: function() {
