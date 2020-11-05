@@ -59,9 +59,6 @@
 			navigateTo: function(page) {
                 uni.navigateTo({
                     url: pageUrls[page],
-                    complete: e => {
-                        console.log(e)
-                    }
                 })
             },
             

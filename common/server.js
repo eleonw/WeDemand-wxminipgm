@@ -53,9 +53,32 @@ export async function sendSmsCode(opt) {
 
 export const loginAssistant = {
     LoginMethod : {
+        LOGOUT: -1,
         SMS_CODE: 1,
         TOKEN: 2,
         WXCODE: 3,
+    },
+    
+    logout: async function() {
+        console.log('logout');
+        const loginMethod = this.LoginMethod.LOGOUT;
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'login',
+                data: { loginMethod }
+            })
+            console.log(res);
+            if (!res.result.success) {
+                throw new Error();
+            }
+            return res.result;
+        } catch(e) {
+            console.log(e);
+            return {
+                success: false,
+                message: '登出失败'
+            }
+        }
     },
     
     loginWithSmsCode: async function(opt) {
@@ -73,7 +96,6 @@ export const loginAssistant = {
             })
             console.log(res)
             if (!res.result.success) {
-                console.log(res);
                 throw new Error();
             }
             const { userInfo, token } = res.result;
@@ -108,7 +130,8 @@ export const loginAssistant = {
             console.log(e)
             return {
                 success: false,
-                message: '登陆失败，请重试'
+                message: '登陆失败，请重试',
+                
             }
         }
     }
@@ -167,24 +190,21 @@ export const balanceAssistant = {
             })
             console.log(res)
             const result = res.result;
-            if (result.success) {
-                return result;
-            } else {
+            if (!result.success) {
                 let message;
                 switch(result.code) {
                     case -2: message = '登录状态过期，请重新登录'; break;
                     default: throw new Error();
                 }
-                return {
-                    success: false,
-                    message
-                }
-            }
+                result.message = message;
+            } 
+            return result;
         } catch(e) {
             console.log(e)
             return {
                 success: false,
-                message: '查询失败，请重试'
+                message: '查询失败，请重试',
+                code: -1
             }
         }
     }

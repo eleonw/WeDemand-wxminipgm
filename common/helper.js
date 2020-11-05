@@ -10,6 +10,18 @@ export const promisify = function(func, opt, context=null) {
     })
 }
 
+export const loginStatusFailure = function() {
+    console.log('login status failure');
+    uni.showModal({
+        title: '操作失败',
+        content: '登陆状态超时或异常，请重新登录',
+        showCancel: false,
+        complete: function() {
+            uni.reLaunch({url: '/pages/front/front'});
+        }
+    })
+}
+
 export const setUserInfo = function(new_userInfo) {
     for (let item in userInfo) {
         delete userInfo[item];

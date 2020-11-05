@@ -1,5 +1,4 @@
 <script>
-import * as Helper from '@/common/helper.js';
     
 export default {
     methods: {

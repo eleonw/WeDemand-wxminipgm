@@ -196,11 +196,14 @@
     }
     
     .aboveMap {
+        
         z-index: 1;
         width: 700rpx;
         
-        margin-top: auto;
-        margin-bottom: calc(var(--height-tabbar) + 20rpx);
+        margin-left: auto;
+        margin-right: auto;
+        position: fixed;
+        bottom: calc(var(--height-tabbar) + 20rpx);
        
         
         display: flex;

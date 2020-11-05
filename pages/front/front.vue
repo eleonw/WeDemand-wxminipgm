@@ -59,6 +59,7 @@
         beforeCreate: async function() {
             page = this;
             const tokenLogin = await checkToken();
+            console.log('tokenLogin success:')
             console.log(tokenLogin)
             if (tokenLogin) {
                 await promisify(uni.redirectTo, {url: '/pages/index/index'});

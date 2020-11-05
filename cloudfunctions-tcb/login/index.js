@@ -1,6 +1,7 @@
 'use strict';
 
 const uniID = require('uni-id');
+const db = uniCloud.database();
 
 function randomLetter() {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
@@ -25,6 +26,7 @@ function generateNickname() {
 }
 
 const LoginMethod = {
+    LOGOUT: -1,
     SMS_CODE: 1,
     TOKEN: 2,
     WXCODE: 3,
@@ -34,8 +36,10 @@ exports.main = async (event, context) => {
 
     try {
         switch (event.loginMethod) {
+            case LoginMethod.LOGOUT:
+                return logout(event.uniIdToken);
             case LoginMethod.SMS_CODE: // smsCode
-                return loginWithSmsCode(event);
+                return await loginWithSmsCode(event);
             case LoginMethod.TOKEN:
             // return event;
                 const res = await uniID.checkToken(event.uniIdToken);
@@ -67,14 +71,20 @@ exports.main = async (event, context) => {
     
 };
 
+async function logout(uniIdToken) {
+    const res = await uniID.logout(uniIdToken);
+    if (res.code == 0) {
+        return { success: true }
+    } else {
+        return { success:false, code: -1, message: res.message}
+    }
+}
+
 async function loginWithToken(opt) {
     // const {
     //     uniIdToken
     // } = opt;
     const res = await uniID.checkToken(uniIdToken);
-    return {
-        res
-    }
     if (res.code == 0) {
         return {
             success: true,
@@ -108,7 +118,7 @@ async function loginWithSmsCode(opt) {
         }
     }
     
-    if (res.type = 'register') {
+    if (res.type == 'register') {
         await db.collection('balance').add({
             _id: res.uid,
             balance: 0,

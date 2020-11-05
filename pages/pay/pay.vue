@@ -119,7 +119,18 @@
                                 uni.navigateBack()
                             }, 1000);
                         } else {
-                            
+                            uni.showModal({
+                                title: '支付失败',
+                                content: res.message,
+                                showCancel: false,
+                                complete: async function(e) {
+                                    if (res.code == -2) {
+                                        that.loginStatusFailure();
+                                    } else {
+                                        await initialBalanceRelevant();
+                                    }
+                                } 
+                            })
                         }
                 }
             }
@@ -130,7 +141,11 @@
     
     async function initialBalanceRelevant() {
         const res = await balanceAssistant.checkBalance();
+        console.log(res)
         if (!res.success || !res.balance) {
+            if (res.code == -2) {
+                that.loginStatusFailure();
+            }
             that.balance = undefined;
             that.balancePayString = '余额支付 (查询异常，请尝试重新打开页面)';
         } else {

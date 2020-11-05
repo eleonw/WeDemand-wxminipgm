@@ -127,6 +127,9 @@ const shareData = {
             this.addressBook = await addressBookAssistant.getAddressBook({
                 userId: userInfo._id
             });
+            for (let i = this.addressBook.length-1; i >= 0; i--) {
+                this.addressBook[i].address = new Address(this.addressBook[i].address);
+            }
             this.addressBookFailure = false;
         } catch(e) {
             console.log('fail to get addressbook: ');
@@ -146,7 +149,7 @@ const shareData = {
             
             address = beanify(address);
             const res = await addressBookAssistant.addToAddressBook({address: address});
-            this.addressBook.push({_id: res.id, address: address});
+            this.addressBook.push({_id: res.id, address: new Address(address)});
         }
     },
     

@@ -64,7 +64,7 @@ Location.prototype.hasDetail = function() {
 }
 
 Location.prototype.toString = function() {
-    return this.name==''?this.address:this.name + this.detail;
+    return (this.name==''?this.address:this.name) + this.detail;
 }
 
 Location.defaultLocation = new Location({
