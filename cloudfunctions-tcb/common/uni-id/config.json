@@ -1,10 +1,10 @@
 {
-	"passwordSecret": "passwordSecret-demo",
-	"tokenSecret": "tokenSecret-demo",
+	"passwordSecret": "eyJhbGciOiJIUzI1NiIsInR5cCI6I",
+	"tokenSecret": "OGZmMDIwZmQwZTRjYzI0NWIxMTJi",
 	"tokenExpiresIn": 720000,
 	"tokenExpiresThreshold": 600,
 	"passwordErrorLimit": 6,
-	"bindTokenToDevice": true,
+	"bindTokenToDevice": false,
 	"passwordErrorRetryTime": 3600,
 	"autoSetInviteCode": false,
 	"forceInviteCode": false,

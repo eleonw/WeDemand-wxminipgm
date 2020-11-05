@@ -103,17 +103,18 @@ export const loginAssistant = {
                 }
             })
             console.log(res)
-            if (!res.result.success) {
-                throw new Error();
-            }
-            const {
-                userInfo, token
-            } = res.result;
-            return {
-                success: true,
-                token,
-                userInfo
-            }
+            return res.result;
+            // if (!res.result.success) {
+            //     throw new Error();
+            // }
+            // const {
+            //     userInfo, token
+            // } = res.result;
+            // return {
+            //     success: true,
+            //     token,
+            //     userInfo
+            // }
         } catch(e) {
             console.log(e)
             return {

@@ -94,4 +94,5 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 + [ ] takeOrder/selectOrderpage.getOrderList
 + [ ] 考虑在makeOrder/myOrderPage中orderList还需不需要放在shareData中（统一在订单操作（成功或失败）以后刷新订单列表）如果导航到了其他页面，可以通过（思考是统一在mounted的时候刷新列表还是在created的时候刷新列表）
 + [ ] (cloud) sendSmsCode code: -1:other -2:sendFailure -3:setVerifyCodeFailure
++ [x] login with token
 

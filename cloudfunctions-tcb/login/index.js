@@ -39,9 +39,6 @@ exports.main = async (event, context) => {
             case LoginMethod.TOKEN:
             // return event;
                 const res = await uniID.checkToken(event.uniIdToken);
-                return {
-                    res
-                }
                 if (res.code == 0) {
                     return {
                         success: true,
@@ -52,7 +49,7 @@ exports.main = async (event, context) => {
                     return {
                         success: false,
                         code: -1,
-                        res: res
+                        message: res.message,
                     }
                 }
             default:

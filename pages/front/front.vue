@@ -21,18 +21,17 @@
     const dev = false;
     
     let page;
-    const test_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkMjMyZGY0YzVmYTI4YzliMDAwYTE5YWI1OGVmZmU2MiIsImNsaWVudElkIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UiLCJpYXQiOjE2MDQ1MDQ4MzcsImV4cCI6MTYwNTIyNDgzN30.kkPVn2xesWh_oiLZ0ZQa6-LNFj--_22QynjI6Qp1_hg"
     async function checkToken() {
-        uni.setStorageSync('uniIdToken', test_token)
         const token = uni.getStorageSync('uniIdToken');
         console.log('token')
         console.log(token)
         if (token) {
             const res = await loginAssistant.loginWithToken({token});
-            console.log(res)
             if (res.success) {
                 setUserInfo(res.userInfo);
-                uni.setStorage('uniIdToken', res.token);
+                if (res.token) {
+                    uni.setStorage('uniIdToken', res.token);
+                }
                 return true;
             } else {
                 uni.removeStorage('uniIdToken');
@@ -57,10 +56,9 @@
         beforeCreate: async function() {
             page = this;
             const tokenLogin = await checkToken();
+            console.log(tokenLogin)
             if (tokenLogin) {
-                uni.redirectTo({
-                    url: '@/pages/index/index',
-                })
+                await promisify(uni.redirectTo, {url: '/pages/index/index'});
             }
             setUserInfo({id: 1})
         },
