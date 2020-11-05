@@ -98,11 +98,15 @@
         }
         ,{
             "path" : "pages/balanceCenter/recharge",
-            "style" : {}
+            "style" : {
+                "navigationStyle": "default"
+            }
         }
         ,{
             "path" : "pages/balanceCenter/withdraw",
-            "style" : {}
+            "style" : {
+                "navigationStyle": "default"
+            }
         }
         ,{
             "path" : "pages/pay/pay",

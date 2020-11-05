@@ -61,17 +61,10 @@ const _side = {
 
 function getDeposit(cost) {
     const depositRate = 0.25;
-    let res = Math.ceil(cost * depositRate * 10) / 10;
+    let res = Math.ceil(cost*depositRate);
     return res;
 }
 
-function getTotalCost(cost) {
-    let res = 0;
-    for (let item in cost) {
-        res = res + cost[item];
-    }
-    return res;
-}
 
 exports.main = async (event) => {
     
@@ -86,7 +79,7 @@ exports.main = async (event) => {
                     case serviceType_creater.INITIAL:  {// initial
                         const order = event.order;
                         console.log(order);
-                        order.deposit = getDeposit(getTotalCost(order.cost));
+                        order.deposit = getDeposit(order.totalCost);
                         const orderId = await initial({
                             userId,
                             order,
@@ -356,7 +349,7 @@ async function cancel(arg) {
                     const order = res.data[0];
                     order.status = _orderStatus.CANCELED;
                     order.cancelSide = _side.CREATER;
-                    const returnAmount = getTotalCost(order.cost);
+                    const returnAmount = order.totalCost;
                     await transaction.collection('inactive-order').add(order);
                     await transaction.collection('created-order').doc(orderId).remove();
                     await transaction.collection('uni-id-users').doc(order.createrId).update({
@@ -379,7 +372,7 @@ async function cancel(arg) {
                     if (order[userIdField] != userId) {
                         transaction.rollback({code: -3});
                     }
-                    const totalCost = getTotalCost(order.cost);
+                    const totalCost = order.totalCost;
                     let createrReturn = side == _side.CREATER ? totalCost - order.deposit : totalCost + order.deposit;
                     let serverReturn = side == _side.CREATER ? 2 * order.deposit : 0;
                     await transaction.collection('uni-id-users').doc(order.createrId).update({
@@ -430,7 +423,7 @@ async function cancel(arg) {
                     if (order[userIdField] != userId) {
                         transaction.rollback({error: -3});
                     }
-                    const totalCost = getTotalCost(order.cost);
+                    const totalCost = order.totalCost;
                     let createrReturn = side == _side.CREATER ? totalCost - order.deposit : totalCost + order.deposit;
                     let serverReturn = side == _side.CREATER ? 2 * order.deposit : 0;
                     await transaction.collection('uni-id-users').doc(order.createrId).update({
@@ -672,7 +665,7 @@ async function finish(arg) {
                 createrScore: null,
                 createrComment: null,
             }
-            const total = getTotalCost(order.cost) + order.deposit;
+            const total = order.totalCost + order.deposit;
             await transaction.collection('uni-id-users').doc(order.serverId).update({
                 balance: dbCmd.inc(total)
             });

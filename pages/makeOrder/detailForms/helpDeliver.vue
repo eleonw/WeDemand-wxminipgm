@@ -121,9 +121,11 @@
     
     import { orderAssistant_creater } from '@/common/server.js';
     import { weightAssistant, getTimeString, addAll, getMoneyString } from '@/common/helper.js';
+    import eventBus from '@/common/eventBus.js';
     
     let page;
     let mapContext;
+    let orderId;
     
     export default {
         components: {
@@ -233,7 +235,6 @@
             
             confirm: async function(e) {
                 
-                console.log('confirm')
                 let notice;
                 
                 if (!dev) {
@@ -272,11 +273,12 @@
                 const couponId = page.coupon ? page.coupon.id : null;
                 const expireTime = page.expireTime;
                 const cost = {
-                    tip: page.tip?page.tip:0,
+                    tip: page.tip,
                     basic: page.getBasicCost(),
                 }
+                const totalCost = e.totalCost;
                 
-                const res = await orderAssistant_creater.initial({
+                const order = {
                     fromAddress,
                     toAddress,
                     serviceType,
@@ -288,29 +290,28 @@
                     couponId,
                     expireTime,
                     cost,
-                });
+                    totalCost,
+                }
                 
-                
-                const url = './result/result?success=' + res.success;
-                uni.hideLoading();
-                if (res.success) {
-                    shareData.clear();
-                    uni.redirectTo({
-                        url
+                let res = await orderAssistant_creater.initial(order);
+                if (!res.success) {
+                    await page.promisify(uni.showModal, {
+                        content: '操作失败，请重试',
+                        showCancel: false,
                     })
+                    return;
                 } else {
-                    uni.navigateTo({
-                        url
-                    })
+                    orderId = res.orderId;
+                    const eventName = 'payHelpDeliv'
+                    const paras = 'amount=' + totalCost + "&eventName=" + eventName;
+                    eventBus.$on(eventName, postPay)
+                    uni.navigateTo({url: '/pages/pay/pay?' + paras});
                 }
                 
                 
                 
             },
             
-            pay: function() {
-                
-            },
             
             exitItemInfoSelector: function(e) {
                 page.hideSelector('itemInfo');
@@ -365,6 +366,21 @@
                 points: page.mapMarkers,
                 padding: [80, 30, 120, 30],
             });
+        }
+    }
+    
+    function postPay(e) {
+        const url = './result/result?success=' + e.success + '&orderId=' + e.orderId;
+        uni.hideLoading();
+        if (e.success) {
+            shareData.clear();
+            uni.redirectTo({
+                url
+            })
+        } else {
+            uni.navigateTo({
+                url
+            })
         }
     }
 

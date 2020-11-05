@@ -1,7 +1,9 @@
 <template>
 	<view class="root page">
         
-        <view class="logout" @click="logout">登出</view>
+        <view class="button" @click="navigetTo('/pages/balanceCenter/index')">余额中心</view>
+        <view class="button" @click="logout">登出</view>
+        
         
 		{{ getUserInfoString() }}
 	</view>
@@ -47,6 +49,10 @@
                         }
                     }
                 })
+            },
+            
+            navigetTo: function(url) {
+                uni.navigateTo({url});
             }
         }
 	}
@@ -66,7 +72,8 @@
         padding: 50rpx;
     }
     
-    .logout {
+    .button {
+        margin: 10rpx;
         width: 100rpx;
         height: 60rpx;
         background-color: white;

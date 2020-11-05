@@ -16,7 +16,8 @@ exports.main = async (event, context) => {
         if (res.code != 0 || res.uid != event.userId) {
             return {
                 success: false,
-                code: -2
+                code: -2,
+                res
             }
         }
         

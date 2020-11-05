@@ -253,6 +253,7 @@ export const orderAssistant_creater = {
             if (!res.result || !res.result.success) {
                 throw new Error(res);
             }
+            return res.result;
         } catch(e) {
             console.log(e);
             return {
@@ -260,9 +261,7 @@ export const orderAssistant_creater = {
                 error: e,
             }
         }
-        return {
-            success: true,
-        }
+        
         
     },
     
