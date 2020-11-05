@@ -104,17 +104,6 @@ export const loginAssistant = {
             })
             console.log(res)
             return res.result;
-            // if (!res.result.success) {
-            //     throw new Error();
-            // }
-            // const {
-            //     userInfo, token
-            // } = res.result;
-            // return {
-            //     success: true,
-            //     token,
-            //     userInfo
-            // }
         } catch(e) {
             console.log(e)
             return {
@@ -127,40 +116,77 @@ export const loginAssistant = {
 
 export const balanceAssistant = {
     serviceType: {
-        GET_BALANCE: 1,
+        CHECK: 1,
         PAY: 2
     },
     
-    pay: async function(arg) {
-        
-    }
-}
-
-export const paymentAssistant = {
-    
-    payWithBlance: async function(opt) {
-        const {
-            amount
-        } = opt;
-        const res = await uniCloud.callFunction({
-            name: 'balanceService',
-            data: {
-                userId: userInfo._id,
-                amount
+    payWithBalance: async function(arg) {
+        console.log('payWithBalance')
+        const { amount } = arg;
+        const serviceType = this.serviceType.PAY
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'balanceService',
+                data: { serviceType, userId, amount }
+            })
+            console.log(res);
+            const result = res.result;
+            if (result.success) {
+                return result;
+            } else {
+                let message;
+                switch(result.code) {
+                    case -2: message = '认证过期，请重新登录'; break;
+                    case -3: message = '账户余额不足'; break;
+                    case -4: message = '付款金额需为正数'; break;
+                    default: throw new Error();
+                }
+                return {
+                    success: false,
+                    balance: result.balance,
+                    message
+                }
             }
-        })
-        console.log(res)
+        } catch(e) {
+            console.log(e)
+            return {
+                success: false,
+                message: '操作失败'
+            }
+        }
     },
     
-    getBalance: async function() {
-        const res = await uniCloud.callFunction({
-            name: 'balanceService',
-            
-        })
+    checkBalance: async function(arg) {
+        console.log('checkBalance')
+        const serviceType = this.serviceType.CHECK;
+        try {
+            const res = await uniCloud.callFunction({
+                name: 'balanceService',
+                data: { serviceType, userId }
+            })
+            console.log(res)
+            const result = res.result;
+            if (result.success) {
+                return result;
+            } else {
+                let message;
+                switch(result.code) {
+                    case -2: message = '登录状态过期，请重新登录'; break;
+                    default: throw new Error();
+                }
+                return {
+                    success: false,
+                    message
+                }
+            }
+        } catch(e) {
+            console.log(e)
+            return {
+                success: false,
+                message: '查询失败，请重试'
+            }
+        }
     }
-    
-    
-    
 }
 
 export const orderAssistant_creater = {

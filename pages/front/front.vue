@@ -1,6 +1,8 @@
 <template>
     <view class="root page">
         
+        <view class="pass" @click="pass"></view>
+        
         <view class="loginArea">
             <view class="title">输入手机号码</view>
             <input class="mobile" v-model="mobile" @input="mobileChange"></input>
@@ -19,6 +21,7 @@
     import { loginAssistant , sendSmsCode } from '@/common/server.js';
     
     const dev = false;
+    const defaultMobile = '13728084958';
     
     let page;
     async function checkToken() {
@@ -65,6 +68,12 @@
 		methods: {
             mobileChange: function(e) {
                 page.mobile = e.detail.value;
+            },
+            
+            pass: function(){
+                uni.navigateTo({
+                    url: './fillInSmsCode?mobile=' + defaultMobile,
+                });
             },
             
             loginWithSmsCode: async function() {
@@ -149,6 +158,13 @@
 </script>
 
 <style scoped>
+    
+    .pass {
+        width: 100rpx;
+        height: 30rpx;
+        background-color: white;
+        border-radius: 10rpx;
+    }
     
     .page {
         justify-content: flex-end;

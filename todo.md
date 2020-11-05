@@ -100,4 +100,5 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 
 balanceService
 
-payWithBalance paras(userId, uniIdToken, amount) return(balance, success, code) code(-2: tokenFailure, -3: amount larger than balance, -4 can't add money to account)
++ [x] payWithBalance paras(userId, uniIdToken, amount) return(balance, success, code) code(-2: tokenFailure, -3: amount larger than balance, -4 can't add money to account)
++ [x] checkBalance paras(userId, uniIdToken) return(balance, success, code)(-2: tokenFailure)

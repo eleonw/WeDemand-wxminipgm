@@ -107,6 +107,13 @@ async function loginWithSmsCode(opt) {
             error: res.message,
         }
     }
+    
+    if (res.type = 'register') {
+        await db.collection('balance').add({
+            _id: res.uid,
+            balance: 0,
+        })
+    }
 
     return {
         success: true,
