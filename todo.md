@@ -96,3 +96,8 @@ server在不同阶段可以进行的操作：（修改server.js和orderService�
 + [ ] (cloud) sendSmsCode code: -1:other -2:sendFailure -3:setVerifyCodeFailure
 + [x] login with token
 
+
+
+balanceService
+
+payWithBalance paras(userId, uniIdToken, amount) return(balance, success, code) code(-2: tokenFailure, -3: amount larger than balance, -4 can't add money to account)
