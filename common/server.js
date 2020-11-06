@@ -140,12 +140,51 @@ export const loginAssistant = {
 export const balanceAssistant = {
     serviceType: {
         CHECK: 1,
-        PAY: 2
+        PAY: 2,
+        RECHARGE: 3,
+    },
+    
+    rechargeBalance: async function(arg) {
+      console.log('rechargeBalance')
+      const { amount } = arg;
+      if (amount <= 0) return {success: false, message: '充值金额需为正数'};
+      const serviceType = this.serviceType.RECHARGE;
+      const userId = userInfo._id;
+      try {
+        const res = await uniCloud.callFunction({
+          name: 'balanceService',
+          data: { serviceType, userId, amount }
+        })
+        console.log(res);
+        const result = res.result;
+        if (result.success) {
+          return result;
+        } else {
+          let message;
+          switch(result.code) {
+            case -2: message = '认证过期，请重新登录'; break;
+            case -4: message = '付款金额需为正数'; break;
+            default: throw new Error(result);
+          }
+        }
+      } catch(e) {
+        console.log(e)
+        return {
+            success: false,
+            message: '操作失败'
+        }
+      }
     },
     
     payWithBalance: async function(arg) {
         console.log('payWithBalance')
         const { amount } = arg;
+        if (amount <= 0) {
+          return {
+            success: false,
+            message: '付款金额需为正数',
+          }
+        }
         const serviceType = this.serviceType.PAY
         const userId = userInfo._id;
         try {
@@ -163,7 +202,7 @@ export const balanceAssistant = {
                     case -2: message = '认证过期，请重新登录'; break;
                     case -3: message = '账户余额不足'; break;
                     case -4: message = '付款金额需为正数'; break;
-                    default: throw new Error();
+                    default: throw new Error(result);
                 }
                 return {
                     success: false,

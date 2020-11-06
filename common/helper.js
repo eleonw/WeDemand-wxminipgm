@@ -149,7 +149,7 @@ export const parseMoneyString = function(moneyStr) {
         if (idx < 0) {
             stdStr = moneyStr;
         } else {
-            stdStr = moneyStr.splice(0, idx) + moneyStr.splice(idx+1, idx+3);
+            stdStr = moneyStr.slice(0, idx) + moneyStr.slice(idx+1, idx+3);
         }
         return Number(stdStr);
     }
@@ -185,7 +185,7 @@ export const getMoneyString = function(money) {
             if (str[str.length-2] == '0') {
                 return str.slice(0, -2);
             } else {
-                return str.slice(0, -2) + '.' + str[ste.length-2]
+                return str.slice(0, -2) + '.' + str[str.length-2]
             }
         } else {
             return str.slice(0, -2) + '.' + str.slice(-2);

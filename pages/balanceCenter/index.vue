@@ -30,8 +30,10 @@
         beforeCreate: function() {
             that = this;
         },
-        created: async function() {
+        onShow: async function() {
+            uni.showLoading()
             await initialBalanceRelevant();
+            uni.hideLoading();
         },
         data() {
 			return {
