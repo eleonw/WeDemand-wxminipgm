@@ -147,6 +147,7 @@ export const balanceAssistant = {
         console.log('payWithBalance')
         const { amount } = arg;
         const serviceType = this.serviceType.PAY
+        const userId = userInfo._id;
         try {
             const res = await uniCloud.callFunction({
                 name: 'balanceService',
@@ -183,10 +184,15 @@ export const balanceAssistant = {
     checkBalance: async function(arg) {
         console.log('checkBalance')
         const serviceType = this.serviceType.CHECK;
+        const userId = userInfo._id;
         try {
+            const data = {
+                serviceType, userId
+            }
+            console.log(data);
             const res = await uniCloud.callFunction({
                 name: 'balanceService',
-                data: { serviceType, userId }
+                data: data
             })
             console.log(res)
             const result = res.result;

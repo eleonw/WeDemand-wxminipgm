@@ -10,14 +10,15 @@ const ServiceType = {
 }
 
 exports.main = async (event, context) => {
-	
+    
     try {
         const res = await uniID.checkToken(event.uniIdToken);
-        if (res.code != 0 || res.uid != event.userId) {
+        if (res.code != 0) {
             return {
                 success: false,
                 code: -2,
-                res
+                res,
+                event
             }
         }
         

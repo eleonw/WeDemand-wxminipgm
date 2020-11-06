@@ -107,9 +107,9 @@
             },
             
             confirm: async function() {
-                switch (page.method) {
+                switch (that.method) {
                     case PayMethod.BALANCE:
-                        const res = await balanceAssistant.payWithBalance({amount: page.amount});
+                        const res = await balanceAssistant.payWithBalance({amount: that.amount});
                         if (res.success) {
                             that.finishPay(true);
                             uni.showToast({
@@ -150,7 +150,7 @@
             that.balancePayString = '余额支付 (查询异常，请尝试重新打开页面)';
         } else {
             that.balance = res.balance;
-            if (that.cost < that.balance) {
+            if (that.amount < that.balance) {
                 that.balancePayString = "余额支付（剩余￥" + getMoneyString(that.balance) + "）";
             } else {
                 that.balancePayString = "余额支付（剩余￥" + getMoneyString(that.balance) + "，余额不足）";

@@ -3,6 +3,8 @@
 		
         <uni-nav-bar left-icon="none"  title="微叮当"></uni-nav-bar>
         这是余额中心
+        <view>{{balance}}</view>
+        <view @click="retry">{{balanceString}}</view>
         <view class="item" @click="navigateTo('recharge')">充值</view>
         <view class="item" @click="navigateTo('withdraw')">提现</view>
 	</view>
@@ -11,18 +13,30 @@
 <script>
     import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
     
+    import { balanceAssistant } from '@/common/server.js';
+    import { getMoneyString } from '@/common/helper.js';
+    
     const pageUrls = {
         recharge: './recharge',
         withdraw: './withdraw',
     }
     
+    let that;
+    
 	export default {
 		components: {
             uniNavBar
         },
+        beforeCreate: function() {
+            that = this;
+        },
+        created: async function() {
+            await initialBalanceRelevant();
+        },
         data() {
 			return {
-				
+				balance: undefined,
+                balanceString: '',
 			}
 		},
 		methods: {
@@ -34,8 +48,31 @@
 			        }
 			    })
 			},
+            retry: async function() {
+                await initialBalanceRelevant();
+            }
 		}
 	}
+    
+    async function initialBalanceRelevant() {
+        const res = await balanceAssistant.checkBalance();
+        if (!res.success || !res.balance) {
+            if (res.code == -2) {
+                that.loginStatusFailure();
+            } else {
+                that.balance = undefined;
+                that.balanceString = '余额查询异常，请重新打开页面'
+                uni.showModal({
+                    content: '余额查询异常，请重新打开页面',
+                    showCancel: false
+                })
+            }
+            
+        } else {
+            that.balance = res.balance;
+            that.balanceString = getMoneyString(that.balance);
+        }
+    }
 </script>
 
 <style>
