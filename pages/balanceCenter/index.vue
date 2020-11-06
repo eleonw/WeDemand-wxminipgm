@@ -1,18 +1,14 @@
 <template>
-	<view>
+	<view class="root page">
 		
-        <uni-nav-bar left-icon="none"  title="微叮当"></uni-nav-bar>
-        这是余额中心
-        <view>{{balance}}</view>
-        <view @click="retry">{{balanceString}}</view>
+        <view class="title">余额中心</view>
+        <view cal>{{ balanceString }}</view>
         <view class="item" @click="navigateTo('recharge')">充值</view>
         <view class="item" @click="navigateTo('withdraw')">提现</view>
 	</view>
 </template>
 
 <script>
-    import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
-    
     import { balanceAssistant } from '@/common/server.js';
     import { getMoneyString } from '@/common/helper.js';
     
@@ -25,17 +21,17 @@
     
 	export default {
 		components: {
-            uniNavBar
-        },
-        beforeCreate: function() {
-            that = this;
-        },
-        onShow: async function() {
-            uni.showLoading()
-            await initialBalanceRelevant();
-            uni.hideLoading();
-        },
-        data() {
+           
+    },
+    beforeCreate: function() {
+        that = this;
+    },
+    onShow: async function() {
+        uni.showLoading({mask: true});
+        await initialBalanceRelevant();
+        uni.hideLoading();
+    },
+    data() {
 			return {
 				balance: undefined,
                 balanceString: '',
@@ -50,9 +46,6 @@
 			        }
 			    })
 			},
-            retry: async function() {
-                await initialBalanceRelevant();
-            }
 		}
 	}
     
@@ -72,28 +65,20 @@
             
         } else {
             that.balance = res.balance;
-            that.balanceString = getMoneyString(that.balance);
+            that.balanceString = "￥" + getMoneyString(that.balance);
         }
     }
 </script>
 
-<style>
+<style lang="scss">
     .page {
         background-color: var(--color-main);
-    }
-    
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        /* background-color: orange; */
-        grid-gap: 10px 10px;
+        color: white;
+        align-items: center;
         
-        height: 20vw;
-    }
-    
-    .gridItem {
-        background-color: var(--color-main);
-        text-align: center;
+        .title {
+          font-size: 60rpx;
+        }
     }
     
     .item {

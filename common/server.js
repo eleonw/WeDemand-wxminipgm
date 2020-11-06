@@ -266,7 +266,7 @@ export const orderAssistant_creater = {
     },
     
     initial: async function(order) {
-        
+        console.log('initialOrder')
         switch(order.serviceType) {
             case _serviceType.HELP_DELIVER:
                 order.serviceType = 1;
@@ -311,6 +311,7 @@ export const orderAssistant_creater = {
     },
     
     create: async function(opt) {
+      console.log('createOrder')
         const {
             orderId
         } = opt;
@@ -326,6 +327,7 @@ export const orderAssistant_creater = {
                     orderId
                 }
             });
+            console.log(res)
             return res.result;
         } catch(e) {
             console.log(e);
@@ -337,6 +339,7 @@ export const orderAssistant_creater = {
     },
     
     evaluate: async function(opt) {
+        console.log('evaluate');
         const {
             orderId, score, comment
         } = opt;
@@ -354,6 +357,7 @@ export const orderAssistant_creater = {
                     side,
                 }
             })
+            console.log(res);
             return res.result;
         } catch(e) {
             return {
@@ -366,6 +370,7 @@ export const orderAssistant_creater = {
     },
     
     cancel: async function(opt) {
+      console.log('cancelOrder');
         const {
             orderId, status
         } = opt;
@@ -382,6 +387,7 @@ export const orderAssistant_creater = {
                     userId
                 }
             })
+            console.log(res);
             return res.result;
         } catch(e) {
             return {
@@ -393,15 +399,16 @@ export const orderAssistant_creater = {
     },
     
     getUserOrderList: async function(opt) {
+        console.log('getUserOrderList');
         const {
-            limit, _getListRec, status
+            limit, _getListRec, status, fromStart
         } = opt;
         const userId = userInfo._id;
         const serviceType = this.serviceType.GET;
         const side = 0;
 
         try {
-            const res = await uniCLoud.callFunction({
+            const res = await uniCloud.callFunction({
                 name: 'orderService',
                 data: {
                     status, limit, _getListRec, userId, serviceType, side
@@ -434,6 +441,7 @@ export const orderAssistant_server = {
     },
     
     getCreatedOrderList: async function(arg) {
+      console.log('getCreatedOrderList')
         const {
             limit, _createdListRec, fromStart
         } = arg;
@@ -447,8 +455,10 @@ export const orderAssistant_server = {
                     limit, _createdListRec, fromStart, serviceType, side
                 },
             })
+            console.log(res);
             return res.result;
         } catch(e) {
+          console.log(e)
             return {
                 success: false,
                 code: -1,
@@ -460,6 +470,7 @@ export const orderAssistant_server = {
     },
     
     getServerOrderList: async function(arg) {
+      console.log('getServerOrderList')
         const {
             limit, _serverListRec, fromStart, status,
         } = arg;
@@ -474,8 +485,10 @@ export const orderAssistant_server = {
                     limit, _serverListRec, fromStart, serviceType, side, status, userId
                 },
             })
+            console.log(res);
             return res.result;
         } catch(e) {
+          console.log(e)
             return {
                 success: false,
                 code: -1,
@@ -485,6 +498,7 @@ export const orderAssistant_server = {
     },
     
     take: async function(arg) {
+      console.log('takeOrder')
         const {
             orderId
         } = arg;
@@ -504,8 +518,10 @@ export const orderAssistant_server = {
                     serviceType,
                 }
             })
+            console.log(res);
             return res.result;
         } catch(e) {
+           console.log(e);
             return {
                 success: false,
                 code: -1,
@@ -515,6 +531,7 @@ export const orderAssistant_server = {
     },
     
     start: async function(arg) {
+      console.log('startOrder');
         const {
             orderId
         } = arg;
@@ -531,8 +548,10 @@ export const orderAssistant_server = {
                     serviceType
                 }
             })
+            console.log(res)
             return res.result;
         } catch(e) {
+          console.log(e)
             return {
                 success: false,
                 code: -1,
@@ -542,6 +561,7 @@ export const orderAssistant_server = {
     },
     
     finish: async function(arg) {
+      console.log('finishOrder')
         const {
             orderId, confirmCode
         } = arg;
@@ -560,8 +580,10 @@ export const orderAssistant_server = {
                     confirmCode,
                 }
             })
+            console.log(res);
             return res.result;
         } catch(e) {
+          console.log(e);
             return {
                 success: false,
                 code: -1,
@@ -572,6 +594,7 @@ export const orderAssistant_server = {
     },
     
     evaluate: async function(arg) {
+      console.log('evaluateOrder')
         const {
             orderId, score, comment
         } = arg;
@@ -590,8 +613,10 @@ export const orderAssistant_server = {
                     confirmCode,
                 }
             })
+            console.log(res);
             return res.result;
         } catch(e) {
+          console.log(e);
             return {
                 success: false,
                 code: -1,
@@ -601,6 +626,7 @@ export const orderAssistant_server = {
     },
     
     cancel: async function(arg) {
+      console.log('cancelOrder')
         const {
             orderId, status
         } = arg;
@@ -618,8 +644,10 @@ export const orderAssistant_server = {
                     serviceType
                 }
             })
+            console.log(res)
             return res.result;
         } catch(e) {
+          console.log(e);
             return {
                 success: false,
                 code: -1,

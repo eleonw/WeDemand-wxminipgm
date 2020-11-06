@@ -2,7 +2,7 @@
 const db = uniCloud.database();
 const activeOrder = db.collection('active-order');
 const inactiveOrder = db.collection('inactive-order');
-const acceptedOrder = db.collection('accepted-order');
+const createdOrder = db.collection('created-order');
 const orderComment = db.collection('order-comment');
 const dbCmd = db.command;
 
@@ -19,11 +19,13 @@ const _orderStatus = {
 }
 
 function isActiveStatus(status) {
+    console.log('9')
     return status == _orderStatus.INITIALING
         || status == _orderStatus.ACCEPTED
         || status == _orderStatus.SERVING
         || status == _orderStatus.CANCELING
         || status == _orderStatus.EXCEPTION
+    console.log('10')
 }
 
 function isCreatedStatus(status) {
@@ -65,72 +67,52 @@ function getDeposit(cost) {
     return res;
 }
 
+let resPoint = 'nothing';
 
 exports.main = async (event) => {
-    
+  
     const {
         userId, side, orderId
     } = event;
-    
+    const flag = [];
     try {
-        switch(side) {
-            case _side.CREATER:     // creater
-                switch(event.serviceType) {
-                    case serviceType_creater.INITIAL:  {// initial
-                        const order = event.order;
-                        console.log(order);
-                        order.deposit = getDeposit(order.totalCost);
-                        const orderId = await initial({
-                            userId,
-                            order,
-                        })
-                        return {
-                            orderId,
-                            success: true
-                        }
-                    }
-                    case serviceType_creater.CREATE: {
-                        await create({orderId});
-                        return {
-                            success: true,
-                        }
-                    }
-                    case serviceType_creater.EVALUATE: {
-                        const {
-                            score, comment
-                        } = event;
-                        await evaluate({orderId, side, score, comment});
-                        return {
-                            success: true,
-                        }
-                    }
-                    case serviceType_creater.CANCEL: {
-                        const {
-                            status
-                        } = event;
-                        await cancel({orderId, side, status, userId});
-                        return {
-                            success: true,
-                        }
-                    }
-                    case serviceType_creater.GET: {
-                        const {
-                            status, _getListRec, limit, fromStart
-                        } = event;
-
-                        const res = await getCreaterOrderList({
-                            status, userId, _getListRec, limit, fromStart
-                        })
-                        return {
-                            orderList: res.orderList,
-                            _getListRec: res._getListRec,
-                            success: true
-                        }
-                    }
-                    default:
-                        throw new Error('invalid service type');
+      switch(side) {
+            case _side.CREATER: {     // creater
+              switch(event.serviceType) {
+                case serviceType_creater.INITIAL:  {// initial
+                  const order = event.order;
+                  order.deposit = getDeposit(order.totalCost);
+                  const orderId = await initial({ userId, order});
+                  return { orderId, success: true }
                 }
-                break;
+                case serviceType_creater.CREATE: {
+                  await create({orderId});
+                  return { success: true };
+                }
+                case serviceType_creater.EVALUATE: {
+                  const { score, comment } = event;
+                  await evaluate({orderId, side, score, comment});
+                  return { success: true }
+                }
+                case serviceType_creater.CANCEL: {
+                  const { status } = event;
+                  await cancel({orderId, side, status, userId});
+                  return { success: true };
+                }
+                case serviceType_creater.GET: {
+                  const { status, _getListRec, limit, fromStart } = event;
+                  const res = await getCreaterOrderList({ status, userId, _getListRec, limit, fromStart });
+                  return {
+                      orderList: res.orderList,
+                      _getListRec: res._getListRec,
+                      success: true
+                  }
+                }
+                default:
+                    throw new Error('invalid service type');
+              }
+              break;
+            }
             case _side.SERVER:     // server
                 switch(event.serviceType) {
                     case serviceType_server.TAKE: {
@@ -175,7 +157,7 @@ exports.main = async (event) => {
                             ...res,
                             success: true
                         }
-                    },
+                    }
                     case serviceType_server.GET_USER_LIST: {
                         const {
                             fromStart, _serverListRec, limit, status
@@ -198,6 +180,9 @@ exports.main = async (event) => {
             success: false,
             code,
             error,
+            e,
+            flag,
+            resPoint
         }
     }
     
@@ -361,7 +346,7 @@ async function cancel(arg) {
             })
             return;
         }
-        case _orderStatus.ACCEPTED: {}
+        case _orderStatus.ACCEPTED: 
             await db.runTransaction(async transaction => {
                 try {
                     const res = await transaction.collection('active-order').doc(orderId).get();
@@ -390,7 +375,7 @@ async function cancel(arg) {
                 }
             })
             return;
-        }
+     
         case _orderStatus.SERVING: {
             await db.runTransaction(async transaction => {
                 try {
@@ -411,7 +396,7 @@ async function cancel(arg) {
                 }
             })
             return;
-        },
+        }
         case _orderStatus.CANCELING: {
             await db.runTransaction(async transaction => {
                 try {
@@ -453,11 +438,10 @@ async function getCreaterOrderList(opt) {
         status, userId, limit, fromStart
     } = opt;
     const _getListRec = (fromStart || !opt._getListRec || Object.keys(opt._getListRec).length==0) ? 
-        {activeSkip: 0, inactiveSkip: 0, acceptedSkip: 0} : opt._getListRec;
+        {activeSkip: 0, inactiveSkip: 0, createdSkip: 0} : opt._getListRec;
     const activeStatus = [];
     const inactiveStatus = [];
     let hasCreated = false;
-    
     for (let astatus of status) {
         if (isActiveStatus(astatus)) {
             activeStatus.push(astatus);
@@ -467,26 +451,20 @@ async function getCreaterOrderList(opt) {
             hasCreated = true;
         }
     }
-    
     const resList = [];
-    
     if (activeStatus.length > 0) {
         let res = await activeOrder.where({
             status: dbCmd.in(activeStatus),
             createrId: userId,
         }).skip(_getListRec.activeSkip).limit(limit).get();
-        
         let count = res.data.length;
         if (count > 0) {
             _getListRec.activeSkip = _getListRec.activeSkip + count;
             resList.push(...res.data);
         }
     }
-    
     if (hasCreated) {
-        let res = await acceptedOrder.where({
-            createrId: userId,
-        }).skip(_getListRec.createdSkip).limit(limit).get();
+        let res = await createdOrder.where({ createrId: userId }).skip(_getListRec.createdSkip).limit(limit).get();
         let count = res.data.length;
         if (count > 0) {
             _getListRec.acceptedSkip = _getListRec.acceptedSkip + count;
@@ -585,7 +563,7 @@ async function take(arg) {
     await db.runTransaction(async transaction => {
         try {
             const res = await transaction.collection('created-order').doc(orderId).get();
-            const order = res.data.length != 0 : res.data[0] : null;
+            const order = res.data.length != 0 ? res.data[0] : null;
             if (order == null || order.status != _orderStatus.CREATED) {
                 transaction.rollback({code: -2});
             }
@@ -613,7 +591,7 @@ async function start(arg) {
         
         try {
             const res = await transaction.collection('active-order').doc(orderId).get();
-            if (res.data.length == 0 || ) {
+            if (res.data.length == 0) {
                 transaction.rollback({code: -3})
             } 
             const order = res.data[0];
@@ -652,7 +630,7 @@ async function finish(arg) {
                 transaction.rollback({code: -5})
             } else if (order.confirmCode != confirmCode) {
                 transaction.collection('active-order').doc(orderId).update({
-                    codeErrCount: dbCmd.inc(-1);
+                    codeErrCount: dbCmd.inc(-1)
                 })
                 transaction.rollback({code: -4, error: {errCodeCount: order.errCodeCount-1}})
             }

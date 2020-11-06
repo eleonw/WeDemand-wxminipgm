@@ -369,19 +369,32 @@
         }
     }
     
-    function postPay(e) {
-        const url = './result/result?success=' + e.success + '&orderId=' + e.orderId;
-        uni.hideLoading();
+    async function postPay(e) {
         if (e.success) {
-            shareData.clear();
-            uni.redirectTo({
-                url
-            })
+          const res = await orderAssistant_creater.create({orderId: orderId});
+          console.log(res);
+          const url = './result?success=success&orderId=' + orderId;
+          uni.hideLoading();
+          if (e.success) {
+              shareData.clear();
+              uni.redirectTo({
+                  url
+              })
+          } else {
+              uni.navigateTo({
+                  url
+              })
+          }
         } else {
-            uni.navigateTo({
-                url
-            })
+          uni.showModal({
+            content: '支付失败，请到我的订单中完成支付',
+            showCancel: false,
+            complete: function() {
+              uni.navigateBack();
+            }
+          })
         }
+        
     }
 
 </script>

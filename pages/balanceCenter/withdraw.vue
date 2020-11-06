@@ -2,6 +2,7 @@
 	<view class="root page">
     <view class="title">请输入金额</view>
     <view class="amount">
+      <view>￥</view>
       <input class="input" :value="amountString" type="digit" @blur="blur" maxlength="5"/>
     </view>
     <view class="notice" v-if="showNotice">请输入正确格式的数字</view>
@@ -80,28 +81,29 @@
     
     .amount {
       
-      width: 300rpx;
+      width: 350rpx;
       height: 100rpx;
+      line-height: 100rpx;
       
       margin: 20rpx;
+      font-size: 80rpx;
       font-weight: 600;
       
       
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       text-align: center;
       
       border-bottom: 2px solid white;
       
       .input {
-        
         height: 100rpx;
-        line-height: 100rpx;
-        font-size: 80rpx;
       }
       
     }
+      
+  
     
     .notice {
       color: red;

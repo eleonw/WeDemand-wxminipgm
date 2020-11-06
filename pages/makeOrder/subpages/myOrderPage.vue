@@ -40,61 +40,56 @@
     }
     
     let that;
+    let _getListRec;
     
 	export default {
-        name: 'myOrderPage',
-        components: {
-            uniNavBar, topTabBar, orderCard, paymentMethodSelector
-        },
+    name: 'myOrderPage',
+    components: {
+        uniNavBar, topTabBar, orderCard, paymentMethodSelector
+    },
 		data() {
 			return {
-                orderList: [
-                    testOrder_HelpBuy,
-                    testOrder_HelpDeliver,
-                    testOrder_OtherService
-                ],
-                tabIndex: 0,
-                tabs: [
-                    {
-                        index: 0,
-                        text: '全 部'
-                    },
-                    {
-                        index: 1,
-                        text: '待服务'
-                    },
-                    {
-                        index: 2,
-                        text: '进行中'
-                    },
-                    {
-                        index: 3,
-                        text: '待评价'
-                    },
-                    {
-                        index: 4,
-                        text: '已结束'
-                    },
-                ],
-                orderList: [
-                    testOrder_HelpBuy,
-                    testOrder_HelpDeliver,
-                    testOrder_OtherService
-                ],
-                orderStatusShowMap: {
-                    [orderStatus.INITIALING]: true,
-                    [orderStatus.CREATED]: true,
-                    [orderStatus.ACCEPTED]: true,
-                    [orderStatus.SERVING]: true,
-                    [orderStatus.EVALUATING]: true,
-                    [orderStatus.COMPLETED]: true,
-                    [orderStatus.EXCEPTION]: true,
-                    [orderStatus.CANCELED]: true,
-                    [orderStatus.CANCELING]: true,
-                },
-                targetOrder: null,
-                
-                show_paymentMethodSelector: false,
+        orderList: [
+            testOrder_HelpBuy,
+            testOrder_HelpDeliver,
+            testOrder_OtherService
+        ],
+        tabIndex: 0,
+        tabs: [
+            {
+                index: 0,
+                text: '全 部'
+            },
+            {
+                index: 1,
+                text: '待服务'
+            },
+            {
+                index: 2,
+                text: '进行中'
+            },
+            {
+                index: 3,
+                text: '待评价'
+            },
+            {
+                index: 4,
+                text: '已结束'
+            },
+        ],
+        orderStatusShowMap: {
+            [orderStatus.INITIALING]: true,
+            [orderStatus.CREATED]: true,
+            [orderStatus.ACCEPTED]: true,
+            [orderStatus.SERVING]: true,
+            [orderStatus.EVALUATING]: true,
+            [orderStatus.COMPLETED]: true,
+            [orderStatus.EXCEPTION]: true,
+            [orderStatus.CANCELED]: true,
+            [orderStatus.CANCELING]: true,
+        },
+        targetOrder: null,
+        show_paymentMethodSelector: false,
 			}
 		},
         
@@ -102,8 +97,8 @@
             that = this;
         },
         
-        created: function() {
-            // that.orderList = shareData.orderList;
+        created: async function() {
+          await that.getOrderList({fromStart: true});
         },
         
 		methods: {
@@ -222,9 +217,10 @@
                 const {
                     fromStart
                 } = arg;
-                const status = arg.status ?  arg.status : tab2Status[0];
+                const limit = 10;
+                const status = tab2Status[that.tabIndex];
                 uni.showLoading();
-                const res = await shareData.getOrderList({fromStart, status});
+                const res = await orderAssistant.getUserOrderList({status, limit, _getListRec});
                 uni.hideLoading();
                 if (!res.success) {
                     uni.showToast({

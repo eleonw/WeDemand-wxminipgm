@@ -52,7 +52,7 @@
         
         onLoad: function(opt) {
             that.amount = opt.amount;
-            that.eventName= opt.eventName;
+            eventName= opt.eventName;
             that.amountString = getMoneyString(that.amount);
         },
         
@@ -141,7 +141,6 @@
     
     async function initialBalanceRelevant() {
         const res = await balanceAssistant.checkBalance();
-        console.log(res)
         if (!res.success || !res.balance) {
             if (res.code == -2) {
                 that.loginStatusFailure();
