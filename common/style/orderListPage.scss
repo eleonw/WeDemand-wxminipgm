@@ -1,0 +1,34 @@
+
+.page {
+    
+    padding-bottom: calc(var(--height-tabbar) + 20rpx);
+}
+
+.topTabBar {
+    z-index: 1;
+    position: fixed;
+    top: var(--height-navbar);
+    left: 0;
+    width: 100vw;
+    background-color: var(--color-main);
+    color: white;
+}
+
+
+.orderCard {
+    margin: 30rpx 0;
+}
+
+.selector {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.nomore {
+  margin-top: 100rpx;
+  margin-bottom: 100rpx;
+  color: grey;
+  font-size: 30rpx;
+}

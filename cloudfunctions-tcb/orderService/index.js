@@ -74,7 +74,6 @@ exports.main = async (event) => {
     const {
         userId, side, orderId
     } = event;
-    const flag = [];
     try {
       switch(side) {
             case _side.CREATER: {     // creater
@@ -114,61 +113,51 @@ exports.main = async (event) => {
               break;
             }
             case _side.SERVER:     // server
-                switch(event.serviceType) {
-                    case serviceType_server.TAKE: {
-                        const {
-                            mobile
-                        } = event;
-                        await take({userId, orderId, mobile});
-                        return {
-                            success: true
-                        }
+              switch(event.serviceType) {
+                case serviceType_server.TAKE: {
+                  const { mobile } = event;
+                  await take({userId, orderId, mobile});
+                  return { success: true }
+                }
+                case serviceType_server.START: {
+                    await start({userId, orderId});
+                    return {
+                        success: true
                     }
-                    case serviceType_server.START: {
-                        await start({userId, orderId});
-                        return {
-                            success: true
-                        }
+                }
+                case serviceType_server.FINISH: {
+                    const {
+                        confirmCode
+                    } = event;
+                    await finish({userId, orderId, confirmCode});
+                    return {
+                        success: true
                     }
-                    case serviceType_server.FINISH: {
-                        const {
-                            confirmCode
-                        } = event;
-                        await finish({userId, orderId, confirmCode});
-                        return {
-                            success: true
-                        }
+                }
+                case serviceType_server.CANCEL: {
+                    const {
+                        status
+                    } = event;
+                    await cancel({userId, orderId, side, status});
+                    return {
+                        success: true
                     }
-                    case serviceType_server.CANCEL: {
-                        const {
-                            status
-                        } = event;
-                        await cancel({userId, orderId, side, status});
-                        return {
-                            success: true
-                        }
+                }
+                case serviceType_server.GET_CREATED_LIST: {
+                  const { fromStart, _createdListRec, limit } = event;
+                  return await getCreatedOrderList({ _createdListRec, limit, fromStart});
+                }
+                case serviceType_server.GET_USER_LIST: {
+                    const {
+                        fromStart, _serverListRec, limit, status
+                    } = event;
+                    const res = await getServerOrderList({status, fromStart, limit, _serverListRec});
+                    return {
+                        ...res,
+                        success: true,
                     }
-                    case serviceType_server.GET_CREATED_LIST: {
-                        const {
-                            fromStart, _cretedListRec, limit
-                        } = event;
-                        const res = await getCreatedOrderList({ _createdListRec, limit, fromStart});
-                        return {
-                            ...res,
-                            success: true
-                        }
-                    }
-                    case serviceType_server.GET_USER_LIST: {
-                        const {
-                            fromStart, _serverListRec, limit, status
-                        } = event;
-                        const res = await getServerOrderList({status, fromStart, limit, _serverListRec});
-                        return {
-                            ...res,
-                            success: true,
-                        }
-                    }
-                    
+                }
+            
                 }
             default:
                 throw new Error("invalid side");
@@ -181,7 +170,6 @@ exports.main = async (event) => {
             code,
             error,
             e,
-            flag,
             resPoint
         }
     }
@@ -488,23 +476,18 @@ async function getCreaterOrderList(opt) {
     }
 }
 
-async function getCreatedOrderList(arg) {
-    const {
-        limit, fromStart
-    } = opt;
-    const _createdListRec = (fromStart || !arg._createdListRec || Object.keys(arg._createdListRec).length==0) ? 
-        {skip: 0} : arg._createdListRec;
-
+async function getCreatedOrderList(opt) {
+    const { limit, fromStart } = opt;
+    const _createdListRec = (fromStart || !opt._createdListRec || Object.keys(opt._createdListRec).length==0) ? 
+        {skip: 0} : opt._createdListRec;
     const resList = [];
-    
     const res = await db.collection('created-order').skip(_createdListRec.skip).limit(limit).get();
-
-    _getListRec.skip = _getListRec.skip + res.data.length;
+    _createdListRec.skip = _createdListRec.skip + res.data.length;
     resList.push(...res.data);
-
     return {
         orderList: resList,
         _createdListRec,
+        success: true,
     }
 }
 

@@ -20,31 +20,28 @@
     import selectOrderPage from './subpages/selectOrderPage.vue';
     import eventBus from './eventBus.js';
 
-  
+    let that;
 	export default {
-        components: {
-          myOrderPage, selectOrderPage, tabBar
-        },
+    components: {
+      myOrderPage, selectOrderPage, tabBar
+    },
 		data() {
 			return {
-                selectedTabIndex: 0,
-                mainTabs: [
-                  {
-                      index: 0,
-                      text: '新的订单',
-                      iconPath: '/static/image/icon/home.png',
-                      selectedIconPath: '/static/image/icon/home_sel.png'
-                  },
-                  {
-                      index: 1,
-                      text: '我的订单',
-                      iconPath: '/static/image/icon/me.png',
-                      selectedIconPath: '/static/image/icon/me_sel.png'
-                  }
-                ],
-                
-                
-				
+        selectedTabIndex: 0,
+        mainTabs: [
+          {
+              index: 0,
+              text: '新的订单',
+              iconPath: '/static/image/icon/home.png',
+              selectedIconPath: '/static/image/icon/home_sel.png'
+          },
+          {
+              index: 1,
+              text: '我的订单',
+              iconPath: '/static/image/icon/me.png',
+              selectedIconPath: '/static/image/icon/me_sel.png'
+          }
+        ],
 			}
 		},
 		methods: {
@@ -63,17 +60,16 @@
 			}
 		},
         
-        onShow: function() {
-            page.enablePullDownRefresh(true);
-        },
-        
-        onHide: function() {
-            page.enablePullDownRefresh(false);
-        },
+    onShow: function() {
+        that.enablePullDownRefresh(true);
+    },
+    
+    onHide: function() {
+        that.enablePullDownRefresh(false);
+    },
         
         beforeCreate: function() {
             that = this;
-            shareData.getAddressBook();
         },
         
         beforeMount: function() {
@@ -84,14 +80,13 @@
             that.enablePullDownRefresh(false);
         },
         
-        onReachBottom: function() {
-            console.log('reach bottom')
-            eventBus.$emit('reachBottom');
-        },
-        
-        onPullDownRefresh: function() {
-            eventBus.$emit('pullDownRefresh');
-        }
+      onReachBottom: function() {
+        eventBus.$emit('reachBottom');
+      },
+      
+      onPullDownRefresh: function() {
+        eventBus.$emit('pullDownRefresh');
+      }
 	}
 </script>
 

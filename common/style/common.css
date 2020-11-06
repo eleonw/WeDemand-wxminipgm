@@ -1,7 +1,7 @@
 @import url("./animate.css");
 
 .root {
-    --color-main: #457b9d;
+   --color-main: #457b9d;
     --color-light: #a8dadc;
     --color-dark: #1d3557;
     --color-background: #f8f8f8;
@@ -16,7 +16,6 @@
     --height-toptabbar: 75rpx;
     --height-navbar: 64px;
     --height-statusbar: 20px;
-    
     
     font-size: 30rpx;
     letter-spacing: .1em;

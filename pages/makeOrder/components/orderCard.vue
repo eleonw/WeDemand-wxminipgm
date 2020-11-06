@@ -181,9 +181,9 @@
                 return that.orderObj.getItemInfoString();
             },
             clickButton: function() {
-                console.log('clickButton')
-                console.log(that)
-                console.log(that.activeButton)
+                // console.log('clickButton')
+                // console.log(that)
+                // console.log(that.activeButton)
                 if (that.activeButton) {
                     this.$emit('buttonClick')
                 }
@@ -203,7 +203,6 @@
             that.sensitiveInfo = that.orderObj.getSensitiveInfoArray();
             switch(that.orderObj.status) {
                 case orderStatus.INITIALING:
-                    console.log('orderstatus.initial')
                     that.activeButton = true;
                     that.buttonText = "付款";
                     that.showCancel = true;
@@ -259,14 +258,11 @@
                     that.showCancel = false;
                     break;
                 default:
-                    console.log('invalid orderStatus')
+                    throw new Error('invalid orderStatus')
             }
             
         },
         
-        mounted: function() {
-            console.log(that.activeButton)
-        }
     }
 
 </script>

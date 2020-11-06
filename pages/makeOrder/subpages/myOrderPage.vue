@@ -1,15 +1,11 @@
 <template>
 	<view class="root page">
-        <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
-        <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
-        
-        <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard" 
-            :order="order" v-if="orderStatusShowMap[order.status]" @buttonClick="buttonClick(index)" @cancel="cancelOrder(index)"> </orderCard>
-        
-        <view class="loadMore"></view>
-        
-        <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="targetOrder.totalCost"></paymentMethodSelector>
-        
+    <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
+    <topTabBar class="topTabBar" :tabs="tabs" size="35rpx" @switchTab="switchTab"></topTabBar>
+    
+    <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard" 
+        :order="order" v-if="orderStatusShowMap[order.status]" @buttonClick="buttonClick(index)" @cancel="cancelOrder(index)"> </orderCard>
+    <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="targetOrder.totalCost"></paymentMethodSelector>
 	</view>
 </template>
 
@@ -90,6 +86,7 @@
         },
         targetOrder: null,
         show_paymentMethodSelector: false,
+        nomore: false,
 			}
 		},
         
@@ -107,6 +104,7 @@
             },
             
             switchTab: function(e) {
+                that.nomore = false;
                 for (let item in that.orderStatusShowMap) {
                     that.orderStatusShowMap[item] = false;
                 }
@@ -214,19 +212,22 @@
             },
             
             getOrderList: async function(arg) {
-                const {
-                    fromStart
-                } = arg;
+                if (that.nomore) { return; }
+                const { fromStart } = arg;
+                console.log(fromStart)
+                if (fromStart) { that.orderList.length = 0; that.nomore = false}
                 const limit = 10;
                 const status = tab2Status[that.tabIndex];
                 uni.showLoading();
-                const res = await orderAssistant.getUserOrderList({status, limit, _getListRec});
-                uni.hideLoading();
-                if (!res.success) {
-                    uni.showToast({
-                        title: res.notice
-                    })
+                const res = await orderAssistant.getUserOrderList({status, limit, _getListRec, fromStart});
+                if (res.success) { 
+                  _getListRec = res._getListRec;
+                  if (res.orderList.length == 0) { that.nomore = true; }
+                  that.orderList.push(...res.orderList);
+                } else {
+                  uni.showModal({ content: res.message, showCancel: false});
                 }
+                uni.hideLoading();
             },
             
             startPullDownRefresh: function() {
@@ -239,22 +240,17 @@
 		},
         
         beforeMount: async function() {
- 
-            // await that.getOrderList({fromStart: true});
             eventBus.$on('reachBottom', async function(){
-
-                const status = tab2Status[that.tabIndex]
-                await that.getOrderList({status, fromStart: false});
+              if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'})} 
+              else {await that.getOrderList({fromStart: false})}
             })
             eventBus.$on('pullDownRefresh', async function() {
-
-                await that.getOrderList({fromStrat: true});
-                that.StopPullDownRefresh();
+                await that.getOrderList({fromStart: true});
+                that.stopPullDownRefresh();
             })
         },
         
         beforeDestroy: function() {
-
             eventBus.$off('reachBottom')
             eventBus.$off('pullDownRefresh')
         }
@@ -262,39 +258,11 @@
 
 </script>
 
-<style>
+<style lang="scss">
+    
+    @import "@/common/style/orderListPage.scss";
+    
     .page {
-        padding-top:  calc(var(--height-navbar) + var(--height-toptabbar));
-        padding-bottom: calc(var(--height-tabbar) + 20rpx);
+      padding-top:  calc(var(--height-navbar) + var(--height-toptabbar));
     }
-
-    .topTabBar {
-        z-index: 1;
-        position: fixed;
-        top: var(--height-navbar);
-        left: 0;
-        width: 100vw;
-        background-color: var(--color-main);
-        color: white;
-    }
-    
-    .test {
-        background-color: orange;
-        width: 100vw;
-        height: 40vh;
-        
-        margin-top: 20rpx;
-    }
-    
-    .orderCard {
-        margin: 30rpx 0;
-    }
-    
-    .selector {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        z-index: 999;
-    }
-    
 </style>

@@ -1,10 +1,10 @@
 // 本文件中的json内容将在云函数【运行】时作为参数传给云函数。
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
-{    "serviceType": 5,
-    "side": 0,
+{    "serviceType": 6,
+    "side": 1,
     "userId": "d232df4c5fa28c9b000a19ab58effe62",
-    "limit": 10,
-    "_getListRec": null,
-    "fromStart": true,
-    "status": [0, 1, 2, 3, 4, 5, -3, -2, -1]
+    "limit": 2,
+    "_createdListRec":{"skip": 2},
+    "fromStart": true
+    // "status": [0, 1, 2, 3, 4, 5, -3, -2, -1]
 }

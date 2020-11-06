@@ -400,33 +400,24 @@ export const orderAssistant_creater = {
     
     getUserOrderList: async function(opt) {
         console.log('getUserOrderList');
-        const {
-            limit, _getListRec, status, fromStart
-        } = opt;
+        const { limit, _getListRec, status, fromStart } = opt;
         const userId = userInfo._id;
         const serviceType = this.serviceType.GET;
         const side = 0;
-
         try {
             const res = await uniCloud.callFunction({
                 name: 'orderService',
-                data: {
-                    status, limit, _getListRec, userId, serviceType, side
-                }
+                data: { status, limit, _getListRec, userId, serviceType, side, fromStart }
             })
             console.log(res)
+            const result = res.result;
+            if (!result.success) {result.message = '获取订单失败，请刷新重试'}
             return res.result;
         } catch(e) {
             console.log(e)
-            return {
-                success: false,
-                code: -1,
-                error: e,
-            }
+            return { success: false, code:-1, message: '获取订单失败，请刷新重试' }
         }
-
     }
-    
 }
 
 export const orderAssistant_server = {

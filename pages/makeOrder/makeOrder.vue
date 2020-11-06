@@ -29,11 +29,9 @@
     let enablePullDownRefresh;
     
 	export default {
-
-        components: {
-            tabBar, topTabBar, 
-            newOrderPage, myOrderPage
-        },
+    components: {
+        tabBar, topTabBar, newOrderPage, myOrderPage
+    },
 		data() {
 			return {
                 selectedTabIndex: 1,
