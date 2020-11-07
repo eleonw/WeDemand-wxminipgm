@@ -72,7 +72,7 @@ exports.main = async (event) => {
                   return await initial(event);
                 }
                 case serviceType_creater.CREATE: {
-                  return await create({orderId});
+                  return await create(event);
                 }
                 case serviceType_creater.EVALUATE: {
                   const { score, comment } = event;
@@ -183,10 +183,16 @@ async function initial(arg) {
 }
 
 async function create(arg) {
+    
     const { orderId } = arg;
-    const res = await activeOrder.doc(orderId).update({ status: _orderStatus.CREATED })
-    if (res.updated != 0) { return { success: true } } 
-    else { return { success: false, code: -1, message: res.message };}
+    const res = await activeOrder.doc(orderId).get();
+    const order = res.data[0];
+    order.status = _orderStatus.CREATED;
+    console.log('1')
+    await createdOrder.add(order);
+    console.log('2')
+    await activeOrder.doc(orderId).remove();
+    return {success: true};
 }
 
 async function evaluate(opt) {

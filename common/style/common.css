@@ -22,9 +22,7 @@
 }
 
 .page {
-    position: fixed;
-    top: 0;
-    left: 0;
+
     
     background-color: var(--color-background);
     width: 750rpx;
