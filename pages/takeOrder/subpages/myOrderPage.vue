@@ -5,22 +5,33 @@
 		
         <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard"
             :order="order" v-if="orderStatusShowMap[order.status]" @buttonClick="buttonClick(index)"> </orderCard>
-        
+        <view class="nomore" v-if="nomore">您还没有相关订单</view>
 	</view>
 </template>
 
 <script>
-    import orderCard from './../components/orderCard.vue';
-    import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
-    import topTabBar from '@/components/topTabBar/topTabBar.vue';
-    import eventBus from '../eventBus.js';
-    
-    import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js';
-    import { orderStatus } from '@/common/globalData.js';
-    
-    import { promisify } from '@/common/helper.js';
-    
-    let that;
+  import orderCard from './../components/orderCard.vue';
+  import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
+  import topTabBar from '@/components/topTabBar/topTabBar.vue';
+  import eventBus from '../eventBus.js';
+  
+  import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js';
+  import { orderStatus } from '@/common/globalData.js';
+  
+  import { promisify } from '@/common/helper.js';
+  import { orderAssistant_server as orderAssistant } from '@/common/server.js';
+  
+  let that;
+  let _serverListRec;
+  
+  const tab2Status = {
+       0: [orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING, orderStatus.EXCEPTION, 
+           orderStatus.EVALUATING, orderStatus.CANCELED, orderStatus.COMPLETED],
+       1: [orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING, orderStatus.EXCEPTION],
+       2: [orderStatus.EVALUATING],
+       3: [orderStatus.CANCELED, orderStatus.COMPLETED],
+       4: [orderStatus.EXCEPTION],
+  }
     
 	export default {
     name: 'myOrderPage',
@@ -74,81 +85,60 @@
 		},
 		methods: {
 			navigateBack: function() {
-                uni.navigateBack({
-                })
-            },
+        uni.navigateBack();
+      },
+      switchTab: function(e) {
+        that.nomore = false;
+        for (let item in that.orderStatusShowMap) {
+            that.orderStatusShowMap[item] = false;
+        }
+        for (let item of tab2Status[e.index]) {
+            that.orderStatusShowMap[item] = true;
+        }
+      },
+      getOrderList: async function(fromStart) {
+          if (fromStart) { that.orderList.length = 0; that.nomore = false}
+          else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return}
+          const limit = 2;
+          const status = tab2Status[that.tabIndex];
+          uni.showLoading();
+          const res = await orderAssistant.getServerOrderList({status, limit, _serverListRec, fromStart});
+          if (res.success) { 
+            _serverListRec = res._serverListRec;
+            if (res.orderList.length == 0) { that.nomore = true; }
+            that.orderList.push(...res.orderList);
+          } else {
+            uni.showModal({ content: res.message, showCancel: false});
+          }
+          uni.hideLoading();
+          
+      },
             
-            updateStatusShowMap: function(...visibleStatus) {
-                if (visibleStatus.length == 0) {
-                    for (let status in that.orderStatusShowMap) {
-                        that.orderStatusShowMap[status] = true;
-                    }
-                    return;
-                }
-                for (let status in that.orderStatusShowMap) {
-                    that.orderStatusShowMap[status] = false;
-                }
-                for (let status of visibleStatus) {
-                    that.orderStatusShowMap[status] = true;
-                }
-            },
-            
-            switchTab: function(e) {
-                switch(e.index) {
-                    case 0:
-                        that.updateStatusShowMap();
-                        break;
-                    case 1:
-                        that.updateStatusShowMap(orderStatus.ACCEPTED, orderStatus.SERVING, orderStatus.CANCELING);
-                        break;
-                    case 2:
-                        that.updateStatusShowMap(orderStatus.EVALUATING);
-                        break;
-                    case 3:
-                        that.updateStatusShowMap(orderStatus.COMPLETED, orderStatus.CANCELED);
-                        break;
-                    case 4:
-                        that.updateStatusShowMap(orderStatus.EXCEPTION);
-                        break;
-                    default:
-                }
-            },
-            
-            getOrderList: async function() {
-                
-            },
-            
-            startPullDownRefresh: function() {
-                eventBus.$emit('startPullDownRefresh');
-            },
-            
-            stopPullDownRefresh: function() {
-                eventBus.$emit('stopPullDownRefresh');
-            }
+      startPullDownRefresh: function() {
+          eventBus.$emit('startPullDownRefresh');
+      },
+      stopPullDownRefresh: function() {
+          eventBus.$emit('stopPullDownRefresh');
+      }
 		},
         
-        beforeCreate: function() {
-            that = this;
-        },
-        
-        beforeMount: function() {
-            // await that.getOrderList({fromStart: true});
-            eventBus.$on('reachBottom', async function(){
-                console.log('reachBottom received');
-                const status = tab2Status[that.tabIndex]
-                that.getOrderList({status, fromStart: false});
-            })
-            eventBus.$on('pullDownRefresh', async function() {
-                console.log('pullDownRefresh received');
-
-                that.StopPullDownRefresh();
-            })
-        },
-        
-        beforeDestroy: function() {
-            eventBus.$off('reachBottom')
-            eventBus.$off('pullDownRefresh')
-        }
+    beforeCreate: function() {
+        that = this;
+    },
+    beforeMount: async function() {
+        await that.getOrderList(true)
+        eventBus.$on('reachBottom', async function(){
+            that.getOrderList(false);
+        })
+        eventBus.$on('pullDownRefresh', async function() {
+            await that.getOrderList(true);
+            that.stopPullDownRefresh();
+        })
+    },
+    beforeDestroy: function() {
+        eventBus.$off('reachBottom')
+        eventBus.$off('pullDownRefresh')
+    }
 	}
 </script>
 

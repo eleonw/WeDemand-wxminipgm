@@ -87,7 +87,7 @@ const shareData = {
     },
     
     clear: function() {
-        this.setServiceType(serviceType.HELP_DELIVER, true);
+        this.setServiceType(this.serviceType, true);
     },
     
     allAddressCompleted: function() {
@@ -163,47 +163,6 @@ const shareData = {
         await addressBookAssistant.removeAddress({recId: this.addressBook[arg.index]['_id']});
         this.addressBook.splice(arg.index, 1);
     },
-    
-    orderList: [],
-    _getListRec: null,
-    
-    test: async function() {
-        console.log('hhh')
-    },
-    
-    getList: async function(arg) {
-        const {
-            status, renew
-        } = arg;
-        console.log('status')
-        console.log(arg.renew)
-        if (renew) {
-            this.orderList.splice(0, this.orderList.length);
-            this._getListRec = null;
-        }
-        
-        try {
-            const res = await orderAssistant_creater.getOrderList({
-                _getListRec: this._getListRec,
-                limit: 5,
-            });
-            if (res.success) {
-                _getListRec = res._getListRec;
-                if (res.orderList.length > 0) {
-                    this.orderList.push(...res.orderList);
-                    this.orderList.sort((a, b) => {return a.createTime - b.createtime;})
-                    return {success: true, nomore: false};
-                } else {
-                    return {success: true, nomore: true};
-                }
-            } else {
-                console.log(res);
-                throw new Error();
-            }
-        } catch(e) {
-            return {success: false};
-        }
-    }
 }
 
 export default shareData;

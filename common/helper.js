@@ -41,6 +41,8 @@ export const setUserInfo = function(new_userInfo) {
 //     }
 // }
 
+
+
 export const weightAssistant = {
     
     MAX_WEIGHT: 20,

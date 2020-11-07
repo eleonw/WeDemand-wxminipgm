@@ -14,11 +14,11 @@
                     <view class="formItemRight fromItemBlock">
                         <view class="timeRangeItem">
                             <view>从</view>
-                            <navigatorWithPlaceholder :content="getTimeString(0)" placeholder="选择时间" @click.native="showSelector('timeStart')"></navigatorWithPlaceholder>
+                            <navigatorWithPlaceholder :content="getTimeString(0)" placeholder="选择时间" @click.native="showSelector('startTime')"></navigatorWithPlaceholder>
                         </view>
                         <view class="timeRangeItem">
                             <view>至</view>
-                            <navigatorWithPlaceholder :content="getTimeString(1)" placeholder="选择时间" @click.native="showSelector('timeEnd')"></navigatorWithPlaceholder>
+                            <navigatorWithPlaceholder :content="getTimeString(1)" placeholder="选择时间" @click.native="showSelector('endTime')"></navigatorWithPlaceholder>
                         </view>
                         
                     </view>
@@ -61,14 +61,35 @@
                 </view>
             </view>
             
+            <view class="form card">
+                <view class="formItem">
+                    <view class="formItemTitle">取消时间</view>
+                    <view class="formItemRight formItemBlock">
+                        <radio-group @change="expireTimeTypeChange" class="radioGroup">
+                            <label>
+                                <radio :value="0" :color="colorMain" :checked="!assignExpireTime"/><text>自动取消</text>
+                                <radio :value="1" :color="colorMain" :checked="assignExpireTime"/><text>指定时间</text>
+                            </label>
+                        </radio-group>
+                       <view v-if="assignExpireTime">
+                           <navigatorWithPlaceholder :content="getTimeString(2)" placeholder="请选择取消时间"  @click.native="showSelector('expireTime')"></navigatorWithPlaceholder>
+                       </view>
+                       <view else>
+                           {{ getTimeString(0) }}
+                       </view>
+                    </view>
+                </view>
+            </view>
+            
             
             
         </view>
         
-        <timePicker v-if="show_timeStart" class="selectorComponent" @exit="hideSelector('timeStart')" v-model="timeStart"></timePicker>
-        <timePicker v-if="show_timeEnd" class="selectorComponent" @exit="hideSelector('timeEnd')" v-model="timeEnd"></timePicker>
+        <timePicker v-if="show_startTime" class="selectorComponent" @exit="hideSelector('startTime')" v-model="startTime"></timePicker>
+        <timePicker v-if="show_endTime" class="selectorComponent" @exit="hideSelector('endTime')" v-model="endTime"></timePicker>
         <seperateTextarea v-else-if="show_sensitiveInfo" v-model="sensitiveInfo.main" class="selectorComponent"  @exit="hideSelector('sensitiveInfo')"></seperateTextarea>
         <priceInput v-else-if="show_tip" class="selectorComponent" title="服务费" @exit="hideSelector('tip')" v-model="tip"></priceInput>
+        <timePicker v-else-if="show_expireTime" class="selectorComponent"  @exit="hideSelector('expireTime')" v-model="expireTime"></timePicker>
         
         <orderNav class="orderNav" :costItems="[{
             title: '基础费用',
@@ -77,7 +98,7 @@
         {
             title: '小费',
             cost: tip,
-        }]"></orderNav>
+        }]" @clickConfirm="confirm"></orderNav>
         
         
         
@@ -97,14 +118,15 @@
     
     import Location from '@/common/classes/Location.js';
     
-    import { color }from '@/common/globalData.js';
+    import { color, serviceType as _serviceType }from '@/common/globalData.js';
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
-    import { getTimeString } from '@/common/helper.js';
+    import { getTimeString, getMoneyString } from '@/common/helper.js';
     
     let page;
     let mapContext;
+    const dev = false;
     
 	export default {
         components: {
@@ -123,17 +145,18 @@
                     main: ''
                 },
                 
-                timeStart: null,
-                timeEnd: null,
-                
+                startTime: null,
+                endTime: null,
                 serviceDesc: '',
-                    
                 tip: 0,
+                expireTime: null,
+                assignExpireTime: false,
                 
-                show_timeStart: false,
-                show_timeEnd: false,
+                show_startTime: false,
+                show_endTime: false,
                 show_tip: false,
                 show_sensitiveInfo: false,
+                show_expireTime: false,
                 
 			}
 		},
@@ -189,7 +212,7 @@
             
             getTimeString: function(index) {
                 
-                const target = index==0 ? 'timeStart' : 'timeEnd'; 
+                const target = index==0 ? 'startTime' : 'endTime'; 
                 
                 const substitude = '现在'
                 
@@ -214,20 +237,20 @@
             },
             
             confirm: async function(e) {
-                
                 let notice;
-                
                 if (!dev) {
                     if (!shareData.completed[0]) {
                         notice = '请填写服务地址';
-                    } else if (!page.timeStart || !page.timeEnd) {
+                    } else if (!page.startTime || !page.endTime) {
                         notice = '请完善服务时间';
-                    } else if (page.timeStart >= page.timeEnd) {
+                    } else if (page.startTime >= page.endTime) {
                         notice = '请确保服务起始时间早于服务结束时间';
                     } else if (page.serviceDesc.trim() == '') {
                         notice = '请填写服务信息';
                     } else if (!page.tip || page.tip<=0) {
                         notice = '请填写服务费用';
+                    } else if (page.assignExpireTime && !page.expireTime) {
+                        notice = '请选择订单取消时间'
                     }
                 }
                 
@@ -243,26 +266,21 @@
                 
                 const serviceType = _serviceType.OTHER_SERVICE;
                 const address = shareData.address[0];
-                const timeStart = page.timeStart;
-                const timeEnd = page.timeEnd;
+                const startTime = page.startTime;
+                const endTime = page.endTime;
                 const serviceDesc = page.serviceDesc;
                 const couponId = page.coupon ? page.coupon.id : null;
                 const sensitiveInfo = page.sensitiveInfo;
-                const tip = page.tip;
-                
-                const res = await orderAssistant.createOrder({
-
-                    serviceType,
-                    serviceDesc,
-                    sensitiveInfo,
-                    timeStart,
-                    timeEnd,
-                    buyingLocation,
-                    couponId,
-                    tip,
-                });
-                
-                
+                const expireTime = page.assignExpireTime ? page.expireTime : page.startTime;
+                const cost = {
+                    tip: page.tip?page.tip:0,
+                    basic: page.getBasicCost(),
+                }
+                const totalCost = e.totalCost;
+                const order = {serviceType, address, startTime, endTime, serviceDesc, couponId, sensitiveInfo, expireTime, cost, totalCost}
+                // console.log(order);
+                // return;
+                const res = await orderAssistant.initial(order);
                 const url = './result/result?success=' + res.success;
                 uni.hideLoading();
                 if (res.success) {
@@ -275,7 +293,6 @@
                         url
                     })
                 }
-                
             },
             
 		}

@@ -55,8 +55,7 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/makeOrder/detailForms/result",
-            "style" : {}
+            "path" : "pages/makeOrder/detailForms/result"
         }
         ,{
             "path" : "pages/takeOrder/takeOrder",
@@ -113,10 +112,7 @@
             }
         }
         ,{
-            "path" : "pages/pay/pay",
-            "style" : {
-                "navigationStyle": "default"
-            }
+            "path" : "pages/pay/pay"
         }
     ],
 	"globalStyle": {
@@ -153,14 +149,13 @@
                 "path": "pages/makeOrder/makeOrder"
             },
             {
-                "name": "otherService",
-                "path": "pages/makeOrder/detailForms/otherService"
+                "name": "takeOrder",
+                "path": "pages/takeOrder/takeOrder"
             },
             {
-                "name": "fillInSMSCode",
+                "name": "otherService",
                 "path": "pages/makeOrder/detailForms/otherService"
             }
-                
         ]
     }
 }

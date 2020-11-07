@@ -45,7 +45,7 @@
             },
             rightNowString: {
                 type: String,
-                default: '马上取件',
+                default: '现在',
             },
             forwardDayCount: {
                 type: [Number, String],

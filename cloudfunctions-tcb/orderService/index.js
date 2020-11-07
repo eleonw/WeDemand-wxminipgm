@@ -19,13 +19,11 @@ const _orderStatus = {
 }
 
 function isActiveStatus(status) {
-    console.log('9')
     return status == _orderStatus.INITIALING
         || status == _orderStatus.ACCEPTED
         || status == _orderStatus.SERVING
         || status == _orderStatus.CANCELING
         || status == _orderStatus.EXCEPTION
-    console.log('10')
 }
 
 function isCreatedStatus(status) {
@@ -61,32 +59,20 @@ const _side = {
     SERVER: 1,
 }
 
-function getDeposit(cost) {
-    const depositRate = 0.25;
-    let res = Math.ceil(cost*depositRate);
-    return res;
-}
-
 let resPoint = 'nothing';
 
 exports.main = async (event) => {
   
-    const {
-        userId, side, orderId
-    } = event;
+    const { userId, side, orderId } = event;
     try {
       switch(side) {
             case _side.CREATER: {     // creater
               switch(event.serviceType) {
                 case serviceType_creater.INITIAL:  {// initial
-                  const order = event.order;
-                  order.deposit = getDeposit(order.totalCost);
-                  const orderId = await initial({ userId, order});
-                  return { orderId, success: true }
+                  return await initial(event);
                 }
                 case serviceType_creater.CREATE: {
-                  await create({orderId});
-                  return { success: true };
+                  return await create({orderId});
                 }
                 case serviceType_creater.EVALUATE: {
                   const { score, comment } = event;
@@ -148,17 +134,10 @@ exports.main = async (event) => {
                   return await getCreatedOrderList({ _createdListRec, limit, fromStart});
                 }
                 case serviceType_server.GET_USER_LIST: {
-                    const {
-                        fromStart, _serverListRec, limit, status
-                    } = event;
-                    const res = await getServerOrderList({status, fromStart, limit, _serverListRec});
-                    return {
-                        ...res,
-                        success: true,
-                    }
+                    const { fromStart, _serverListRec, limit, status, userId } = event;
+                    return await getServerOrderList({status, fromStart, limit, _serverListRec});
                 }
-            
-                }
+              }
             default:
                 throw new Error("invalid side");
         }
@@ -177,48 +156,37 @@ exports.main = async (event) => {
 };
 
 async function initial(arg) {
-    console.log('initial')
+  const depositRate = 0.25;
+  
+    const order = arg.order;
+    order.deposit = Math.ceil(order.totalCost*depositRate);
+    order.createrId = arg.userId;
+    order.serverId = null;
+    order.cancelSide = -1;
+    order.evalStatus = -1;
     
-    const createrId = arg.userId;
-    const serverId = null;
-    const cancelSide = -1;
-    const evalStatus = -1;
-    
-    const timestamp = Number(new Date());
     let res = await uniCloud.callFunction({
         name: 'createId',
-        data: {
-            timestamp,
-            type: 1,
-        }
+        data: { type: 1 },
     });
-    const _id = res.result.orderId;
+    order._id = res.result.orderId;
     
-    const status = _orderStatus.INITIALING;
-    const createTime = Number(new Date());
-    res = await activeOrder.add({
-        _id,
-        createrId,
-        serverId,
-        status,
-        createTime,
-        cancelSide,
-        evalStatus,
-        ...arg.order,
-    })
-    console.log(res);
-    return res.id;
+    order.status = _orderStatus.INITIALING;
+    order.createTime = Number(new Date());
+
+    res = await activeOrder.add(order);
+    return {
+      success: true,
+      orderId: order._id,
+      order
+    }
 }
 
 async function create(arg) {
-    
-    const {
-        orderId
-    } = arg;
-    
-    await activeOrder.doc(orderId).update({
-        status: _orderStatus.CREATED,
-    })
+    const { orderId } = arg;
+    const res = await activeOrder.doc(orderId).update({ status: _orderStatus.CREATED })
+    if (res.updated != 0) { return { success: true } } 
+    else { return { success: false, code: -1, message: res.message };}
 }
 
 async function evaluate(opt) {
@@ -455,7 +423,7 @@ async function getCreaterOrderList(opt) {
         let res = await createdOrder.where({ createrId: userId }).skip(_getListRec.createdSkip).limit(limit).get();
         let count = res.data.length;
         if (count > 0) {
-            _getListRec.acceptedSkip = _getListRec.acceptedSkip + count;
+            _getListRec.createdSkip = _getListRec.createdSkip + count;
             resList.push(...res.data);
         }
     }
@@ -492,10 +460,7 @@ async function getCreatedOrderList(opt) {
 }
 
 async function getServerOrderList(arg) {
-    const {
-        limit, fromStart, status
-    } = arg;
-    
+    const { limit, fromStart, status, userId } = arg;
     const _serverListRec = (fromStart || !arg._serverListRec || Object.keys(arg._serverListRec).length==0) ?
         {activeSkip: 0, inactiveSkip: 0} : arg._serverListRec;
     const activeStatus = [];
@@ -508,18 +473,16 @@ async function getServerOrderList(arg) {
             inactiveStatus.push(astatus);
         } 
     }
-    
     const resList = [];
-    
     if (activeStatus.length > 0) {
         let res = await activeOrder.where({
             status: dbCmd.in(activeStatus),
             serverId: userId,
         }).skip(_serverListRec.activeSkip).limit(limit).get();
-        
         _serverListRec.activeSkip += res.data.length;
         resList.push(...res.data);
     }
+    console.log('2')
 
     if (inactiveStatus.length > 0) {
         let res = await inactiveOrder.where({
@@ -529,9 +492,11 @@ async function getServerOrderList(arg) {
         _serverListRec.inactiveSkip += res.data.length;
         resList.push(...res.data);
     }
+    console.log('3')
     return {
         orderList: resList,
-        _serverListRec
+        _serverListRec,
+        success: true,
     }
     
 }

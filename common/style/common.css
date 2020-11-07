@@ -22,8 +22,12 @@
 }
 
 .page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    
     background-color: var(--color-background);
-    width: 100vw;
+    width: 750rpx;
     min-height: 100vh;
    /* margin-top: var(--height-statusbar); */
     

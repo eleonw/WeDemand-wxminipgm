@@ -4,7 +4,7 @@
 		<uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
     <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard"
         :order="order" @buttonClick="takeOrder(index)" @cancel="cancelOrder(index)"></orderCard>
-        
+    <view class="nomore" v-if="nomore">您还没有相关订单</view>
     <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="targetOrder.totalCost"></paymentMethodSelector>
 	</view>
 </template>
@@ -19,7 +19,6 @@
   import eventBus from './../eventBus.js';
   
   let _createdListRec = null;
-  const limit = 2;
 
   let that;
     
@@ -40,9 +39,10 @@
 		},
 		methods: {
       getOrderList: async function(opt) {
-        console.log(_createdListRec)
         const { fromStart } = opt;
+          const limit = 10;
         if (fromStart) { that.orderList.length=0; that.nomore = false;}
+        else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return;}
         uni.showLoading();
         let res = await orderAssistant.getCreatedOrderList({fromStart, limit, _createdListRec});
         if (res.success) {
@@ -92,8 +92,7 @@
     },
     beforeMount: function() {
       eventBus.$on('reachBottom', async function(){
-        if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'})}
-        else {await that.getOrderList({fromStart: false})}
+        await that.getOrderList({fromStart: false});
       })
       eventBus.$on('pullDownRefresh', async function() {
         await that.getOrderList({fromStart: true});

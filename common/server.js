@@ -2,19 +2,7 @@ import { userInfo, serviceType as _serviceType } from '@/common/globalData.js';
 
 const userId = userInfo._id;
 
-export async function _resetSmsCode(arg) {
-    
-    const {
-        recId
-    } = arg;
-    
-    await uniCloud.callFunction({
-        name: 'resetSmsCode',
-        data: {
-            recId
-        }
-    })
-}
+
 
 export async function sendSmsCode(opt) {
     const {
@@ -312,31 +300,22 @@ export const orderAssistant_creater = {
     
     create: async function(opt) {
       console.log('createOrder')
-        const {
-            orderId
-        } = opt;
-        const side = 0;
-        const serviceType = this.serviceType.CREATE;
-        const userId = userInfo._id;
-        try {
-            const res = await uniCloud.callFunction({
-                name: 'orderService',
-                data: {
-                    serviceType,
-                    userId,
-                    orderId
-                }
-            });
-            console.log(res)
-            return res.result;
-        } catch(e) {
-            console.log(e);
-            return {
-                success: false,
-                error: e,
-            }
-        }
-    },
+      const { orderId } = opt;
+      const side = 0;
+      const serviceType = this.serviceType.CREATE;
+      const userId = userInfo._id;
+      try {
+          const res = await uniCloud.callFunction({
+              name: 'orderService',
+              data: { side, serviceType, userId, orderId }
+          });
+          console.log(res)
+          return res.result;
+      } catch(e) {
+          console.log(e);
+          return { success: false, code: -1, message:'操作失败，请重试'}
+      }
+  },
     
     evaluate: async function(opt) {
         console.log('evaluate');
@@ -442,9 +421,7 @@ export const orderAssistant_server = {
         try {
             const res = await uniCloud.callFunction({
                 name: 'orderService',
-                data: {
-                    limit, _createdListRec, fromStart, serviceType, side
-                },
+                data: { limit, _createdListRec, fromStart, serviceType, side },
             })
             console.log(res);
             return res.result;
@@ -452,8 +429,8 @@ export const orderAssistant_server = {
           console.log(e)
             return {
                 success: false,
+                message: '订单查询失败，请刷新重试',
                 code: -1,
-                error: e
             }
         }
         
@@ -462,9 +439,7 @@ export const orderAssistant_server = {
     
     getServerOrderList: async function(arg) {
       console.log('getServerOrderList')
-        const {
-            limit, _serverListRec, fromStart, status,
-        } = arg;
+        const { limit, _serverListRec, fromStart, status } = arg;
         const userId = userInfo._id;
         const serviceType = this.serviceType.GET_SERVER_LIST;
         const side = 1;
@@ -472,9 +447,7 @@ export const orderAssistant_server = {
         try {
             const res = await uniCloud.callFunction({
                 name: 'orderService',
-                data: {
-                    limit, _serverListRec, fromStart, serviceType, side, status, userId
-                },
+                data: { limit, _serverListRec, fromStart, serviceType, side, status, userId },
             })
             console.log(res);
             return res.result;
@@ -482,8 +455,8 @@ export const orderAssistant_server = {
           console.log(e)
             return {
                 success: false,
+                message: '订单获取失败，请刷新重试',
                 code: -1,
-                error: e
             }
         }
     },
@@ -701,7 +674,18 @@ export const addressBookAssistant = {
             }
         });
     },
-    
-  
 }
 
+// export async function _resetSmsCode(arg) {
+    
+//     const {
+//         recId
+//     } = arg;
+    
+//     await uniCloud.callFunction({
+//         name: 'resetSmsCode',
+//         data: {
+//             recId
+//         }
+//     })
+// }

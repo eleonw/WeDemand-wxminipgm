@@ -70,7 +70,7 @@
                             </label>
                         </radio-group>
                         <view v-if="assignExpireTime">
-                            <navigatorWithPlaceholder :content="getTimeString(3)" placeholder="请选择取消时间"  @click.native="showSelector('expireTime')"></navigatorWithPlaceholder>
+                            <navigatorWithPlaceholder :content="getTimeString(2)" placeholder="请选择取消时间"  @click.native="showSelector('expireTime')"></navigatorWithPlaceholder>
                         </view>
                         <view else>
                             {{ getTimeString(1) }}
@@ -115,7 +115,7 @@
     
     import { Order_HelpDeliver } from '@/common/classes/Order.js';
     
-    import { color, dev, serviceType as _serviceType }from '@/common/globalData.js';
+    import { color, serviceType as _serviceType }from '@/common/globalData.js';
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
@@ -126,6 +126,9 @@
     let page;
     let mapContext;
     let orderId;
+    const payEventName = 'payHelpDeliv'
+    
+    const dev = false;
     
     export default {
         components: {
@@ -193,7 +196,6 @@
             },
             
             getTimeString: function(index) {
-                
                 let timestamp;
                 switch(index) {
                     case 0:
@@ -206,9 +208,7 @@
                         timestamp = page.expireTime;
                         break;
                 }
-                
                 return timestamp? getTimeString({timestamp, substitude: '现在'}): '';
-               
             },
             
             
@@ -221,8 +221,6 @@
             getBasicCost: function() {
                 return 100;
             },
-            
-            
             expireTimeTypeChange: function(e) {
                 if (e.detail.value == 0) {
                     page.assignExpireTime = false;
@@ -234,9 +232,7 @@
             
             
             confirm: async function(e) {
-                
                 let notice;
-                
                 if (!dev) {
                     if (!shareData.completed[0]) {
                         notice = '请填写取件地址';
@@ -279,20 +275,21 @@
                 const totalCost = e.totalCost;
                 
                 const order = {
-                    fromAddress,
-                    toAddress,
-                    serviceType,
-                    startTime,
-                    endTime,
-                    itemInfo,
-                    note,
-                    sensitiveInfo,
-                    couponId,
-                    expireTime,
-                    cost,
-                    totalCost,
+                  serviceType,
+                  fromAddress,
+                  toAddress,
+                  startTime,
+                  endTime,
+                  itemInfo,
+                  note,
+                  sensitiveInfo,
+                  couponId,
+                  expireTime,
+                  cost,
+                  totalCost,
                 }
-                
+                // console.log(order);
+                // return;
                 let res = await orderAssistant_creater.initial(order);
                 if (!res.success) {
                     await page.promisify(uni.showModal, {
@@ -302,14 +299,11 @@
                     return;
                 } else {
                     orderId = res.orderId;
-                    const eventName = 'payHelpDeliv'
-                    const paras = 'amount=' + totalCost + "&eventName=" + eventName;
-                    eventBus.$on(eventName, postPay)
+
+                    const paras = 'amount=' + totalCost + "&eventName=" + payEventName;
+                    eventBus.$on(payEventName, postPay)
                     uni.navigateTo({url: '/pages/pay/pay?' + paras});
                 }
-                
-                
-                
             },
             
             
@@ -370,30 +364,21 @@
     }
     
     async function postPay(e) {
-        if (e.success) {
-          const res = await orderAssistant_creater.create({orderId: orderId});
-          console.log(res);
-          const url = './result?success=success&orderId=' + orderId;
-          uni.hideLoading();
-          if (e.success) {
-              shareData.clear();
-              uni.redirectTo({
-                  url
-              })
-          } else {
-              uni.navigateTo({
-                  url
-              })
-          }
-        } else {
-          uni.showModal({
-            content: '支付失败，请到我的订单中完成支付',
-            showCancel: false,
-            complete: function() {
-              uni.navigateBack();
-            }
+      console.log(e)
+      const res = await orderAssistant_creater.create({orderId: orderId});
+      const url = './result?success=success&orderId=' + orderId;
+      uni.hideLoading();
+      if (e.success) {
+          shareData.clear();
+          uni.navigateTo({
+              url
           })
-        }
+      } else {
+          uni.navigateTo({
+              url
+          })
+      }
+
         
     }
 

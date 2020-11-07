@@ -29,7 +29,7 @@ let idCount;
 
 exports.main = async (event) => {
 	
-    timestamp = Number(event.timestamp);
+    timestamp = Number(new Date());
     timestamp = timestamp - timestamp%DAY_TIME;
     try {
         idCount = await db.runTransaction(getIdCount, 5);
