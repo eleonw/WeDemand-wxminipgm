@@ -148,11 +148,16 @@
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
     import { getTimeString, getMoneyString } from '@/common/helper.js';
+    import { orderAssistant_creater as orderAssistant } from '@/common/server.js';
+    import eventBus from '@/common/eventBus.js';
     
     const dev = false;
     
     let page;
     let mapContext;
+    
+    let orderId;
+    const payEventName = 'payHelpBuy';
     
 	export default {
         components: {
@@ -346,28 +351,39 @@
           }
           const totalCost = e.totalCost;
           
-          const order = {serviceType, address, startTime, endTime, commodityDesc, buyingLocation, couponId, expireTime, sensitiveInfo, cost, totalCost };
-          // console.log(order);
-          // return;
-          const res = await orderAssistant.createOrder(order);      
-          
-          const url = './result/result?success=' + res.success;
-          uni.hideLoading();
-          if (res.success) {
-              shareData.clear();
-              uni.redirectTo({
-                  url
-              })
+          const order = {serviceType, address, startTime, endTime, commodityDesc, buyingLocation, couponId, 
+            expireTime, sensitiveInfo, cost, totalCost };    
+          let res = await orderAssistant.initial(order);
+          if (!res.success) {
+            await page.promisify(uni.showModal, {
+                content: '操作失败，请重试',
+                showCancel: false,
+            })
+            return;
           } else {
-              uni.navigateTo({
-                  url
-              })
+            orderId = res.orderId;
+            const paras = 'amount=' + totalCost + "&eventName=" + payEventName;
+            eventBus.$on(payEventName, postPay)
+            uni.navigateTo({url: '/pages/pay/pay?' + paras});
           }
-          
       },
             
 		}
 	}
+  
+  async function postPay(e) {
+    eventBus.$off(payEventName);
+    let res;
+    if (e.success) { res = await orderAssistant.create({orderId: orderId}); }
+    const url = './result?success=true&orderId=' + orderId;
+    uni.hideLoading();
+    if (e.success) {
+        shareData.clear();
+        uni.redirectTo({url})
+    } else {
+        uni.navigateTo({url})
+    }
+  }
 </script>
 
 <style>

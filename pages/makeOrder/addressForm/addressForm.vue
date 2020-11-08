@@ -82,7 +82,7 @@
     const titles = {
         [serviceType.HELP_DELIVER]: ['取件地址', '送件地址'],
         [serviceType.HELP_BUY]: ['送件地址'],
-        [serviceType.OTHERS]: ['服务地址'],
+        [serviceType.OTHER_SERVICE]: ['服务地址'],
     }
     
     const detailFormUrls = {
@@ -215,19 +215,15 @@
                 })
             }
 		},
-        beforeCreate: function() {
-            page = this;
-        },
-        created: function(opt) {
-            page.shareData = shareData;
-            page.title = titles[shareData.serviceType][shareData.currentAddressIdx];
-
-            page.colorMain = color.MAIN;
-            
-            page.address = clone(shareData.address[shareData.currentAddressIdx]);
-            console.log(page.address);
-            console.log(shareData.address[shareData.currentAddressIdx])
-        }
+    beforeCreate: function() {
+      page = this;
+    },
+    created: function(opt) {
+      page.shareData = shareData;
+      page.title = titles[shareData.serviceType][shareData.currentAddressIdx];
+      page.colorMain = color.MAIN;
+      page.address = clone(shareData.address[shareData.currentAddressIdx]);
+    }
 	}
 </script>
 

@@ -26,8 +26,6 @@
     let page;
     async function checkToken() {
         const token = uni.getStorageSync('uniIdToken');
-        console.log('token')
-        console.log(token)
         if (token) {
             const res = await loginAssistant.loginWithToken({token});
             if (res.success) {
@@ -56,105 +54,100 @@
 			}
 		},
         
-        beforeCreate: async function() {
-            page = this;
-            const tokenLogin = await checkToken();
-            console.log('tokenLogin success:')
-            console.log(tokenLogin)
-            if (tokenLogin) {
-                await promisify(uni.redirectTo, {url: '/pages/index/index'});
-            }
-        },
+    beforeCreate: async function() {
+      page = this;
+      const tokenLogin = await checkToken();
+      if (tokenLogin) {
+          await promisify(uni.redirectTo, {url: '/pages/index/index'});
+      }
+    },
         
 		methods: {
-            mobileChange: function(e) {
-                page.mobile = e.detail.value;
-            },
+      mobileChange: function(e) {
+        page.mobile = e.detail.value;
+      },
+      
+      pass: function(){
+        uni.navigateTo({
+          url: './fillInSmsCode?mobile=' + defaultMobile,
+        });
+      },
+      
+      loginWithSmsCode: async function() {
+        if (page.mobile.length != 11 || isNaN(Number(page.mobile)) || Number(page.mobile)<0) {
+            uni.showToast({
+                title: '手机号码无效，请重试',
+                icon: 'none'
+            })
+            return;
+        }
+        uni.showLoading();
+        const res = await sendSmsCode({
+            mobile: page.mobile,
+            type: 'login'
+        })
+        uni.hideLoading();
+        if (!res.success) {
+            uni.showToast({
+                title: res.message,
+                icon: 'none'
+            })
+        }
+        uni.navigateTo({
+            url: './fillInSmsCode?mobile=' + this.mobile,
+        });
+      },
+      
+      login: async function(type) {
+        uni.showLoading({
+            title: '登录中'
+        })
+        try {
+            let wxCode;
             
-            pass: function(){
-                uni.navigateTo({
-                    url: './fillInSmsCode?mobile=' + defaultMobile,
-                });
-            },
-            
-            loginWithSmsCode: async function() {
-                if (page.mobile.length != 11 || isNaN(Number(page.mobile)) || Number(page.mobile)<0) {
-                    uni.showToast({
-                        title: '手机号码无效，请重试',
-                        icon: 'none'
-                    })
-                    return;
-                }
-                
-                uni.showLoading();
-                const res = await sendSmsCode({
-                    mobile: page.mobile,
-                    type: 'login'
-                })
-                uni.hideLoading();
-                if (!res.success) {
-                    uni.showToast({
-                        title: res.message,
-                        icon: 'none'
-                    })
-                }
-                uni.navigateTo({
-                    url: './fillInSmsCode?mobile=' + this.mobile,
-                });
-            },
-            
-            login: async function(type) {
-                uni.showLoading({
-                    title: '登录中'
-                })
-                try {
-                    let wxCode;
-                    
-                    const loginData = {type: type};
-                    switch (type) {
-                        case 0: // login with tel
-                            loginData.tel = page.tel;
-                            break;
-                        case 1:
-                            wxCode = (await promisify(wx.login)).code;
-                            loginData.wxCode = wxCode;
-                            break;
-                        default:
-                            throw new Error('invalid login type');
-                    }
-                
-                    let res = await login(loginData);
-                    addAll.call(userInfo, res);
-                    uni.hideLoading();
-                } catch(e) {
-                    console.log(e);
-                    uni.hideLoading();
-                    uni.showToast({
-                        icon: 'none',
-                        title: '登录异常，请重试'
-                    })
-                }
-                
-                await page.authorizeLocation();
-                uni.redirectTo({
-                    url: '/pages/index/index',
-                })
-            },
-            
-            authorizeLocation: async function() {
-                const res = await promisify(wx.getSetting);
-                if (!res.authSetting['scope.userLocation']) {
-                    try {
-                        await promisify(wx.authorize, {scope: 'scope.userLocation'})
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
-                return;
+            const loginData = {type: type};
+            switch (type) {
+                case 0: // login with tel
+                    loginData.tel = page.tel;
+                    break;
+                case 1:
+                    wxCode = (await promisify(wx.login)).code;
+                    loginData.wxCode = wxCode;
+                    break;
+                default:
+                    throw new Error('invalid login type');
             }
-		},
-
         
+            let res = await login(loginData);
+            addAll.call(userInfo, res);
+            uni.hideLoading();
+        } catch(e) {
+            console.log(e);
+            uni.hideLoading();
+            uni.showToast({
+                icon: 'none',
+                title: '登录异常，请重试'
+            })
+        }
+        
+        await page.authorizeLocation();
+        uni.redirectTo({
+            url: '/pages/index/index',
+        })
+      },
+      
+      authorizeLocation: async function() {
+        const res = await promisify(wx.getSetting);
+        if (!res.authSetting['scope.userLocation']) {
+          try {
+            await promisify(wx.authorize, {scope: 'scope.userLocation'})
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        return;
+      }
+		},
 	}
 </script>
 

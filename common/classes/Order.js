@@ -2,6 +2,7 @@ import Address from '@/common/classes/Address.js';
 import Location from '@/common/classes/Location.js';
 
 import { orderStatus, serviceType } from '@/common/globalData.js';
+import { beanify } from '@/common/helper.js';
 
 function Order(arg={}) {
    
@@ -38,13 +39,20 @@ Order.prototype.getSensitiveInfoArray = function() {
     const array= [];
     if (this.sensitiveInfo) {
         const mainSensitives = []
-        for (let item in this.sensitiveInfo) {
-            const infoStr = this.sensitiveInfo[item].trim();
-            if (infoStr != '') {
-                mainSensitives.push();
-            }
+        for (let item in beanify(this.sensitiveInfo)) {
+          console.log(item)
+          let content = this.sensitiveInfo[item].trim();
+          if (content == '') continue;
+          if (item == 'expressInfo') {
+            console.log('2')
+            array.push({title: '快递信息', content})
+          } else if (item == 'takeAwayInfo') {
+            console.log('3')
+            array.push({title: '外卖信息', content})
+          } else {
+            mainSensitives.push(content);
+          }
         }
-        
         if (mainSensitives.length != 0) {
             array.push({title: '敏感信息', content: mainSensitives.join("; ")});
         }
@@ -53,7 +61,6 @@ Order.prototype.getSensitiveInfoArray = function() {
 }
 
 function Order_HelpDeliver(arg={}) {
-    
     const {
         _id, createrId, serverId, createTime, expireTime, startTime, endTime, couponId, cost, sensitiveInfo,   // expressInfo, takeAwayInfo 
         fromAddress, toAddress, itemInfo, note, evalStatus, cancelSide, confirmCode
@@ -129,7 +136,7 @@ function Order_HelpBuy(arg={}) {
     
     this.commodityDesc = commodityDesc;
     this.address = new Address(address);
-    this.buyingLocation = new Location(buyingLocation);
+    this.buyingLocation = buyingLocation ? new Location(buyingLocation) : null;
     
 }
 
@@ -151,8 +158,6 @@ const testOrder_HelpBuy = new Order_HelpBuy({
     expireTime: 1598827522653,
     
 })
-
-
 
 function Order_OtherService(arg={}) {
     const {
@@ -183,7 +188,6 @@ const testOrder_OtherService = new Order_OtherService({
 })
 
 function parseOrder(arg) {
-    
     if (!arg.serviceType) {
         console.log(arg)
         throw new Error('no valid service type');

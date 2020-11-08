@@ -31,7 +31,7 @@
                     <view class="textareaTitle">填写需要的服务及注意事项</view>
                     <textarea class="textareaBody"  v-model="serviceDesc" placeholder="如排队、搬东西、送花..." maxlength="250"></textarea>
                     <view class="textareaKeyWords">
-                        <view class="textareaKeyWord" v-for="(keyWord,index) in textareaKeyWords" :keys="index" @click="addKeyWord(keyWord)">{{ keyWord }}</view>
+                        <view class="textareaKeyWord" v-for="(keyWord,index) in textareaKeyWords" :key="index" @click="addKeyWord(keyWord)">{{ keyWord }}</view>
                     </view>
                 </view>
                 <view class="formItem lastFormItem">
@@ -42,9 +42,6 @@
                 </view>
                 
             </view>
-            
-           
-            
             
             <view class="form card">
                 <view class="formItem">
@@ -123,10 +120,14 @@
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
     import { getTimeString, getMoneyString } from '@/common/helper.js';
+    import { orderAssistant_creater as orderAssistant } from '@/common/server.js'
+    import eventBus from '@/common/eventBus.js';
     
     let page;
     let mapContext;
     const dev = false;
+    let orderId;
+    const payEventName = 'payOtherService';
     
 	export default {
         components: {
@@ -136,167 +137,171 @@
         
 		data() {
 			return {
-                mapMarkers: null,
-                
+        mapMarkers: null,
 				colorMain: null,
-                textareaKeyWords: ['务必准时'],
-                
-                sensitiveInfo: {
-                    main: ''
-                },
-                
-                startTime: null,
-                endTime: null,
-                serviceDesc: '',
-                tip: 0,
-                expireTime: null,
-                assignExpireTime: false,
-                
-                show_startTime: false,
-                show_endTime: false,
-                show_tip: false,
-                show_sensitiveInfo: false,
-                show_expireTime: false,
-                
+        textareaKeyWords: ['务必准时'],
+        sensitiveInfo: {
+            main: ''
+        },
+        startTime: null,
+        endTime: null,
+        serviceDesc: '',
+        tip: 0,
+        expireTime: null,
+        assignExpireTime: false,
+
+        show_startTime: false,
+        show_endTime: false,
+        show_tip: false,
+        show_sensitiveInfo: false,
+        show_expireTime: false,
 			}
 		},
         
-        created: function() {
-            page = this;
-            page.colorMain = color.MAIN;
-            mapContext = uni.createMapContext('map');
-        },
+    created: function() {
+        page = this;
+        page.colorMain = color.MAIN;
+        mapContext = uni.createMapContext('map');
+    },
         
-        onShow: function() {
-            page.mapMarkers = [
-                {
-                    id: 0,
-                    latitude: shareData.address[0].location.latitude,
-                    longitude: shareData.address[0].location.longitude,
-                    iconPath: '/static/image/icon/deliver.png',
-                    width: 40,
-                    height: 40, 
-                }
-            ];
-            
-            mapContext.includePoints({
-                points: page.mapMarkers,
-                padding: [80, 30, 120, 30],
-            });
-        },
+    onShow: function() {
+      page.mapMarkers = [
+        {
+            id: 0,
+            latitude: shareData.address[0].location.latitude,
+            longitude: shareData.address[0].location.longitude,
+            iconPath: '/static/image/icon/deliver.png',
+            width: 40,
+            height: 40, 
+        }
+      ];
+      mapContext.includePoints({
+          points: page.mapMarkers,
+          padding: [80, 30, 120, 30],
+      });
+    },
         
 		methods: {
-            back: function() {
-            
-                uni.showModal({
-                    content: '放弃订单？',
-                    cancelColor: color.MAIN,
-                    confirmColor: "#8f8f8f",
-                    
-                    success: res => {
-                        if (res.confirm) {
-                            shareData.clear();
-                            uni.navigateBack();
-                        }
-                    },
-                })
-            },
-            
-            showSelector: function(type) {
-                page['show_'+type] = true;
-            },
-            
-            hideSelector: function(type) {
-                page['show_'+type] = false;
-            },
-            
-            getTimeString: function(index) {
-                
-                const target = index==0 ? 'startTime' : 'endTime'; 
-                
-                const substitude = '现在'
-                
-                if (page[target]) {
-                    return getTimeString({timestamp: page[target], substitude});
-                } else {
-                    return '';
-                }
-            },
-            
-            getTipString: function(){
-                const moneyString = getMoneyString(page.tip);
-                return moneyString == '' ? '' : '￥' + moneyString;
-            },
-            
-            addKeyWord: function(keyWord) {
-                page.serviceDesc = page.serviceDesc + ' ' + keyWord + ' ';
-            },
-            
-            getBasicCost: function() {
-                return 100;
-            },
-            
-            confirm: async function(e) {
-                let notice;
-                if (!dev) {
-                    if (!shareData.completed[0]) {
-                        notice = '请填写服务地址';
-                    } else if (!page.startTime || !page.endTime) {
-                        notice = '请完善服务时间';
-                    } else if (page.startTime >= page.endTime) {
-                        notice = '请确保服务起始时间早于服务结束时间';
-                    } else if (page.serviceDesc.trim() == '') {
-                        notice = '请填写服务信息';
-                    } else if (!page.tip || page.tip<=0) {
-                        notice = '请填写服务费用';
-                    } else if (page.assignExpireTime && !page.expireTime) {
-                        notice = '请选择订单取消时间'
-                    }
-                }
-                
-                if (notice) {
-                    uni.showToast({
-                        title: notice,
-                        icon: 'none',
-                    });
-                    return;
-                }
-                
-                uni.showLoading();
-                
-                const serviceType = _serviceType.OTHER_SERVICE;
-                const address = shareData.address[0];
-                const startTime = page.startTime;
-                const endTime = page.endTime;
-                const serviceDesc = page.serviceDesc;
-                const couponId = page.coupon ? page.coupon.id : null;
-                const sensitiveInfo = page.sensitiveInfo;
-                const expireTime = page.assignExpireTime ? page.expireTime : page.startTime;
-                const cost = {
-                    tip: page.tip?page.tip:0,
-                    basic: page.getBasicCost(),
-                }
-                const totalCost = e.totalCost;
-                const order = {serviceType, address, startTime, endTime, serviceDesc, couponId, sensitiveInfo, expireTime, cost, totalCost}
-                // console.log(order);
-                // return;
-                const res = await orderAssistant.initial(order);
-                const url = './result/result?success=' + res.success;
-                uni.hideLoading();
-                if (res.success) {
-                    shareData.clear();
-                    uni.redirectTo({
-                        url
-                    })
-                } else {
-                    uni.navigateTo({
-                        url
-                    })
-                }
-            },
-            
+      back: function() {
+      
+        uni.showModal({
+          content: '放弃订单？',
+          cancelColor: color.MAIN,
+          confirmColor: "#8f8f8f",
+          
+          success: res => {
+            if (res.confirm) {
+              shareData.clear();
+              uni.navigateBack();
+            }
+          },
+        })
+      },
+      
+      showSelector: function(type) {
+        page['show_'+type] = true;
+      },
+      
+      hideSelector: function(type) {
+        page['show_'+type] = false;
+      },
+      
+      getTimeString: function(index) {
+          
+        const target = index==0 ? 'startTime' : 'endTime'; 
+        const substitude = '现在'
+        if (page[target]) { return getTimeString({timestamp: page[target], substitude}); } 
+        else { return ''; }
+      },
+      
+      getTipString: function(){
+        const moneyString = getMoneyString(page.tip);
+        return moneyString == '' ? '' : '￥' + moneyString;
+      },
+      
+      addKeyWord: function(keyWord) {
+        page.serviceDesc = page.serviceDesc + ' ' + keyWord + ' ';
+      },
+      
+      getBasicCost: function() {
+        return 100;
+      },
+      
+      confirm: async function(e) {
+          let notice;
+          if (!dev) {
+              if (!shareData.completed[0]) {
+                  notice = '请填写服务地址';
+              } else if (!page.startTime || !page.endTime) {
+                  notice = '请完善服务时间';
+              } else if (page.startTime >= page.endTime) {
+                  notice = '请确保服务起始时间早于服务结束时间';
+              } else if (page.serviceDesc.trim() == '') {
+                  notice = '请填写服务信息';
+              } else if (!page.tip || page.tip<=0) {
+                  notice = '请填写服务费用';
+              } else if (page.assignExpireTime && !page.expireTime) {
+                  notice = '请选择订单取消时间'
+              }
+          }
+          
+          if (notice) {
+              uni.showToast({
+                  title: notice,
+                  icon: 'none',
+              });
+              return;
+          }
+          
+          uni.showLoading();
+          
+          const serviceType = _serviceType.OTHER_SERVICE;
+          const address = shareData.address[0];
+          const startTime = page.startTime;
+          const endTime = page.endTime;
+          const serviceDesc = page.serviceDesc;
+          const couponId = page.coupon ? page.coupon.id : null;
+          const sensitiveInfo = page.sensitiveInfo;
+          const expireTime = page.assignExpireTime ? page.expireTime : page.startTime;
+          const cost = {
+              tip: page.tip?page.tip:0,
+              basic: page.getBasicCost(),
+          }
+          const totalCost = e.totalCost;
+          const order = {serviceType, address, startTime, endTime, serviceDesc, couponId, sensitiveInfo, expireTime, cost, totalCost };
+          // console.log(order);
+          // return;
+          let res = await orderAssistant.initial(order);
+          if (!res.success) {
+            await page.promisify(uni.showModal, {
+                content: '操作失败，请重试',
+                showCancel: false,
+            })
+            return;
+          } else {
+            orderId = res.orderId;
+            const paras = 'amount=' + totalCost + "&eventName=" + payEventName;
+            eventBus.$on(payEventName, postPay)
+            uni.navigateTo({url: '/pages/pay/pay?' + paras});
+          }
+      },
 		}
 	}
+  
+  async function postPay(e) {
+    eventBus.$off(payEventName);
+    let res;
+    if (e.success) { res = await orderAssistant.create({orderId: orderId}); }
+    const url = './result?success=true&orderId=' + orderId;
+    uni.hideLoading();
+    if (e.success) {
+        shareData.clear();
+        uni.redirectTo({url})
+    } else {
+        uni.navigateTo({url})
+    }
+  }
+  
 </script>
 
 <style>

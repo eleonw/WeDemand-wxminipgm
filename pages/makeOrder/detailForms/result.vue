@@ -26,7 +26,7 @@
       that = this;
     },
     onLoad: function(e) {
-      that.success = e.success
+      that.success = e.success == true || e.success == 'ture';
       that.orderId = e.orderId;
     }
 	}

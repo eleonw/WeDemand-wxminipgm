@@ -119,14 +119,14 @@
     import shareData from './../shareData.js';
     import { QQ_MAP_KEY} from '@/common/sensitiveData.js';
     
-    import { orderAssistant_creater } from '@/common/server.js';
+    import { orderAssistant_creater as orderAssistant } from '@/common/server.js';
     import { weightAssistant, getTimeString, addAll, getMoneyString } from '@/common/helper.js';
     import eventBus from '@/common/eventBus.js';
     
     let page;
     let mapContext;
     let orderId;
-    const payEventName = 'payHelpDeliv'
+    const eventName = 'payHelpDeliv'
     
     const dev = false;
     
@@ -274,23 +274,10 @@
                 }
                 const totalCost = e.totalCost;
                 
-                const order = {
-                  serviceType,
-                  fromAddress,
-                  toAddress,
-                  startTime,
-                  endTime,
-                  itemInfo,
-                  note,
-                  sensitiveInfo,
-                  couponId,
-                  expireTime,
-                  cost,
-                  totalCost,
-                }
-                // console.log(order);
-                // return;
-                let res = await orderAssistant_creater.initial(order);
+                const order = { serviceType, fromAddress, toAddress, startTime, endTime,
+                  itemInfo, note, sensitiveInfo, couponId, expireTime, cost, totalCost }
+                  
+                let res = await orderAssistant.initial(order);
                 if (!res.success) {
                     await page.promisify(uni.showModal, {
                         content: '操作失败，请重试',
@@ -299,22 +286,20 @@
                     return;
                 } else {
                     orderId = res.orderId;
-
                     const paras = 'amount=' + totalCost + "&eventName=" + payEventName;
                     eventBus.$on(payEventName, postPay)
                     uni.navigateTo({url: '/pages/pay/pay?' + paras});
                 }
             },
             
-            
             exitItemInfoSelector: function(e) {
                 page.hideSelector('itemInfo');
+                console.log(e)
                 if (e.valid) {
                     page.itemInfo = e.itemInfo;
                     page.sensitiveInfo = e.sensitiveInfo;
-                    console.log(page.itemInfo);
-                    console.log(page.sensitiveInfo);
                 }
+                console.log(page.sensitiveInfo)
             },
             
             getTipString: function(){
@@ -364,22 +349,17 @@
     }
     
     async function postPay(e) {
-      console.log(e)
-      const res = await orderAssistant_creater.create({orderId: orderId});
-      const url = './result?success=success&orderId=' + orderId;
+      eventBus.$off(payEventName);
+      let res;
+      if (e.success) { res = await orderAssistant.create({orderId: orderId}); }
+      const url = './result?success=true&orderId=' + orderId;
       uni.hideLoading();
       if (e.success) {
           shareData.clear();
-          uni.navigateTo({
-              url
-          })
+          uni.redirectTo({url})
       } else {
-          uni.navigateTo({
-              url
-          })
+          uni.navigateTo({url})
       }
-
-        
     }
 
 </script>

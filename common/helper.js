@@ -110,6 +110,32 @@ export const formatNumber = function(value, strLength) {
     }
 }
 
+export const getSensitiveInfoArray = function(sensitiveInfo) {
+    const array= [];
+    if (sensitiveInfo) {
+        const mainSensitives = []
+        for (let item in beanify(sensitiveInfo)) {
+          console.log(item)
+          let content = 
+          sensitiveInfo[item].trim();
+          if (content == '') continue;
+          if (item == 'expressInfo') {
+            console.log('2')
+            array.push({title: '快递信息', content})
+          } else if (item == 'takeAwayInfo') {
+            console.log('3')
+            array.push({title: '外卖信息', content})
+          } else {
+            mainSensitives.push(content);
+          }
+        }
+        if (mainSensitives.length != 0) {
+            array.push({title: '敏感信息', content: mainSensitives.join("; ")});
+        }
+    }
+    return array;
+}
+
 
 export const getTimeString = function(arg) {
     

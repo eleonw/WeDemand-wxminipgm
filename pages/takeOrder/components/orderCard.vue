@@ -97,17 +97,17 @@
             </view>
             </view>
             
-            <view v-for="(info,idx) in sensitiveInfo" :key="idx" v-if="showSensitive">
-                <view class="row">
-                    <view class="title">{{ info.title }}</view>
-                    <view>{{ info.content }}</view>
-                </view>
+            <view v-for="(info,idx) in orderObj.sensitiveInfo" :key="idx" v-if="showSensitive">
+             <view class="row">
+                 <view class="title">敏感信息</view>
+                 <view>{{ orderObj.sensitiveInfo[info] }}</view>
+             </view>
             </view>
             
             
             <view class="row">
                 <view class="title">小费</view>
-                <view>{{ orderObj.cost.tip }}￥</view>
+                <view>{{ getMoneyString(orderObj.cost.tip) }}￥</view>
             </view>
                     
         </view>
@@ -136,7 +136,7 @@
     import { serviceType, orderStatus, color } from '@/common/globalData.js';
     import { parseOrder } from '@/common/classes/Order.js';
     
-    import { getTimeString } from '@/common/helper.js';
+    import { getTimeString, getSensitiveInfoArray, getMoneyString } from '@/common/helper.js';
     import { userInfo } from '@/common/globalData.js';
     
     let that;
@@ -161,6 +161,7 @@
                 buttonText: null,
                 activeButton: null,
                 showCancel: null,
+                sensitiveInfo: [],
             }
         },
         methods: {
@@ -184,6 +185,9 @@
             },
             cancelOrder: function() {
                 this.$emit('cancel');
+            },
+            getMoneyString: function(money) {
+                return getMoneyString(money);
             }
         },
        
@@ -191,8 +195,9 @@
             that = this;
             that.orderObj = parseOrder(that.order);
             that.serviceType = serviceType;
-            that.color = color;      
-            
+            that.color = color;
+            that.sensitiveInfo = that.orderObj.getSensitiveInfoArray();
+            that.sensitiveInfo = getSensitiveInfoArray(that.orderObj.sensitiveInfo)
             if (that.orderObj.serverId == userInfo._id) {
                 that.showSensitive = true;
             } else {

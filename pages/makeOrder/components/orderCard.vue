@@ -97,10 +97,10 @@
             </view>
             
             <view v-for="(info,idx) in sensitiveInfo" :key="idx">
-                <view class="row">
-                    <view class="title">{{ info.title }}</view>
-                    <view>{{ info.content }}</view>
-                </view>
+            <view class="row">
+              <view class="title">{{info.title}}</view>
+              <view>{{info.content}}</view>
+            </view>
             </view>
 
             
@@ -136,7 +136,7 @@
     import { serviceType, orderStatus, color } from '@/common/globalData.js';
     import { parseOrder } from '@/common/classes/Order.js';
     
-    import { getTimeString, getMoneyString } from '@/common/helper.js';
+    import { getTimeString, getMoneyString, getSensitiveInfoArray } from '@/common/helper.js';
     
     let that;
     
@@ -164,6 +164,7 @@
                 buttonText: null,
                 activeButton: null,
                 showCancel: null,
+                sensitiveInfo: [],
             }
         },
         methods: {
@@ -198,9 +199,10 @@
         created: function() {
             that = this;
             that.orderObj = parseOrder(that.order);
+            console.log(that.orderObj)
             that.serviceType = serviceType;
             that.color = color;
-            that.sensitiveInfo = that.orderObj.getSensitiveInfoArray();
+            that.sensitiveInfo = getSensitiveInfoArray(that.orderObj.sensitiveInfo)
             switch(that.orderObj.status) {
                 case orderStatus.INITIALING:
                     that.activeButton = true;

@@ -3,9 +3,8 @@
   <view class="root page">
 		<uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
     <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard"
-        :order="order" @buttonClick="takeOrder(index)" @cancel="cancelOrder(index)"></orderCard>
+        :order="order" @buttonClick="takeOrder(index)"></orderCard>
     <view class="nomore" v-if="nomore">您还没有相关订单</view>
-    <paymentMethodSelector class="selector" v-if="show_paymentMethodSelector" @exit="hideSelector('paymentMethodSelector')" :cost="targetOrder.totalCost"></paymentMethodSelector>
 	</view>
 </template>
 
@@ -17,14 +16,17 @@
   import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
   import { orderAssistant_server as orderAssistant } from '@/common/server.js';
   import eventBus from './../eventBus.js';
+  import { orderStatus } from '@/common/globalData.js';
   
   let _createdListRec = null;
 
   let that;
+  let orderId;
+  const payEventName = 'takeOrderPay';
     
 	export default {
     name: 'selectOrderPage',
-    components: { uniNavBar, orderCard, paymentMethodSelector },
+    components: { uniNavBar, orderCard },
 		data() {
 			return {
 				orderList: [
@@ -32,8 +34,6 @@
           testOrder_HelpDeliver,
           testOrder_OtherService
         ],
-        targetOrder: null,
-        show_paymentMethodSelector: false,
         nomore: false,
 			}
 		},
@@ -56,16 +56,19 @@
       },
       
       takeOrder: function(index) {
-        that.targetOrder = that.orderList[index];
+        const order = that.orderList[index]
+        orderId = order_id;
+        if (order.status != orderStatus.CREATED) { return; }
         uni.showModal({
           title: '提示',
           content: '接单需要支付订金，将在订单完成后返还',
-          complete: function(e) { if (e.confirm) { that.show_paymentMethodSelector = true; }}
-        })
-      },
-      
-      cancelOrder: function(index) {
-          
+          complete: function(e) { 
+            if (e.confirm) {
+              const paras = 'eventName=' + payEventName + '&amount=' + order.deposit;
+              eventBus.$on(payEventName, postPay);
+              uni.navigateTo({url: '/pages/pay/pay?' + paras});
+            }
+        }});
       },
       
       hideSelector: function(type) {
@@ -104,6 +107,25 @@
       eventBus.$off('pullDownRefresh')
     }
 	}
+  
+  async function postPay(e) {
+    eventBus.$off(payEventName);
+    if (e.success) {
+      uni.showLoading();
+      let res = await orderAssistant.take({orderId: orderId});
+      uni.showModal({
+        content: '您已成功接单，订单编号：' + orderId,
+        showCancel: false
+      })
+    } else {
+      uni.showModal({
+        content: '支付失败，未成功接单',
+        showCancel: false
+      })
+    }
+    that.getOrderList({fromStart: true});
+  }
+  
 </script>
 
 <style lang="scss">
