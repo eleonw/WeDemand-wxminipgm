@@ -11,11 +11,11 @@
 <script>
   import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
   import orderCard from './../components/orderCard.vue';
-  import paymentMethodSelector from '@/components/paymentMethodSelector/paymentMethodSelector.vue';
   
   import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
   import { orderAssistant_server as orderAssistant } from '@/common/server.js';
   import eventBus from './../eventBus.js';
+  import globalEventBus from '@/common/eventBus.js';
   import { orderStatus } from '@/common/globalData.js';
   
   let _createdListRec = null;
@@ -57,7 +57,7 @@
       
       takeOrder: function(index) {
         const order = that.orderList[index]
-        orderId = order_id;
+        orderId = order._id;
         if (order.status != orderStatus.CREATED) { return; }
         uni.showModal({
           title: '提示',
@@ -65,7 +65,7 @@
           complete: function(e) { 
             if (e.confirm) {
               const paras = 'eventName=' + payEventName + '&amount=' + order.deposit;
-              eventBus.$on(payEventName, postPay);
+              globalEventBus.$on(payEventName, postPay);
               uni.navigateTo({url: '/pages/pay/pay?' + paras});
             }
         }});

@@ -463,35 +463,35 @@ export const orderAssistant_server = {
     
     take: async function(arg) {
       console.log('takeOrder')
-        const {
-            orderId
-        } = arg;
-        const mobile = userInfo.mobile;
-        const userId = userInfo._id;
-        const side = 1;
-        const serviceType = this.serviceType.TAKE;
-        
-        try {
-            const res = await uniCloud.callFunction({
-                name: 'orderService',
-                data: {
-                    userId,
-                    orderId,
-                    mobile,
-                    side,
-                    serviceType,
-                }
-            })
-            console.log(res);
-            return res.result;
-        } catch(e) {
-           console.log(e);
-            return {
-                success: false,
-                code: -1,
-                error: e
-            }
-        }
+      const {
+          orderId
+      } = arg;
+      const mobile = userInfo.mobile;
+      const userId = userInfo._id;
+      const side = 1;
+      const serviceType = this.serviceType.TAKE;
+      
+      try {
+        const res = await uniCloud.callFunction({
+          name: 'orderService',
+          data: {
+              userId,
+              orderId,
+              mobile,
+              side,
+              serviceType,
+          }
+        })
+        console.log(res);
+        return res.result;
+      } catch(e) {
+         console.log(e);
+          return {
+            success: false,
+            code: -1,
+            error: e
+          }
+      }
     },
     
     start: async function(arg) {
