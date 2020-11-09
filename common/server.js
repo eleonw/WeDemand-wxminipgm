@@ -2,8 +2,6 @@ import { userInfo, serviceType as _serviceType } from '@/common/globalData.js';
 
 const userId = userInfo._id;
 
-
-
 export async function sendSmsCode(opt) {
     const {
         type, mobile
@@ -216,7 +214,6 @@ export const balanceAssistant = {
             const data = {
                 serviceType, userId
             }
-            console.log(data);
             const res = await uniCloud.callFunction({
                 name: 'balanceService',
                 data: data

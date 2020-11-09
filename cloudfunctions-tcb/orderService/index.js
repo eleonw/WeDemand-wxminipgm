@@ -102,8 +102,7 @@ exports.main = async (event) => {
               switch(event.serviceType) {
                 case serviceType_server.TAKE: {
                   const { mobile } = event;
-                  await take({userId, orderId, mobile});
-                  return { success: true }
+                  return await take({userId, orderId, mobile});
                 }
                 case serviceType_server.START: {
                     await start({userId, orderId});
@@ -507,33 +506,28 @@ async function getServerOrderList(arg) {
     
 }
 
-
-
 async function take(arg) {
 
     const {
         userId, orderId, mobile
     } = arg;
-    await db.runTransaction(async transaction => {
+    
+    let res = await createdOrder.doc(orderId).get();
+    const order = res.data.length == 0 ? null : res.data[0];
+    if (order == null) {return {success: false, code: -2}};
+    order.status = _orderStatus.ACCEPTED;
+    order.serverId = userId;
+    order.serverMobile = mobile;
+    return await db.runTransaction(async transaction => {
         try {
-            const res = await transaction.collection('created-order').doc(orderId).get();
-            const order = res.data.length != 0 ? res.data[0] : null;
-            if (order == null || order.status != _orderStatus.CREATED) {
-                transaction.rollback({code: -2});
-            }
-            order.status = _orderStatus.ACCEPTED;
-            order.serverId = userId;
-            order.serverMobile = mobile;
             await transaction.collection('active-order').add(order);
             await transaction.collection('created-order').doc(orderId).remove();
+            return {success: true}
         } catch(e) {
-            transaction.rollback({code: -1, error: e});
+            transaction.rollback({success: false, error: e, code: -1});
         }
     })
-
 }
-
-
 
 async function start(arg) {
     const {

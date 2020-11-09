@@ -95,10 +95,6 @@ export const beanify = function(obj) {
 export const formatNumber = function(value, strLength) {
     let numberString = value.toString();
     if (numberString.length > strLength) {
-        console.log({
-            value,
-            strLength
-        })
         throw new Error('value exceed')
     } else {
         let boundary = strLength - numberString.length;
@@ -115,9 +111,7 @@ export const getSensitiveInfoArray = function(sensitiveInfo) {
     if (sensitiveInfo) {
         const mainSensitives = []
         for (let item in beanify(sensitiveInfo)) {
-          console.log(item)
-          let content = 
-          sensitiveInfo[item].trim();
+          let content = sensitiveInfo[item].trim();
           if (content == '') continue;
           if (item == 'expressInfo') {
             console.log('2')

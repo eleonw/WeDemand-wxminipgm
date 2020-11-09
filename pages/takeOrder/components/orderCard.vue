@@ -196,7 +196,6 @@
             that.orderObj = parseOrder(that.order);
             that.serviceType = serviceType;
             that.color = color;
-            that.sensitiveInfo = that.orderObj.getSensitiveInfoArray();
             that.sensitiveInfo = getSensitiveInfoArray(that.orderObj.sensitiveInfo)
             if (that.orderObj.serverId == userInfo._id) {
                 that.showSensitive = true;
