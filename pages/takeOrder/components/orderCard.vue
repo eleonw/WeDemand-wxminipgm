@@ -97,10 +97,10 @@
             </view>
             </view>
             
-            <view v-for="(info,idx) in orderObj.sensitiveInfo" :key="idx" v-if="showSensitive">
+            <view v-for="(info,idx) in sensitiveInfo" :key="idx" v-if="showSensitive">
              <view class="row">
-                 <view class="title">敏感信息</view>
-                 <view>{{ orderObj.sensitiveInfo[info] }}</view>
+                 <view class="title">{{ info.title }}</view>
+                 <view>{{ info.content }}</view>
              </view>
             </view>
             

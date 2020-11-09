@@ -114,10 +114,8 @@ export const getSensitiveInfoArray = function(sensitiveInfo) {
           let content = sensitiveInfo[item].trim();
           if (content == '') continue;
           if (item == 'expressInfo') {
-            console.log('2')
             array.push({title: '快递信息', content})
           } else if (item == 'takeAwayInfo') {
-            console.log('3')
             array.push({title: '外卖信息', content})
           } else {
             mainSensitives.push(content);

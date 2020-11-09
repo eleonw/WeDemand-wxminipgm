@@ -493,31 +493,20 @@ export const orderAssistant_server = {
     
     start: async function(arg) {
       console.log('startOrder');
-        const {
-            orderId
-        } = arg;
+        const { orderId } = arg;
         const userId = userInfo._id;
         const side = 1;
         const serviceType = this.serviceType.START;
         try {
             const res = await uniCloud.callFunction({
                 name: 'orderService',
-                data: {
-                    userId,
-                    orderId,
-                    side,
-                    serviceType
-                }
+                data: { userId, orderId, side, serviceType }
             })
             console.log(res)
             return res.result;
         } catch(e) {
           console.log(e)
-            return {
-                success: false,
-                code: -1,
-                error: e,
-            }
+           return { success: false, code: -1, error: e }
         }
     },
     
@@ -532,24 +521,29 @@ export const orderAssistant_server = {
         
         try {
             const res = await uniCloud.callFunction({
-                name: 'orderService',
-                data: {
-                    side,
-                    serviceType,
-                    userId,
-                    orderid,
-                    confirmCode,
-                }
+              name: 'orderService',
+              data: { side, serviceType, userId, orderId, confirmCode }
             })
             console.log(res);
-            return res.result;
+            const result = res.result;
+            if (!result.success) {
+              let message;
+              switch(result.code) {
+                case -3: message = '订单状态异常，请重试'; break;
+                case -5: message = '超过最高验证次数，订单异常'; break;
+                case -4: message = '验证码错误，还剩下' + result.errCodeCount + '次验证机会'; break;
+                default: message = '操作失败，请重试'
+              }
+              result.message = message;
+            }
+            return result;
         } catch(e) {
           console.log(e);
-            return {
-                success: false,
-                code: -1,
-                error: e
-            }
+          return {
+            success: false,
+            code: -1,
+            error: e
+          }
         }
         
     },
@@ -673,16 +667,3 @@ export const addressBookAssistant = {
     },
 }
 
-// export async function _resetSmsCode(arg) {
-    
-//     const {
-//         recId
-//     } = arg;
-    
-//     await uniCloud.callFunction({
-//         name: 'resetSmsCode',
-//         data: {
-//             recId
-//         }
-//     })
-// }

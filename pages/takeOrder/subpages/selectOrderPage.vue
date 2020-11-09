@@ -4,7 +4,7 @@
 		<uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
     <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard"
         :order="order" @buttonClick="takeOrder(index)"></orderCard>
-    <view class="nomore" v-if="nomore">您还没有相关订单</view>
+    <view class="nomore" v-if="nomore">还没有新的订单</view>
 	</view>
 </template>
 

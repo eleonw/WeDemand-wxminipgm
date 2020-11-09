@@ -16,6 +16,7 @@ const _orderStatus = {
     CANCELING: -3,
     CANCELED: -2,
     EXCEPTION: -1,
+    TEMP: -100
 }
 
 function isActiveStatus(status) {
@@ -105,19 +106,12 @@ exports.main = async (event) => {
                   return await take({userId, orderId, mobile});
                 }
                 case serviceType_server.START: {
-                    await start({userId, orderId});
-                    return {
-                        success: true
-                    }
+                    return await start({userId, orderId});
                 }
                 case serviceType_server.FINISH: {
-                    const {
-                        confirmCode
-                    } = event;
-                    await finish({userId, orderId, confirmCode});
-                    return {
-                        success: true
-                    }
+                  console.log('1')
+                  const { confirmCode } = event;
+                  return await finish({userId, orderId, confirmCode});
                 }
                 case serviceType_server.CANCEL: {
                     const {
@@ -187,9 +181,7 @@ async function create(arg) {
     const res = await activeOrder.doc(orderId).get();
     const order = res.data[0];
     order.status = _orderStatus.CREATED;
-    console.log('1')
     await createdOrder.add(order);
-    console.log('2')
     await activeOrder.doc(orderId).remove();
     return {success: true};
 }
@@ -530,85 +522,85 @@ async function take(arg) {
 }
 
 async function start(arg) {
-    const {
-        userId, orderId
-    } = arg;
+    const { userId, orderId } = arg;
     const confirmCode = getRandomCode();
     const errCodeCount = 5;
-    await db.runTransaction(async transaction => {
-        
-        try {
-            const res = await transaction.collection('active-order').doc(orderId).get();
-            if (res.data.length == 0) {
-                transaction.rollback({code: -3})
-            } 
-            const order = res.data[0];
-            if (order.serverId != userId) {
-                transaction.rollback({code: -2})
-            }
-            if (order.status != _orderStatus.ACCEPTED) {
-                transaction.rollback({code: -3})
-            }
-            await transaction.collection('active-order').doc(orderId).update({
-                status: _orderStatus.SERVING,
-                confirmCode,
-                errCodeCount,
-            });
-        } catch(e) {
-            transaction.rollback({code: -1, error: e});
-        }
+    let res = await activeOrder.doc(orderId).get();
+    const order = res.data.length == 0 ? null : res.data[0];
+    if (order == null) { return {success: false, code: -3}};
+    if (order.serverId != userId) {return {sucess: false, code: -2}};
+    if (order.status != _orderStatus.ACCEPTED) {return {success: false, code: -3}}
+    res = await activeOrder.doc(orderId).update({
+      status: _orderStatus.SERVING,
+      confirmCode, errCodeCount
     })
+    if (res.updated == 0) {return {success: false, code: -1}};
+    return {success: true}
 }
 
 async function finish(arg) {
-    const {
-        userId, orderId, confirmCode
-    } = arg;
-    await db.runTransaction(async transaction => {
-        try {
-            let order;
-            const res = await transaction.collection('active-order').doc(orderId).get();
-            if (res.data.length == 0) {
-                transaction.rollback({code: -3});
-            } else if ((order = res.data[0]).serverId != userId) {
-                transaction.rollback({code: -2});
-            } else if (order.status != _orderStatus.SERVING) {
-                transaction.rollback({code: -3});
-            } else if (order.errCodeCount <= 0) {
-                transaction.rollback({code: -5})
-            } else if (order.confirmCode != confirmCode) {
-                transaction.collection('active-order').doc(orderId).update({
-                    codeErrCount: dbCmd.inc(-1)
-                })
-                transaction.rollback({code: -4, error: {errCodeCount: order.errCodeCount-1}})
-            }
-            order.orderStatus = _orderStatus.EVALUATING;
-            order.evalStatus = -1;
-            const orderComment = {
-                _id: orderId,
-                serverScore: null,
-                serverComment: null,
-                createrScore: null,
-                createrComment: null,
-            }
-            const total = order.totalCost + order.deposit;
-            await transaction.collection('uni-id-users').doc(order.serverId).update({
-                balance: dbCmd.inc(total)
-            });
-            await transaction.collection('order-comment').add(orderComment);
-            await transaction.collection('inactive-order').add(order);
-            await transaction.collection('active-roder').doc(orderId).remove();
-        } catch (e) {
-            transaction.rollback({code: -1, error: e})
-        }
-        
-    })
+  console.log('2')
+  const { userId, orderId, confirmCode } = arg;
+  let res = await activeOrder.doc(orderId).get();
+  const order = res.data.length == 0 ? null : res.data[0];
+  if (order == null) { return {success: false, code: -3}};
+  if (order.serverId != userId) {return {sucess: false, code: -2}};
+  if (order.status != _orderStatus.SERVING) {return {success: false, code: -3}}
+  if (order.errCodeCount <= 0) {
+    order.status = _orderStatus.EXCEPTION;
+    await activeOrder.doc(orderId).update({status: _orderStatus.EXCEPTION});
+    return {success: false, code: -5};
+  }
+  if (confirmCode.toUpperCase() != order.confirmCode) {
+    const status = order.errCodeCount == 1 ? _orderStatus.EXCEPTION : _orderStatus.SERVING;
+    await activeOrder.doc(orderId).update({errCodeCount: dbCmd.inc(-1), status});
+    return {success: false, code: -4, errCodeCount: order.errCodeCount-1}
+  }
+  console.log('3')
+  order.status = _orderStatus.TEMP;
+  order.evalStatus = -1;
+  
+  const serverPay = order.totalCost + order.deposit;
+  let returnRes;
+
+  await inactiveOrder.add(order);
+  res = await db.runTransaction(async transaction => {
+    try {
+      await inactiveOrder.doc(orderId).update({status: _orderStatus.EVALUATING});
+      await transaction.collection('active-order').doc(orderId).remove();
+      await transaction.collection('balance').doc(userId).update({balance: serverPay});
+      return {success: true}
+    } catch(e) {
+      transaction.rollback({success: false, error: e})
+    }
+  }, 10)
+  
+  if (res.success) { 
+    returnRes = {success: true, pay: order.totalCost, depositBack: order.deposit}
+    const orderComment = {
+        _id: orderId,
+        serverScore: null,
+        serverComment: null,
+        createrScore: null,
+        createrComment: null,
+    }
+    try {
+      await orderComment.add(orderComment);
+      returnRes.createComment = true;
+    } catch(e) {
+      returnRes.createComment = false;
+    }
+  } else {
+    await inactiveOrder.doc(orderId).remove();
+    returnRes = {success: false, code: -1, error: res.error}
+  }
     
+  return returnRes;
 }
 
 function getRandomLetter() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return characters[Math.floor(Math.random() * 36)];
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ23456789';
+    return characters[Math.floor(Math.random() * 34)];
 }
 
 function getRandomCode() {
