@@ -69,31 +69,11 @@ exports.main = async (event) => {
       switch(side) {
             case _side.CREATER: {     // creater
               switch(event.serviceType) {
-                case serviceType_creater.INITIAL:  {// initial
-                  return await initial(event);
-                }
-                case serviceType_creater.CREATE: {
-                  return await create(event);
-                }
-                case serviceType_creater.EVALUATE: {
-                  const { score, comment } = event;
-                  await evaluate({orderId, side, score, comment});
-                  return { success: true }
-                }
-                case serviceType_creater.CANCEL: {
-                  const { status } = event;
-                  await cancel({orderId, side, status, userId});
-                  return { success: true };
-                }
-                case serviceType_creater.GET: {
-                  const { status, _getListRec, limit, fromStart } = event;
-                  const res = await getCreaterOrderList({ status, userId, _getListRec, limit, fromStart });
-                  return {
-                      orderList: res.orderList,
-                      _getListRec: res._getListRec,
-                      success: true
-                  }
-                }
+                case serviceType_creater.INITIAL: return await initial(event);
+                case serviceType_creater.CREATE: return await create(event);
+                case serviceType_creater.EVALUATE: return await evaluate(event);
+                case serviceType_creater.CANCEL: return await cancel(event);
+                case serviceType_creater.GET: return await getCreaterOrderList(event);
                 default:
                     throw new Error('invalid service type');
               }
@@ -109,18 +89,13 @@ exports.main = async (event) => {
                     return await start({userId, orderId});
                 }
                 case serviceType_server.FINISH: {
-                  console.log('1')
-                  const { confirmCode } = event;
-                  return await finish({userId, orderId, confirmCode});
+                  return await finish(event);
+                }
+                case serviceType_server.EVALUATE: {
+                  return await evaluate(event);
                 }
                 case serviceType_server.CANCEL: {
-                    const {
-                        status
-                    } = event;
-                    await cancel({userId, orderId, side, status});
-                    return {
-                        success: true
-                    }
+                  return await cancel(event);
                 }
                 case serviceType_server.GET_CREATED_LIST: {
                   const { fromStart, _createdListRec, limit } = event;
@@ -187,16 +162,14 @@ async function create(arg) {
 }
 
 async function evaluate(opt) {
-    const {
-        userId, side, orderId, score, comment
-    } = opt;
-    
+    const { userId, side, orderId, score, comment } = opt;
     let sideField;
     let scoreField;
     let commentField;
     let userIdField
     switch(side) {
         case _side.CREATER: 
+            console.log('1')
             scoreField = 'createrScore';
             commentField = 'createrComment';
             userIdField = 'createrId';
@@ -207,183 +180,136 @@ async function evaluate(opt) {
             userIdField = 'serverId';
         default:
     }
-    await db.runTransaction(async transaction => {
-        try {
-            const res = await transaction.collection('inactive-order').doc(orderId).get();
-            if (res.data.length == 0) {
-                transaction.rollback({code: -2});
-            } 
-            const order = res.data[0];
-            if (order[userIdField] != userId) {
-                transaction.rollback({code: -3});
-            }
-            if (order.status != _orderStatus.EVALUATING || order.evalStatus == side) {
-                transaction.rollback({code: -2});
-            }
-            
-            await transaction.collection('order-comment').doc(orderId).update({
-                [commentField]: comment,
-                [scoreField]: score,
-            })
-            
-            if (order.evalStatus == 1 - side) {
-                await transaction.collection('inactive-order').doc(orderId).update({
-                    status: orderStatus.COMPLETED
-                })
-            } else {
-                // having juded order.evalStatus != side
-                await transaction.collection('inactive-order').doc(orderId).update({
-                    evalStatus: side
-                })
-            }
-        } catch(e) {
-            transaction.rollback({code: -1, error: e});
-        }
+    let res = await inactiveOrder.doc(orderId).get();
+    const order = res.data.length == 0 ? null : res.data[0];
+    if (order == null) return {success: false, code: -2};
+    if (order[userIdField] != userId) return {success: false, code: -3};
+    if (order.status != _orderStatus.EVALUATING || order.evalStatus == side) return {success: false, code: -2};
+
+    let status, evalStatus;
+    if (order.evalStatus == 1 - side) {
+      status = _orderStatus.COMPLETED;
+      evalStatus = order.evalStatus;
+    } else {
+      status = _orderStatus.EVALUATING;
+      evalStatus = side;
+    }
+    res = await db.runTransaction(async transaction => {
+      try {
+        await transaction.collection('order-comment').doc(orderId).set({
+          [scoreField]: score,
+          [commentField]: comment
+        })
+        await transaction.collection('inactive-order').doc(orderId).update({status, evalStatus});
+        return {success: true}
+      } catch(e) {
+        transaction.rollback({success: false, error: e});
+      }
     })
+    if(!res.success) {return {success: false, code: -1, error: e}}
+    const userTab = db.collection('uni-id-users');
+    try {
+      await userTab.doc(order.createrId).update({orderCount: dbCmd.inc(1)})
+      await userTab.doc(order.serverId).update({orderCount: dbCmd.inc(1)})
+    } catch(e) {
+      console.log(e);
+    }
+    return {success: true}
 }
 
 async function cancel(arg) {
-    const {
-        side, orderId, status, userId
-    } = arg;
+  const { side, orderId, status, userId } = arg;
+  const userIdField = side == _side.CREATER ? 'createrId' : 'serverId';
+  let res = await activeOrder.doc(orderId).get();
+  const order = res.data.length == 0 ? null : res.data[0];
+  if (order == null) return {success: false, code: -2};
+  if (order[userIdField] != userId) return {success: false, code: -3};
     
-    const userIdField = side == _side.CREATER ? 'createrId' : 'serverId'
-    
-    switch(status) {
-        case _orderStatus.INITIALING: {
-            if (side != _side.CREATER) {
-                throw new Error({code: -3});
-            }
-            await db.runTransaction(async transaction => {
-                try {
-                    const res = await transaction.collection('active-order').doc(orderId).get();
-                    if (res.data.length == 0) {
-                        transaction.rollback({code: -2});
-                    }
-                    const order = res.data[0];
-                    if (order.createrId != userId) {
-                        transaction.rollback({code: -3});
-                    }
-                    if (order.status != _orderStatus.INITIALING) {
-                        transaction.rollback({code: -2});
-                    }
-                    await transaction.collection('active-order').doc(orderId).remove();
-                } catch(e) {
-                    transaction.rollback({code: -1, error: e});
-                }
-            })
-            return;
-        }
-        case _orderStatus.CREATED: {
-            if (side != _side.CREATER) {
-                throw new Error({code: -3})
-            }
-            await db.runTransaction(async transaction => {
-                try {
-                    const res = await transaction.collection('created-order').doc(orderId).get();
-                    if (res.data.length == 0) {
-                        transaction.rollback({code: -2});
-                    }
-                    const order = res.data[0];
-                    order.status = _orderStatus.CANCELED;
-                    order.cancelSide = _side.CREATER;
-                    const returnAmount = order.totalCost;
-                    await transaction.collection('inactive-order').add(order);
-                    await transaction.collection('created-order').doc(orderId).remove();
-                    await transaction.collection('uni-id-users').doc(order.createrId).update({
-                        balance: dbCmd.inc(returnAmount)
-                    })
-                } catch(e) {
-                    transaction.rollback({code: -1, error: e});
-                }
-            })
-            return;
-        }
-        case _orderStatus.ACCEPTED: 
-            await db.runTransaction(async transaction => {
-                try {
-                    const res = await transaction.collection('active-order').doc(orderId).get();
-                    const order = res.data.length() == 0 ? null : res.data[0];
-                    if (order == null || order.status != _orderStatus.ACCEPTED) {
-                        transaction.rollback({code: -2, error: 'already canceled or serving'});
-                    }
-                    if (order[userIdField] != userId) {
-                        transaction.rollback({code: -3});
-                    }
-                    const totalCost = order.totalCost;
-                    let createrReturn = side == _side.CREATER ? totalCost - order.deposit : totalCost + order.deposit;
-                    let serverReturn = side == _side.CREATER ? 2 * order.deposit : 0;
-                    await transaction.collection('uni-id-users').doc(order.createrId).update({
-                        balance: dbCmd.inc(createrReturn)
-                    });
-                    await transaction.collection('uni-id-users').doc(order.serverId).update({
-                        balance: dbCmd.inc(serverReturn)
-                    })
-                    order.cancelSide = side;
-                    order.status = _orderStatus.CANCELED;
-                    await transaction.collection('inactive-order').add(order);
-                    await transaction.collection('active-order').doc(orderId).remove();
-                } catch(e) {
-                    transaction.rollback({code: -1, error: e});
-                }
-            })
-            return;
-     
-        case _orderStatus.SERVING: {
-            await db.runTransaction(async transaction => {
-                try {
-                    const res = await transaction.collection('active-order').doc(orderId).get();
-                    const order = res.data.length() != 0 ? res.data[0] : null;
-                    if (order == null || order.status != _orderStatus.SERVING || order.cancelSide == side) {
-                        transaction.rollback({code: -2});
-                    }
-                    if (order[userIdField] != userId) {
-                        transaction.rollback({code: -3});
-                    }
-                    await transaction.collection('active-order').doc(orderId).update({
-                        cancelSide: side,
-                        status: _orderStatus.CANCELING
-                    })
-                } catch(e) {
-                    transaction.rollback({code: -1, error: e});
-                }
-            })
-            return;
-        }
-        case _orderStatus.CANCELING: {
-            await db.runTransaction(async transaction => {
-                try {
-                    const res = await transaction.collection('active-order').doc(orderId).get();
-                    const order = res.data.length != 0 ? res.data[0] : null;
-                    if (order == null || order.status != _orderStatus.CANCELING || order.cancelSide == side) {
-                        transaction.rollback({error: -2});
-                    } 
-                    if (order[userIdField] != userId) {
-                        transaction.rollback({error: -3});
-                    }
-                    const totalCost = order.totalCost;
-                    let createrReturn = side == _side.CREATER ? totalCost - order.deposit : totalCost + order.deposit;
-                    let serverReturn = side == _side.CREATER ? 2 * order.deposit : 0;
-                    await transaction.collection('uni-id-users').doc(order.createrId).update({
-                        balance: dbCmd.inc(createrReturn)
-                    });
-                    await transaction.collection('uni-id-users').doc(order.serverId).update({
-                        balance: dbCmd.inc(serverReturn)
-                    })
-                    
-                    order.status = CANCELED;
-                    await transaction.collection('inactive-order').add(order);
-                    await transaction.collection('active-order').doc(orderid).remove();
-                } catch(e) {
-                    transaction.rollback({code: -1, error: e});
-                }
-            })
-            return;
-        }
-        default:
-            throw new Error({code: -1, error: 'no such status for canceled'})
+  switch(status) {
+    case _orderStatus.INITIALING: {
+      if (order.status != _orderStatus.INITIALING) return {success: false, code: -2};
+      let res = await activeOrder.doc(orderId).remove();
+      return {success: true};
     }
-    
+    case _orderStatus.CREATED: {
+      if (order.status != _orderStatus.CREATED) return {success: false, code: -2};
+      order.status = _orderStatus.CANCELED;
+      order.cancelSide = _side.CREATER;
+      const returnAmount = order.totalCost;
+      let res = await db.runTransaction(async transaction => {
+        try {
+          await transaction.collection('inactive-order').add(order);
+          await transaction.collection('created-order').doc(orderId).remove();
+          await transaction.collection('uni-id-users').doc(order.createrId).update({
+              balance: dbCmd.inc(returnAmount)
+          })
+          return {success: true};
+        } catch(e) {
+          transaction.rollback({success: false, error: e})
+        }
+      })
+      if (res.success) return {success: true}
+      else return {success: false, code: -1}
+    }
+    case _orderStatus.ACCEPTED: {
+      if (order.status != _orderStatus.ACCEPTED) return {success: false, code: -2};
+      order.status = _orderStatus.CANCELED;
+      order.cancelSide = side;
+      let createrReturn, serverReturn;
+      if (side == _side.CREATER) {
+        createrReturn = order.totalCost - order.deposit;
+        serverReturn = 2 * order.deposit;
+      } else {
+        createrReturn = order.totalCost + order.deposit;
+        serverReturn = 0;
+      }
+      let res = await db.runTransaction(async transaction => {
+        try {
+          await transaction.collection('balance').doc(order.createrId).update({balance: dbCmd.inc(createrReturn)});
+          await transaction.collection('balance').doc(order.serverId).update({balance: dbCmd.inc(serverReturn)});
+          await transaction.collection('active-order').doc(orderId).remove();
+          await transaction.collection('inactive-order').add(order);
+          return {success: true}
+        } catch(e) {
+          transaction.rollback({success: false, error: e})
+        }
+      })
+      if (res.success) return {success: true};
+      else return {success: false, code: -1};
+    }
+    case _orderStatus.SERVING: {
+      if (order.status != _orderStatus.SERVING) return {success: false, code: -2};
+      await activeOrder.doc(orderId).update({status: _orderStatus.CANCELING, cancelSide: side});
+      return {success: true};
+    }
+    case _orderStatus.CANCELING: {
+      if (order.status != _orderStatus.CANCELING || order.cancelSide != (1 - side)) return {success: false, code: -2};
+      order.status = _orderStatus.CANCELED;
+      let createrReturn, serverReturn;
+      if (order.cancelSide == _side.CREATER) {
+        createrReturn = order.totalCost - order.deposit;
+        serverReturn = order.deposit * 2;
+      } else {
+        createrReturn = order.totalCost + order.deposit;
+        serverReturn = 0;
+      }
+      let res = await db.runTransaction(async transaction => {
+        try {
+          await transaction.collection('inactive-order').add(order);
+          await transaction.collection('active-order').doc(orderId).remove();
+          await transaction.collection('balance').doc(order.createrId).update({balance: dbCmd.inc(createrReturn)});
+          await transaction.collection('balance').doc(order.serverId).update({balance: dbCmd.inc(serverReturn)});
+        return {success: true}
+       } catch(e) {
+         transaction.rollback({success: false, error: e});
+       }
+      })
+      if (res.success) return {success: true};
+      else return {success: false, code: -1};
+    }
+    default:
+      return {success: false, code: -5}
+    }
 }
 
 async function getCreaterOrderList(opt) {
@@ -436,8 +362,9 @@ async function getCreaterOrderList(opt) {
         }
     }
     return {
-        orderList: resList,
-        _getListRec
+      success: true,
+      orderList: resList,
+      _getListRec
     }
 }
 
@@ -573,26 +500,8 @@ async function finish(arg) {
     }
   }, 10)
   
-  if (res.success) { 
-    returnRes = {success: true, pay: order.totalCost, depositBack: order.deposit}
-    const comment = {
-        _id: orderId,
-        serverScore: null,
-        serverComment: null,
-        createrScore: null,
-        createrComment: null,
-    }
-    try {
-      res = await orderComment.add(comment);
-      returnRes.createComment = true;
-    } catch(e) {
-      returnRes.createComment = false;
-    }
-  } else {
-    await inactiveOrder.doc(orderId).remove();
-    returnRes = {success: false, code: -1, error: res.error}
-  }
-    
+  if (res.success) returnRes = {success: true, pay: order.totalCost, depositBack: order.deposit};
+  else returnRes = {success: false, code: -1, error: res.error};
   return returnRes;
 }
 

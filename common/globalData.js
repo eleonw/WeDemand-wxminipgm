@@ -73,7 +73,10 @@ export const defaultLocation = new Location({
 })
 
 export const userInfo = {
-  _id: "d232df4c5fa28c9b000a19ab58effe62"
+  _id: "d232df4c5fa28c9b000a19ab58effe62",
+  mobile: "13728084958",
+  nickname: 'eleon',
+  orderCount: 2
 };
 
 

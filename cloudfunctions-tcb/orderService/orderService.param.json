@@ -1,9 +1,8 @@
 // 本文件中的json内容将在云函数【运行】时作为参数传给云函数。
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
-{
-    "mobile": "13728084958",    "serviceType": 3,
-    "side": 1,
+{    "serviceType": 4,
+    "side": 0,
     "userId": "d232df4c5fa28c9b000a19ab58effe62",
-    "orderId": "4c86bd845fa9640200155a3d317c6a94",
-    "confirmCode": "P3ETSH"
+    "orderId": "0010160496640000000040401",
+    "status": 2
 }

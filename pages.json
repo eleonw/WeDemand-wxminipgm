@@ -84,37 +84,45 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/evaluateOrder/evaluateOrder",
-            "style" : {
-              "navigationStyle": "default"
-            }
+            "path" : "pages/evaluateOrder/evaluateOrder"
         }
         ,{
             "path" : "pages/me/me",
             "style" : {
-                "navigationStyle": "default"
+                "navigationStyle": "default",
+                "navigationBarTitleText": "个人中心"
             }
         }
         ,{
             "path" : "pages/balanceCenter/index",
             "style" : {
-              "navigationStyle": "default"
+              "navigationStyle": "default",
+              "navigationBarTitleText": "余额中心"
             }
         }
         ,{
             "path" : "pages/balanceCenter/recharge",
             "style" : {
-                "navigationStyle": "default"
+                "navigationStyle": "default",
+                "navigationBarTitleText": "充值"
             }
         }
         ,{
             "path" : "pages/balanceCenter/withdraw",
             "style" : {
-                "navigationStyle": "default"
+                "navigationStyle": "default",
+                "navigationBarTitleText": "提现"
             }
         }
         ,{
             "path" : "pages/pay/pay"
+        }
+        ,{
+            "path" : "pages/me/modifyUserInfo",
+            "style" : {
+              "navigationStyle": "default",
+              "navigationBarTitleText": "修改信息"
+            }
         }
     ],
 	"globalStyle": {
@@ -161,6 +169,10 @@
             {
               "name": "evaluateOrder",
               "path": "pages/evaluateOrder/evaluateOrder"
+            },
+            {
+              "name": "me",
+              "path": "pages/me/me"
             }
         ]
     }

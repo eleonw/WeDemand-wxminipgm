@@ -1,7 +1,7 @@
 <template>
     <view class="root page">
         
-        <view class="pass" @click="pass"></view>
+        <!-- <view class="pass" @click="pass"></view> -->
         
         <view class="loginArea">
             <view class="title">输入手机号码</view>

@@ -69,29 +69,29 @@
         },
 		data() {
 			return {
-                title: '修改地址信息',
-                address: null,
-                colorMain: null,
+        title: '修改地址信息',
+        address: null,
+        colorMain: null,
 			}
 		},
 		methods: {
-            clickBack: function() {
-                uni.showModal({
-                    title: '提示',
-                    content: '是否放弃此次编辑？',
-                    confirmText: '确认',
-                    cancelText: '取消',
-                    complete: (res) => {
-                        if (res.confirm) {
-                            uni.$emit('addressModify', {
-                                status: 0
-                            });
-                            uni.navigateBack();
-                        }
-                    }
-                    
-                })  
-            },
+      clickBack: function() {
+          uni.showModal({
+              title: '提示',
+              content: '是否放弃此次编辑？',
+              confirmText: '确认',
+              cancelText: '取消',
+              complete: (res) => {
+                  if (res.confirm) {
+                      uni.$emit('addressModify', {
+                          status: 0
+                      });
+                      uni.navigateBack();
+                  }
+              }
+              
+          })  
+      },
 			chooseLocation: async function() {
                 try {
                     const argument = {
@@ -139,7 +139,7 @@
                        notice = '请填写联系人姓名或昵称';
                    } else if (!page.address.hasSex()) {
                        notice = '请选择联系人性别（用于称呼）';
-                   } else if (!page.address.hasValidmobile()) {
+                   } else if (!page.address.hasValidMobile()) {
                        notice = '请填写正确联系方式';
                    } 
                 }
@@ -177,12 +177,12 @@
                     
                 }
             }
-		},
+        },
         onLoad: function(opt) {
-            page = this;
-            page.colorMain = color.MAIN;
-            targetIndex = opt.index;
-            page.address = new Address(shareData.addressBook[targetIndex].address);
+          page = this;
+          page.colorMain = color.MAIN;
+          targetIndex = opt.index;
+          page.address = shareData.addressBook[targetIndex].address;
         }
 	}
 </script>

@@ -1,7 +1,10 @@
 <template>
 	<view class="root page">
-		<view class="success" v-if="success">订单{{orderId}}已成功创建并支付</view>
-    <view class="failure" v-else>订单{{orderId}}已成功创建，请在我的订单完成支付</view>
+    <view class="notice">
+      <view v-if="success">订单{{orderId}}已成功创建并支付</view>
+      <view v-else>订单{{orderId}}已成功创建，请在我的订单完成支付</view>
+    </view>
+		
     <view class="confirm" @click="confirm">确认</view>
 	</view>
 </template>
@@ -26,38 +29,42 @@
       that = this;
     },
     onLoad: function(e) {
-      that.success = e.success == true || e.success == 'ture';
+      that.success = e.success == true || e.success == 'true';
       that.orderId = e.orderId;
     }
 	}
 </script>
 
-<style lang="scss">
+<style>
   .page {
     background-color: var(--color-main);
     color: white;
-    font-size: 55rpx;
+    
     display: flex;
     
     padding-top: 300rpx;
     padding-bottom: 400rpx;
-    
-    view {
-      text-align: center;
-      max-width: 700rpx;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .confirm {
-      color: var(--color-main);
-      background-color: white;
-      border-radius: 10rpx;
-      width: 200rpx;
-      height: 100rpx;
-      margin-top: 100rpx;
-      font-weight: 700;
-    }
+  }
+  
+  .notice {
+    font-size: 50rpx;
+    text-align: center;
+    width: 600rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .confirm {
+    font-size: 60rpx;
+    text-align: center;
+    color: var(--color-main);
+    background-color: white;
+    border-radius: 10rpx;
+    width: 200rpx;
+    height: 100rpx;
+    line-height: 100rpx;
+    margin-top: 100rpx;
+    font-weight: 700;
   }
 </style>

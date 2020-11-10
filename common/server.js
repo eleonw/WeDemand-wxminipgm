@@ -2,6 +2,22 @@ import { userInfo, serviceType as _serviceType } from '@/common/globalData.js';
 
 const userId = userInfo._id;
 
+export async function modifyUserInfo(opt) {
+  console.log('modifyUserInfo')
+  const { update }  = opt;
+  try{
+    const res = await uniCloud.callFunction({
+        name: 'modifyUserInfo',
+        data: { userId, update }
+    })
+    console.log(res)
+    if (res.result.success) return {success: true}
+  } catch(e) {
+    return {success: false, message: '信息更新失败，请重试'};
+  }
+  return {success: false, message: '信息更新失败，请重试'};
+}
+
 export async function sendSmsCode(opt) {
     const {
         type, mobile
@@ -288,7 +304,7 @@ export const orderAssistant_creater = {
             console.log(e);
             return {
                 success: false,
-                error: e,
+                message: '操作失败，请重试'
             }
         }
         
@@ -315,31 +331,33 @@ export const orderAssistant_creater = {
   },
     
     evaluate: async function(opt) {
-        console.log('evaluate');
-        const {
-            orderId, score, comment
-        } = opt;
+        console.log('evaluateOrder');
+        const { orderId, score, comment } = opt;
+        const userId = userInfo._id;
         const serviceType = this.serviceType.EVALUATE;
         const side = 0;
-        let res;
+        
         try {
-            res = await uniCloud.callFunction({
+            let res = await uniCloud.callFunction({
                 name: 'orderService',
-                data: {
-                    serviceType,
-                    orderId,
-                    score,
-                    comment,
-                    side,
-                }
+                data: { serviceType, orderId, score, comment, side, userId }
             })
             console.log(res);
-            return res.result;
+            const result = res.result;
+            if (!result.success) {
+              let message;
+              switch(res.code) {
+                case -2: message = '订单状态错误，请刷新重试'; break;
+                default: message = '操作失败，请重试'; break;
+              }
+              result.message = message;
+            }
+            return result;
         } catch(e) {
             return {
                 success: false,
                 code: -1,
-                error: e,
+                message: '操作失败，请重试'
             }
         }
         
@@ -347,30 +365,33 @@ export const orderAssistant_creater = {
     
     cancel: async function(opt) {
       console.log('cancelOrder');
-        const {
-            orderId, status
-        } = opt;
+        const { orderId, status } = opt;
         const userId = userInfo._id;
         const serviceType = this.serviceType.CANCEL;
+        const side = 0;
         let res;
         try {
-            res = await uniCloud.callFunction({
-                name: 'orderService',
-                data: {
-                    serviceType,
-                    orderId,
-                    status,
-                    userId
-                }
-            })
-            console.log(res);
-            return res.result;
-        } catch(e) {
-            return {
-                success: false,
-                code: -1,
-                error: e
+          res = await uniCloud.callFunction({
+            name: 'orderService',
+            data: {serviceType, orderId, status, userId, side}
+          })
+          console.log(res);
+          const result = res.result;
+          if (!res.success) {
+            let message;
+            switch(res.code) {
+              case -2: message = '订单状态异常，请刷新重试'; break;
+              default: message = '操作失败，请重试';
             }
+            result.message = message;
+          }
+          return result;
+        } catch(e) {
+          return {
+            success: false,
+            code: -1,
+            message: '操作失败，请重试'
+          }
         }
     },
     
@@ -539,74 +560,67 @@ export const orderAssistant_server = {
             return result;
         } catch(e) {
           console.log(e);
-          return {
-            success: false,
-            code: -1,
-            error: e
-          }
+          return { success: false, code: -1, error: e }
         }
         
     },
     
     evaluate: async function(arg) {
       console.log('evaluateOrder')
-        const {
-            orderId, score, comment
-        } = arg;
-        const userId = userInfo._id;
-        const side = 1;
-        const serviceType = this.serviceType.EVALUATE;
-        
-        try {
-            const res = await uniCloud.callFunction({
-                name: 'orderService',
-                data: {
-                    side,
-                    serviceType,
-                    userId,
-                    orderid,
-                    confirmCode,
-                }
-            })
-            console.log(res);
-            return res.result;
-        } catch(e) {
-          console.log(e);
-            return {
-                success: false,
-                code: -1,
-                error: e
-            }
+      const { orderId, score, comment } = arg;
+      const userId = userInfo._id;
+      const side = 1;
+      const serviceType = this.serviceType.EVALUATE;
+      try {
+        const res = await uniCloud.callFunction({
+          name: 'orderService',
+          data: { side, serviceType, userId, orderId }
+        })
+        console.log(res);
+        const result = res.result;
+        if (!result.success) {
+          let message;
+          switch(res.code) {
+            case -2: message = '订单状态错误，请刷新重试'; break;
+            default: message = '操作失败，请重试'; break;
+          }
+          result.message = message;
         }
+        return result;
+      } catch(e) {
+        console.log(e);
+        return {success: false, code: -1, error: e }
+      }
     },
     
     cancel: async function(arg) {
       console.log('cancelOrder')
-        const {
-            orderId, status
-        } = arg;
+        const { orderId, status } = arg;
         const userId = userInfo._id;
         const side = 1;
         const serviceType = this.serviceType.CANCEL;
         try {
-            const res = await uniCloud.callFunction({
-                name: 'orderService',
-                data: {
-                    orderId,
-                    status,
-                    userId,
-                    side,
-                    serviceType
-                }
-            })
-            console.log(res)
-            return res.result;
+          const res = await uniCloud.callFunction({
+            name: 'orderService',
+            data: { orderId, status, userId, side, serviceType }
+          })
+          console.log(res)
+          const result = res.result;
+          if (!result.success) {
+            let message;
+            switch(result.code) {
+              case -2: message = '订单状态异常，请刷新重试'; break;
+              default: message = '操作失败，请重试'
+            }
+            result.message = message;
+          }
+          return result;
         } catch(e) {
           console.log(e);
             return {
-                success: false,
-                code: -1,
-                error: e
+              success: false,
+              code: -1,
+              message: '操作失败，请重试'
             }
         }
     }

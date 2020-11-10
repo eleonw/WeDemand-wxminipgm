@@ -36,6 +36,8 @@
     
   let that;
   let _getListRec;
+  
+  let order;
     
   export default {
     name: 'myOrderPage',
@@ -120,6 +122,7 @@
         for (let item of tab2Status[e.index]) {
           that.orderStatusShowMap[item] = true;
         }
+        that.getOrderList({fromStart: false})
       },
       createOrder: async function(order) {
         const eventName = 'createOrderPay';
@@ -136,70 +139,32 @@
         uni.navigateTo({url: '/pages/pay/pay?' + paras});
       },
       
-      cancelOrder: async function(index) {
-        that.targetOrder = that.orderList[index];
-        const order = that.targetOrder;
-        let notice;
-        switch(order.status) {
-          case orderStatus.INITIALING:
-              notice = '是否要取消订单'; break;
-          case orderStatus.CREATED:
-              notice = '频繁地取消订单会影响您的信用评分'; break;
-          case orderStatus.ACCEPTED:
-              notice = '已接单，取消将扣取25%订金'; break;
-          case orderStatus.SERVING:
-              notice = '服务中，取消将扣取25%订金,且需对方同意后生效'; break;
-          case orderStatus.CANCELING:
-              notie = '同意取消订单后您将获取' + getMoneyString(order.deposit) + '的订金'; break;
-          default:
-              throw new error('not a status for canceling');
-        }
-        let res = promisify(uni.showToast, {content: notice, icon: 'none'});
-        if (res.cancel) {
-            return;
-        }
-        uni.showLoading();
-        res = await orderAssistant.cancel({orderId: order._id, status: order.status})
-        uni.hideLoading();
-        if (res.success) {
-            uni.showToast({
-                title: '操作成功',
-                icon: 'success',
-            })
-        } else {
-            uni.showToast({
-                title: res.notice,
-                icon: 'none'
-            })
-        }
-        await that.getOrderList({fromStart: true});
+      cancelOrder: function(index) {
+        order = that.orderList[index];
+        cancel();
       },
       
       buttonClick: async function(index) {
-        that.targetOrder = that.orderList[index];
-        const order = that.targetOrder;
+        order = that.orderList[index];
         switch(order.status) {
-          case orderStatus.INITIALING: {
-            that.createOrder(order);
-          }
+          case orderStatus.INITIALING:
+            create();
+            return;
           case orderStatus.SERVING: {
             uni.showModal({
               title: '验证码',
               content: order.confirmCode,
               showCancel: false
             })
-            break;
+            return;
           }
           case orderStatus.EVALUATING: {
-            const paras = 'orderId=' + order._id + '&side=0';
-            uni.navigateTo({
-                url: '/pages/evaluateOrder/evaluateOrder?' + paras
-            })
-            break;
+            evaluate();
+            return;
           }
           case orderStatus.CANCELING: {
-            that.cancelOrder(index);
-            break;
+            cancel(index)
+            return;
           }
         }
       },
@@ -212,9 +177,10 @@
         const { fromStart } = arg;
         if (fromStart) { that.orderList.length = 0; that.nomore = false}
         else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return}
+        uni.showLoading();
+        await that.waitTime(500);
         const limit = 10;
         const status = tab2Status[that.tabIndex];
-        uni.showLoading();
         const res = await orderAssistant.getUserOrderList({status, limit, _getListRec, fromStart});
         if (res.success) { 
           _getListRec = res._getListRec;
@@ -235,8 +201,80 @@
       }
 		},
         
-    
 	}
+  
+  async function cancel() {
+    let notice;
+    switch(order.status) {
+      case orderStatus.INITIALING:
+          notice = '是否要取消订单'; break;
+      case orderStatus.CREATED:
+          notice = '频繁地取消订单会影响您的信用评分'; break;
+      case orderStatus.ACCEPTED:
+          notice = '已接单，取消将扣取25%订金'; break;
+      case orderStatus.SERVING:
+          notice = '服务中，取消将扣取25%订金,且需对方同意后生效'; break;
+      case orderStatus.CANCELING:
+          notie = '同意取消订单后您将获取' + getMoneyString(order.deposit) + '的订金'; break;
+      default:
+          throw new error('not a status for canceling');
+    }
+    let res = await promisify(uni.showModal, {content: notice, title: '提示'});
+    if (res.cancel) return;
+    uni.showLoading();
+    res = await orderAssistant.cancel({orderId: order._id, status: order.status})
+    uni.hideLoading();
+    if (res.success) await that.promisify(uni.showModal, {title: '提示', content: '操作成功', showCancel: false});
+    else await that.promisify(uni.showModal, {title: '提示', content: res.message, showCancel: false});
+    await that.getOrderList({fromStart: true});
+  }
+  
+  const payEvent = 'createOrderPay';
+  async function create() {
+    let res = await promisify(uni.showModal, {content: '付款后取消订单将会扣取25%费用', title: '提示'});
+    if (res.cancel) return;
+    const paras = "amount=" + order.totalCost + "&orderId=" + order._id;
+    globalEventBus.$on(payEvent, postPay);
+    uni.navigateTo({url: '/pages/pay/pay?' + paras});
+  }
+  async function postPay(e) {
+    eventBus.$off(payEvent);
+    if (e.success) {
+      uni.showLoading();
+      let res = await orderAssistant.take({orderId: orderId});
+      uni.hideLoading();
+      uni.showModal({
+        content: '您已成功支付，订单编号：' + order._id,
+        showCancel: false
+      })
+    } else {
+      uni.showModal({
+        content: '支付失败，未成功接单',
+        showCancel: false
+      })
+    }
+    that.getOrderList({fromStart: true});
+  }
+  
+  const evalEvent = 'createrEvalOrder';
+  function evaluate() {
+    const paras = 'eventName=' + evalEvent;
+    globalEventBus.$on(evalEvent, postEvaluate);
+    uni.navigateTo({url: '/pages/evaluateOrder/evaluateOrder?' + paras});
+  }
+  
+  async function postEvaluate(e) {
+    globalEventBus.$off(evalEvent)
+    if (!e.success) return;
+    uni.showLoading();
+    const { comment, score } = e;
+    const orderId = order._id;
+    const res = await orderAssistant.evaluate({orderId, comment, score});
+    uni.hideLoading();
+    if (res.success) {await that.promisify(uni.showModal, {title: '提示', content: '评价成功'})}
+    else {await that.promisify(uni.showModal, {title: '提示', content: res.message})}
+    that.getOrderList({fromStart: true});
+  }
 
 </script>
 

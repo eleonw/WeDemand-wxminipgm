@@ -17,6 +17,7 @@
   import topTabBar from '@/components/topTabBar/topTabBar.vue';
   import confirmCodeInput from '@/components/confirmCodeInput/confirmCodeInput.vue';
   import eventBus from '../eventBus.js';
+  import globalEventBus from '@/common/eventBus.js';
   
   import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js';
   import { orderStatus } from '@/common/globalData.js';
@@ -101,13 +102,15 @@
         for (let item of tab2Status[e.index]) {
           that.orderStatusShowMap[item] = true;
         }
+        that.getOrderList(false)
       },
       getOrderList: async function(fromStart) {
         if (fromStart) { that.orderList.length = 0; that.nomore = false}
         else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return}
+        uni.showLoading();
+        await that.waitTime(500);
         const limit = 2;
         const status = tab2Status[that.tabIndex];
-        uni.showLoading();
         const res = await orderAssistant.getServerOrderList({status, limit, _serverListRec, fromStart});
         if (res.success) { 
           _serverListRec = res._serverListRec;
@@ -135,6 +138,10 @@
             that.show_confirmCodeInput = true;
             return;
           }
+          case orderStatus.EVALUATING: {
+            evaluate();
+            return;
+          }
         }
       },
       exitConfirmCodeInput: async function(e) {
@@ -143,7 +150,7 @@
         uni.showLoading();
         const confirmCode = e.confirmCode;
         let res = await orderAssistant.finish({orderId, confirmCode});
-        if (res.success) { that.evaluate(orderId) }
+        if (res.success) { evaluate(orderId) }
         else {
           uni.showModal({title: '提示', content: res.message, showCancel: false})
         }
@@ -175,6 +182,24 @@
       eventBus.$off('reachBottom')
       eventBus.$off('pullDownRefresh')
     }
+  }
+  
+  const evalEvent = 'serverEvalOrder';
+  function evaluate() {
+    const paras = 'eventName=' + evalEvent;
+    globalEventBus.$on(evalEvent, postEvaluate);
+    uni.navigateTo({url: '/pages/evaluateOrder/evaluateOrder?' + paras});
+  }
+  
+  async function postEvaluate(e) {
+    globalEventBus.$off(evalEvent)
+    if (!e.success) return;
+    uni.showLoading();
+    const { comment, score } = e;
+    const res = await orderAssistant.evaluate({orderId, comment, score});
+    if (res.success) {uni.showToast({title: '评价成功', icon: 'none'})}
+    else {uni.showModal({title: '提示', content: res.message })}
+    that.getOrderList(true);
   }
    
 </script>

@@ -154,9 +154,10 @@ const shareData = {
     },
     
     updateAddressBook: async function(arg) {
-        const address = beanify(arg.address)
-        await addressBookAssistant.updateAddressBook({recId: this.addressBook[arg.index]['_id'], address: address});
-        this.addressBook[arg.index].address = address;
+      this.addressBook[arg.index].address = arg.address;
+      const address = beanify(arg.address)
+      await addressBookAssistant.updateAddressBook({recId: this.addressBook[arg.index]['_id'], address: address});
+        
     },
     
     removeAddress: async function(arg) {

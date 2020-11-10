@@ -140,6 +140,7 @@
     import { userInfo } from '@/common/globalData.js';
     
     let that;
+    let activeButton;
     
     export default {
         name: 'orderCard',
@@ -166,100 +167,102 @@
         },
         methods: {
             getOrderTypeString: function(type) {
-                return serviceType.getServiceTypeString(type);
+              return serviceType.getServiceTypeString(type);
             },
             getOrderStatusString: function(status) {
-                return orderStatus.getOrderStatusString(status);
+              return orderStatus.getOrderStatusString(status);
             },
             getTimeRangeString: function() {
-                return getTimeString({timestamp: that.orderObj.startTime, substitude: '现在'}) + '-'
-                    + getTimeString({timestamp: that.orderObj.endTime, substitude: '现在'})
+              return getTimeString({timestamp: that.orderObj.startTime, substitude: '现在'}) + '-'
+                + getTimeString({timestamp: that.orderObj.endTime, substitude: '现在'})
             },
             getItemInfoString: function() {
-                return that.orderObj.getItemInfoString();
+              return that.orderObj.getItemInfoString();
             },
             clickButton: function() {
-                if (that.activeButton) {
-                    this.$emit('buttonClick')
-                }
+              if (activeButton || that.activeButton) {
+                this.$emit('buttonClick')
+              }
             },
             cancelOrder: function() {
-                this.$emit('cancel');
+              this.$emit('cancel');
             },
             getMoneyString: function(money) {
-                return getMoneyString(money);
+              return getMoneyString(money);
             }
         },
-       
+        beforeCreate: function() {
+          that = this;
+        },
         created: function() {
-            that = this;
             that.orderObj = parseOrder(that.order);
             that.serviceType = serviceType;
             that.color = color;
             that.sensitiveInfo = getSensitiveInfoArray(that.orderObj.sensitiveInfo)
             if (that.orderObj.serverId == userInfo._id) {
-                that.showSensitive = true;
+              that.showSensitive = true;
             } else {
-                that.showSensitive = false;
+              that.showSensitive = false;
             }
             
             switch(that.orderObj.status) {
-                case orderStatus.INITIALING:
-                    that.buttonText = '尚未创建';
-                    that.activeButton = false;
-                    that.showCancel = false;
-                    break;
-                case orderStatus.CREATED:
-                    that.buttonText = '接单';
-                    that.activeButton = true;
-                    that.showCancel = false;
-                    break;
-                case orderStatus.ACCEPTED:
-                    that.buttonText = '开始服务';
-                    that.activeButton = true;
-                    that.showCancel = true;
-                    break;
-                case orderStatus.SERVING:
-                    that.buttonText = '完成服务';
-                    that.activeButton = true;
-                    that.showCancel = true;
-                    break;
-                case orderStatus.EVALUATING:
-                    if (that.orderObj.evalStatus == 1) {
-                        that.buttonText = '等待评价';
-                        that.activeButton = false;
-                    } else {
-                        that.buttonText = '评价';
-                        that.activeButton = true;
-                    }
-                    that.showCancel = false;
-                    break;
-                case orderStatus.COMPLETED:
-                    that.buttonText = '已完成';
-                    that.activeButton = false;
-                    that.showCancel = false;
-                    break;
-                case orderStatus.CANCELED:
-                    that.buttonText = '已取消';
-                    that.activeButton = false;
-                    that.showCancel = false;
-                    break;
-                case orderStatus.CANCELING:
-                    if (that.orderObj.canelSide == 1) {
-                        that.buttonText = '等待取消';
-                        that.activeButton = false;
-                    } else {
-                        that.buttonText = '同意取消';
-                        that.activeButton = true;
-                    }
-                    that.showCancel = false;
-                    break;
-                case orderStatus.EXCEPTION:
-                    that.buttonText = "异常处理中";
-                    that.activeButton = false;
-                    that.showCancel = false;
-                default:
-                    return null;
+              case orderStatus.INITIALING:
+                that.buttonText = '尚未创建';
+                that.activeButton = false;
+                that.showCancel = false;
+                break;
+              case orderStatus.CREATED:
+                that.buttonText = '接单';
+                that.activeButton = true;
+                that.showCancel = false;
+                break;
+              case orderStatus.ACCEPTED:
+                that.buttonText = '开始服务';
+                that.activeButton = true;
+                that.showCancel = true;
+                break;
+              case orderStatus.SERVING:
+                that.buttonText = '完成服务';
+                that.activeButton = true;
+                that.showCancel = true;
+                break;
+              case orderStatus.EVALUATING:
+                if (that.orderObj.evalStatus == 1) {
+                  that.buttonText = '等待评价';
+                  that.activeButton = false;
+                } else {
+                  that.buttonText = '评价';
+                  that.activeButton = true;
+                  activeButton = true;
+                }
+                that.showCancel = false;
+                break;
+              case orderStatus.COMPLETED:
+                that.buttonText = '已完成';
+                that.activeButton = false;
+                that.showCancel = false;
+                break;
+              case orderStatus.CANCELED:
+                that.buttonText = '已取消';
+                that.activeButton = false;
+                that.showCancel = false;
+                break;
+              case orderStatus.CANCELING:
+                if (that.orderObj.canelSide == 1) {
+                  that.buttonText = '等待取消';
+                  that.activeButton = false;
+                } else {
+                  that.buttonText = '同意取消';
+                  that.activeButton = true;
+                }
+                that.showCancel = false;
+                break;
+              case orderStatus.EXCEPTION:
+                that.buttonText = "异常处理中";
+                that.activeButton = false;
+                that.showCancel = false;
+              default:
+                return null;
             }
         }
     }

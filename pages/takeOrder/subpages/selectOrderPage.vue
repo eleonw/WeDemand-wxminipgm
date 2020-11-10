@@ -40,10 +40,11 @@
 		methods: {
       getOrderList: async function(opt) {
         const { fromStart } = opt;
-          const limit = 10;
+        const limit = 10;
         if (fromStart) { that.orderList.length=0; that.nomore = false;}
         else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return;}
         uni.showLoading();
+        await that.waitTime(500);
         let res = await orderAssistant.getCreatedOrderList({fromStart, limit, _createdListRec});
         if (res.success) {
           _createdListRec = res._createdListRec;

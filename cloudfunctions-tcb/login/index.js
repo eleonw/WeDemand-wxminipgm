@@ -101,28 +101,15 @@ async function loginWithToken(opt) {
 }
 
 async function loginWithSmsCode(opt) {
-    const {
-        mobile,
-        code
-    } = opt;
+    const { mobile, code } = opt;
     
-    let res = await uniID.loginBySms({
-        mobile,
-        code
-    });
-    
-    if (res.code != 0) {
-        return {
-            success: false,
-            error: res.message,
-        }
-    }
+    let res = await uniID.loginBySms({ mobile, code });
+    if (res.code != 0) return { success: false, error: res.message }
     
     if (res.type == 'register') {
-        await db.collection('balance').add({
-            _id: res.uid,
-            balance: 0,
-        })
+        const nickname = generateNickname();
+        await db.collection('balance').add({ _id: res.uid, balance: 0})
+        await db.collection('uni-id-users').doc(res.uid).update({orderCount: 0, nickname})
     }
 
     return {

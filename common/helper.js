@@ -22,6 +22,12 @@ export const loginStatusFailure = function() {
     })
 }
 
+export const waitTime = async function(time) {
+  await new Promise((resolve, reject) => {
+    setTimeout(resolve, time);
+  })
+}
+
 export const setUserInfo = function(new_userInfo) {
     for (let item in userInfo) {
         delete userInfo[item];

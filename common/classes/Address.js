@@ -10,9 +10,8 @@ export default class Address {
         if (arg.location instanceof Location) {
             this.location = arg.location;
         } else {
-            this.location = new Location(arg.location);
+            this.location = new Location({...arg.location, parse: false});
         }
-        
         this.name = arg.name?arg.name:'';
         this.sex = arg.sex?arg.sex:undefined;
         this.mobile = arg.mobile?arg.mobile:'';

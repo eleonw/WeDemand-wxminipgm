@@ -139,6 +139,7 @@
     import { getTimeString, getMoneyString, getSensitiveInfoArray } from '@/common/helper.js';
     
     let that;
+    let activeButton;
     
     export default {
         name: 'orderCard',
@@ -182,12 +183,10 @@
                 return that.orderObj.getItemInfoString();
             },
             clickButton: function() {
-                // console.log('clickButton')
-                // console.log(that)
-                // console.log(that.activeButton)
-                if (that.activeButton) {
-                    this.$emit('buttonClick')
-                }
+              console.log(activeButton)
+              if (that.activeButton || activeButton) {
+                  this.$emit('buttonClick')
+              }
             },
             cancelOrder: function() {
                 this.$emit('cancel');
@@ -196,10 +195,11 @@
                 return getMoneyString(money);
             }
         },
+        beforeCreate: function() {
+          that = this;
+        },
         created: function() {
-            that = this;
             that.orderObj = parseOrder(that.order);
-            console.log(that.orderObj)
             that.serviceType = serviceType;
             that.color = color;
             that.sensitiveInfo = getSensitiveInfoArray(that.orderObj.sensitiveInfo)
@@ -225,15 +225,16 @@
                     that.showCancel = true;
                     break;
                 case orderStatus.EVALUATING:
-                    if (that.orderObj.evalStatus == 0) {
-                        that.activeButton = false;
-                        that.buttonText = "等待评价";
-                    } else {
-                        that.activeButton = true;
-                        that.buttonText = "评价";
-                    }
-                    that.showCancel = false;
-                    break;
+                  if (that.orderObj.evalStatus == 0) {
+                      that.buttonText = '等待评价';
+                      that.activeButton = false;
+                  } else {
+                      that.buttonText = '评价';
+                      that.activeButton = true;
+                      activeButton = true;
+                  }
+                  that.showCancel = false;
+                  break;
                 case orderStatus.COMPLETED:
                     that.activeButton = false;
                     that.buttonText = "已完成";
@@ -262,7 +263,6 @@
                 default:
                     throw new Error('invalid orderStatus')
             }
-            
         },
         
     }

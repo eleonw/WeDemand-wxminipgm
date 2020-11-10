@@ -9,7 +9,7 @@
         
         <view class="code">
             {{ code }}
-            <input class="codeInput" v-model="code" maxlength="4"></input>
+            <input class="codeInput" @input="codeChange" maxlength="4"></input>
         </view>
         
         
@@ -66,8 +66,8 @@
                 page.focus = true;
             },
             
-            codeChange: function(index) {
-                
+            codeChange: function(e) {
+                page.code = e.detail.value.toUpperCase()
             },
             
             

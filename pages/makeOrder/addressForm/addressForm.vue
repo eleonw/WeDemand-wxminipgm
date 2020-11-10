@@ -47,7 +47,7 @@
             <view v-for="(item,idx) in shareData.addressBook" :key="idx" @click="selectAddress(item.address)" class="formItem">
                 <view class="formItemBlock">
                     <view class="addressMain">
-                        {{ (item.address.location.name==''?item.address.location.name:item.address.location.address) + ' ' + item.address.location.detail }}
+                        {{ item.address.location.toString() }}
                     </view>
                     <view class="addressSub">
                         {{ item.address.name + ' ' + item.address.mobile }}

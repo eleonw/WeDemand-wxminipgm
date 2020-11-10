@@ -1,5 +1,6 @@
 <template>
 	<view class="root page">
+    <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
     <uni-rate v-model="score" :size="30" class="score"/>
 		<view class="comment">  
 		    <view class="title">评价一下对方吧</view>
@@ -10,12 +11,15 @@
 </template>
 
 <script>
+  
+  import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
   import eventBus from '@/common/eventBus.js';
   let that;
   let eventName;
   
   
 	export default {
+    components: {uniNavBar},
 		data() {
 			return {
 				score: 0,
@@ -23,6 +27,10 @@
 			}
 		},
 		methods: {
+      navigateBack: function() {
+        eventBus.$emit(eventName, {success: false});
+        uni.navigateBack();
+      },
 			confirm: async function() {
         const score = that.score;
         const comment = that.comment.trim();
@@ -38,7 +46,8 @@
             })
             if (res.confirm) return;
           }
-          eventBus.$emit(eventName, {score, comment});
+          eventBus.$emit(eventName, {success: true, score, comment});
+          uni.navigateBack();
         }
       }
 		},
@@ -60,14 +69,14 @@
     color: white;
     
     .score {
-      margin-top: 150rpx;
-      margin-bottom: 150rpx;
+      margin-top: 240rpx;
+      margin-bottom: 100rpx;
     }
     
     .comment {
       padding: 20rpx;
       border-radius: 20rpx;
-      border: solid 10rpx 	#ffbf00;
+      border: solid 10rpx var(--color-light);
       background-color: white;
       color: var(--color-main);
       // background-color: orange;
@@ -79,10 +88,14 @@
       .title {
         font-size: 50rpx;
         margin-bottom: 20rpx;
+        color: var(--color-light);
+        border-bottom: solid 6rpx var(--color-light);
       }
       
       .textarea {
-        font-size: 40rpx;
+        font-size: 42rpx;
+        color: var(--color-dark);
+        letter-spacing: .1em;
       }
     }
     
@@ -90,6 +103,7 @@
       width: 180rpx;
       height: 75rpx;
       line-height: 75rpx;
+      background-color: var(--color-light);
       
       border: 6rpx solid white;
       border-radius: 10rpx;
