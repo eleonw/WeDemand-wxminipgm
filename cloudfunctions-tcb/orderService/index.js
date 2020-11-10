@@ -539,7 +539,6 @@ async function start(arg) {
 }
 
 async function finish(arg) {
-  console.log('2')
   const { userId, orderId, confirmCode } = arg;
   let res = await activeOrder.doc(orderId).get();
   const order = res.data.length == 0 ? null : res.data[0];
@@ -556,7 +555,6 @@ async function finish(arg) {
     await activeOrder.doc(orderId).update({errCodeCount: dbCmd.inc(-1), status});
     return {success: false, code: -4, errCodeCount: order.errCodeCount-1}
   }
-  console.log('3')
   order.status = _orderStatus.TEMP;
   order.evalStatus = -1;
   
@@ -577,7 +575,7 @@ async function finish(arg) {
   
   if (res.success) { 
     returnRes = {success: true, pay: order.totalCost, depositBack: order.deposit}
-    const orderComment = {
+    const comment = {
         _id: orderId,
         serverScore: null,
         serverComment: null,
@@ -585,7 +583,7 @@ async function finish(arg) {
         createrComment: null,
     }
     try {
-      await orderComment.add(orderComment);
+      res = await orderComment.add(comment);
       returnRes.createComment = true;
     } catch(e) {
       returnRes.createComment = false;

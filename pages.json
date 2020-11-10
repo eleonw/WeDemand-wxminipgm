@@ -85,7 +85,9 @@
         }
         ,{
             "path" : "pages/evaluateOrder/evaluateOrder",
-            "style" : {}
+            "style" : {
+              "navigationStyle": "default"
+            }
         }
         ,{
             "path" : "pages/me/me",
@@ -155,6 +157,10 @@
             {
                 "name": "otherService",
                 "path": "pages/makeOrder/detailForms/otherService"
+            },
+            {
+              "name": "evaluateOrder",
+              "path": "pages/evaluateOrder/evaluateOrder"
             }
         ]
     }
