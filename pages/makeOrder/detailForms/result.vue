@@ -48,7 +48,6 @@
   
   .notice {
     font-size: 50rpx;
-    text-align: center;
     width: 600rpx;
     display: flex;
     align-items: center;

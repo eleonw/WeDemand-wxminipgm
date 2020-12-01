@@ -182,7 +182,7 @@ export const parseMoneyString = function(moneyStr) {
 }
 
 export const getMoneyString = function(money) {
-    if (!money) {
+    if (money == null || money == undefined) {
         return '';
     }
     const str = '' + money;

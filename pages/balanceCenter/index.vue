@@ -51,7 +51,7 @@
     
     async function initialBalanceRelevant() {
         const res = await balanceAssistant.checkBalance();
-        if (!res.success || !res.balance) {
+        if (!res.success) {
             if (res.code == -2) {
                 that.loginStatusFailure();
             } else {

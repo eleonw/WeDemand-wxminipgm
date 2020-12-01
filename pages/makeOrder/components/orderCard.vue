@@ -183,7 +183,6 @@
                 return that.orderObj.getItemInfoString();
             },
             clickButton: function() {
-              console.log(activeButton)
               if (that.activeButton || activeButton) {
                   this.$emit('buttonClick')
               }
@@ -205,6 +204,7 @@
             that.sensitiveInfo = getSensitiveInfoArray(that.orderObj.sensitiveInfo)
             switch(that.orderObj.status) {
                 case orderStatus.INITIALING:
+                  activeButton = true;
                     that.activeButton = true;
                     that.buttonText = "付款";
                     that.showCancel = true;
@@ -220,6 +220,7 @@
                     that.showCancel = true;
                     break;
                 case orderStatus.SERVING:
+                  activeButton = true;
                     that.activeButton = true;
                     that.buttonText = "查看验证码";
                     that.showCancel = true;
@@ -250,6 +251,7 @@
                         that.activeButton = false;
                         that.buttonText = '等待取消';
                     } else {
+                      activeButton = true;
                         that.activeButton = true;
                         that.buttonText = '同意取消';
                     }

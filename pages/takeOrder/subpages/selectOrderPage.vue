@@ -4,7 +4,7 @@
 		<uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
     <orderCard v-for="(order,index) in orderList" :key="index" class="orderCard"
         :order="order" @buttonClick="takeOrder(index)"></orderCard>
-    <view class="nomore" v-if="nomore">还没有新的订单</view>
+<!--    <view class="nomore" v-if="nomore">还没有新的订单</view> -->
 	</view>
 </template>
 
@@ -41,7 +41,7 @@
       getOrderList: async function(opt) {
         const { fromStart } = opt;
         const limit = 10;
-        if (fromStart) { that.orderList.length=0; that.nomore = false;}
+        if (fromStart) { that.orderList = []; that.nomore = false;}
         else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return;}
         uni.showLoading();
         await that.waitTime(500);

@@ -3,7 +3,7 @@
         <uni-nav-bar left-icon="none"  title="微叮当"></uni-nav-bar>
         
         <view class="item" @click="navigateTo('makeOrder')">我要下单</view>
-        <view class="item" @click="navigateTo('takeOrder')">我要接单</view>
+        <view class="item" @click="navigateTo('takeOrder')">我帮别人</view>
         <view class="item" @click="navigateTo('me')">我</view>
         
        

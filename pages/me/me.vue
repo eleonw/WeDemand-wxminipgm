@@ -10,7 +10,7 @@
         <view class="content">{{userInfo.mobile}}</view>
       </view>
       <view class="item lastItem">共完成 {{userInfo.orderCount}} 个订单</view>
-      <view class="button" @click="navigeteTo('/pages/balanceCenter/index')">余额中心</view>
+      <view class="button" @click="navigateTo('/pages/balanceCenter/index')">余额中心</view>
       <view class="button" @click="navigateTo('/pages/me/modifyUserInfo')">修改信息</view>
       <view class="button" @click="logout">登 出</view>
         

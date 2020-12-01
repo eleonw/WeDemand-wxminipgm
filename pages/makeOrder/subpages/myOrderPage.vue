@@ -175,7 +175,7 @@
       
       getOrderList: async function(arg) {
         const { fromStart } = arg;
-        if (fromStart) { that.orderList.length = 0; that.nomore = false}
+        if (fromStart) { that.orderList = []; that.nomore = false}
         else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return}
         uni.showLoading();
         await that.waitTime(500);
@@ -233,7 +233,7 @@
   async function create() {
     let res = await promisify(uni.showModal, {content: '付款后取消订单将会扣取25%费用', title: '提示'});
     if (res.cancel) return;
-    const paras = "amount=" + order.totalCost + "&orderId=" + order._id;
+    const paras = "amount=" + order.totalCost + "&eventName=" + payEvent;
     globalEventBus.$on(payEvent, postPay);
     uni.navigateTo({url: '/pages/pay/pay?' + paras});
   }
@@ -241,7 +241,7 @@
     eventBus.$off(payEvent);
     if (e.success) {
       uni.showLoading();
-      let res = await orderAssistant.take({orderId: orderId});
+      let res = await orderAssistant.create({orderId: order._id});
       uni.hideLoading();
       uni.showModal({
         content: '您已成功支付，订单编号：' + order._id,

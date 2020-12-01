@@ -45,8 +45,8 @@
 		},
         
         onLoad: function(opt) {
-            // page.mobile = opt.mobile;
-            page.mobile = '13728084958'
+            page.mobile = opt.mobile;
+
         },
         
         created: function(opt) {

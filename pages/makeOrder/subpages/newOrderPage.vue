@@ -79,6 +79,18 @@
                 
             },
             
+            authorizeLocation: async function() {
+              const res = await promisify(wx.getSetting);
+              if (!res.authSetting['scope.userLocation']) {
+                try {
+                  await promisify(wx.authorize, {scope: 'scope.userLocation'})
+                } catch (e) {
+                  console.log(e);
+                }
+              }
+              return;
+            },
+            
             
             clearShareData: function() {
                 shareData.clear();
@@ -102,6 +114,10 @@
         
         beforeMount: async function(e) {
             page.clearShareData();
+        },
+        
+        mounted: async function() {
+          await page.authorizeLocation()
         },
         
         data() {

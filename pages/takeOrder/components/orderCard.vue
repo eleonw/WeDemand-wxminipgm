@@ -212,18 +212,21 @@
                 that.showCancel = false;
                 break;
               case orderStatus.CREATED:
-                that.buttonText = '接单';
+                that.buttonText = '我帮你';
                 that.activeButton = true;
+                activeButton = true;
                 that.showCancel = false;
                 break;
               case orderStatus.ACCEPTED:
                 that.buttonText = '开始服务';
                 that.activeButton = true;
+                activeButton = true;
                 that.showCancel = true;
                 break;
               case orderStatus.SERVING:
                 that.buttonText = '完成服务';
                 that.activeButton = true;
+                activeButton = true;
                 that.showCancel = true;
                 break;
               case orderStatus.EVALUATING:
@@ -254,6 +257,7 @@
                 } else {
                   that.buttonText = '同意取消';
                   that.activeButton = true;
+                  activeButton = true;
                 }
                 that.showCancel = false;
                 break;

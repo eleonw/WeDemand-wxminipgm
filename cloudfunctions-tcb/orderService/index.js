@@ -485,7 +485,8 @@ async function finish(arg) {
   order.status = _orderStatus.TEMP;
   order.evalStatus = -1;
   
-  const serverPay = order.totalCost + order.deposit;
+  const systemCost = Math.floor(order.totalCost * 0.2);
+  const serverPay = order.totalCost + order.deposit - systemCost;
   let returnRes;
 
   await inactiveOrder.add(order);

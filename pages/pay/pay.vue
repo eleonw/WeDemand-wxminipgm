@@ -40,13 +40,13 @@
 	export default {
 		data() {
 			return {
-                amountString: null,
-                balance: null,
-                amount: null,
+        amountString: null,
+        balance: null,
+        amount: null,
 				method: PayMethod.WX,
-                PayMethod: PayMethod,
-                balancePayString: '余额支付',
-                colorMain: null,
+        PayMethod: PayMethod,
+        balancePayString: '余额支付',
+        colorMain: null,
 			}
 		},
         
@@ -78,7 +78,7 @@
       },
 			methodChange: function(e) {
         if (e.detail.value == PayMethod.BALANCE) {
-            if (!that.balance) {
+            if (that.balance == null || that.balance == undefined ) {
                 uni.showModal({
                     title: '提示',
                     content: '余额加载异常，请重新打开页面尝试',
@@ -143,7 +143,7 @@
     
     async function initialBalanceRelevant() {
         const res = await balanceAssistant.checkBalance();
-        if (!res.success || !res.balance) {
+        if (!res.success) {
             if (res.code == -2) {
                 that.loginStatusFailure();
             }

@@ -105,7 +105,7 @@
         that.getOrderList(false)
       },
       getOrderList: async function(fromStart) {
-        if (fromStart) { that.orderList.length = 0; that.nomore = false}
+        if (fromStart) { that.orderList = []; that.nomore = false}
         else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return}
         uni.showLoading();
         await that.waitTime(500);

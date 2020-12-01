@@ -126,7 +126,7 @@
     let page;
     let mapContext;
     let orderId;
-    const eventName = 'payHelpDeliv'
+    const payEventName = 'payHelpDeliv'
     
     const dev = false;
     

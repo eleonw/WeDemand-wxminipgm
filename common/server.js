@@ -10,7 +10,6 @@ export async function modifyUserInfo(opt) {
         name: 'modifyUserInfo',
         data: { userId, update }
     })
-    console.log(res)
     if (res.result.success) return {success: true}
   } catch(e) {
     return {success: false, message: '信息更新失败，请重试'};
