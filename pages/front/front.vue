@@ -17,7 +17,7 @@
     import uniPopup from '@/components/uni-popup/uni-popup.vue';
     import inputWithTitle from '@/components/inputWithTitle/inputWithTitle.vue';
     
-    import { promisify, setUserInfo } from '@/common/helper.js';
+    import { promisify, setUserInfo, wxLoginInfo } from '@/common/helper.js';
     import { loginAssistant , sendSmsCode } from '@/common/server.js';
     
     const dev = false;
@@ -59,8 +59,10 @@
       
     },
     onShow: async function() {
+      await page.wxLogin();
       await page.authorizeLocation();
       const tokenLogin = await checkToken();
+      await page.authorizeLocation();
       if (tokenLogin) {
           await promisify(uni.redirectTo, {url: '/pages/index/index'});
       }
@@ -134,7 +136,7 @@
             })
         }
         
-        await page.authorizeLocation();
+        
         uni.redirectTo({
             url: '/pages/index/index',
         })
@@ -150,6 +152,26 @@
           }
         }
         return;
+      },
+      
+      wxLogin: async function() {
+        while (true) {
+          let res = await page.promisify(wx.login);
+          const code = res.code;
+          if (code && code.length != 0) {
+            res = await uniCloud.callFunction({
+              name: 'wxLogin',
+              data: { code }
+            })
+            if (res.result.openid) {
+              wxLoginInfo.openid = res.result.openid;
+              wxLoginInfo.session_key = res.result.session_key;
+              break;
+            }
+          }
+          await page.promisify(uni.showModal, {title: '提示', content: '微信登录失败，请重尝试', showCancel: false})
+        }
+        
       }
 		},
 	}

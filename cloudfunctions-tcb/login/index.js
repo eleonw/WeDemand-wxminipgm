@@ -1,4 +1,5 @@
 'use strict';
+const request = require('request')
 
 const uniID = require('uni-id');
 const db = uniCloud.database();
@@ -118,33 +119,6 @@ async function loginWithSmsCode(opt) {
         token: res.token,
     }
 
-}
-
-async function loginWithWxCode(code) {
-    const url = 'https://api.weixin.qq.com/sns/jscode2session?appid=wxa90a21c9fbeeacc2&secret=e99cbe2b47ba8ff484f453e6a0c488b4&js_code=' + code + '&grant_type=authorization_code'
-
-    let wechatInfo = await new Promise((resolve, reject) => {
-        request(url, (err, resp, body) => {
-            if (err) {
-                reject(err);
-            }
-            resolve(body);
-        })
-    })
-    const openid = JSON.parse(wechatInfo).openid;
-    
-    const res = await user.where({
-        wx_openid: openid
-    }).get();
-    
-    if (res.data.length != 0) {
-        console.log(res);
-        return res.data[0];
-    } else {
-        return await signup({
-            wx_openid: openid
-        })
-    }
 }
 
 

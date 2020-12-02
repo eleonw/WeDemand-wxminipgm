@@ -426,6 +426,8 @@ async function getServerOrderList(arg) {
 }
 
 async function take(arg) {
+  
+    const gapTime = 1000 * 60 * 6
 
     const {
         userId, orderId, mobile
@@ -434,6 +436,10 @@ async function take(arg) {
     let res = await createdOrder.doc(orderId).get();
     const order = res.data.length == 0 ? null : res.data[0];
     if (order == null) {return {success: false, code: -2}};
+    
+    const limitTime = Number(new Date()) + gapTime;
+    if (order.expireTime <= limitTime) { return {success: false, code: -3} }
+    
     order.status = _orderStatus.ACCEPTED;
     order.serverId = userId;
     order.serverMobile = mobile;

@@ -42,12 +42,17 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "wxa90a21c9fbeeacc2",
+        "appid" : "wx6d2f4a55f3e7787b",
         "setting" : {
             "urlCheck" : true,
             "es6" : true,
             "postcss" : true,
             "minified" : true
+        },
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "用于填写订单相关地址"
+            }
         }
     }
 }

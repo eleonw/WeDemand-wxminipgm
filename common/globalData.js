@@ -79,6 +79,11 @@ export const userInfo = {
   orderCount: 2
 };
 
+export const wxLoginInfo = {
+  openid: '',
+  session_key: ''
+}
+
 
 export const PayMethod = {
     BALANCE: 1,
