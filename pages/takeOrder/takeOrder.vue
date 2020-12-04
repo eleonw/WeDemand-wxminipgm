@@ -60,7 +60,7 @@
 			}
 		},
         
-    onShow: function() {
+    onShow: async function() {
         that.enablePullDownRefresh(true);
     },
     

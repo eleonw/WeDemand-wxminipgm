@@ -8,7 +8,7 @@
         <view class="notice">已发送短信至{{ mobile }},请填写验证码</view>
         
         <view class="code">
-            {{ code }}
+            <!-- {{ code }} -->
             <input class="codeInput" @input="codeChange" maxlength="4"></input>
         </view>
         
@@ -130,8 +130,8 @@
     
     .code {
         
-        height: 80rpx;
-        line-height: 80rpx;
+        
+        
         width: 200rpx;
         letter-spacing: 5rpx;
         
@@ -141,7 +141,9 @@
         text-align: center;
         
         .codeInput {
-            color: transparent;
+          height: 80rpx;
+          line-height: 80rpx;
+            // color: transparent;
         }
     }
     

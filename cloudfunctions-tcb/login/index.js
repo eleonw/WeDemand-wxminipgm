@@ -1,5 +1,5 @@
 'use strict';
-const request = require('request')
+
 
 const uniID = require('uni-id');
 const db = uniCloud.database();

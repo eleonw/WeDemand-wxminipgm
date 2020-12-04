@@ -32,7 +32,7 @@
     import eventBus from '@/common/eventBus.js';
     import { color, PayMethod} from '@/common/globalData.js';
     import { getMoneyString } from '@/common/helper.js';
-    import { balanceAssistant } from '@/common/server.js';
+    import { balanceAssistant, wxPaymentAssistant } from '@/common/server.js';
     
     let that;
     let eventName;
@@ -113,7 +113,7 @@
     
     confirm: async function() {
         switch (that.method) {
-            case PayMethod.BALANCE:
+            case PayMethod.BALANCE: {
                 const res = await balanceAssistant.payWithBalance({amount: that.amount});
                 if (res.success) {
                     uni.showToast({ title: '支付成功' })
@@ -134,6 +134,32 @@
                         } 
                     })
                 }
+            }
+            case PayMethod.WX: {
+              uni.showLoading();
+              const res = await wxPaymentAssistant.payWithWx({amount: that.amount})
+              uni.hideLoading();
+              if (res.success) {
+                  uni.showToast({ title: '支付成功' })
+                  setTimeout(() => {
+                      that.finishPay(true)
+                  }, 1000);
+              } else {
+                  uni.showModal({
+                      title: '支付失败',
+                      content: res.message,
+                      showCancel: false,
+                      complete: async function(e) {
+                          if (res.code == -2) {
+                              that.loginStatusFailure();
+                          } else {
+                              await initialBalanceRelevant();
+                          }
+                      } 
+                  })
+              }
+            }
+              
         }
     }
             

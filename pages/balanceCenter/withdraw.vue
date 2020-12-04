@@ -1,12 +1,15 @@
 <template>
 	<view class="root page">
-    <view class="title">请输入金额</view>
+    <view class="head">余额满20元后可扫码添加工作人员微信提现</view>
+    <view class="notice">请备注：微叮当提现+（账户手机号码）</view>
+    <image src="../../static/image/ethan.jpg" class="code"></image>
+    <!-- <view class="title">请输入金额</view>
     <view class="amount">
       <view>￥</view>
       <input class="input" :value="amountString" type="digit" @blur="blur" maxlength="5"/>
     </view>
     <view class="notice" v-if="showNotice">请输入正确格式的数字</view>
-    <view class="confirm" @click="confirm">确认</view>
+    <view class="confirm" @click="confirm">确认</view> -->
 	</view>
 </template>
 
@@ -68,11 +71,30 @@
 
 <style lang="scss">
 
+  .code {
+    margin-top: 50rpx;
+    width: 500rpx;
+    height: 500rpx
+  }
+  
+  .head {
+    margin-top: 50rpx;
+  }
+  
+  .notice {
+    margin-top:  30rpx;
+  }
+  
+  .head .notice {
+    font-size: 80rpx;
+  }
 
   .page {
-    align-items: center;
-    background-color: var(--color-main);
+    background-color: #020202;
     color: white;
+    align-items: center;
+    // background-color: var(--color-main);
+    // color: white;
     
     .title {
       font-size: 60rpx;
@@ -105,9 +127,9 @@
       
   
     
-    .notice {
-      color: red;
-    }
+    // .notice {
+    //   color: red;
+    // }
     
     .confirm {
       width: 150rpx;

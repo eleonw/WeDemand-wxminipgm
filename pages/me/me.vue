@@ -2,7 +2,7 @@
 	<view class="root page">
       
       <view class="item firstItem">
-        <view class="title">nickename</view>
+        <view class="title">nickname</view>
         <view class="content">{{userInfo.nickname}}</view>
       </view>
       <view class="item">

@@ -62,7 +62,7 @@
         if (order.status != orderStatus.CREATED) { return; }
         uni.showModal({
           title: '提示',
-          content: '接单需要支付订金，将在订单完成后返还',
+          content: '接单需要支付订金，将在订单完成后返还。订单完成后，平台将收取20%服务费用。',
           complete: function(e) { 
             if (e.confirm) {
               const paras = 'eventName=' + payEventName + '&amount=' + order.deposit;

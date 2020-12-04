@@ -17,8 +17,10 @@
     import uniPopup from '@/components/uni-popup/uni-popup.vue';
     import inputWithTitle from '@/components/inputWithTitle/inputWithTitle.vue';
     
-    import { promisify, setUserInfo, wxLoginInfo } from '@/common/helper.js';
-    import { loginAssistant , sendSmsCode } from '@/common/server.js';
+    import { wxLoginInfo, userInfo } from '@/common/globalData.js';
+    import { promisify, setUserInfo } from '@/common/helper.js';
+    import { loginAssistant , sendSmsCode, getIp } from '@/common/server.js';
+    import { wxPaymentAssistant } from '@/common/server.js';
     
     const dev = false;
     const defaultMobile = '13728084958';
@@ -50,13 +52,12 @@
         
 		data() {
 			return {
-                mobile: '',
+         mobile: '',
 			}
 		},
         
-    beforeCreate: async function() {
+    beforeCreate: function() {
       page = this;
-      
     },
     onShow: async function() {
       await page.wxLogin();
@@ -143,6 +144,7 @@
       },
       
       authorizeLocation: async function() {
+        
         const res = await promisify(wx.getSetting);
         if (!res.authSetting['scope.userLocation']) {
           try {
@@ -163,6 +165,7 @@
               name: 'wxLogin',
               data: { code }
             })
+            console.log(res)
             if (res.result.openid) {
               wxLoginInfo.openid = res.result.openid;
               wxLoginInfo.session_key = res.result.session_key;

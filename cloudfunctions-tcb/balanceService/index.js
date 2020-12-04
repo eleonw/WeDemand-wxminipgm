@@ -50,6 +50,7 @@ async function rechargeBalance(arg) {
   if (amount < 0) return { success: false, code: -4 };
   let res = await balanceTable.doc(userId).get();
   const balance = res.data[0].balance;
+  if (amount == 0) return { success: true, balance: balance};
   const newBalance = balance + amount;
   res = await balanceTable.doc(userId).update({
       balance: newBalance

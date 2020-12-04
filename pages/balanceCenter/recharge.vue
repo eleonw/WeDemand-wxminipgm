@@ -12,7 +12,7 @@
 
 <script>
     import { getMoneyString, parseMoneyString } from'@/common/helper.js';
-    import { balanceAssistant } from '@/common/server.js';
+    import { balanceAssistant, wxPaymentAssistant } from '@/common/server.js';
     
     let that;
     
@@ -46,7 +46,17 @@
           that.showNotice = false;
           that.showNotice = true;
         } else {
-          const res = await balanceAssistant.rechargeBalance({amount: that.amount});
+          let res = await balanceAssistant.rechargeBalance({amount: 0, test: true});
+          if (!res.success) {
+            console.log(res)
+            that.loginStatusFailure();
+            return;
+          }
+          uni.showLoading();
+          res = await wxPaymentAssistant.payWithWx({amount: that.amount});
+          if (!res.success) { uni.showModal({content: '支付失败'}); uni.hideLoading(); return }
+          await balanceAssistant.rechargeBalance({amount: that.amount});
+          uni.hideLoading();
           if (res.success) {
             uni.showToast({ title:'充值成功'})
             setTimeout(()=>{uni.navigateBack();}, 1000);

@@ -1,23 +1,27 @@
 import { userInfo, serviceType as _serviceType } from '@/common/globalData.js';
+import { promisify } from '@/common/helper.js'
 
-const userId = userInfo._id;
+
 
 export async function modifyUserInfo(opt) {
   console.log('modifyUserInfo')
+  const userId = userInfo._id;
   const { update }  = opt;
-  try{
+  // try{
     const res = await uniCloud.callFunction({
         name: 'modifyUserInfo',
         data: { userId, update }
     })
+    console.log(res)
     if (res.result.success) return {success: true}
-  } catch(e) {
-    return {success: false, message: '信息更新失败，请重试'};
-  }
+  // } catch(e) {
+    // return {success: false, message: '信息更新失败，请重试'};
+  // }
   return {success: false, message: '信息更新失败，请重试'};
 }
 
 export async function sendSmsCode(opt) {
+  
     const {
         type, mobile
     } = opt;
@@ -61,6 +65,7 @@ export const loginAssistant = {
     },
     
     logout: async function() {
+        const userId = userInfo._id;
         console.log('logout');
         const loginMethod = this.LoginMethod.LOGOUT;
         try {
@@ -148,7 +153,7 @@ export const balanceAssistant = {
     rechargeBalance: async function(arg) {
       console.log('rechargeBalance')
       const { amount } = arg;
-      if (amount <= 0) return {success: false, message: '充值金额需为正数'};
+      if (amount <= 0 && !arg.test) return {success: false, message: '充值金额需为正数'};
       const serviceType = this.serviceType.RECHARGE;
       const userId = userInfo._id;
       try {
@@ -253,6 +258,50 @@ export const balanceAssistant = {
             }
         }
     }
+}
+
+export async function getIp() {
+  let res = await promisify(uni.request, {url: 'https://pv.sohu.com/cityjson'})
+  if (!res.data) { return null }
+  const dataStr = res.data
+  const leftIdx = dataStr.indexOf('{')
+  const rightIdx = dataStr.lastIndexOf('}')
+  
+  const requestObj = JSON.parse(dataStr.substring(leftIdx, rightIdx+1))
+  if (requestObj && requestObj.cip) { return requestObj.cip }
+  return null;
+  
+}
+
+export const wxPaymentAssistant = {
+  payWithWx: async function(arg) {
+    // const { amount } = arg;
+    const amount = arg.amount;
+    const ip = await getIp()
+    console.log(ip)
+    let res = await promisify(wx.cloud.callFunction, {
+      name: 'initWxPay',
+      data: { amount, ip }
+    })
+    if (!res.result || !res.result.success) { return {success: false}  }
+    console.log(res)
+    const { payment, outTradeNo } = res.result;
+    
+    res = await new Promise((resolve, reject) => {
+      wx.requestPayment({
+        ...payment,
+        success: function() {
+          resolve({success: true})
+        },
+        fail: function() {
+          resolve({success: false})
+        }
+      })
+    })
+    console.log(res)
+    if (res.success) { return {success: true} }
+    else { return { success: false } }
+  }
 }
 
 export const orderAssistant_creater = {

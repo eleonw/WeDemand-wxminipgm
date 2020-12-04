@@ -21,6 +21,7 @@ export default {
         //     }
         //     return obj;
         // };
+    wx.cloud.init()
 		console.log('App Launch');
 	},
 	onShow: function() {

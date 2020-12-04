@@ -1,8 +1,8 @@
 <template>
 	<view class="root page">
     <view class="title">请输入新的昵称</view>
-    <view class="input">
-      <input type="text" maxlength="10" v-model="nickname" />
+    <view class="inputBox">
+      <input type="text" maxlength="10" v-model="nickname" class="input"/>
     </view>
     <view class="button" @click="confirm">确认</view>
 	</view>
@@ -63,15 +63,20 @@
     font-size: 55rpx;
   }
   
-  .input {
+  .inputBox {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 40rpx;
-    padding-bottom: 20rpx;
+/*    padding-bottom: 20rpx; */
 
     width: 400rpx;
     border-bottom: solid 6rpx white;
+  }
+  
+  .input {
+    height: 80rpx;
+    line-height: 80rpx;
   }
   
   .button {

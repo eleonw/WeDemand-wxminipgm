@@ -104,14 +104,16 @@
             "path" : "pages/balanceCenter/recharge",
             "style" : {
                 "navigationStyle": "default",
-                "navigationBarTitleText": "充值"
+                "navigationBarTitleText": "充 值"
             }
         }
         ,{
             "path" : "pages/balanceCenter/withdraw",
             "style" : {
+                // "navigationBarTextStyle": "#020202",
+                "navigationBarBackgroundColor": "#020202",
                 "navigationStyle": "default",
-                "navigationBarTitleText": "提现"
+                "navigationBarTitleText": "提 现"
             }
         }
         ,{

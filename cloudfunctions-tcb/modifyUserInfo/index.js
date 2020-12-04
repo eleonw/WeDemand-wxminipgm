@@ -3,8 +3,9 @@ const userTab = uniCloud.database().collection('uni-id-users');
 
 exports.main = async (event, context) => {
   
+  const { userId, update } = event;
 	try {
-     await userTab.doc(event.userId).update(event.update);
+     let res = await userTab.doc(userId).update(update);
      return {success: true};
   } catch(e) {
     return {success: false, error: e};

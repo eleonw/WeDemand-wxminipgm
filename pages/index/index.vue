@@ -55,6 +55,13 @@
 				
 			}
 		},
+    created: async function() {
+      let res = await uni.showModal({
+        title: '提示',
+        content: '由于系统原因，3月前微叮当暂不支持直接提现至微信钱包，对给您造成的不便我们深表歉意。若有提现需求请联系工作人员，具体参见 我>>余额中心>提现',
+        showCancel: false
+      })
+    },
 		methods: {
 			navigateTo: function(page) {
                 uni.navigateTo({
