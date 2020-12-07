@@ -27,7 +27,7 @@
     },
 		data() {
 			return {
-        selectedTabIndex: 1,
+        selectedTabIndex: 0,
         mainTabs: [
           {
               index: 0,

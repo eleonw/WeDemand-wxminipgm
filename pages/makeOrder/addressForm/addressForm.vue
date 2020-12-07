@@ -187,17 +187,22 @@
                     
                     try {
                         const res = await shareData.addToAddressBook(page.address);
-                        console.log(res);
+                        if (!res.success && res.exceed) { 
+                          await page.promisify(uni.showModal, {title: '提示', content: '最多保存十个地址，请删除或修改已有地址', showCancel: false})
+                          return;
+                        }
+                        shareData.setCurrentAddress(page.address);
+                        shareData.navigateAfterCompleteAddress();
                     } catch(e) {
                         console.log(e);
                         uni.showToast({
-                            title: '地址保存异常，请重试'
+                          icon: 'none',
+                          title: '地址保存异常，请重试'
                         });
                         return;
                     }
                     
-                    shareData.setCurrentAddress(page.address);
-                    shareData.navigateAfterCompleteAddress();
+                    
                     
                 }
             },

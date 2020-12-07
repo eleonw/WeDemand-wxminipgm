@@ -2,7 +2,7 @@
 	<view class="root page">
         <uni-nav-bar class="navigationBar" @clickLeft="navigateBack"></uni-nav-bar>
         <topTabBar class="topTabBar" :tabs="tabs" :value="shareData.serviceType" size="35rpx" @switchTab="switchTab"></topTabBar>
-		<map id="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @regionchange="regionchange">
+		<map id="map" ref="map" class="map" :longitude="defaultLocation.longitude" :latitude="defaultLocation.latitude" scale="15" :subkey="QQ_MAP_KEY" @regionchange="regionchange">
             <image src="../../../static/image/icon/location.png" class="mapIcon" :class="{'hoverMapIcon': mapIconHover, bounce: false}"></image>
             <view class="mapIconShadow" :class="{'hoverIconShadow': mapIconHover}"></view>
         </map>
@@ -33,7 +33,7 @@
     const app = getApp();
     let page;
 
-    let mapContext;
+    let mapContext = null;
     
 	export default {
         name: 'newOrderPage',
@@ -101,14 +101,19 @@
                 uni.navigateBack()
             }
 		},
+      beforeCreate: function() {
+        page = this;
+      },
+    
         created: function(e) {
-            page = this;
+          console.log(11)
             page.QQ_MAP_KEY = QQ_MAP_KEY;
             page.shareData = shareData;
-            mapContext = uni.createMapContext('map', page);
+            page.mapContext = mapContext = uni.createMapContext('map', this);
             shareData.setMapContext(mapContext);
             page.colorMain = color.MAIN;
             page.defaultLocation = defaultLocation;
+            console.log(12)
             
         },
         
@@ -129,10 +134,10 @@
                         index: serviceType.HELP_DELIVER,
                         text: '校园取送',
                     },
-                    {
-                        index: serviceType.HELP_BUY,
-                        text: '校园帮买',
-                    },
+                    // {
+                    //     index: serviceType.HELP_BUY,
+                    //     text: '校园帮买',
+                    // },
                     {
                         index: serviceType.OTHER_SERVICE,
                         text: '其他跑腿',
@@ -143,8 +148,9 @@
                 colorMain: null,
                 defaultLocation: null,
                 lock: false,
-                mapIconHover: false,
+                // mapIconHover: false,
                 iconBounce: false,
+                mapContext: null,
             }
         },
 	}

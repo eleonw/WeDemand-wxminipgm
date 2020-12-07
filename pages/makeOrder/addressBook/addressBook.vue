@@ -72,7 +72,7 @@
                 })
                 
                 if (res[1].confirm) {
-                    uni.showLoading();
+                    uni.showLoading({mask:true});
                     try {
                         await shareData.removeAddress({index: index});
                         uni.hideLoading();

@@ -132,6 +132,7 @@
                     }
                     that.pickerValue.splice(1, 1, newPickerValue[1]);
                 } else {
+                    that.pickerValue.splice(1, 1, newPickerValue[1]);
                     that.pickerValue.splice(2, 1, newPickerValue[2]);
                 }
             },
@@ -144,7 +145,7 @@
                         let minute = currentTime.getMinutes();
                         timestamp += (minute - minute%10) * MINUTE_TIME;
                     } else {
-                        timestamp += that.pickerValue[2]*10*MINUTE_TIME;
+                        timestamp += that.pickerValue[0]*10*MINUTE_TIME;
                     }
                 } else {
                     timestamp += that.pickerValue[1]*HOUR_TIME;

@@ -126,7 +126,7 @@
       },
       createOrder: async function(order) {
         const eventName = 'createOrderPay';
-        let res = await promisify(uni.showModal, {content: '付款后取消订单将会扣取25%费用', title: '提示'});
+        let res = await promisify(uni.showModal, {content: '付款并被接单后取消订单将会扣取25%定金', title: '提示'});
         if (res.cancel) return;
         globalEventBus.$on(eventName, async function(e) {
           if (e.success) { res = await orderAssistant.create({orderId: order._id});}
@@ -163,7 +163,7 @@
             return;
           }
           case orderStatus.CANCELING: {
-            cancel(index)
+            cancel();
             return;
           }
         }
@@ -177,7 +177,7 @@
         const { fromStart } = arg;
         if (fromStart) { that.orderList = []; that.nomore = false}
         else if (that.nomore) { uni.showToast({ title: '没有更多订单，请刷新重试', icon:'none'}); return}
-        uni.showLoading();
+        uni.showLoading({mask:true});
         await that.waitTime(500);
         const limit = 10;
         const status = tab2Status[that.tabIndex];
@@ -203,7 +203,7 @@
         
 	}
   
-  async function cancel() {
+  async function cancel(query=true) {
     let notice;
     switch(order.status) {
       case orderStatus.INITIALING:
@@ -215,13 +215,16 @@
       case orderStatus.SERVING:
           notice = '服务中，取消将扣取25%订金,且需对方同意后生效'; break;
       case orderStatus.CANCELING:
-          notie = '同意取消订单后您将获取' + getMoneyString(order.deposit) + '的订金'; break;
+          notice = '同意取消订单后您将获取' + getMoneyString(order.deposit) + '￥的订金'; break;
       default:
           throw new error('not a status for canceling');
     }
-    let res = await promisify(uni.showModal, {content: notice, title: '提示'});
-    if (res.cancel) return;
-    uni.showLoading();
+    let res;
+    if (query) {
+      res = await promisify(uni.showModal, {content: notice, title: '提示'});
+      if (res.cancel) return;
+    }
+    uni.showLoading({mask:true});
     res = await orderAssistant.cancel({orderId: order._id, status: order.status})
     uni.hideLoading();
     if (res.success) await that.promisify(uni.showModal, {title: '提示', content: '操作成功', showCancel: false});
@@ -231,6 +234,13 @@
   
   const payEvent = 'createOrderPay';
   async function create() {
+    const window = 1000 * 60 * 5;
+    let limitTime = Number(new Date()) - window;
+    if (order.expireTime < limitTime) {
+      await promisify(uni.showModal, {content: '离订单自动取消时间过近，请重新下单', title:'提示', showCancel: false});
+      await cancel(false);
+      return;
+    }
     let res = await promisify(uni.showModal, {content: '付款后取消订单将会扣取25%费用', title: '提示'});
     if (res.cancel) return;
     const paras = "amount=" + order.totalCost + "&eventName=" + payEvent;
@@ -240,7 +250,7 @@
   async function postPay(e) {
     eventBus.$off(payEvent);
     if (e.success) {
-      uni.showLoading();
+      uni.showLoading({mask:true});
       let res = await orderAssistant.create({orderId: order._id});
       uni.hideLoading();
       uni.showModal({
@@ -264,11 +274,11 @@
   }
   
   async function postEvaluate(e) {
+    const orderId = order._id;
     globalEventBus.$off(evalEvent)
     if (!e.success) return;
-    uni.showLoading();
+    uni.showLoading({mask:true});
     const { comment, score } = e;
-    const orderId = order._id;
     const res = await orderAssistant.evaluate({orderId, comment, score});
     uni.hideLoading();
     if (res.success) {await that.promisify(uni.showModal, {title: '提示', content: '评价成功'})}

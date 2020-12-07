@@ -163,6 +163,10 @@
         page.colorMain = color.MAIN;
         mapContext = uni.createMapContext('map');
     },
+    
+    onUnload: function() {
+      shareData.clear();
+    },
         
     onShow: function() {
       page.mapMarkers = [
@@ -227,6 +231,15 @@
         return 100;
       },
       
+      expireTimeTypeChange: function(e) {
+          if (e.detail.value == 0) {
+              page.assignExpireTime = false;
+              page.expireTime = null;
+          } else {
+              page.assignExpireTime = true;
+          }
+      },
+      
       confirm: async function(e) {
           let notice;
           if (!dev) {
@@ -253,7 +266,9 @@
               return;
           }
           
-          uni.showLoading();
+          uni.showLoading({mask:true});
+          
+          const expireWindow = 1000 * 60 * 5;
           
           const serviceType = _serviceType.OTHER_SERVICE;
           const address = shareData.address[0];

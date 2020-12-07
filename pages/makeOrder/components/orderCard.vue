@@ -108,8 +108,16 @@
                 <view class="title">小费</view>
                 <view>{{ getMoneyString(orderObj.cost.tip) }}￥</view>
             </view>
+            
+            <view class="row" v-if="orderObj.status==_orderStatus.SERVING">提示：若无法当面完成交易，服务完成后请及时将订单验证码通过短信告知对方</view>
+            <view class="row" v-if="orderObj.serverMobile && orderObj.serverMobile!=null">
+              <view class="title">对方手机</view>
+              <view>{{ orderObj.serverMobile }}</view>
+            </view>
                     
         </view>
+        
+        
         
         <view class="row orderId">
             订单编号：{{ orderObj._id }}
@@ -166,6 +174,7 @@
                 activeButton: null,
                 showCancel: null,
                 sensitiveInfo: [],
+                _orderStatus: null
             }
         },
         methods: {
@@ -198,6 +207,7 @@
           that = this;
         },
         created: function() {
+            that._orderStatus = orderStatus;
             that.orderObj = parseOrder(that.order);
             that.serviceType = serviceType;
             that.color = color;
@@ -247,10 +257,10 @@
                     that.showCancel = false;
                     break;
                 case orderStatus.CANCELING:
-                    if (orderStatus.cancelSide == 0) {
+                    if (that.order.cancelSide == 0) {
                         that.activeButton = false;
                         that.buttonText = '等待取消';
-                    } else {
+                    } else if (that.order.cancelSide == 1){
                       activeButton = true;
                         that.activeButton = true;
                         that.buttonText = '同意取消';

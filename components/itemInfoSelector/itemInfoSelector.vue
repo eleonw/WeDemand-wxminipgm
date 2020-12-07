@@ -246,7 +246,8 @@
         height: 140rpx;
         border: 1px solid var(--color-main);
         border-radius: 2px;
-        
+        width: auto;
+        padding: 10rpx;
         margin: 10rpx 0;
     }
         

@@ -275,10 +275,9 @@ export async function getIp() {
 
 export const wxPaymentAssistant = {
   payWithWx: async function(arg) {
-    // const { amount } = arg;
+    console.log('payWithWx')
     const amount = arg.amount;
     const ip = await getIp()
-    console.log(ip)
     let res = await promisify(wx.cloud.callFunction, {
       name: 'initWxPay',
       data: { amount, ip }
@@ -394,18 +393,25 @@ export const orderAssistant_creater = {
             const result = res.result;
             if (!result.success) {
               let message;
+              c
               switch(res.code) {
-                case -2: message = '订单状态错误，请刷新重试'; break;
-                default: message = '操作失败，请重试'; break;
+                case -2: 
+                  message = '订单状态错误，请刷新重试';
+                  break;
+                default: 
+                  message = '操作失败，请重试'; 
+                  console.log(1); 
+                  break;
               }
               result.message = message;
             }
             return result;
         } catch(e) {
+            console.log(e)
             return {
-                success: false,
-                code: -1,
-                message: '操作失败，请重试'
+              success: false,
+              code: -1,
+              message: '操作失败，请重试'
             }
         }
         
@@ -676,56 +682,63 @@ export const orderAssistant_server = {
 
 export const addressBookAssistant = {
     getAddressBook: async function(arg) {
-        const res = await uniCloud.callFunction({
-            name: 'addressBookService',
-            data: {
-                type: 3,
-                userId: arg.userId
-            }
-        });
-        const addressBook = [];
- 
-        for (let addressRec of res.result) {
-            addressBook.push(addressRec);
-        }
-        return addressBook;
+      console.log('getAddressBook')
+      const userId = userInfo._id;
+      const res = await uniCloud.callFunction({
+          name: 'addressBookService',
+          data: {
+              type: 3,
+              userId
+          }
+      });
+      const addressBook = [];
+      console.log(res)
+      for (let addressRec of res.result) {
+          addressBook.push(addressRec);
+      }
+      return addressBook;
     },
     
     addToAddressBook: async function(arg) {
-        
+      console.log('addToAddressBook')
+        const userId = userInfo._id;
         
         const res = await uniCloud.callFunction({
             name: 'addressBookService',
             data: {
                 type: 0,
-                userId: userInfo._id,
                 address: arg.address,
+                userId,
             }
         });
+        console.log(res)
 
         return res.result;
     },
     
     updateAddressBook: async function(arg) {
-        const res = await uniCloud.callFunction({
-            name: 'addressBookService',
-            data: {
-                type: 1,
-                recId: arg.recId,
-                address: arg.address,
-            }
-        })
-        console.log(res);
+      console.log('updateAddressBook')
+      const res = await uniCloud.callFunction({
+          name: 'addressBookService',
+          data: {
+              type: 1,
+              recId: arg.recId,
+              address: arg.address,
+          }
+      })
+      console.log(res);
     },
     
     removeAddress: async function(arg) {
-        await uniCloud.callFunction({
-            name: 'addressBookService',
-            data: {
-                type: 2,
-                recId: arg.recId
-            }
-        });
+      console.log('removeAddressBook')
+      let res = await uniCloud.callFunction({
+          name: 'addressBookService',
+          data: {
+              type: 2,
+              recId: arg.recId
+          }
+      });
+      console.log(res)
     },
 }
 

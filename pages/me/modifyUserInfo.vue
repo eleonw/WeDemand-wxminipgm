@@ -28,7 +28,7 @@
           uni.showModal({title: '提示', content: '昵称不能为空', showCancel: false})
           return;
         }
-        uni.showLoading();
+        uni.showLoading({mask:true});
         let res = await modifyUserInfo({update: {nickname: that.nickname}});
         uni.hideLoading();
         if (res.success) {

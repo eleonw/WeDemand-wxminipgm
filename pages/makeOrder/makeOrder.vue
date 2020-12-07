@@ -34,26 +34,26 @@
     },
 		data() {
 			return {
-                selectedTabIndex: 1,
+        selectedTabIndex: 0,
 				mainTabs: [
-                    {
-                        index: 0,
-                        text: '新的订单',
-                        iconPath: '/static/image/icon/home.png',
-                        selectedIconPath: '/static/image/icon/home_sel.png'
-                    },
-                    {
-                        index: 1,
-                        text: '我的订单',
-                        iconPath: '/static/image/icon/me.png',
-                        selectedIconPath: '/static/image/icon/me_sel.png'
-                    }
-                ],
+          {
+              index: 0,
+              text: '新的订单',
+              iconPath: '/static/image/icon/home.png',
+              selectedIconPath: '/static/image/icon/home_sel.png'
+          },
+          {
+              index: 1,
+              text: '我的订单',
+              iconPath: '/static/image/icon/me.png',
+              selectedIconPath: '/static/image/icon/me_sel.png'
+          }
+        ],
                 
 			}
 		},
         methods: {
-            tabChange(e) {
+            tabChange: function(e) {
                 if (e.index == 0) {
                     eventBus.$off('startPullDownRefresh');
                 } else {
@@ -95,8 +95,11 @@
         },
         
         beforeCreate: function() {
-            page = this;
-            shareData.getAddressBook();
+          page = this;
+        },
+        
+        created: function() {
+          shareData.getAddressBook();
         },
         
         onShow: function() {

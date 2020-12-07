@@ -9,10 +9,10 @@
 
       <view class="payMethod">
           <radio-group class="main" @change="methodChange">
-              <view class="item" :class="{activeItem: method==PayMethod.WX}">
+<!--              <view class="item" :class="{activeItem: method==PayMethod.WX}">
                   <view class="itemTitle">微信支付</view>
                   <radio class="radio" :value="PayMethod.WX" :checked="method==PayMethod.WX" :color="colorMain"/>
-              </view>
+              </view> -->
               <view class="item" :class="{activeItem: method==PayMethod.BALANCE}">
                   <view class="itemTitle">{{ balancePayString }}</view>
                   <radio class="radio" :value="PayMethod.BALANCE" :checked="method==PayMethod.BALANCE" :color="colorMain"/>
@@ -43,7 +43,7 @@
         amountString: null,
         balance: null,
         amount: null,
-				method: PayMethod.WX,
+				method: null,
         PayMethod: PayMethod,
         balancePayString: '余额支付',
         colorMain: null,
@@ -65,9 +65,7 @@
     },
     
     onShow: async function() {
-        uni.showLoading({
-            mask: true
-        });
+        uni.showLoading({mask: true});
         await initialBalanceRelevant();
         uni.hideLoading();
     },
@@ -114,7 +112,9 @@
     confirm: async function() {
         switch (that.method) {
             case PayMethod.BALANCE: {
+                uni.showLoading({mask: true})
                 const res = await balanceAssistant.payWithBalance({amount: that.amount});
+                uni.hideLoading();
                 if (res.success) {
                     uni.showToast({ title: '支付成功' })
                     setTimeout(() => {
@@ -134,9 +134,10 @@
                         } 
                     })
                 }
+                break;
             }
             case PayMethod.WX: {
-              uni.showLoading();
+              uni.showLoading({mask:true});
               const res = await wxPaymentAssistant.payWithWx({amount: that.amount})
               uni.hideLoading();
               if (res.success) {

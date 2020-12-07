@@ -27,9 +27,12 @@
     
     let page;
     async function checkToken() {
+
         const token = uni.getStorageSync('uniIdToken');
         if (token) {
+            uni.showLoading();
             const res = await loginAssistant.loginWithToken({token});
+            uni.hideLoading()
             if (res.success) {
                 setUserInfo(res.userInfo);
                 if (res.token) {
@@ -63,7 +66,6 @@
       await page.wxLogin();
       await page.authorizeLocation();
       const tokenLogin = await checkToken();
-      await page.authorizeLocation();
       if (tokenLogin) {
           await promisify(uni.redirectTo, {url: '/pages/index/index'});
       }

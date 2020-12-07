@@ -175,6 +175,10 @@
             {
               "name": "me",
               "path": "pages/me/me"
+            },
+            {
+              "name": "pay",
+              "path": "pages/pay/pay"
             }
         ]
     }

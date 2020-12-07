@@ -1,7 +1,7 @@
 const db = uniCloud.database()
 const dbCmd = db.command
-const activeOrder = db.collection('active-order');
 const inactiveOrder = db.collection('inactive-order');
+const createdOrder = db.collection('created-order');
 const balance = db.collection('balance');
 
 const gapTime = 1000 * 60 * 4;
@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
   const now = Number(new Date())
   const limit = now + gapTime;
   
-  let res = await activeOrder.where({
+  let res = await createdOrder.where({
     status: 1,
     expireTime: dbCmd.lte(limit)
   }).get()
@@ -22,7 +22,7 @@ exports.main = async (event, context) => {
     await db.runTransaction(async transaction => {
       try {
         await balance.doc(order.createrId).update({balance: dbCmd.inc(order.totalCost)})
-        await activeOrder.doc(order._id).remove()
+        await createdOrder.doc(order._id).remove()
         await inactiveOrder.add(order)
       } catch(e) {
         console.log(e)

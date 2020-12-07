@@ -152,7 +152,7 @@
                 } else {
                     
                     try {
-                        uni.showLoading();
+                        uni.showLoading({mask:true});
                         await shareData.updateAddressBook({
                             index: targetIndex,
                             address: page.address,

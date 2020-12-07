@@ -124,25 +124,22 @@ const shareData = {
     
     getAddressBook: async function() {
         try {
-            this.addressBook = await addressBookAssistant.getAddressBook({
-                userId: userInfo._id
-            });
+            this.addressBook = await addressBookAssistant.getAddressBook();
             for (let i = this.addressBook.length-1; i >= 0; i--) {
                 this.addressBook[i].address = new Address(this.addressBook[i].address);
             }
             this.addressBookFailure = false;
         } catch(e) {
-            console.log('fail to get addressbook: ');
-            console.log(e)
             this.addressBook = [];
             this.addressBookFailure = true;
         }
         
     },
-    
+   
     addToAddressBook: async function(address) {
         if (this.addressBook.length >= 10) {
             return {
+              success: false,
                 exceed: true,
             }
         } else {
@@ -150,6 +147,7 @@ const shareData = {
             address = beanify(address);
             const res = await addressBookAssistant.addToAddressBook({address: address});
             this.addressBook.push({_id: res.id, address: new Address(address)});
+            return {success: true}
         }
     },
     

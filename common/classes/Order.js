@@ -11,6 +11,7 @@ function Order(arg={}) {
     
     this.createrId = arg.createrId;
     this.serverId = arg.serverId;
+    this.serverMobile = arg.serverMobile;
     
     this.createTime = arg.createTime;
     this.expireTime = arg.expireTime;

@@ -17,6 +17,7 @@
   let that;
   let eventName;
   
+  let success = false;
   
 	export default {
     components: {uniNavBar},
@@ -28,7 +29,6 @@
 		},
 		methods: {
       navigateBack: function() {
-        eventBus.$emit(eventName, {success: false});
         uni.navigateBack();
       },
 			confirm: async function() {
@@ -47,6 +47,7 @@
             if (res.confirm) return;
           }
           eventBus.$emit(eventName, {success: true, score, comment});
+          success = true;
           uni.navigateBack();
         }
       }
@@ -56,6 +57,10 @@
     },
     onLoad: function(e) {
       eventName = e.eventName
+    },
+    onUnload: function(e) {
+      if (!success) eventBus.$emit(eventName, {success: false});
+      
     }
     
 	}

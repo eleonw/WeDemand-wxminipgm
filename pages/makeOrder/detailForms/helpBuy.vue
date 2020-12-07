@@ -63,7 +63,7 @@
                 <view class="formItem lastFormItem">
                     <view class="formItemTitle">预估价格</view>
                     <view class="formItemRight">
-                        <navigatorWithPlaceholder :content="getCommodityPriceString()" placeholder="预估商品价格" @click.native="showSelector('commodityPrice')"></navigatorWithPlaceholder>
+                        <navigatorWithPlaceholder :content="getCommodityPriceString()" placeholder="由对方垫付，送达后当面支付" @click.native="showSelector('commodityPrice')"></navigatorWithPlaceholder>
                     </view>
                 </view>
             </view>

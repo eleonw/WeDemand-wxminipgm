@@ -221,6 +221,7 @@
             getBasicCost: function() {
                 return 100;
             },
+            
             expireTimeTypeChange: function(e) {
                 if (e.detail.value == 0) {
                     page.assignExpireTime = false;
@@ -257,7 +258,9 @@
                     return;
                 }
                 
-                uni.showLoading();
+                const expireWindow = 1000 * 60 * 5;
+                
+                uni.showLoading({mask: true});
                 const fromAddress = shareData.address[0];
                 const toAddress = shareData.address[1];
                 const serviceType = _serviceType.HELP_DELIVER;
@@ -267,7 +270,7 @@
                 const sensitiveInfo = page.sensitiveInfo;
                 const note = page.note;
                 const couponId = page.coupon ? page.coupon.id : null;
-                const expireTime = page.expireTime;
+                const expireTime = page.assignExpireTime ? page.expireTime : page.endTime;
                 const cost = {
                     tip: page.tip,
                     basic: page.getBasicCost(),
@@ -345,6 +348,10 @@
                 points: page.mapMarkers,
                 padding: [80, 30, 120, 30],
             });
+        },
+        
+        onUnload: function() {
+          shareData.clear();
         }
     }
     

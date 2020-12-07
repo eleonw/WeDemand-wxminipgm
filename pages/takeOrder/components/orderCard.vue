@@ -205,7 +205,7 @@
               that.showSensitive = false;
             }
             
-            switch(that.orderObj.status) {
+            switch(that.order.status) {
               case orderStatus.INITIALING:
                 that.buttonText = '尚未创建';
                 that.activeButton = false;
@@ -251,14 +251,14 @@
                 that.showCancel = false;
                 break;
               case orderStatus.CANCELING:
-                if (that.orderObj.canelSide == 1) {
+                if (that.order.cancelSide == 1) {
                   that.buttonText = '等待取消';
                   that.activeButton = false;
-                } else {
+                } else if (that.order.cancelSide == 0){
                   that.buttonText = '同意取消';
                   that.activeButton = true;
                   activeButton = true;
-                }
+                } 
                 that.showCancel = false;
                 break;
               case orderStatus.EXCEPTION:

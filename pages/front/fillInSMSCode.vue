@@ -1,4 +1,4 @@
-<template>
+ <template>
 	<view class="root page">
         
         <statusBar></statusBar>
