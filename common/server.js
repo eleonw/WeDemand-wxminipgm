@@ -283,6 +283,7 @@ export const wxPaymentAssistant = {
       data: { amount, ip }
     })
     if (!res.result || !res.result.success) { return {success: false}  }
+    console.log('initWxPay');
     console.log(res)
     const { payment, outTradeNo } = res.result;
     
@@ -297,7 +298,8 @@ export const wxPaymentAssistant = {
         }
       })
     })
-    console.log(res)
+    console.log('requestPay');
+    console.log(res);
     if (res.success) { return {success: true} }
     else { return { success: false } }
   }
@@ -393,7 +395,6 @@ export const orderAssistant_creater = {
             const result = res.result;
             if (!result.success) {
               let message;
-              c
               switch(res.code) {
                 case -2: 
                   message = '订单状态错误，请刷新重试';
@@ -487,13 +488,14 @@ export const orderAssistant_server = {
         const {
             limit, _createdListRec, fromStart
         } = arg;
+        const userId = userInfo._id
         const serviceType = this.serviceType.GET_CREATED_LIST;
         const side = 1;
         
         try {
             const res = await uniCloud.callFunction({
                 name: 'orderService',
-                data: { limit, _createdListRec, fromStart, serviceType, side },
+                data: { limit, _createdListRec, fromStart, serviceType, side, userId  },
             })
             console.log(res);
             return res.result;

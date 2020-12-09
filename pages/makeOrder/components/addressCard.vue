@@ -26,6 +26,7 @@
     
     import Address from "@/common/classes/Address.js";
 
+    let that = null;
     
 	export default {
         name: 'addressCard',
@@ -35,7 +36,13 @@
         props: {
         },
         methods: {
-            addressClick: function(index) {
+            addressClick: async function(index) {
+              if (!getApp().globalData.login) {
+                let res = await that.promisify(uni.showModal, {title: '提示', content: '您还没有登录，无法下单，是否前往登录？'})
+                if (res.confirm) { uni.reLaunch({url: '/pages/front/front'}); }
+                return;
+              }
+                
                 console.log('addressClick');
                 if (shareData.addressCardLock) {
                     console.log('location parsing');
@@ -49,8 +56,13 @@
                     }
                 })
             },
-            listClick: function(index) {
+            listClick: async function(index) {
                 console.log('list click');
+                if (!getApp().globalData.login) {
+                  let res = await that.promisify(uni.showModal, {title: '提示', content: '您还没有登录，无法下单，是否前往登录？'})
+                  if (res.confirm) { uni.reLaunch({url: '/pages/front/front'}); }
+                  return;
+                }
                 if (shareData.addressCardLock) {
                     console.log('location parsing');
                     return null;
@@ -94,9 +106,13 @@
                 }
 			};
 		},
-        created: function() {
-            this.shareData = shareData;
-        }
+    created: function() {
+        this.shareData = shareData;
+    },
+    beforeCreate: function() {
+      that = this;
+    }
+        
 	}
 </script>
 

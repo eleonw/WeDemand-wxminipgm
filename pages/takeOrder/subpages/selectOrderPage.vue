@@ -57,6 +57,11 @@
       },
       
       takeOrder: async function(index) {
+        if (!getApp().globalData.login) {
+          let res = await that.promisify(uni.showModal, {title: '提示', content: '您还未登录，是否登陆后进行接单？'});
+          if (res.confirm) {uni.reLaunch({url: '/pages/front/front'})}
+          return;
+        }
         const order = that.orderList[index]
         orderId = order._id;
         if (order.status != orderStatus.CREATED) { return; }

@@ -106,8 +106,8 @@
             
             
             <view class="row">
-                <view class="title">小费</view>
-                <view>{{ getMoneyString(orderObj.cost.tip) }}￥</view>
+                <view class="title">订单费用</view>
+                <view>{{ getMoneyString(orderObj.totalCost) }}￥</view>
             </view>
                     
         </view>

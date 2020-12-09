@@ -233,6 +233,7 @@
             
             
             confirm: async function(e) {
+                uni.showLoading({mask:true})
                 let notice;
                 if (!dev) {
                     if (!shareData.completed[0]) {
@@ -251,6 +252,7 @@
                 }
                 
                 if (notice) {
+                    uni.hideLoading();
                     uni.showToast({
                         title: notice,
                         icon: 'none',
@@ -260,7 +262,6 @@
                 
                 const expireWindow = 1000 * 60 * 5;
                 
-                uni.showLoading({mask: true});
                 const fromAddress = shareData.address[0];
                 const toAddress = shareData.address[1];
                 const serviceType = _serviceType.HELP_DELIVER;
@@ -360,13 +361,13 @@
       let res;
       if (e.success) { res = await orderAssistant.create({orderId: orderId}); }
       const url = './result?success=true&orderId=' + orderId;
-      uni.hideLoading();
       if (e.success) {
           shareData.clear();
           uni.redirectTo({url})
       } else {
           uni.navigateTo({url})
       }
+      uni.hideLoading();
     }
 
 </script>

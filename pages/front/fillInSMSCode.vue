@@ -80,6 +80,7 @@
                     console.log('login success');
                     setUserInfo(res.userInfo);
                     console.log(res.userInfo)
+                    getApp().globalData.login = true;
                     uni.setStorageSync('uniIdToken', res.token);
                     uni.reLaunch({
                         url: '/pages/index/index'

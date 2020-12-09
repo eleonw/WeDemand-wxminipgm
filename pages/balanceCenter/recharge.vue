@@ -45,30 +45,31 @@
         if (that.showNotice) {
           that.showNotice = false;
           that.showNotice = true;
-        } else {
-          let res = await balanceAssistant.rechargeBalance({amount: 0, test: true});
-          if (!res.success) {
-            console.log(res)
-            that.loginStatusFailure();
-            return;
-          }
-          uni.showLoading();
-          res = await wxPaymentAssistant.payWithWx({amount: that.amount});
-          if (!res.success) { uni.showModal({content: '支付失败'}); uni.hideLoading(); return }
-          await balanceAssistant.rechargeBalance({amount: that.amount});
+          return;
+        }
+        uni.showLoading({mask:true});
+        let res = await balanceAssistant.rechargeBalance({amount: 0, test: true});
+        if (!res.success) {
+          console.log(res)
           uni.hideLoading();
-          if (res.success) {
-            uni.showToast({ title:'充值成功'})
-            setTimeout(()=>{uni.navigateBack();}, 1000);
+          that.loginStatusFailure();
+          return;
+        }
+        res = await wxPaymentAssistant.payWithWx({amount: that.amount});
+        if (!res.success) { uni.showModal({content: '支付失败'}); uni.hideLoading(); return }
+        await balanceAssistant.rechargeBalance({amount: that.amount});
+        uni.hideLoading();
+        if (res.success) {
+          await that.promisify(uni.showModal, {title: '提示', content: '充值成功', showCancel: false})
+          uni.navigateBack();
+        } else {
+          if (res.code == -2) {
+            that.loginStatusFailure();
           } else {
-            if (res.code == -2) {
-              that.loginStatusFailure();
-            } else {
-              uni.showModal({
-                content: res.message,
-                showCancel: false,
-              })
-            }
+            uni.showModal({
+              content: res.message,
+              showCancel: false,
+            })
           }
         }
       }

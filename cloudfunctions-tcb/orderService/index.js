@@ -158,7 +158,6 @@ async function evaluate(opt) {
     let userIdField
     switch(side) {
       case _side.CREATER: 
-        console.log('1')
         scoreField = 'createrScore';
         commentField = 'createrComment';
         userIdField = 'createrId';
@@ -186,18 +185,17 @@ async function evaluate(opt) {
     }
 
     try {
-      await transaction.collection('order-comment').doc(orderId).set({
+      await orderComment.doc(orderId).set({
         [scoreField]: score,
         [commentField]: comment
       })
-      await transaction.collection('inactive-order').doc(orderId).update({status, evalStatus});
+      await inactiveOrder.doc(orderId).update({status, evalStatus});
     } catch(e) {
       return {success: false, code: -1, error: e};
     }
-
-    const userTab = db.collection('uni-id-users');
+    
     try {
-      await userTab.doc(order[userIdField]).update({orderCount: dbCmd.inc(1)})
+      await uniIdUsers.doc(userId).update({orderCount: dbCmd.inc(1)})
     } catch(e) {
       console.log(e);
     }

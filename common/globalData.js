@@ -89,3 +89,4 @@ export const PayMethod = {
     BALANCE: 1,
     WX: 2,
 }
+

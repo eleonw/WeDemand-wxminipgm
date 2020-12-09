@@ -42,20 +42,21 @@
     
     display: flex;
     
+    
     padding-top: 300rpx;
     padding-bottom: 400rpx;
   }
   
   .notice {
-    font-size: 50rpx;
-    width: 90%;
+    font-size: 45rpx;
+    width: 85%;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   
   .confirm {
-    font-size: 60rpx;
+    font-size: 55rpx;
     text-align: center;
     color: var(--color-main);
     background-color: white;
