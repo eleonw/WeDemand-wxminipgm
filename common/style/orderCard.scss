@@ -1,0 +1,130 @@
+.root {
+    display: flex;
+    flex-flow: column nowrap;
+    
+    justify-content: flex-start;
+    align-items: stretch;
+    
+    width: 700rpx;
+    background-color: white;
+    
+    overflow: hidden;
+    
+    font-size: 30rpx;
+    box-shadow: 0 5px 10px 2px gray;
+    
+    .header {
+        height: 90rpx;
+        line-height: 90rpx;
+        font-size: 35rpx;
+        
+        background-color: var(--color-main);
+        display: flex;
+        flex-flow: row nowrap;
+        
+        padding: 0 20rpx;
+        
+        
+        color: white;
+        
+        .orderType {
+            font-weight: 600;
+        }
+        
+        .orderStatus {
+            margin-left: auto;
+        }
+        
+    }
+    
+    .row {
+        display: flex;
+        flex-flow: row nowrap;
+        
+        align-items: flex-start;
+        margin: 20rpx;
+        
+        .textIcon {
+            margin-right: .5em;
+        }
+        
+        .addressMain {
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        
+        view {
+          width: 500rpx
+        }
+        
+        .title {
+            
+            width: 130rpx;
+            margin-right: .3em;
+            padding-right: 10rpx;
+            
+            
+            text-align: justify;
+            text-align-last: justify;
+            
+            border-right: var(--color-main) 1rpx solid;
+        }
+        
+    }
+    
+    .orderId {
+        margin-top: 5rpx;
+        font-size: 20rpx;
+        color: grey;
+        letter-spacing: 3rpx;
+    }
+    
+    
+    
+    .operations {
+        width: 650rpx;
+        // background-color: orange;
+        
+        display: flex;
+        flex-direction: row;
+
+        align-items: flex-end;
+        
+        .button {
+            
+            margin-left: auto;
+
+            font-size: 35rpx;
+            width: 300rpx;
+            height: 60rpx;
+            line-height: 60rpx;
+            background-color: grey;
+            color: white;
+            
+            text-align: center;
+            
+            letter-spacing: 20rpx;
+            font-weight: 600;
+            
+            border-radius: 10rpx;
+        }
+        
+        .active {
+            background-color: var(--color-main);
+        }
+        
+        .cancelOrder {
+            width: 4.5em;
+            grid-row: 1;
+            grid-column: 3;
+            color: grey;
+            font-size: 25rpx;
+            border-bottom: solid 1px grey;
+            text-align: center;
+        }
+    }
+    
+    
+        
+        
+}
