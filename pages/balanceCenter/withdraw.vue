@@ -2,7 +2,7 @@
 	<view class="root page">
     <view class="head">余额满20元后可扫码添加工作人员微信提现</view>
     <view class="notice">请备注：微叮当提现+（账户手机号码）</view>
-    <image src="../../static/image/ethan.jpg" class="code"></image>
+    <image src="../../static/image/serviceAccount.jpg" class="code"></image>
     <!-- <view class="title">请输入金额</view>
     <view class="amount">
       <view>￥</view>

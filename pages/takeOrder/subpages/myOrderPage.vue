@@ -248,7 +248,7 @@
       userInfo.orderCount += 1;
       await that.promisify(uni.showModal, {title: '提示', content: '操作成功', showCancel: false})
     }
-    else {await that.promisify(uni.showModal, {title: '提示', content: '操作失败，请重试', showCancel: false })}
+    else {await that.promisify(uni.showModal, {title: '提示', content: '系统繁忙，请稍后重试', showCancel: false })}
     await that.getOrderList(true);
   }
    

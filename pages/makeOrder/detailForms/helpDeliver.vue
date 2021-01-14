@@ -72,7 +72,7 @@
                         <view v-if="assignExpireTime">
                             <navigatorWithPlaceholder :content="getTimeString(2)" placeholder="请选择取消时间"  @click.native="showSelector('expireTime')"></navigatorWithPlaceholder>
                         </view>
-                        <view else>
+                        <view v-else>
                             {{ getTimeString(1) }}
                         </view>
                     </view>
@@ -219,7 +219,7 @@
      
             
             getBasicCost: function() {
-                return 100;
+                return 190;
             },
             
             expireTimeTypeChange: function(e) {
@@ -293,6 +293,7 @@
                     const paras = 'amount=' + totalCost + "&eventName=" + payEventName;
                     eventBus.$on(payEventName, postPay)
                     uni.navigateTo({url: '/pages/pay/pay?' + paras});
+                    shareData.clear();
                 }
             },
             
@@ -359,14 +360,13 @@
     async function postPay(e) {
       eventBus.$off(payEventName);
       let res;
-      if (e.success) { res = await orderAssistant.create({orderId: orderId}); }
-      const url = './result?success=true&orderId=' + orderId;
-      if (e.success) {
-          shareData.clear();
-          uni.redirectTo({url})
+      let url;
+      if (e.success) { res = await orderAssistant.create({orderId: orderId});
+        url = './result?success=true&orderId=' + orderId;
       } else {
-          uni.navigateTo({url})
+        url = './result?success=false&orderId=' + orderId;
       }
+      uni.redirectTo()({url})
       uni.hideLoading();
     }
 

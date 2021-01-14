@@ -88,11 +88,11 @@
                 </view>
             </view>
             <view class="row">
-                <view class="title">服务时间</view>
+                <view class="title">帮助时间</view>
                 <view>{{ getTimeRangeString() }}</view>
             </view>
             <view class="row">
-                <view class="title">服务内容</view>
+                <view class="title">帮助内容</view>
                 <view>{{ orderObj.serviceDesc }}</view>
             </view>
             </view>
@@ -199,7 +199,7 @@
             that.serviceType = serviceType;
             that.color = color;
             that.sensitiveInfo = getSensitiveInfoArray(that.orderObj.sensitiveInfo)
-            if (that.orderObj.serverId == userInfo._id) {
+            if (that.orderObj.serverId == userInfo._id && userInfo._id != null) {
               that.showSensitive = true;
             } else {
               that.showSensitive = false;
@@ -218,13 +218,13 @@
                 that.showCancel = false;
                 break;
               case orderStatus.ACCEPTED:
-                that.buttonText = '开始服务';
+                that.buttonText = '开始帮助';
                 that.activeButton = true;
                 activeButton = true;
                 that.showCancel = true;
                 break;
               case orderStatus.SERVING:
-                that.buttonText = '完成服务';
+                that.buttonText = '完成帮助';
                 that.activeButton = true;
                 activeButton = true;
                 that.showCancel = true;

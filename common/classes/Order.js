@@ -2,7 +2,7 @@ import Address from '@/common/classes/Address.js';
 import Location from '@/common/classes/Location.js';
 
 import { orderStatus, serviceType } from '@/common/globalData.js';
-import { beanify } from '@/common/helper.js';
+import { beanify, weightAssistant } from '@/common/helper.js';
 
 function Order(arg={}) {
    
@@ -80,7 +80,11 @@ Order_HelpDeliver.prototype = new Order();
 Order_HelpDeliver.prototype.getItemInfoString = function() {
     let result = '';
     for (let item in this.itemInfo) {
+      if (item == 'weight') {
+        result = result + weightAssistant.getWeightString(this.itemInfo["weight"]);
+      } else {
         result = result + this.itemInfo[item] + '、';
+      }
     }
     return result == '' ? '' : result.slice(0, -1);
 }

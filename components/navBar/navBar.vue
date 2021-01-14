@@ -133,10 +133,10 @@
 <style scoped>
 	.uni-nav-bar-text {
 		/* #ifdef APP-PLUS */
-		font-size: 34rpx;
+		font-size: 40rpx;
 		/* #endif */
 		/* #ifndef APP-PLUS */
-		font-size: 32rpx;
+		font-size: 38rpx;
 		/* #endif */
 	}
 
