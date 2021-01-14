@@ -105,8 +105,8 @@
 
             
             <view class="row">
-                <view class="title">小费</view>
-                <view>{{ getMoneyString(orderObj.cost.tip) }}￥</view>
+                <view class="title">订单费用</view>
+                <view>{{ getMoneyString(orderObj.totalCost) }}￥</view>
             </view>
             
             <view class="row" v-if="orderObj.status==_orderStatus.SERVING">提示：若无法当面完成交易，服务完成后请及时将订单验证码通过短信告知对方</view>

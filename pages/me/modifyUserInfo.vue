@@ -37,6 +37,7 @@
         } else {
           uni.showModal({title: '提示', content:'操作失败，请重试', showCancel:false})
         }
+        uni.navigateBack();
       }
 		},
     beforeCreate: function() {

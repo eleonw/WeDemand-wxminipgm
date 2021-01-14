@@ -47,6 +47,7 @@
               const res = await loginAssistant.logout();
               if (res.success) {
                   uni.removeStorageSync('uniIdToken');
+                  getApp().globalData.login = false;
                   uni.reLaunch({ url: '/pages/front/front'});
               } else {
                   uni.showToast({

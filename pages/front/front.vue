@@ -1,5 +1,6 @@
 <template>
     <view class="root page">
+        <image src="../../static/image/weidingdang_white.png" mode="aspectFit" class="icon"></image>
         
         <!-- <view class="pass" @click="pass"></view> -->
         
@@ -7,6 +8,7 @@
             <view class="title">输入手机号码</view>
             <input class="mobile" v-model="mobile" @input="mobileChange"></input>
         </view>
+        <view class="button browse" @click="browse">随便逛逛</view>
         <view class="button" @click="loginWithSmsCode">使用手机登录</view>
         
     </view>
@@ -67,6 +69,7 @@
       await page.authorizeLocation();
       const tokenLogin = await checkToken();
       if (tokenLogin) {
+          getApp().globalData.login = true;
           await promisify(uni.redirectTo, {url: '/pages/index/index'});
       }
     },
@@ -80,6 +83,10 @@
         uni.navigateTo({
           url: './fillInSmsCode?mobile=' + defaultMobile,
         });
+      },
+      
+      browse: function() {
+        uni.reLaunch({url: '/pages/index/index'});
       },
       
       loginWithSmsCode: async function() {
@@ -183,6 +190,13 @@
 </script>
 
 <style scoped>
+  
+  .icon {
+    position: fixed;
+    top: 130rpx;
+    width:400rpx;
+    height: 400rpx;
+  }
     
     .pass {
         width: 100rpx;
@@ -239,6 +253,10 @@
         border-radius: 20rpx;
         
         margin-bottom: 100rpx;
+    }
+    
+    .browse {
+      margin-bottom: 20rpx;
     }
 
 </style>

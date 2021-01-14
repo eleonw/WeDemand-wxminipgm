@@ -44,6 +44,7 @@
         takeOrder: '/pages/takeOrder/takeOrder',
         me: '/pages/me/me'
     }
+    let that;
     
 	export default {
         components: {
@@ -55,6 +56,9 @@
 				
 			}
 		},
+    beforeCreate: function() {
+      that = this;
+    },
     created: async function() {
       let res = await uni.showModal({
         title: '提示',
@@ -63,18 +67,24 @@
       })
     },
 		methods: {
-			navigateTo: function(page) {
-                uni.navigateTo({
-                    url: pageUrls[page],
-                })
-            },
+			navigateTo: async function(page) {
+          if (page == "me" && !getApp().globalData.login) {
+            let res = await that.promisify(uni.showModal, {title: '提示', content: '您还未登录，是否登陆后查看信息？'})
+            if (res.confirm) { uni.reLaunch({url: '/pages/front/front'}); }
+            return;
+          }
+          uni.navigateTo({
+              url: pageUrls[page],
+          })
+      },
             
 		},
         
-        beforeCreate: function() {
-            console.log('userInfo')
-            console.log(userInfo)
-        }
+    beforeCreate: function() {
+      that = this;
+      console.log('userInfo')
+      console.log(userInfo)
+    }
         
 
 	}

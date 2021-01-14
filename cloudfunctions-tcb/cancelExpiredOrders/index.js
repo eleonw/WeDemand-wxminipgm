@@ -12,23 +12,30 @@ exports.main = async (event, context) => {
   const now = Number(new Date())
   const limit = now + gapTime;
   
-  let res = await createdOrder.where({
-    status: 1,
-    expireTime: dbCmd.lte(limit)
-  }).get()
-  
-  for (let order of res.data) {
-    order.status = -2;
-    await db.runTransaction(async transaction => {
-      try {
-        await balance.doc(order.createrId).update({balance: dbCmd.inc(order.totalCost)})
-        await createdOrder.doc(order._id).remove()
-        await inactiveOrder.add(order)
-      } catch(e) {
-        console.log(e)
-        transaction.rollback();
-      }
-    })
+  while (true) {
+    let res = await createdOrder.where({
+      status: 1,
+      expireTime: dbCmd.lte(limit)
+    }).limit(5).get()
+    
+    if (res.data.length == 0) {
+      break;
+    }
+    
+    res.data.map(async(order) => {
+      order.status = -2;
+      await db.runTransaction(async transaction => {
+        try {
+          await balance.doc(order.createrId).update({balance: dbCmd.inc(order.totalCost)})
+          await createdOrder.doc(order._id).remove()
+          await inactiveOrder.add(order)
+        } catch(e) {
+          console.log(e)
+          transaction.rollback();
+        }
+      })
+    });
   }
+  
   
 };

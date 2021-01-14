@@ -6,7 +6,7 @@ export default {
     },
     
     globalData: {
-        
+        login: false,
     },
     
 	onLaunch: function() {

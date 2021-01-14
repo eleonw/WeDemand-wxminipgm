@@ -57,6 +57,11 @@
       },
       
       takeOrder: async function(index) {
+        if (!getApp().globalData.login) {
+          let res = await that.promisify(uni.showModal, {title: '提示', content: '您还未登录，是否登陆后进行接单？'});
+          if (res.confirm) {uni.reLaunch({url: '/pages/front/front'})}
+          return;
+        }
         const order = that.orderList[index]
         orderId = order._id;
         if (order.status != orderStatus.CREATED) { return; }
@@ -70,7 +75,7 @@
         
         uni.showModal({
           title: '提示',
-          content: '接单需要支付25%订金，若接单后取消订单将会扣除，否则订单完成后将会返还至账户余额。此外，订单完成后，平台将收取20%服务费用。',
+          content: '接单需要支付25%订金，若接单后取消订单将会扣除，否则订单完成后将会返还至账户余额。此外，订单完成后，平台将收取30%服务费用。',
           complete: function(e) { 
             if (e.confirm) {
               const paras = 'eventName=' + payEventName + '&amount=' + order.deposit;

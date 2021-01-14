@@ -72,7 +72,7 @@
                         <view v-if="assignExpireTime">
                             <navigatorWithPlaceholder :content="getTimeString(2)" placeholder="请选择取消时间"  @click.native="showSelector('expireTime')"></navigatorWithPlaceholder>
                         </view>
-                        <view else>
+                        <view v-else>
                             {{ getTimeString(1) }}
                         </view>
                     </view>
@@ -219,7 +219,7 @@
      
             
             getBasicCost: function() {
-                return 100;
+                return 190;
             },
             
             expireTimeTypeChange: function(e) {
@@ -233,6 +233,7 @@
             
             
             confirm: async function(e) {
+                uni.showLoading({mask:true})
                 let notice;
                 if (!dev) {
                     if (!shareData.completed[0]) {
@@ -251,6 +252,7 @@
                 }
                 
                 if (notice) {
+                    uni.hideLoading();
                     uni.showToast({
                         title: notice,
                         icon: 'none',
@@ -260,7 +262,6 @@
                 
                 const expireWindow = 1000 * 60 * 5;
                 
-                uni.showLoading({mask: true});
                 const fromAddress = shareData.address[0];
                 const toAddress = shareData.address[1];
                 const serviceType = _serviceType.HELP_DELIVER;
@@ -292,6 +293,7 @@
                     const paras = 'amount=' + totalCost + "&eventName=" + payEventName;
                     eventBus.$on(payEventName, postPay)
                     uni.navigateTo({url: '/pages/pay/pay?' + paras});
+                    shareData.clear();
                 }
             },
             
@@ -358,15 +360,14 @@
     async function postPay(e) {
       eventBus.$off(payEventName);
       let res;
-      if (e.success) { res = await orderAssistant.create({orderId: orderId}); }
-      const url = './result?success=true&orderId=' + orderId;
-      uni.hideLoading();
-      if (e.success) {
-          shareData.clear();
-          uni.redirectTo({url})
+      let url;
+      if (e.success) { res = await orderAssistant.create({orderId: orderId});
+        url = './result?success=true&orderId=' + orderId;
       } else {
-          uni.navigateTo({url})
+        url = './result?success=false&orderId=' + orderId;
       }
+      uni.redirectTo()({url})
+      uni.hideLoading();
     }
 
 </script>

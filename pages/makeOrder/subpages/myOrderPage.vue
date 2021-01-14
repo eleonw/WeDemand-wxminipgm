@@ -18,7 +18,7 @@
   import globalEventBus from '@/common/eventBus.js';
   
   import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js'; 
-  import { orderStatus } from '@/common/globalData.js';
+  import { orderStatus, userInfo } from '@/common/globalData.js';
   import shareData from '../shareData.js';
   import { orderAssistant_creater as orderAssistant } from '@/common/server.js';
   
@@ -94,6 +94,11 @@
         that = this;
     },
     created: async function() {
+      if (!getApp().globalData.login) {
+        let res = await that.promisify(uni.showModal, {title: '提示', content: '您还没有登录，是否登录？'})
+        if (res.confirm) { uni.reLaunch({url: '/pages/front/front'})};
+        return;
+      }
       await that.getOrderList({fromStart: true});
     },
     beforeMount: async function() {
@@ -268,6 +273,7 @@
   
   const evalEvent = 'createrEvalOrder';
   function evaluate() {
+    uni.showLoading({mask:true})
     const paras = 'eventName=' + evalEvent;
     globalEventBus.$on(evalEvent, postEvaluate);
     uni.navigateTo({url: '/pages/evaluateOrder/evaluateOrder?' + paras});
@@ -276,13 +282,17 @@
   async function postEvaluate(e) {
     const orderId = order._id;
     globalEventBus.$off(evalEvent)
-    if (!e.success) return;
-    uni.showLoading({mask:true});
+    if (!e.success) {
+      uni.hideLoading();
+      return;
+    }
     const { comment, score } = e;
     const res = await orderAssistant.evaluate({orderId, comment, score});
     uni.hideLoading();
-    if (res.success) {await that.promisify(uni.showModal, {title: '提示', content: '评价成功'})}
-    else {await that.promisify(uni.showModal, {title: '提示', content: res.message})}
+    if (res.success) {
+      userInfo.orderCount += 1;
+      await that.promisify(uni.showModal, {title: '提示', content: '评价成功', showCancel: false})}
+    else {await that.promisify(uni.showModal, {title: '提示', content: res.message, showCancel: false})}
     that.getOrderList({fromStart: true});
   }
 

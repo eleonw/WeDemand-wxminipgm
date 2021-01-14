@@ -158,7 +158,6 @@ async function evaluate(opt) {
     let userIdField
     switch(side) {
       case _side.CREATER: 
-        console.log('1')
         scoreField = 'createrScore';
         commentField = 'createrComment';
         userIdField = 'createrId';
@@ -185,22 +184,13 @@ async function evaluate(opt) {
       evalStatus = side;
     }
 
-    try {
-      await transaction.collection('order-comment').doc(orderId).set({
-        [scoreField]: score,
-        [commentField]: comment
-      })
-      await transaction.collection('inactive-order').doc(orderId).update({status, evalStatus});
-    } catch(e) {
-      return {success: false, code: -1, error: e};
-    }
 
-    const userTab = db.collection('uni-id-users');
-    try {
-      await userTab.doc(order[userIdField]).update({orderCount: dbCmd.inc(1)})
-    } catch(e) {
-      console.log(e);
-    }
+    await orderComment.doc(orderId).set({
+      [scoreField]: score,
+      [commentField]: comment
+    })
+    await inactiveOrder.doc(orderId).update({status, evalStatus});
+    await uniIdUsers.doc(userId).update({orderCount: dbCmd.inc(1)})
     return {success: true}
 }
 
@@ -501,7 +491,7 @@ async function finish(arg) {
   }
   order.status = _orderStatus.EVALUATING;
   order.evalStatus = -1;
-  const systemCost = Math.floor(order.totalCost * 0.2);
+  const systemCost = Math.floor(order.totalCost * 0.3);
   const serverPay = order.totalCost + order.deposit - systemCost;
   let returnRes;
   
@@ -523,8 +513,8 @@ async function finish(arg) {
 }
 
 function getRandomLetter() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ23456789';
-    return characters[Math.floor(Math.random() * 34)];
+    const characters = 'ABCDEFGHIJKLMNPQRSTUVWXYZ23456789';
+    return characters[Math.floor(Math.random() * characters.length)];
 }
 
 function getRandomCode() {

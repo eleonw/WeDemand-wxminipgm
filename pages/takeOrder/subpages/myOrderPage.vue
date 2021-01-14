@@ -20,7 +20,7 @@
   import globalEventBus from '@/common/eventBus.js';
   
   import { testOrder_HelpDeliver, testOrder_HelpBuy, testOrder_OtherService } from '@/common/classes/Order.js';
-  import { orderStatus } from '@/common/globalData.js';
+  import { orderStatus, userInfo } from '@/common/globalData.js';
   
   import { promisify, getMoneyString } from '@/common/helper.js';
   import { orderAssistant_server as orderAssistant } from '@/common/server.js';
@@ -184,6 +184,11 @@
       that = this;
     },
     beforeMount: async function() {
+      if (!getApp().globalData.login) {
+        let res = await that.promisify(uni.showModal, {title: '提示', content: '您还未登录，无法正常查看您的订单，是否前往登录？'})
+        if (res.confirm) {uni.reLaunch({url: '/pages/front/front'})}
+        return;
+      }
       await that.getOrderList(true)
       eventBus.$on('reachBottom', async function(){
         that.getOrderList(false);
@@ -238,8 +243,12 @@
     const { comment, score } = e;
     const res = await orderAssistant.evaluate({orderId, comment, score});
     console.log(res)
-    if (res.success) {await that.promisify(uni.showModal, {title: '提示', content: '操作成功', showCancel: false})}
-    else {await that.promisify(uni.showModal, {title: '提示', content: res.message, showCancel: false })}
+    uni.hideLoading()
+    if (res.success) {
+      userInfo.orderCount += 1;
+      await that.promisify(uni.showModal, {title: '提示', content: '操作成功', showCancel: false})
+    }
+    else {await that.promisify(uni.showModal, {title: '提示', content: '系统繁忙，请稍后重试', showCancel: false })}
     await that.getOrderList(true);
   }
    

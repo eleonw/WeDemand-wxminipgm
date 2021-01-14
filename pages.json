@@ -16,7 +16,10 @@
           
         ,{
             "path" : "pages/index/index",
-            "style" : {}
+            "style" : {
+                // "navigationStyle": "default",
+                // "navigationBarTitleText": "微叮当"
+            }
         }
         ,{
             "path" : "pages/makeOrder/addressForm/addressForm",
